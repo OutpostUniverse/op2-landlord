@@ -4,11 +4,6 @@
 
 #include <string>
 
-const std::string	CONFIG_UI_MAIN_FONT_PATH				= "ui-main-font-path";
-const std::string	CONFIG_UI_MAIN_FONT_SIZE				= "ui-main-font-size";
-const std::string	CONFIG_UI_MAP_NAME_FONT_PATH			= "ui-map-name-font-path";
-const std::string	CONFIG_UI_MAP_NAME_FONT_SIZE			= "ui-map-name-font-size";
-
 const std::string	CONFIG_UI_BUTTON_CREATE_NEW_MAP			= "ui-button-create-new-map";
 const std::string	CONFIG_UI_BUTTON_LOAD_EXISTING_MAP		= "ui-button-load-existing-map";
 const std::string	CONFIG_UI_BUTTON_REFRESH_LISTS			= "ui-button-refresh-lists";

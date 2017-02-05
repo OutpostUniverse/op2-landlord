@@ -107,6 +107,7 @@
     <ClInclude Include="..\..\src\TextField.h" />
     <ClInclude Include="..\..\src\TilePalette.h" />
     <ClInclude Include="..\..\src\Tileset.h" />
+    <ClInclude Include="..\..\src\ToolBar.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +125,7 @@
     <ClCompile Include="..\..\src\TextField.cpp" />
     <ClCompile Include="..\..\src\TilePalette.cpp" />
     <ClCompile Include="..\..\src\Tileset.cpp" />
+    <ClCompile Include="..\..\src\ToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Landlord.rc" />

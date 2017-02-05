@@ -94,9 +94,9 @@ void TextField::draw()
 	r.drawBoxFilled(rect(), 0, 0, 0, 180);
 
 	if (hasFocus())
-		r.drawBox(rect(), 25, 25, 185);
+		r.drawBox(rect(), 120, 120, 185);
 	else
-		r.drawBox(rect(), 50, 50, 50);
+		r.drawBox(rect(), 85, 85, 85);
 
 
 	if(highlight())

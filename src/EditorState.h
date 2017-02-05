@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "Menu.h"
 #include "TilePalette.h"
+#include "ToolBar.h"
 
 #include "Button.h"
 #include "TextField.h"
@@ -19,15 +20,15 @@ using namespace NAS2D;
 
 enum EditState
 {
-	STATE_BASE_TILE_INDEX			= 0,	// Explicitly defined due to my paranoia.
+	STATE_BASE_TILE_INDEX,
 	STATE_BASE_DETAIL_TILE_INDEX,
 	STATE_DETAIL_TILE_INDEX,
 	STATE_FOREGROUND_TILE_INDEX,
 	STATE_TILE_COLLISION,
-	STATE_FILE_SAVE_PATH,
-	STATE_MAP_LINK_EDIT,
-	STATE_MAP_NAME_EDIT
+	STATE_TILE_ERASE,
+	STATE_MAP_LINK_EDIT
 };
+
 
 enum HandleCorner
 {
@@ -44,7 +45,9 @@ class EditorState: public State
 {
 public:
 	EditorState(const std::string& mapPath);
-	EditorState(const std::string& name, const std::string& tsetPath, int width, int height);
+	EditorState(const std::string& name, const std::string& mapPath, const std::string& tsetPath, int width, int height);
+
+	~EditorState();
 
 protected:
 	void initialize();
@@ -62,14 +65,13 @@ private:
 
 	EditorState();	// Explicitly undefined
 
-	void fillEditStateTable();
 	void fillEditStateStringTable();
+
+	void initUi();
 
 
 	// FUNCTIONS
 	// ===============================
-	void button_MapSavePathOkay_Click();
-
 	void button_MapLinkOkay_Click();
 	void button_MapLinkCancel_Click();
 	
@@ -91,8 +93,6 @@ private:
 	void handleLeftButtonDown(int x, int y);
 	void handleRightButtonDown();
 	void handleMiddleButtonDown();
-
-	void setMapSavePath();
 
 	void saveUndo();
 
@@ -118,12 +118,8 @@ private:
 	Point_2df		mScrollVector;
 
 	Font			mFont;
-	Font			mTitleFont;
-
-	Button			mBtnMapSavePathOkay;
-
-	TextField		mTxtMapName;
-	TextField		mTxtMapSavePath;
+	
+	ToolBar			mToolBar;
 
 	Button			mBtnLinkOkay;
 	Button			mBtnLinkCancel;
@@ -141,8 +137,6 @@ private:
 	GameField		mFieldUndo;
 
 	std::string		mMapSavePath;
-
-	Menu			mLayerMenu;
 
 	Image*			mMiniMap;
 

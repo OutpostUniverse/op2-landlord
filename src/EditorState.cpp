@@ -22,11 +22,10 @@ std::map<int, EditState>	StateIntMap;		/**< EditState int table. */
 
 
 EditorState::EditorState(const string& mapPath):	mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
-													mFont(Utility<Configuration>::get().option(CONFIG_UI_MAIN_FONT_PATH), stringToInt(Utility<Configuration>::get().option(CONFIG_UI_MAIN_FONT_SIZE))),
-													mTitleFont(Utility<Configuration>::get().option(CONFIG_UI_MAP_NAME_FONT_PATH), stringToInt(Utility<Configuration>::get().option(CONFIG_UI_MAP_NAME_FONT_SIZE))),
-													mLinkCell(NULL),
+													mFont("fonts/ui-normal.png", 7, 9, 0),
+													mLinkCell(nullptr),
 													mMap(mapPath),
-													mMiniMap(NULL),
+													mMiniMap(nullptr),
 													mMapSavePath(mapPath),
 													mEditState(STATE_BASE_TILE_INDEX),
 													mPreviousEditState(mEditState),
@@ -37,28 +36,37 @@ EditorState::EditorState(const string& mapPath):	mMousePointer(Utility<Configura
 													mHideUi(HIDE_UI_DEFAULT),
 													mDrawMiniMap(true),
 													mMapChanged(false),
-													mReturnState(NULL)
+													mReturnState(nullptr)
 {}
 
 
-EditorState::EditorState(const string& name, const string& tsetPath, int w, int h):	mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
-																					mFont(Utility<Configuration>::get().option(CONFIG_UI_MAIN_FONT_PATH), stringToInt(Utility<Configuration>::get().option(CONFIG_UI_MAIN_FONT_SIZE))),
-																					mTitleFont(Utility<Configuration>::get().option(CONFIG_UI_MAP_NAME_FONT_PATH), stringToInt(Utility<Configuration>::get().option(CONFIG_UI_MAP_NAME_FONT_SIZE))),
-																					mLinkCell(NULL),
-																					mMap(name, tsetPath, w, h),
-																					mMiniMap(NULL),
-																					mEditState(STATE_FILE_SAVE_PATH),
-																					mPreviousEditState(STATE_BASE_TILE_INDEX),
-																					mDrawDebug(SHOW_DEBUG_DEFAULT),
-																					mLeftButtonDown(false),
-																					mRightButtonDown(false),
-																					mPlacingCollision(false),
-																					mHideUi(HIDE_UI_DEFAULT),
-																					mDrawMiniMap(true),
-																					mMapChanged(false),
-																					mReturnState(NULL)
+EditorState::EditorState(const string& name, const string& mapPath, const string& tsetPath, int w, int h):	mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
+																											mFont("fonts/ui-normal.png", 7, 9, 0),
+																											mLinkCell(nullptr),
+																											mMap(name, tsetPath, w, h),
+																											mMapSavePath(mapPath),
+																											mMiniMap(nullptr),
+																											mPreviousEditState(STATE_BASE_TILE_INDEX),
+																											mDrawDebug(SHOW_DEBUG_DEFAULT),
+																											mLeftButtonDown(false),
+																											mRightButtonDown(false),
+																											mPlacingCollision(false),
+																											mHideUi(HIDE_UI_DEFAULT),
+																											mDrawMiniMap(true),
+																											mMapChanged(false),
+																											mReturnState(nullptr)
 {}
 
+
+EditorState::~EditorState()
+{
+	Utility<EventHandler>::get().keyUp().Disconnect(this, &EditorState::onKeyUp);
+	Utility<EventHandler>::get().keyDown().Disconnect(this, &EditorState::onKeyDown);
+	Utility<EventHandler>::get().mouseMotion().Disconnect(this, &EditorState::onMouseMove);
+	Utility<EventHandler>::get().mouseButtonUp().Disconnect(this, &EditorState::onMouseUp);
+	Utility<EventHandler>::get().mouseButtonDown().Disconnect(this, &EditorState::onMouseDown);
+	Utility<EventHandler>::get().quit().Disconnect(this, &EditorState::onQuit);
+}
 
 /**
  * Initializes internal values and sets up event handlers.
@@ -67,43 +75,32 @@ void EditorState::initialize()
 {
 	mReturnState = this;
 
+	initUi();
+
+	// Fill tables
+	fillEditStateStringTable();
+	
+	// Hook up event handlers
+	Utility<EventHandler>::get().keyUp().Connect(this, &EditorState::onKeyUp);
+	Utility<EventHandler>::get().keyDown().Connect(this, &EditorState::onKeyDown);
+	Utility<EventHandler>::get().mouseMotion().Connect(this, &EditorState::onMouseMove);
+	Utility<EventHandler>::get().mouseButtonUp().Connect(this, &EditorState::onMouseUp);
+	Utility<EventHandler>::get().mouseButtonDown().Connect(this, &EditorState::onMouseDown);
+	Utility<EventHandler>::get().quit().Connect(this, &EditorState::onQuit);
+
+	createMiniMap();
+
+	mMap.viewport(Rectangle_2d(0, 32, Utility<Renderer>::get().width(), Utility<Renderer>::get().height() - 32));
+}
+
+
+void EditorState::initUi()
+{
 	// Tile Palette
 	mTilePalette.tileset(&mMap.tileset());
 	mTilePalette.font(mFont);
 
-
-	// Layer Menu
-	mLayerMenu.font(mFont);
-	mLayerMenu.addItem("Base");
-	mLayerMenu.addItem("Base Detail");
-	mLayerMenu.addItem("Detail");
-	mLayerMenu.addItem("Foreground");
-	mLayerMenu.addItem("Collision");
-	mLayerMenu.position(0, Utility<Renderer>::get().height() - mLayerMenu.rect().h());
-
-
-	// Map Name Field
-	mTxtMapName.font(mTitleFont);
-	mTxtMapName.width(300);
-	mTxtMapName.position(1, 1);
-	mTxtMapName.text(mMap.name());
-
-
-	// Map Save Path Field
-	mTxtMapSavePath.font(mFont);
-	mTxtMapSavePath.width(300);
-	mTxtMapSavePath.position(Utility<Renderer>::get().screenCenterX() - 150, Utility<Renderer>::get().screenCenterY() - 10);
-	mTxtMapSavePath.text(mMapSavePath);
-	mTxtMapSavePath.border(TextField::ALWAYS);
-
-
-	// Okay Button for Map Save Path state
-	mBtnMapSavePathOkay.font(mFont);
-	mBtnMapSavePathOkay.size(50, 25);
-	mBtnMapSavePathOkay.position(Utility<Renderer>::get().screenCenterX() + 100, Utility<Renderer>::get().screenCenterY() + 20);
-	mBtnMapSavePathOkay.text("Okay");
-	mBtnMapSavePathOkay.click().Connect(this, &EditorState::button_MapSavePathOkay_Click);
-
+	mToolBar.map_name(mMap.name());
 
 	// Link Edit UI
 	mBtnLinkOkay.font(mFont);
@@ -119,7 +116,6 @@ void EditorState::initialize()
 	mBtnLinkCancel.text("Cancel");
 	mBtnLinkCancel.click().Connect(this, &EditorState::button_MapLinkCancel_Click);
 	mBtnLinkCancel.visible(false);
-
 
 	mTxtLinkDestination.font(mFont);
 	mTxtLinkDestination.width(300);
@@ -140,49 +136,6 @@ void EditorState::initialize()
 	mTxtLinkDestY.text("0");
 	mTxtLinkDestY.border(TextField::ALWAYS);
 	mTxtLinkDestY.visible(false);
-
-	// Set UI visibility based on the set editor state.
-	if(mEditState == STATE_FILE_SAVE_PATH)
-	{
-		mTxtMapSavePath.visible(true);
-		mTxtMapSavePath.hasFocus(true);
-
-		mBtnMapSavePathOkay.visible(true);
-	}
-	else
-	{
-		mTxtMapSavePath.visible(false);
-		mBtnMapSavePathOkay.visible(false);
-	}
-
-
-	// File tables
-	fillEditStateTable();
-	fillEditStateStringTable();
-
-
-	// Hook up event handlers
-	Utility<EventHandler>::get().keyUp().Connect(this, &EditorState::onKeyUp);
-	Utility<EventHandler>::get().keyDown().Connect(this, &EditorState::onKeyDown);
-	Utility<EventHandler>::get().mouseMotion().Connect(this, &EditorState::onMouseMove);
-	Utility<EventHandler>::get().mouseButtonUp().Connect(this, &EditorState::onMouseUp);
-	Utility<EventHandler>::get().mouseButtonDown().Connect(this, &EditorState::onMouseDown);
-	Utility<EventHandler>::get().quit().Connect(this, &EditorState::onQuit);
-
-	createMiniMap();
-}
-
-
-/**
- * Fills a table with EditStates and maps them to human-readable strings.
- */
-void EditorState::fillEditStateTable()
-{
-	StateIntMap[0] = STATE_BASE_TILE_INDEX;
-	StateIntMap[1] = STATE_BASE_DETAIL_TILE_INDEX;
-	StateIntMap[2] = STATE_DETAIL_TILE_INDEX;
-	StateIntMap[3] = STATE_FOREGROUND_TILE_INDEX;
-	StateIntMap[4] = STATE_TILE_COLLISION;
 }
 
 
@@ -196,19 +149,7 @@ void EditorState::fillEditStateStringTable()
 	StateStringMap[STATE_DETAIL_TILE_INDEX]			= "Detail Layer Editing";
 	StateStringMap[STATE_FOREGROUND_TILE_INDEX]		= "Foreground Layer Editing";
 	StateStringMap[STATE_TILE_COLLISION]			= "Collision Layer Editing";
-	StateStringMap[STATE_FILE_SAVE_PATH]			= "Specifying File Save Path";
 	StateStringMap[STATE_MAP_LINK_EDIT]				= "Map Link Editing";
-	StateStringMap[STATE_MAP_NAME_EDIT]				= "Map Name Editing";
-}
-
-
-/**
- * Handler for the button's Click event.
- */
-void EditorState::button_MapSavePathOkay_Click()
-{
-	setMapSavePath();
-	mLinkCell = NULL;
 }
 
 
@@ -274,14 +215,6 @@ State* EditorState::update()
 	if(mDrawMiniMap)
 		drawMiniMap();
 
-	if(mEditState == STATE_FILE_SAVE_PATH)
-	{
-		r.drawBoxFilled(0, 0, r.width(), r.height(), 0, 0, 0, 65);
-		r.drawText(mFont, "Enter file name for Map:", r.screenCenterX() - 150, r.screenCenterY() - 30, 255, 255, 255);
-		mTxtMapSavePath.update();
-		mBtnMapSavePathOkay.update();
-	}
-
 	if(mEditState == STATE_MAP_LINK_EDIT)
 	{
 		r.drawBoxFilled(0, 0, r.width(), r.height(), 0, 0, 0, 65);
@@ -290,8 +223,7 @@ State* EditorState::update()
 
 	updateUI();
 
-	if(mEditState != STATE_FILE_SAVE_PATH)
-		r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.screenCenterX() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.screenCenterX() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
 
 	r.drawImage(mMousePointer, mMouseCoords.x(), mMouseCoords.y());
 
@@ -301,20 +233,15 @@ State* EditorState::update()
 
 void EditorState::updateUI()
 {
-	instructions();
+	//instructions();
+	Renderer& r = Utility<Renderer>::get();
 
-	stringstream str;
-	str << "World Tile: " << static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()) << ", " << static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y()) / mMap.tileset().height());
-	Utility<Renderer>::get().drawTextShadow(mFont, str.str(), 5, mLayerMenu.rect().y() - 30, 1, 255, 255, 255, 0, 0, 0);
+	mToolBar.update();
 
-	str.str("");
-	str << "World Fine: " << mMouseCoords.x() + mMap.cameraPosition().x() << ", " << mMouseCoords.y() + mMap.cameraPosition().y();
-	Utility<Renderer>::get().drawTextShadow(mFont, str.str(), 5, mLayerMenu.rect().y() - 20, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mFont, string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()), static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y()) / mMap.tileset().height())), 5, r.height() - 28, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mFont, string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
 
-
-	mLayerMenu.update();
 	mTilePalette.update();
-	mTxtMapName.update();
 
 	mBtnLinkOkay.update();
 	mBtnLinkCancel.update();
@@ -411,7 +338,7 @@ void EditorState::createMiniMap()
 void EditorState::updateScroll()
 {
 	mMap.update();
-	if(!mHideUi || mEditState != STATE_FILE_SAVE_PATH)
+	if(!mHideUi)
 	{
 		mSelectorRect = mMap.injectMousePosition(mMouseCoords);
 	}
@@ -427,7 +354,7 @@ void EditorState::updateScroll()
 void EditorState::updateSelector()
 {
 	// Don't draw selector if the UI is hidden.
-	if(mHideUi)
+	if(mHideUi || mMouseCoords.y() < 32)
 		return;
 
 	Renderer& r = Utility<Renderer>::get();
@@ -439,7 +366,7 @@ void EditorState::updateSelector()
 	{
 		for(int col = p.width(); col > 0; col--)
 		{
-			r.drawBox(mSelectorRect.x() - offsetX, mSelectorRect.y() - offsetY, mSelectorRect.w(), mSelectorRect.h(), 255, 255, 255);
+			r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.w(), mSelectorRect.h(), 255, 255, 255);
 			offsetX += 32;
 		}
 		offsetX = 0;
@@ -456,27 +383,7 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 	if(repeat)
 		return;
 
-	if(mEditState == STATE_MAP_NAME_EDIT)
-	{
-		// User pressed enter while in the map name text field,
-		// turn focus off.
-		if(key == KEY_ENTER || key == KEY_KP_ENTER)
-		{
-			mTxtMapName.hasFocus(false);
-			restorePreviousState();
-		}
-		return;
-	}
-	else if(mEditState == STATE_FILE_SAVE_PATH)
-	{
-		if(key == KEY_ENTER || key == KEY_KP_ENTER)
-			setMapSavePath();
-		else if(key == KEY_ESCAPE)
-			mReturnState = new StartState();
-	
-		return;
-	}
-	else if(mEditState == STATE_MAP_LINK_EDIT)
+	if(mEditState == STATE_MAP_LINK_EDIT)
 	{
 		return;
 	}
@@ -507,33 +414,35 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 			break;
 
 		case KEY_1:
-			setState(STATE_BASE_TILE_INDEX);
-			mLayerMenu.currentSelection(0);
-			mMap.drawCollision(false);
+			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
+			/*setState(STATE_BASE_TILE_INDEX);
+			mMap.drawCollision(false);*/
 			break;
 
 		case KEY_2:
-			setState(STATE_BASE_DETAIL_TILE_INDEX);
-			mLayerMenu.currentSelection(1);
-			mMap.drawCollision(false);
+			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
+			/*setState(STATE_BASE_DETAIL_TILE_INDEX);
+			mMap.drawCollision(false);*/
 			break;
 
 		case KEY_3:
-			setState(STATE_DETAIL_TILE_INDEX);
-			mLayerMenu.currentSelection(2);
-			mMap.drawCollision(false);
+			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
+			/*setState(STATE_DETAIL_TILE_INDEX);
+			mMap.drawCollision(false);*/
 			break;
 
 		case KEY_4:
-			setState(STATE_FOREGROUND_TILE_INDEX);
-			mLayerMenu.currentSelection(3);
-			mMap.drawCollision(false);
+			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
+			/*setState(STATE_FOREGROUND_TILE_INDEX);
+			mMap.drawCollision(false);*/
 			break;
 
 		case KEY_5:
+			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
+			/*
 			setState(STATE_TILE_COLLISION);
-			mLayerMenu.currentSelection(4);
 			mMap.drawCollision(true);
+			*/
 			break;
 
 		case KEY_F1:
@@ -546,15 +455,7 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 
 		// Stealing this for dumping the minimap for now
 		case KEY_F2:
-			/*
-			if(!Utility<Filesystem>::get().exists("screenshots"))
-				Utility<Filesystem>::get().makeDirectory("screenshots");
-
-			mMap.dump("screenshots/map_dump.bmp");
-			*/
-
 			SDL_SaveBMP(MINI_MAP_SURFACE, "minimap.bmp");
-
 			break;
 
 		case KEY_F3:
@@ -622,16 +523,6 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
  */
 void EditorState::onKeyUp(KeyCode key, KeyModifier mod)
 {
-	if(mTxtMapName.hasFocus())
-	{
-		return;
-	}
-
-	if(mEditState == STATE_FILE_SAVE_PATH)
-	{
-		return;
-	}
-
 	if(mEditState == STATE_MAP_LINK_EDIT)
 	{
 		return;
@@ -672,7 +563,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 
 		mTilePalette.onMouseMove(x, y, relX, relY);
 
-		if(mLeftButtonDown && !isPointInRect(mMouseCoords, mTilePalette.rect()) && !mTxtMapName.hasFocus())
+		if(mLeftButtonDown && !isPointInRect(mMouseCoords, mTilePalette.rect()))
 		{
 			if(mEditState != STATE_MAP_LINK_EDIT && isPointInRect(x, y, MINI_MAP_X, MINI_MAP_Y, mMiniMap->rect().w(), mMiniMap->rect().h()))
 			{
@@ -682,6 +573,10 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 				mMap.setCamera((mMap.tileset().width() * (x - MINI_MAP_X)) - (Utility<Renderer>::get().width() / 2), (mMap.tileset().height() * (y - MINI_MAP_Y)) - (Utility<Renderer>::get().height() / 2));
 				return;
 			}
+
+			// Avoid modifying tiles if we're in the 'toolbar area'
+			if (y < 32)
+				return;
 
 			if(mEditState == STATE_TILE_COLLISION)
 				mMap.getCell(mMouseCoords).blocked(mPlacingCollision);
@@ -761,38 +656,10 @@ void EditorState::handleLeftButtonDown(int x, int y)
 		return;
 	}
 
-	if(mEditState == STATE_FILE_SAVE_PATH)
-	{
-		return;
-	}
-
 	if(mEditState == STATE_MAP_LINK_EDIT)
 	{
 		return;
 	}
-
-	if(isPointInRect(pt, mTxtMapName.rect()))
-	{
-		mTxtMapName.hasFocus(true);
-		setState(STATE_MAP_NAME_EDIT);
-		return;
-	}
-	else
-	{
-		mTxtMapName.hasFocus(false);
-		if(mEditState == STATE_MAP_NAME_EDIT)
-			restorePreviousState();
-	}
-
-
-	// Check the layer menu
-	if(isPointInRect(pt, mLayerMenu.rect()))
-	{
-		setState(StateIntMap[mLayerMenu.currentSelection()]);
-		mEditState == STATE_TILE_COLLISION ? mMap.drawCollision(true) : mMap.drawCollision(false);
-		return; // Ignore other click processing if the menu was clicked.
-	}
-
 
 	// Check the tile palette.
 	if(mTilePalette.hidden() && isPointInRect(pt, mTilePalette.rect()))
@@ -807,6 +674,10 @@ void EditorState::handleLeftButtonDown(int x, int y)
 		return; // Ignore other click processing if the palette was clicked.
 	}
 
+
+	// Avoid inserting tiles if we're in the 'toolbar area'
+	if (y < 32)
+		return;
 
 	Cell& cell = mMap.getCell(mMouseCoords);
 
@@ -986,18 +857,12 @@ void EditorState::hideTilePalette()
  */
 void EditorState::saveMap()
 {
-	if(mMapSavePath.empty())
-	{
-		mPreviousEditState = mEditState;
-		setState(STATE_FILE_SAVE_PATH);
-		mTxtMapSavePath.visible(true);
-		mTxtMapSavePath.hasFocus(true);
-	}
-	else
-	{
-		mMap.name(mTxtMapName.text());
-		mMap.save(mMapSavePath);
-	}
+	Filesystem& f = Utility<Filesystem>::get();
+	if (!f.exists("maps"))
+		f.makeDirectory("maps");
+
+	mMap.name(mToolBar.map_name());
+	mMap.save(mMapSavePath);
 }
 
 
@@ -1007,24 +872,6 @@ void EditorState::saveMap()
 void EditorState::saveUndo()
 {
 	mFieldUndo = mMap.field();
-}
-
-
-/**
- * Sets the state of the editor once the user presses enter/
- * clicks the Okay button.
- */
-void EditorState::setMapSavePath()
-{
-	string str = TrimString(mTxtMapSavePath.text());
-
-	if(str.empty())
-		return;
-
-	restorePreviousState();
-	mTxtMapSavePath.visible(false);
-	mBtnMapSavePathOkay.visible(false);
-	mMapSavePath = Utility<Configuration>::get().option(CONFIG_EDITOR_MAPS_PATH) + str;
 }
 
 

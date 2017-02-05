@@ -6,7 +6,8 @@ using namespace std;
 
 Button::Button():	mState(STATE_NORMAL),
 					mType(BUTTON_NORMAL),
-					mMouseHover(false)
+					mMouseHover(false),
+					mImage(nullptr)
 {
 	Utility<EventHandler>::get().mouseButtonDown().Connect(this, &Button::onMouseDown);
 	Utility<EventHandler>::get().mouseButtonUp().Connect(this, &Button::onMouseUp);
@@ -20,6 +21,27 @@ Button::~Button()
 	Utility<EventHandler>::get().mouseButtonDown().Disconnect(this, &Button::onMouseDown);
 	Utility<EventHandler>::get().mouseButtonUp().Disconnect(this, &Button::onMouseUp);
 	Utility<EventHandler>::get().mouseMotion().Disconnect(this, &Button::onMouseMotion);
+
+	if (mImage)
+		delete mImage;
+}
+
+
+void Button::image(const std::string path)
+{
+	if (!Utility<Filesystem>::get().exists(path))
+	{
+		cout << "Button::image(): specified image file doesn't exist." << endl;
+		return;
+	}
+
+	if (mImage)
+	{
+		delete mImage;
+		mImage = nullptr;
+	}
+
+	mImage = new Image(path);
 }
 
 
@@ -127,13 +149,21 @@ void Button::draw()
 	}
 
 
-	if (fontSet() && !text().empty())
+	if (mImage)
+	{
+		int x = static_cast<int>(rect().x() + (rect().w() / 2) - ((mImage->width() / 2) + 1));
+		int y = static_cast<int>(rect().y() + (rect().h() / 2) - (mImage->height() / 2));
+
+		if (mState == STATE_PRESSED) { ++x; ++y; }
+		r.drawImage(*mImage, x, y);
+	}
+	else if (fontSet() && !text().empty())
 	{
 		int x = static_cast<int>(rect().x() + (rect().w() / 2) - (font().width(text()) / 2));
 		int y = static_cast<int>(rect().y() + (rect().h() / 2) - (font().height() / 2));
 
-		if (mState == STATE_PRESSED) r.drawText(font(), text(), x + 1, y + 1, 0, 0, 0);
-		else r.drawText(font(), text(), x, y, 0, 0, 0);
+		if (mState == STATE_PRESSED) { ++x; ++y; }
+		r.drawText(font(), text(), x, y, 0, 0, 0);
 	}
 
 	if (!enabled())

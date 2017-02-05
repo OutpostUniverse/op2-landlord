@@ -4,3 +4,4 @@
 /proj/vc14/*.db
 /proj/vc14/Release
 /proj/vc14/*.opendb
+/data/editor.xml

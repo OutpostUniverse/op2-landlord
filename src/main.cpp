@@ -47,21 +47,6 @@ void validateOptions()
 {
 	Configuration& c = Utility<Configuration>::get();
 
-
-	if(c.option(CONFIG_UI_MAIN_FONT_PATH).empty())
-		c.option(CONFIG_UI_MAIN_FONT_PATH, UI_MAIN_FONT_PATH);
-
-	if(c.option(CONFIG_UI_MAIN_FONT_SIZE).empty())
-		c.option(CONFIG_UI_MAIN_FONT_SIZE, UI_MAIN_FONT_SIZE);
-
-
-	if(c.option(CONFIG_UI_MAP_NAME_FONT_PATH).empty())
-		c.option(CONFIG_UI_MAP_NAME_FONT_PATH, UI_MAP_NAME_FONT_PATH);
-
-	if(c.option(CONFIG_UI_MAP_NAME_FONT_SIZE).empty())
-		c.option(CONFIG_UI_MAP_NAME_FONT_SIZE, UI_MAP_NAME_FONT_SIZE);
-
-
 	if(c.option(CONFIG_UI_BUTTON_CREATE_NEW_MAP).empty())
 		c.option(CONFIG_UI_BUTTON_CREATE_NEW_MAP, UI_BUTTON_CREATE_NEW_MAP);
 

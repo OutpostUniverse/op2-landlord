@@ -7,14 +7,24 @@
 const int LAYOUT_RECT_WIDTH			= 790;
 const int LAYOUT_RECT_HEIGHT		= 590;
 
+std::string	MESSAGE = "";
+
+bool	MSG_FLASH = false;
+
+void setMessage(const std::string& msg)
+{
+	MESSAGE = msg;
+	cout << msg << endl;
+}
+
 
 /**
  * C'tpr
  */
-StartState::StartState():	mFont(Utility<Configuration>::get().option(CONFIG_UI_MAIN_FONT_PATH), stringToInt(Utility<Configuration>::get().option(CONFIG_UI_MAIN_FONT_SIZE))),
+StartState::StartState():	mFont("fonts/ui-normal.png", 7, 9, 0),
 							mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
-							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 30),
-							mReturnState(NULL)
+							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40),
+							mReturnState(nullptr)
 {
 
 }
@@ -40,6 +50,8 @@ void StartState::initialize()
 	Configuration& c = Utility<Configuration>::get();
 
 	mReturnState = this;
+
+	setMessage("");
 
 	mBtnCreateNew.font(mFont);
 	mBtnCreateNew.size(85, 25);
@@ -72,6 +84,10 @@ void StartState::initialize()
 	mTxtHeight.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 210 + mFont.width("Height:") + 5, mLayoutRect.y() + 10);
 	mTxtHeight.border(TextField::ALWAYS);
 
+	txtMapPath.font(mFont);
+	txtMapPath.width(mLayoutRect.x() + mLayoutRect.w() / 2 - 40);
+	txtMapPath.text("");
+	txtMapPath.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10, mBtnCreateNew.positionY() - 30);
 
 	mMapFilesMenu.font(mFont);
 	mMapFilesMenu.position(mLayoutRect.x() + 10, mLayoutRect.y() + 10);
@@ -119,25 +135,47 @@ void StartState::button_CreateNew_click()
 {
 	int mapWidth = 0, mapHeight = 0;
 
+	mTxtWidth.highlight(false);
+	mTxtHeight.highlight(false);
+	txtMapPath.highlight(false);
+
 	if(!from_string<int>(mapWidth, mTxtWidth.text(), std::dec))
 	{
-		mTxtWidth.highlight(true);
-		cout << "Map width field must be an integer." << endl;
-		return;
 	}
 
 	if(!from_string<int>(mapHeight, mTxtHeight.text(), std::dec))
 	{
 		mTxtHeight.highlight(true);
-		cout << "Map width field must be an integer." << endl;
+		setMessage("Map width field must be an integer.");
 		return;
 	}
 
-	mTxtWidth.highlight(false);
-	mTxtHeight.highlight(false);
+	// sanity check for map widths
+	if (mapWidth < 10)
+	{
+		mTxtWidth.highlight(true);
+		setMessage("Map width must be at least 10.");
+		return;
+	}
+
+	// sanity check for map widths
+	if (mapHeight < 10)
+	{
+		mTxtHeight.highlight(true);
+		setMessage("Map height must be at least 10.");
+		return;
+	}
+
+
+	if (txtMapPath.text().empty())
+	{
+		txtMapPath.highlight(true);
+		setMessage("Must enter a file name to proceed.");
+		return;
+	}
 
 	Configuration& c = Utility<Configuration>::get();
-	mReturnState = new EditorState(c.option(CONFIG_EDITOR_NEW_MAP_NAME), c.option(CONFIG_EDITOR_TILESETS_PATH) + mTsetFilesMenu.selectionText(), mapWidth, mapHeight);
+	mReturnState = new EditorState(c.option(CONFIG_EDITOR_NEW_MAP_NAME), c.option(CONFIG_EDITOR_MAPS_PATH) + txtMapPath.text(), c.option(CONFIG_EDITOR_TILESETS_PATH) + mTsetFilesMenu.selectionText(), mapWidth, mapHeight);
 }
 
 
@@ -153,7 +191,7 @@ void StartState::button_LoadExisting_click()
 	// no longer available), ensure that we prevent failure.
 	if(!Utility<Filesystem>::get().exists(mapPath))
 	{
-		cout << "ERROR: Selected file could not be found." << endl;
+		setMessage("ERROR: Selected file could not be found.");
 		return;
 	}
 
@@ -194,9 +232,19 @@ State* StartState::update()
 
 	mTxtWidth.update();
 	mTxtHeight.update();
+	txtMapPath.update();
 
 	mMapFilesMenu.update();
 	mTsetFilesMenu.update();
+
+	if (mTimer.accumulator() > 200)
+	{
+		MSG_FLASH = !MSG_FLASH;
+		mTimer.reset();
+	}
+
+	if (!MESSAGE.empty() && MSG_FLASH)
+		r.drawText(mFont, MESSAGE, 15, r.height() - 15, 255, 0, 0);
 
 	r.drawImage(mMousePointer, mMouseCoords.x(), mMouseCoords.y());
 

@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\UI Core">
+      <UniqueIdentifier>{ba6634c9-b090-4a58-879b-2eae1c5e4cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI Core">
+      <UniqueIdentifier>{8e27ab60-3f9c-4462-b900-e2e396f6f152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{4b02b4b3-2d88-4078-ac72-af86d9bea2e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{36e7f44d-1d18-4f61-8ad1-6a97e834f0f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\ConfigStrings.h">
@@ -30,9 +42,6 @@
     <ClInclude Include="..\..\src\StartState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TilePalette.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,26 +54,32 @@
     <ClInclude Include="..\..\src\Tileset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Cell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Control.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\TextField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Button.h">
+      <Filter>Header Files\UI Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Cell.h">
+      <Filter>Header Files\UI Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Control.h">
+      <Filter>Header Files\UI Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Menu.h">
+      <Filter>Header Files\UI Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TextField.h">
+      <Filter>Header Files\UI Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TilePalette.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\ToolBar.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +90,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\StartState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TilePalette.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Entity.cpp">
@@ -95,20 +107,26 @@
     <ClCompile Include="..\..\src\Cell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Control.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\TextField.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Common.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Button.cpp">
+      <Filter>Source Files\UI Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Control.cpp">
+      <Filter>Source Files\UI Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Menu.cpp">
+      <Filter>Source Files\UI Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TextField.cpp">
+      <Filter>Source Files\UI Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TilePalette.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ToolBar.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

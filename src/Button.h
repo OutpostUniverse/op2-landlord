@@ -30,6 +30,8 @@ public:
 
 	ClickCallback& click() { return mCallback; }
 
+	void image(const std::string path);
+
 	void update();
 
 protected:
@@ -52,6 +54,8 @@ private:
 	Type			mType;				/**< Modifies Button behavior. */
 
 	ClickCallback	mCallback;			/**< Object to notify when the Button is activated. */
+
+	Image*			mImage;
 
 	bool			mMouseHover;		/**< Mouse is within the bounds of the Button. */
 };

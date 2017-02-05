@@ -355,8 +355,8 @@ void Map::update()
 		{
 			Cell cell = mField.cell(col, row);
 			
-			int rasterX = ((col - tileUpperLeft.x()) * mTileset.width()) - offsetX + mViewport.x();
-			int rasterY = ((row - tileUpperLeft.y()) * mTileset.height()) - offsetY + mViewport.y();
+			int rasterX = mViewport.x() + ((col - tileUpperLeft.x()) * mTileset.width()) - offsetX + mViewport.x();
+			int rasterY = mViewport.y() + ((row - tileUpperLeft.y()) * mTileset.height()) - offsetY + mViewport.y();
 
 			mTileset.drawTile(cell.index(Cell::LAYER_BASE), rasterX, rasterY);
 
@@ -382,8 +382,8 @@ void Map::update()
 		{
 			Cell cell = mField.cell(col, row);
 			
-			int rasterX = ((col - tileUpperLeft.x()) * mTileset.width()) - offsetX + mViewport.x();
-			int rasterY = ((row - tileUpperLeft.y()) * mTileset.height()) - offsetY + mViewport.y();
+			int rasterX = mViewport.x() + ((col - tileUpperLeft.x()) * mTileset.width()) - offsetX + mViewport.x();
+			int rasterY = mViewport.y() + ((row - tileUpperLeft.y()) * mTileset.height()) - offsetY + mViewport.y();
 
 			if(mDrawForeground && cell.index(Cell::LAYER_FOREGROUND) >= 0)
 				mTileset.drawTile(cell.index(Cell::LAYER_FOREGROUND), rasterX, rasterY);
@@ -423,7 +423,10 @@ Rectangle_2d Map::injectMousePosition(const Point_2d& mouseCoords)
  */
 Point_2d Map::getGridCoords(const Point_2d& _pt) const
 {
-	return Point_2d(gridLocation(_pt.x(), static_cast<int>(mCameraPosition.x()), CELL_DIMENSIONS.w(), mViewport.w()) + static_cast<int>(mCameraPosition.x()) / mTileset.width(), gridLocation(_pt.y(), static_cast<int>(mCameraPosition.y()), CELL_DIMENSIONS.h(), mViewport.h()) + static_cast<int>(mCameraPosition.y()) / mTileset.height());
+	return Point_2d	(
+		gridLocation(_pt.x() - mViewport.x(), static_cast<int>(mCameraPosition.x()), CELL_DIMENSIONS.w(), mViewport.w()) + static_cast<int>(mCameraPosition.x()) / mTileset.width(),
+		gridLocation(_pt.y() - mViewport.y(), static_cast<int>(mCameraPosition.y()), CELL_DIMENSIONS.h(), mViewport.h()) + static_cast<int>(mCameraPosition.y()) / mTileset.height()
+					);
 }
 
 

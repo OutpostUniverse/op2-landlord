@@ -57,6 +57,7 @@ public:
 	void showLinks(bool show);
 
 	void viewport(const Rectangle_2d& _r);
+	const Rectangle_2d viewport() const { return mViewport; }
 
 	int width() const;
 	int height() const;

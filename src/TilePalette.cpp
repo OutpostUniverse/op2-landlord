@@ -36,18 +36,18 @@ TilePalette::TilePalette():		mFont(nullptr),
 
 	mBtnPrev.size(30, 20);
 	mBtnPrev.position(mRect.x() + 2, yPosition);
-	mBtnPrev.text("<");
+	mBtnPrev.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_PREV_IMAGE));
 	mBtnPrev.click().Connect(this, &TilePalette::button_Prev_click);
 
 	mBtnNext.size(30, 20);
 	mBtnNext.position(mRect.x() + mRect.w() - (mBtnNext.width() + 2), yPosition);
-	mBtnNext.text(">");
+	mBtnNext.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_NEXT_IMAGE));
 	mBtnNext.click().Connect(this, &TilePalette::button_Next_click);
 
 	mBtnFloodFill.type(Button::BUTTON_TOGGLE);
 	mBtnFloodFill.size(20, 20);
 	mBtnFloodFill.position(mRect.x() + (mRect.w() / 2) - (mBtnFloodFill.width() / 2), yPosition);
-	mBtnFloodFill.text("F");
+	mBtnFloodFill.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_BUCKET_IMAGE));
 	mBtnFloodFill.click().Connect(this, &TilePalette::button_FloodFill_click);
 
 }

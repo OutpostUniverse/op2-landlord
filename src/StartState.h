@@ -44,6 +44,7 @@ private:
 	void button_LoadExisting_click();
 	void button_RefreshLists_click();
 
+	Timer			mTimer;				// used to flash messages.
 
 	Font			mFont;				/**< Internal Font to use. */
 
@@ -58,6 +59,7 @@ private:
 
 	TextField		mTxtWidth;			/**< Map Width text field. */
 	TextField		mTxtHeight;			/**< Map Height text field. */
+	TextField		txtMapPath;			/**< Filename for the map. */
 
 	Menu			mMapFilesMenu;		/**< Map File List menu. */
 	Menu			mTsetFilesMenu;		/**< Tileset File List menu. */
