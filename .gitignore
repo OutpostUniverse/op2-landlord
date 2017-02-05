@@ -1,0 +1,6 @@
+*.dll
+*.exe
+/proj/vc14/Debug
+/proj/vc14/*.db
+/proj/vc14/Release
+/proj/vc14/*.opendb
