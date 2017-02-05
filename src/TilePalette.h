@@ -36,8 +36,6 @@ public:
 
 	void font(Font& font);
 
-	bool patternFill() const { return mPatternFill; }
-
 	const Pattern& pattern() const { return mBrushPattern; }
 
 	const Rectangle_2d& rect() const { return mRect; }
@@ -51,18 +49,17 @@ public:
 	void onMouseMove(int x, int y, int relX, int relY);
 
 private:
-
 	typedef std::vector<std::vector<Rectangle_2d> > RectList;
 
 
 	void button_Prev_click();
 	void button_Next_click();
-	void button_FloodFill_click();
 
 	void determinePattern();
 
 	Rectangle_2d getRectFromPoints(const Point_2d& pt1, const Point_2d& pt2);
 
+private:
 
 	Font*			mFont;				/**< Font to use to draw basic information. */
 	Tileset*		mTset;				/**< Pointer to a Tileset. TilePalette does not own this Tileset object. */
@@ -75,7 +72,6 @@ private:
 
 	Button			mBtnPrev;			/**<  */
 	Button			mBtnNext;			/**<  */
-	Button			mBtnFloodFill;		/**< Pattern fill button. */
 
 	Image			mShow;				/**< Displayed in the title area when the palette is hidden. */
 	Image			mHide;				/**< Displayed in the title area when the palette is not hidden. */
@@ -94,7 +90,6 @@ private:
 
 	bool			mHidden;			/**< Flag indicating that the palette shouldn't be drawn. */
 	bool			mLeftButtonDown;	/**< Flag indicating that the left mouse button is depressed. */
-	bool			mPatternFill;		/**< Flag indicating that we're in pattern fill mode. */
 	bool			mMouseOverTiles;	/**< Flag indicating that the mouse is actually over the tiles. */
 
 };

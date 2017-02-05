@@ -777,7 +777,7 @@ void EditorState::changeTileTexture()
 	if (it == StateToLayer.end())
 		throw Exception(0, "Bad State", "EditorState::changeTileTExture() called with an invalid state.");
 
-	if (mTilePalette.patternFill()) patternFill(StateToLayer[mEditState]);
+	if (mToolBar.floodfill()) patternFill(StateToLayer[mEditState]);
 	else patternStamp(StateToLayer[mEditState]);
 
 }

@@ -2,6 +2,8 @@
 
 #include "ConfigStrings.h"
 
+#include "Common.h"
+
 const Point_2d		PALETTE_DIMENSIONS		= Point_2d(196, 320);
 
 const Point_2d		FIRST_TILE_COORDINATE	= Point_2d(2, 18);
@@ -29,7 +31,6 @@ TilePalette::TilePalette():		mFont(nullptr),
 								mTsetIndex(0),
 								mHidden(true),
 								mLeftButtonDown(false),
-								mPatternFill(false),
 								mMouseOverTiles(false)
 {
 	int yPosition = Utility<Renderer>::get().height() - PALETTE_DIMENSIONS.y() + 295;
@@ -43,19 +44,6 @@ TilePalette::TilePalette():		mFont(nullptr),
 	mBtnNext.position(mRect.x() + mRect.w() - (mBtnNext.width() + 2), yPosition);
 	mBtnNext.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_NEXT_IMAGE));
 	mBtnNext.click().Connect(this, &TilePalette::button_Next_click);
-
-	mBtnFloodFill.type(Button::BUTTON_TOGGLE);
-	mBtnFloodFill.size(20, 20);
-	mBtnFloodFill.position(mRect.x() + (mRect.w() / 2) - (mBtnFloodFill.width() / 2), yPosition);
-	mBtnFloodFill.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_BUCKET_IMAGE));
-	mBtnFloodFill.click().Connect(this, &TilePalette::button_FloodFill_click);
-
-}
-
-
-void TilePalette::button_FloodFill_click()
-{
-	mPatternFill = mBtnFloodFill.toggled();
 }
 
 
@@ -169,8 +157,6 @@ void TilePalette::update()
 	// Draw buttons
 	mBtnPrev.update();
 	mBtnNext.update();
-	mBtnFloodFill.update();
-
 
 	// Draw the tile page
 	for(int row = 0; row < TILE_GRID_DIMENSIONS.y(); row++)
@@ -189,11 +175,8 @@ void TilePalette::update()
 
 	if(mFont)
 	{
-		r.drawTextShadow(*mFont, "Tile Palette", mRect.x() + 2, mRect.y(), 1, 255, 255, 255, 0, 0, 0);
-
-		stringstream ss;
-		ss << "Page: " << mCurrentPage + 1 << " of " << mNumPages;
-		r.drawTextShadow(*mFont, ss.str(), mRect.x() + 1, mRect.y() + 275, 1, 255, 255, 255, 0, 0, 0);
+		r.drawTextShadow(*mFont, "Tile Palette", mRect.x() + 2, mRect.y() + 2, 1, 255, 255, 255, 0, 0, 0);
+		r.drawTextShadow(*mFont, string_format("Page: %i of %i", mCurrentPage + 1, mNumPages), mRect.x() + 1, mRect.y() + 275, 1, 255, 255, 255, 0, 0, 0);
 	}
 
 	// Draw Selectors

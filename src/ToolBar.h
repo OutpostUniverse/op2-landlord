@@ -44,6 +44,8 @@ public:
 
 	ToolBarEvent& toolbar_event() { return mToolbarEvent; }
 
+	bool floodfill() const { return btnFill.toggled(); }
+
 private:
 
 	void initUi();
