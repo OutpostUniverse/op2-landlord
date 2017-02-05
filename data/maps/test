@@ -3,7 +3,7 @@
         <mapname name="New Map" />
         <mapsize width="50" height="50" />
         <bg_music path="" />
-        <title_plaque show="false" />
+        <title_plaque show="true" />
         <tilesize width="32" height="32" />
     </properties>
     <tilesets>

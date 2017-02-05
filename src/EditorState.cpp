@@ -101,6 +101,7 @@ void EditorState::initUi()
 	mTilePalette.font(mFont);
 
 	mToolBar.map_name(mMap.name());
+	mToolBar.toolbar_event().Connect(this, &EditorState::toolbar_event);
 
 	// Link Edit UI
 	mBtnLinkOkay.font(mFont);
@@ -847,6 +848,19 @@ void EditorState::showTilePalette()
 void EditorState::hideTilePalette()
 {
 	mTilePalette.hidden(true);
+}
+
+
+void EditorState::toolbar_event(ToolBar::ToolBarAction _act, bool _b)
+{
+	switch (_act)
+	{
+	case ToolBar::TOOLBAR_SAVE:
+		saveMap();
+		break;
+	default:
+		break;
+	}
 }
 
 

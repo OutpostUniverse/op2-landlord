@@ -17,6 +17,8 @@ ToolBar::~ToolBar()
 	EventHandler& e = Utility<EventHandler>::get();
 
 	e.keyDown().Disconnect(this, &ToolBar::onKeyDown);
+
+	mToolbarEvent.Clear();
 }
 
 
@@ -30,14 +32,36 @@ void ToolBar::initUi()
 	// SAVE
 	btnSave.image("sys/save.png");
 	btnSave.size(22, 28);
-	btnSave.position(200, 2);
+	btnSave.position(txtMapName.positionX() + txtMapName.width() + 20, 2);
+	btnSave.click().Connect(this, &ToolBar::btnSave_Clicked);
+
+	// EDIT TOOLS
+	btnPencil.image("sys/pencil.png");
+	btnPencil.type(Button::BUTTON_TOGGLE);
+	btnPencil.toggle(true);
+	btnPencil.size(22, 28);
+	btnPencil.position(btnSave.positionX() + btnSave.width() + 18 + BUTTON_SPACE, 2);
+	btnPencil.click().Connect(this, &ToolBar::btnPencil_Clicked);
+
+	btnFill.image("sys/paintcan.png");
+	btnFill.type(Button::BUTTON_TOGGLE);
+	btnFill.size(22, 28);
+	btnFill.position(btnPencil.positionX() + btnPencil.width() + BUTTON_SPACE, 2);
+	btnFill.click().Connect(this, &ToolBar::btnFill_Clicked);
+
+	btnErase.image("sys/erase.png");
+	btnErase.type(Button::BUTTON_TOGGLE);
+	btnErase.size(22, 28);
+	btnErase.position(btnFill.positionX() + btnFill.width() + BUTTON_SPACE, 2);
+	btnErase.click().Connect(this, &ToolBar::btnErase_Clicked);
+
 
 	// LAYER EDIT
 	btnLayerBase.image("sys/layer_b_edit.png");
 	btnLayerBase.type(Button::BUTTON_TOGGLE);
 	btnLayerBase.toggle(true);
 	btnLayerBase.size(22, 28);
-	btnLayerBase.position(btnSave.positionX() + btnSave.width() + 18 + BUTTON_SPACE, 2);
+	btnLayerBase.position(btnErase.positionX() + btnErase.width() + 18 + BUTTON_SPACE, 2);
 	btnLayerBase.click().Connect(this, &ToolBar::btnLayerBase_Clicked);
 
 	btnLayerBaseDetail.image("sys/layer_bd_edit.png");
@@ -123,6 +147,10 @@ void ToolBar::update()
 
 	btnSave.update();
 
+	btnPencil.update();
+	btnFill.update();
+	btnErase.update();
+
 	btnLayerBase.update();
 	btnLayerBaseDetail.update();
 	btnLayerDetail.update();
@@ -184,4 +212,43 @@ void ToolBar::btnLayerCollision_Clicked()
 	btnLayerDetail.toggle(false);
 	btnLayerForeground.toggle(false);
 	btnLayerCollision.toggle(true);
+}
+
+
+void ToolBar::btnSave_Clicked()
+{
+	mToolbarEvent(TOOLBAR_SAVE, true);
+}
+
+
+void ToolBar::btnPencil_Clicked()
+{
+	if(!btnPencil.toggled())
+		mToolbarEvent(TOOLBAR_PENCIL, true);
+
+	btnPencil.toggle(true);
+	btnFill.toggle(false);
+	btnErase.toggle(false);
+}
+
+
+void ToolBar::btnFill_Clicked()
+{
+	if (!btnFill.toggled())
+		mToolbarEvent(TOOLBAR_FILL, true);
+
+	btnPencil.toggle(false);
+	btnFill.toggle(true);
+	btnErase.toggle(false);
+}
+
+
+void ToolBar::btnErase_Clicked()
+{
+	if (!btnErase.toggled())
+		mToolbarEvent(TOOLBAR_ERASE, true);
+
+	btnPencil.toggle(false);
+	btnFill.toggle(false);
+	btnErase.toggle(true);
 }

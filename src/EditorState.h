@@ -69,9 +69,6 @@ private:
 
 	void initUi();
 
-
-	// FUNCTIONS
-	// ===============================
 	void button_MapLinkOkay_Click();
 	void button_MapLinkCancel_Click();
 	
@@ -103,9 +100,10 @@ private:
 	void drawMiniMap();
 	void createMiniMap();
 
+	void toolbar_event(ToolBar::ToolBarAction _act, bool _b);
 
-	// MEMBERS
-	// ===============================
+
+private:
 	Timer			mTimer;
 
 	Rectangle_2d	mSelectorRect;
