@@ -17,8 +17,9 @@ const float			MINI_MAP_Y			= 65.0f;
 SDL_Surface*		MINI_MAP_SURFACE	= NULL; // UGLY HACK!
 
 
-std::map<EditState, string>	StateStringMap;		/**< EditState string table. */
-std::map<int, EditState>	StateIntMap;		/**< EditState int table. */
+std::map<EditState, string>	StateStringMap;			/**< EditState string table. */
+std::map<int, EditState>	StateIntMap;			/**< EditState int table. */
+std::map<EditState, Cell::TileLayer> StateToLayer;	/**< Translation table between a specific edit state and tile layer. */
 
 
 EditorState::EditorState(const string& mapPath):	mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
@@ -78,7 +79,7 @@ void EditorState::initialize()
 	initUi();
 
 	// Fill tables
-	fillEditStateStringTable();
+	fillTables();
 	
 	// Hook up event handlers
 	Utility<EventHandler>::get().keyUp().Connect(this, &EditorState::onKeyUp);
@@ -140,6 +141,13 @@ void EditorState::initUi()
 }
 
 
+void EditorState::fillTables()
+{
+	fillEditStateStringTable();
+	fillStateToLayerTable();
+}
+
+
 /**
  * Fills a table with Ints and maps them to EditStates.
  */
@@ -153,6 +161,17 @@ void EditorState::fillEditStateStringTable()
 	StateStringMap[STATE_MAP_LINK_EDIT]				= "Map Link Editing";
 }
 
+
+/**
+ * Fills a table to use as an easy translation from layer edit state to cell layer.
+ */
+void EditorState::fillStateToLayerTable()
+{
+	StateToLayer[STATE_BASE_TILE_INDEX]			= Cell::LAYER_BASE;
+	StateToLayer[STATE_BASE_DETAIL_TILE_INDEX]	= Cell::LAYER_BASE_DETAIL;
+	StateToLayer[STATE_DETAIL_TILE_INDEX]		= Cell::LAYER_DETAIL;
+	StateToLayer[STATE_FOREGROUND_TILE_INDEX]	= Cell::LAYER_FOREGROUND;
+}
 
 /**
  * Handler link okay button click.
@@ -753,39 +772,14 @@ void EditorState::handleMiddleButtonDown()
  */
 void EditorState::changeTileTexture()
 {
-	switch(mEditState)
-	{
-		case STATE_BASE_TILE_INDEX:
-			if(mTilePalette.patternFill())
-				patternFill(Cell::LAYER_BASE);
-			else
-				patternStamp(Cell::LAYER_BASE);
-			break;
+	auto it = StateToLayer.find(mEditState);
 
-		case STATE_BASE_DETAIL_TILE_INDEX:
-			if(mTilePalette.patternFill())
-				patternFill(Cell::LAYER_BASE_DETAIL);
-			else
-				patternStamp(Cell::LAYER_BASE_DETAIL);
-			break;
+	if (it == StateToLayer.end())
+		throw Exception(0, "Bad State", "EditorState::changeTileTExture() called with an invalid state.");
 
-		case STATE_DETAIL_TILE_INDEX:
-			if(mTilePalette.patternFill())
-				patternFill(Cell::LAYER_DETAIL);
-			else
-				patternStamp(Cell::LAYER_DETAIL);
-			break;
+	if (mTilePalette.patternFill()) patternFill(StateToLayer[mEditState]);
+	else patternStamp(StateToLayer[mEditState]);
 
-		case STATE_FOREGROUND_TILE_INDEX:
-			if(mTilePalette.patternFill())
-				patternFill(Cell::LAYER_FOREGROUND);
-			else
-				patternStamp(Cell::LAYER_FOREGROUND);
-			break;
-
-		default:
-			break;
-	}
 }
 
 
@@ -830,7 +824,6 @@ void EditorState::patternStamp(Cell::TileLayer layer)
 
 	mMapChanged = true;
 }
-
 
 
 /**

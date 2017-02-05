@@ -65,7 +65,9 @@ private:
 
 	EditorState();	// Explicitly undefined
 
+	void fillTables();
 	void fillEditStateStringTable();
+	void fillStateToLayerTable();
 
 	void initUi();
 
