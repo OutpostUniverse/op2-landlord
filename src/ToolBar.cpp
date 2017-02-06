@@ -124,6 +124,21 @@ void ToolBar::initUi()
 	btnLayerCollisionToggle.position(btnLayerForegroundToggle.positionX() + btnLayerForegroundToggle.width() + BUTTON_SPACE, 2);
 	btnLayerCollisionToggle.click().Connect(this, &ToolBar::btnLayerCollisionToggle_Clicked);
 
+	// WINDOW VISIBILITY
+	btnMiniMapToggle.image("sys/map.png");
+	btnMiniMapToggle.type(Button::BUTTON_TOGGLE);
+	btnMiniMapToggle.toggle(true);
+	btnMiniMapToggle.size(22, 28);
+	btnMiniMapToggle.position(Utility<Renderer>::get().width() - 48, 2);
+	btnMiniMapToggle.click().Connect(this, &ToolBar::btnMiniMapToggle_Clicked);
+
+	btnTilePaletteToggle.image("sys/palette.png");
+	btnTilePaletteToggle.type(Button::BUTTON_TOGGLE);
+	btnTilePaletteToggle.toggle(true);
+	btnTilePaletteToggle.size(22, 28);
+	btnTilePaletteToggle.position(Utility<Renderer>::get().width() - 24, 2);
+	btnTilePaletteToggle.click().Connect(this, &ToolBar::btnTilePaletteToggle_Clicked);
+
 	hookEvents();
 }
 
@@ -167,6 +182,9 @@ void ToolBar::update()
 	btnLayerDetailToggle.update();
 	btnLayerForegroundToggle.update();
 	btnLayerCollisionToggle.update();
+
+	btnMiniMapToggle.update();
+	btnTilePaletteToggle.update();
 }
 
 
@@ -314,4 +332,16 @@ void ToolBar::btnLayerForegroundToggle_Clicked()
 void ToolBar::btnLayerCollisionToggle_Clicked()
 {
 	mToolbarEvent(TOOLBAR_LAYER_COLLISION_TOGGLE);
+}
+
+
+void ToolBar::btnMiniMapToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_MINIMAP_TOGGLE);
+}
+
+
+void ToolBar::btnTilePaletteToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_TILE_PALETTE_TOGGLE);
 }

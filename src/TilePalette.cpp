@@ -4,7 +4,7 @@
 
 #include "Common.h"
 
-const Point_2d		PALETTE_DIMENSIONS		= Point_2d(196, 315);
+const Point_2d		PALETTE_DIMENSIONS		= Point_2d(196, 300);
 
 const Point_2d		FIRST_TILE_COORDINATE	= Point_2d(2, 18);
 const Point_2d		TILE_SLOT_PADDING		= Point_2d(0, 0);
@@ -41,10 +41,10 @@ TilePalette::~TilePalette()
 
 void TilePalette::init()
 {
-	int yPosition = rect().y() + rect().h() - 25;
+	int yPosition = rect().y() + rect().h() - 23;
 
 	mBtnPrev.size(30, 20);
-	mBtnPrev.position(mRect.x() + 2, yPosition);
+	mBtnPrev.position(mRect.x() + 3, yPosition);
 	mBtnPrev.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_PREV_IMAGE));
 	mBtnPrev.click().Connect(this, &TilePalette::button_Prev_click);
 
@@ -140,20 +140,22 @@ void TilePalette::update()
 
 	Renderer& r = Utility<Renderer>::get();
 
-	if(!mTset)
+	r.drawBoxFilled(rect(), 180, 180, 180);
+	r.drawBoxFilled(mTileGridRect, 70, 70, 70);
+	r.drawBoxFilled(rect().x(), rect().y(), rect().w(), 16, 200, 200, 200);
+	r.drawLine(rect().x(), rect().y() + 16, rect().x() + rect().w(), rect().y() + 16, 0, 0, 0);
+	r.drawBox(rect(), 0, 0, 0);
+
+	if (mFont)
 	{
-		r.drawBox(mRect.x(), mRect.y(), mRect.w(), mRect.h(), 0, 0, 0, 100);
-		r.drawBoxFilled(mRect.x(), mRect.y(), mRect.w(), mRect.h(), 200, 200, 0, 65);
-
-		if(mFont)
-			r.drawTextShadow(*mFont, "Tile Palette", mRect.x() + 2, mRect.y(), 1, 255, 255, 255, 0, 0, 0);
-
-		return;
+		r.drawText(*mFont, "Tile Palette", mRect.x() + 2, mRect.y() + 4, 0, 0, 0);
+		r.drawText(*mFont, "Tile Palette", mRect.x() + 3, mRect.y() + 4, 0, 0, 0); // cheap way of getting a 'bold' typeface. Inefficient.
+		r.drawText(*mFont, string_format("Page: %i of %i", mCurrentPage + 1, mNumPages), mBtnPrev.positionX() + mBtnPrev.width() + 4, mRect.y() + 280, 0, 0, 0);
 	}
 
-	// Draw the background box.
-	r.drawBox(mRect, 0, 0, 0, 100);
-	r.drawBoxFilled(mRect.x(), mRect.y(), mRect.w(), mRect.h(), 200, 200, 0, 65);
+
+	if(!mTset)
+		return;
 
 	// Draw buttons
 	mBtnPrev.update();
@@ -169,15 +171,8 @@ void TilePalette::update()
 			if(index < mTset->numTiles())
 				mTset->drawTile(index, FIRST_TILE_COORDINATE.x() + (col * mTset->width()) + (col * TILE_SLOT_PADDING.x()) + mRect.x(), FIRST_TILE_COORDINATE.y() + (row * mTset->height()) + (row * TILE_SLOT_PADDING.y()) + mRect.y());
 
-			//r.drawBox(mSlots[(row * TILE_GRID_DIMENSIONS.x()) + col], 0, 0, 0);
 			r.drawBox(mSlots[row][col], 0, 0, 0);
 		}
-	}
-
-	if(mFont)
-	{
-		r.drawTextShadow(*mFont, "Tile Palette", mRect.x() + 2, mRect.y() + 2, 1, 255, 255, 255, 0, 0, 0);
-		r.drawTextShadow(*mFont, string_format("Page: %i of %i", mCurrentPage + 1, mNumPages), mRect.x() + 1, mRect.y() + 275, 1, 255, 255, 255, 0, 0, 0);
 	}
 
 	// Draw Selectors
@@ -210,6 +205,9 @@ void TilePalette::onMouseMove(int x, int y, int relX, int relY)
 		mBtnPrev.position(mBtnPrev.positionX() + relX, mBtnPrev.positionY() + relY);
 		mBtnNext.position(mBtnNext.positionX() + relX, mBtnNext.positionY() + relY);
 
+		mTileGridRect.x(mTileGridRect.x() + relX);
+		mTileGridRect.y(mTileGridRect.y() + relY);
+
 		for (size_t row = 0; row < mSlots.size(); ++row)
 		{
 			for (size_t col = 0; col < mSlots[row].size(); ++col)
@@ -236,13 +234,16 @@ void TilePalette::onMouseDown(MouseButton button, int x, int y)
 	if(hidden() || (button != BUTTON_LEFT))
 		return;
 
-	mLeftButtonDown = true;
-
 	if (isPointInRect(x, y, rect().x(), rect().y(), rect().w(), 17))
 	{
 		mDragging = true;
 		return;
 	}
+
+	if (!(isPointInRect(x, y, rect().x(), rect().y(), rect().w(), rect().h())))
+		return;
+
+	mLeftButtonDown = true;
 
 	Point_2d pt(x, y);
 	mDragOrigin = pt;
@@ -276,6 +277,9 @@ void TilePalette::onMouseDown(MouseButton button, int x, int y)
 void TilePalette::onMouseUp(MouseButton button, int x, int y)
 {
 	if (hidden() || mSlots.empty() || (button != BUTTON_LEFT))
+		return;
+
+	if(!mLeftButtonDown && !mDragging)
 		return;
 
 	Point_2d pt(x, y);

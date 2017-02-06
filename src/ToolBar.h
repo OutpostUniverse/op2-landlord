@@ -51,6 +51,9 @@ public:
 	bool show_foreground() const { return btnLayerForegroundToggle.toggled(); }
 	bool show_collision() const { return btnLayerCollisionToggle.toggled(); }
 
+	bool show_minimap() const { return btnMiniMapToggle.toggled(); }
+	bool show_tilepalette() const { return btnTilePaletteToggle.toggled(); }
+
 private:
 
 	void initUi();
@@ -81,6 +84,9 @@ private:
 	void btnLayerForegroundToggle_Clicked();
 	void btnLayerCollisionToggle_Clicked();
 
+	void btnMiniMapToggle_Clicked();
+	void btnTilePaletteToggle_Clicked();
+
 private:
 
 	Font		mFont;
@@ -104,6 +110,9 @@ private:
 	Button		btnLayerDetailToggle;
 	Button		btnLayerForegroundToggle;
 	Button		btnLayerCollisionToggle;
+
+	Button		btnMiniMapToggle;
+	Button		btnTilePaletteToggle;
 
 	ToolBarEvent	mToolbarEvent;
 };

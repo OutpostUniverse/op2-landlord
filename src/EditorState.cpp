@@ -14,7 +14,7 @@ const float			SCROLL_SPEED		= 250.0f;
 const float			MINI_MAP_X			= 10.0f;
 const float			MINI_MAP_Y			= 65.0f;
 
-SDL_Surface*		MINI_MAP_SURFACE	= NULL; // UGLY HACK!
+SDL_Surface*		MINI_MAP_SURFACE	= nullptr; // HACK!
 
 
 std::map<EditState, string>	StateStringMap;			/**< EditState string table. */
@@ -516,35 +516,34 @@ void EditorState::onQuit()
  */
 void EditorState::onMouseMove(int x, int y, int relX, int relY)
 {
+
 	if(mRightButtonDown && mEditState != STATE_MAP_LINK_EDIT)
 	{
 		mMap.moveCamera(relX, relY);
-
+		return;
 	}
-	else
+	
+	mMouseCoords(x, y);
+
+	if(mLeftButtonDown)
 	{
-		mMouseCoords(x, y);
-
-		if(mLeftButtonDown && !isPointInRect(mMouseCoords, mTilePalette.rect()))
+		if(mEditState != STATE_MAP_LINK_EDIT && isPointInRect(x, y, MINI_MAP_X, MINI_MAP_Y, mMiniMap->rect().w(), mMiniMap->rect().h()))
 		{
-			if(mEditState != STATE_MAP_LINK_EDIT && isPointInRect(x, y, MINI_MAP_X, MINI_MAP_Y, mMiniMap->rect().w(), mMiniMap->rect().h()))
-			{
-				if(!mDrawMiniMap)
-					return;
-
-				mMap.setCamera((mMap.tileset().width() * (x - MINI_MAP_X)) - (Utility<Renderer>::get().width() / 2), (mMap.tileset().height() * (y - MINI_MAP_Y)) - (Utility<Renderer>::get().height() / 2));
-				return;
-			}
-
-			// Avoid modifying tiles if we're in the 'toolbar area'
-			if (y < 32 || mTilePalette.dragging())
+			if(!mDrawMiniMap)
 				return;
 
-			if(mEditState == STATE_TILE_COLLISION)
-				mMap.getCell(mMouseCoords).blocked(mPlacingCollision);
-			else
-				changeTileTexture();
+			mMap.setCamera((mMap.tileset().width() * (x - MINI_MAP_X)) - (Utility<Renderer>::get().width() / 2), (mMap.tileset().height() * (y - MINI_MAP_Y)) - (Utility<Renderer>::get().height() / 2));
+			return;
 		}
+
+		// Avoid modifying tiles if we're in the 'toolbar area'
+		if (y < 32 || mTilePalette.dragging())
+			return;
+
+		if(mEditState == STATE_TILE_COLLISION)
+			mMap.getCell(mMouseCoords).blocked(mPlacingCollision);
+		else
+			changeTileTexture();
 	}
 }
 
@@ -807,10 +806,13 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 		mMap.drawDetail(mToolBar.show_detail());
 		mMap.drawForeground(mToolBar.show_foreground());
 		mMap.drawCollision(mToolBar.show_collision());
-
-		if (mToolBar.show_collision())
-			mTilePalette.reset();
-
+		if (mToolBar.show_collision()) mTilePalette.reset();
+		break;
+	case ToolBar::TOOLBAR_MINIMAP_TOGGLE:
+		mDrawMiniMap = mToolBar.show_minimap();
+		break;
+	case ToolBar::TOOLBAR_TILE_PALETTE_TOGGLE:
+		mTilePalette.hidden(!mToolBar.show_tilepalette());
 		break;
 	default:
 		break;
