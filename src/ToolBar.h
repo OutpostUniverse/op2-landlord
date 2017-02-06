@@ -14,9 +14,6 @@ public:
 	enum ToolBarAction
 	{
 		TOOLBAR_SAVE,
-		TOOLBAR_PENCIL,
-		TOOLBAR_FILL,
-		TOOLBAR_ERASE,
 		TOOLBAR_LAYER_BG_EDIT,
 		TOOLBAR_LAYER_BG_DETAIL_EDIT,
 		TOOLBAR_LAYER_DETAIL_EDIT,
@@ -44,7 +41,9 @@ public:
 
 	ToolBarEvent& toolbar_event() { return mToolbarEvent; }
 
-	bool floodfill() const { return btnFill.toggled(); }
+	bool pencil() const { return btnPencil.toggled(); }
+	bool flood() const { return btnFill.toggled(); }
+	bool erase() const { return btnErase.toggled(); }
 
 private:
 

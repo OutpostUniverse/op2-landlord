@@ -223,9 +223,6 @@ void ToolBar::btnSave_Clicked()
 
 void ToolBar::btnPencil_Clicked()
 {
-	if(!btnPencil.toggled())
-		mToolbarEvent(TOOLBAR_PENCIL, true);
-
 	btnPencil.toggle(true);
 	btnFill.toggle(false);
 	btnErase.toggle(false);
@@ -234,9 +231,6 @@ void ToolBar::btnPencil_Clicked()
 
 void ToolBar::btnFill_Clicked()
 {
-	if (!btnFill.toggled())
-		mToolbarEvent(TOOLBAR_FILL, true);
-
 	btnPencil.toggle(false);
 	btnFill.toggle(true);
 	btnErase.toggle(false);
@@ -245,9 +239,6 @@ void ToolBar::btnFill_Clicked()
 
 void ToolBar::btnErase_Clicked()
 {
-	if (!btnErase.toggled())
-		mToolbarEvent(TOOLBAR_ERASE, true);
-
 	btnPencil.toggle(false);
 	btnFill.toggle(false);
 	btnErase.toggle(true);

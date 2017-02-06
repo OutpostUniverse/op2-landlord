@@ -85,6 +85,7 @@ private:
 	void changeTileTexture();
 	void patternFill(Cell::TileLayer layer);
 	void patternStamp(Cell::TileLayer layer);
+	void patternErase(Cell::TileLayer layer);
 
 	void showTilePalette();
 	void hideTilePalette();

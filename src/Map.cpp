@@ -358,7 +358,8 @@ void Map::update()
 			int rasterX = mViewport.x() + ((col - tileUpperLeft.x()) * mTileset.width()) - offsetX + mViewport.x();
 			int rasterY = mViewport.y() + ((row - tileUpperLeft.y()) * mTileset.height()) - offsetY + mViewport.y();
 
-			mTileset.drawTile(cell.index(Cell::LAYER_BASE), rasterX, rasterY);
+			if (cell.index(Cell::LAYER_BASE) >= 0)
+				mTileset.drawTile(cell.index(Cell::LAYER_BASE), rasterX, rasterY);
 
 			if(mDrawBgDetail && cell.index(Cell::LAYER_BASE_DETAIL) >= 0)
 				mTileset.drawTile(cell.index(Cell::LAYER_BASE_DETAIL), rasterX, rasterY);

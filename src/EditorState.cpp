@@ -220,7 +220,7 @@ void EditorState::button_MapLinkCancel_Click()
 State* EditorState::update()
 {
 	Renderer& r = Utility<Renderer>::get();
-	r.clearScreen(COLOR_BLACK);
+	r.clearScreen(COLOR_MAGENTA);
 
 	updateScroll();
 	updateSelector();
@@ -772,14 +772,16 @@ void EditorState::handleMiddleButtonDown()
  */
 void EditorState::changeTileTexture()
 {
-	auto it = StateToLayer.find(mEditState);
-
-	if (it == StateToLayer.end())
+	if (StateToLayer.find(mEditState) == StateToLayer.end())
 		throw Exception(0, "Bad State", "EditorState::changeTileTExture() called with an invalid state.");
 
-	if (mToolBar.floodfill()) patternFill(StateToLayer[mEditState]);
-	else patternStamp(StateToLayer[mEditState]);
-
+	if (mToolBar.flood())
+		patternFill(StateToLayer[mEditState]);
+	else if (mToolBar.pencil())
+		patternStamp(StateToLayer[mEditState]);
+	else
+		patternErase(StateToLayer[mEditState]);
+		return;
 }
 
 
@@ -824,6 +826,29 @@ void EditorState::patternStamp(Cell::TileLayer layer)
 
 	mMapChanged = true;
 }
+
+
+void EditorState::patternErase(Cell::TileLayer layer)
+{
+	Point_2d& pt = mMap.getGridCoords(mMouseCoords);
+
+	const Pattern& p = mTilePalette.pattern();
+
+	for (int row = 0; row < p.height(); row++)
+	{
+		for (int col = 0; col < p.width(); col++)
+		{
+			int x = pt.x() - ((p.width() - 1) - col);
+			int y = pt.y() - ((p.height() - 1) - row);
+
+			if (x >= 0 && y >= 0)
+				mMap.getCellByGridCoords(x, y).index(layer, -1);
+		}
+	}
+
+	mMapChanged = true;
+}
+
 
 
 /**
