@@ -18,7 +18,7 @@ const int			NUM_TILES_PER_PAGE		= TILE_GRID_DIMENSIONS.x() * TILE_GRID_DIMENSION
  */
 TilePalette::TilePalette():		mFont(nullptr),
 								mTset(nullptr),
-								mRect(Utility<Renderer>::get().screenCenterX() - PALETTE_DIMENSIONS.x() / 2, 125, PALETTE_DIMENSIONS.x(), PALETTE_DIMENSIONS.y()),
+								mRect(Utility<Renderer>::get().width() - PALETTE_DIMENSIONS.x()- 2, Utility<Renderer>::get().height() - PALETTE_DIMENSIONS.y() - 2, PALETTE_DIMENSIONS.x(), PALETTE_DIMENSIONS.y()),
 								mNumPages(0),
 								mCurrentPage(0),
 								mTsetIndex(0),
