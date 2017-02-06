@@ -28,7 +28,7 @@ public:
 		TOOLBAR_TILE_PALETTE_TOGGLE
 	};
 
-	typedef Gallant::Signal2<ToolBarAction, bool> ToolBarEvent;
+	typedef Gallant::Signal1<ToolBarAction> ToolBarEvent;
 
 public:
 	ToolBar();
@@ -45,6 +45,12 @@ public:
 	bool flood() const { return btnFill.toggled(); }
 	bool erase() const { return btnErase.toggled(); }
 
+	bool show_bg() const { return btnLayerBaseToggle.toggled(); }
+	bool show_bg_detail() const { return btnLayerBaseDetailToggle.toggled(); }
+	bool show_detail() const { return btnLayerDetailToggle.toggled(); }
+	bool show_foreground() const { return btnLayerForegroundToggle.toggled(); }
+	bool show_collision() const { return btnLayerCollisionToggle.toggled(); }
+
 private:
 
 	void initUi();
@@ -54,6 +60,8 @@ private:
 	void onKeyDown(KeyCode code, KeyModifier mod, bool repeat);
 
 private:
+
+	void resetTools();
 
 	// UI Event Handlers
 	void btnSave_Clicked();
@@ -66,6 +74,12 @@ private:
 	void btnLayerDetail_Clicked();
 	void btnLayerForeground_Clicked();
 	void btnLayerCollision_Clicked();
+
+	void btnLayerBaseToggle_Clicked();
+	void btnLayerBaseDetailToggle_Clicked();
+	void btnLayerDetailToggle_Clicked();
+	void btnLayerForegroundToggle_Clicked();
+	void btnLayerCollisionToggle_Clicked();
 
 private:
 

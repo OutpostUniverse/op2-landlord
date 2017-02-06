@@ -19,7 +19,8 @@ const int			EDGE_MARGIN			= 10;
  */
 Map::Map(const string& mapPath):	mField(0, 0),
 									mViewport(0, 0, static_cast<int>(Utility<Renderer>::get().width()), static_cast<int>(Utility<Renderer>::get().height())),
-									mCameraFocus(NULL),
+									mCameraFocus(nullptr),
+									mDrawBg(true),
 									mDrawBgDetail(true),
 									mDrawDetail(true),
 									mDrawForeground(true),
@@ -40,7 +41,8 @@ Map::Map(const string& name, const string& tsetPath, int width, int height):	mNa
 																				mTileset(tsetPath, CELL_DIMENSIONS.w(), CELL_DIMENSIONS.h()),
 																				mViewport(0, 0, static_cast<int>(Utility<Renderer>::get().width()), static_cast<int>(Utility<Renderer>::get().height())),
 																				mCameraSpace(0, 0, mField.width() * mTileset.width() - mViewport.w(), mField.height() * mTileset.height() - mViewport.h()),
-																				mCameraFocus(NULL),
+																				mCameraFocus(nullptr),
+																				mDrawBg(true),
 																				mDrawBgDetail(true),
 																				mDrawDetail(true),
 																				mDrawForeground(true),
@@ -48,18 +50,14 @@ Map::Map(const string& name, const string& tsetPath, int width, int height):	mNa
 																				mShowLinks(false),
 																				mShowTitlePlaque(false),
 																				mEdgeExit(false)
-{
-	//cout << mViewport.x << " " << mViewport.h << " " << mCameraSpace.w << " " << mCameraSpace.h << endl;
-}
+{}
 
 
 /**
  * D'tor
  */
 Map::~Map()
-{
-	//std::cout << "Map d'tor: " << mName << endl;
-}
+{}
 
 
 /**
@@ -139,6 +137,12 @@ void Map::showLinks(bool show)
 }
 
 
+void Map::drawBg(bool draw)
+{
+	mDrawBg = draw;
+}
+
+
 void Map::drawBgDetail(bool draw)
 {
 	mDrawBgDetail = draw;
@@ -154,33 +158,6 @@ void Map::drawDetail(bool draw)
 void Map::drawForeground(bool draw)
 {
 	mDrawForeground = draw;
-}
-
-
-/**
- * Toggles visibility of the Base Detail layer.
- */
-void Map::toggleBgDetail()
-{
-	flipBool(mDrawBgDetail);
-}
-
-
-/**
- * Toggles visibility of the Detail layer.
- */
-void Map::toggleDetail()
-{
-	flipBool(mDrawDetail);
-}
-
-
-/**
- * Toggles visibility of the Foreground layer.
- */
-void Map::toggleForeground()
-{
-	flipBool(mDrawForeground);
 }
 
 
@@ -358,7 +335,7 @@ void Map::update()
 			int rasterX = mViewport.x() + ((col - tileUpperLeft.x()) * mTileset.width()) - offsetX + mViewport.x();
 			int rasterY = mViewport.y() + ((row - tileUpperLeft.y()) * mTileset.height()) - offsetY + mViewport.y();
 
-			if (cell.index(Cell::LAYER_BASE) >= 0)
+			if (mDrawBg && cell.index(Cell::LAYER_BASE) >= 0)
 				mTileset.drawTile(cell.index(Cell::LAYER_BASE), rasterX, rasterY);
 
 			if(mDrawBgDetail && cell.index(Cell::LAYER_BASE_DETAIL) >= 0)

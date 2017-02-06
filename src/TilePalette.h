@@ -25,6 +25,7 @@ class TilePalette
 {
 public:
 	TilePalette();
+	~TilePalette();
 
 	// Sets the internal tileset pointer.
 	void tileset(Tileset* tset);
@@ -39,18 +40,17 @@ public:
 	const Pattern& pattern() const { return mBrushPattern; }
 
 	const Rectangle_2d& rect() const { return mRect; }
-	const Rectangle_2d& closeRect() const { return mCloseRect; }
 
 	int index() const { return mTsetIndex; }
 
-	void onMouseDown(MouseButton button, int x, int y);
-	void onMouseUp(MouseButton button, int x, int y);
+	void reset();
 
-	void onMouseMove(int x, int y, int relX, int relY);
+	bool dragging() const { return mDragging; }
 
 private:
 	typedef std::vector<std::vector<Rectangle_2d> > RectList;
 
+	void init();
 
 	void button_Prev_click();
 	void button_Next_click();
@@ -59,22 +59,22 @@ private:
 
 	Rectangle_2d getRectFromPoints(const Point_2d& pt1, const Point_2d& pt2);
 
+	void onMouseDown(MouseButton button, int x, int y);
+	void onMouseUp(MouseButton button, int x, int y);
+	void onMouseMove(int x, int y, int relX, int relY);
+
 private:
 
 	Font*			mFont;				/**< Font to use to draw basic information. */
 	Tileset*		mTset;				/**< Pointer to a Tileset. TilePalette does not own this Tileset object. */
 
 	Rectangle_2d	mRect;				/**< Area and position of the palette. */
-	Rectangle_2d	mCloseRect;			/**< Area of the 'close button' */
 	Rectangle_2d	mTileGridRect;		/**< Area that the tiles are over. */
 
 	RectList		mSlots;				/**< List of rectangles for each slot. */
 
 	Button			mBtnPrev;			/**<  */
 	Button			mBtnNext;			/**<  */
-
-	Image			mShow;				/**< Displayed in the title area when the palette is hidden. */
-	Image			mHide;				/**< Displayed in the title area when the palette is not hidden. */
 
 	Pattern			mBrushPattern;		/**< Brush pattern for stamp and pattern floods. */
 
@@ -91,5 +91,5 @@ private:
 	bool			mHidden;			/**< Flag indicating that the palette shouldn't be drawn. */
 	bool			mLeftButtonDown;	/**< Flag indicating that the left mouse button is depressed. */
 	bool			mMouseOverTiles;	/**< Flag indicating that the mouse is actually over the tiles. */
-
+	bool			mDragging;			/**< Flag indicating that the tile palette is being dragged from its title bar. */
 };

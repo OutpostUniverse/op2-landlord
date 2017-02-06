@@ -363,7 +363,7 @@ void EditorState::updateScroll()
 		mSelectorRect = mMap.injectMousePosition(mMouseCoords);
 	}
 
-	float delta = mTimer.delta();
+	float delta = (mTimer.delta() / 1000.0f);
 	mMap.moveCamera(static_cast<float>(mScrollVector.x()) * delta, static_cast<float>(mScrollVector.y()) * delta);
 }
 
@@ -408,9 +408,6 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 		return;
 	}
 
-	stringstream str;
-	//int x, y;
-
 	switch(key)
 	{
 		case KEY_ESCAPE:
@@ -433,44 +430,9 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 			mScrollVector.y() = SCROLL_SPEED;
 			break;
 
-		case KEY_1:
-			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
-			/*setState(STATE_BASE_TILE_INDEX);
-			mMap.drawCollision(false);*/
-			break;
-
-		case KEY_2:
-			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
-			/*setState(STATE_BASE_DETAIL_TILE_INDEX);
-			mMap.drawCollision(false);*/
-			break;
-
-		case KEY_3:
-			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
-			/*setState(STATE_DETAIL_TILE_INDEX);
-			mMap.drawCollision(false);*/
-			break;
-
-		case KEY_4:
-			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
-			/*setState(STATE_FOREGROUND_TILE_INDEX);
-			mMap.drawCollision(false);*/
-			break;
-
-		case KEY_5:
-			// FIXME: Make this adjust the toolbar instead of directly manipulating fields here.
-			/*
-			setState(STATE_TILE_COLLISION);
-			mMap.drawCollision(true);
-			*/
-			break;
-
 		case KEY_F1:
-			mDrawDebug ? mDrawDebug = false : mDrawDebug = true;
-			if(mDrawDebug)
-				mMap.showLinks(true);
-			else
-				mMap.showLinks(false);
+			mDrawDebug = !mDrawDebug;
+			mMap.showLinks(mDrawDebug);
 			break;
 
 		// Stealing this for dumping the minimap for now
@@ -487,36 +449,17 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 			mLinkCell = &mMap.getCell(mMouseCoords);
 			mCellInspectRect = mMap.injectMousePosition(mMouseCoords);
 			mTxtLinkDestination.text(mLinkCell->link());
-			str << mLinkCell->link_destination().x();
-			mTxtLinkDestX.text(str.str());
-			str.str("");
-			str << mLinkCell->link_destination().y();
-			mTxtLinkDestY.text(str.str());
+			mTxtLinkDestX.text(string_format("%i", mLinkCell->link_destination().x()));
+			mTxtLinkDestY.text(string_format("%i", mLinkCell->link_destination().y()));
 			setState(STATE_MAP_LINK_EDIT);
 			break;
 
-		case KEY_F4:
-			saveMap();
-			break;
-
-		case KEY_F5:
-			mMap.toggleBgDetail();
-			break;
-
-		case KEY_F6:
-			mMap.toggleDetail();
-			break;
-
-		case KEY_F7:
-			mMap.toggleForeground();
-			break;
-
 		case KEY_F10:
-			mHideUi ? mHideUi = false : mHideUi = true;
+			mHideUi = !mHideUi;
 			break;
 
 		case KEY_m:
-			mDrawMiniMap ? mDrawMiniMap = false : mDrawMiniMap = true;
+			mDrawMiniMap = !mDrawMiniMap;
 			break;
 
 		case KEY_z:
@@ -576,12 +519,11 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 	if(mRightButtonDown && mEditState != STATE_MAP_LINK_EDIT)
 	{
 		mMap.moveCamera(relX, relY);
+
 	}
 	else
 	{
 		mMouseCoords(x, y);
-
-		mTilePalette.onMouseMove(x, y, relX, relY);
 
 		if(mLeftButtonDown && !isPointInRect(mMouseCoords, mTilePalette.rect()))
 		{
@@ -595,7 +537,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 			}
 
 			// Avoid modifying tiles if we're in the 'toolbar area'
-			if (y < 32)
+			if (y < 32 || mTilePalette.dragging())
 				return;
 
 			if(mEditState == STATE_TILE_COLLISION)
@@ -639,8 +581,6 @@ void EditorState::onMouseUp(MouseButton button, int x, int y)
 	if(button == BUTTON_LEFT)
 	{
 		mLeftButtonDown = false;
-		mTilePalette.onMouseUp(button, x, y);
-
 		if(mEditState == STATE_MAP_LINK_EDIT)
 		{
 		}
@@ -670,6 +610,9 @@ void EditorState::handleLeftButtonDown(int x, int y)
 {
 	Point_2d pt(x, y);
 
+	if (isPointInRect(pt, mTilePalette.rect()))
+		return;
+
 	if(mEditState != STATE_MAP_LINK_EDIT && mDrawMiniMap && isPointInRect(x, y, MINI_MAP_X, MINI_MAP_Y, mMiniMap->rect().w(), mMiniMap->rect().h()))
 	{
 		mMap.setCamera((mMap.tileset().width() * (x - MINI_MAP_X)) - (Utility<Renderer>::get().width() / 2), (mMap.tileset().height() * (y - MINI_MAP_Y)) - (Utility<Renderer>::get().height() / 2));
@@ -680,20 +623,6 @@ void EditorState::handleLeftButtonDown(int x, int y)
 	{
 		return;
 	}
-
-	// Check the tile palette.
-	if(mTilePalette.hidden() && isPointInRect(pt, mTilePalette.rect()))
-	{
-		showTilePalette();
-		return; // Ignore other click processing if the palette was clicked.
-	}
-
-	if(!mTilePalette.hidden() && isPointInRect(pt, mTilePalette.closeRect()))
-	{
-		hideTilePalette();
-		return; // Ignore other click processing if the palette was clicked.
-	}
-
 
 	// Avoid inserting tiles if we're in the 'toolbar area'
 	if (y < 32)
@@ -714,10 +643,6 @@ void EditorState::handleLeftButtonDown(int x, int y)
 			cell.blocked(true);
 			mPlacingCollision = true;
 		}
-	}
-	else if(isPointInRect(pt, mTilePalette.rect()))
-	{
-		mTilePalette.onMouseDown(BUTTON_LEFT, x, y);
 	}
 	else
 	{
@@ -850,31 +775,42 @@ void EditorState::patternErase(Cell::TileLayer layer)
 }
 
 
-
-/**
- * Changes the edit mode and unhides the tile palette.
- */
-void EditorState::showTilePalette()
-{
-	mTilePalette.hidden(false);
-}
-
-
-/**
- * Changes the edit mode and hides the tile palette.
- */
-void EditorState::hideTilePalette()
-{
-	mTilePalette.hidden(true);
-}
-
-
-void EditorState::toolbar_event(ToolBar::ToolBarAction _act, bool _b)
+void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 {
 	switch (_act)
 	{
 	case ToolBar::TOOLBAR_SAVE:
 		saveMap();
+		break;
+	case ToolBar::TOOLBAR_LAYER_BG_EDIT:
+		mEditState = STATE_BASE_TILE_INDEX;
+		break;
+	case ToolBar::TOOLBAR_LAYER_BG_DETAIL_EDIT:
+		mEditState = STATE_BASE_DETAIL_TILE_INDEX;
+		break;
+	case ToolBar::TOOLBAR_LAYER_DETAIL_EDIT:
+		mEditState = STATE_DETAIL_TILE_INDEX;
+		break;
+	case ToolBar::TOOLBAR_LAYER_FOREGROUND_EDIT:
+		mEditState = STATE_FOREGROUND_TILE_INDEX;
+		break;
+	case ToolBar::TOOLBAR_LAYER_COLLISION_EDIT:
+		mEditState = STATE_TILE_COLLISION;
+		break;
+	case ToolBar::TOOLBAR_LAYER_BG_TOGGLE:
+	case ToolBar::TOOLBAR_LAYER_BG_DETAIL_TOGGLE:
+	case ToolBar::TOOLBAR_LAYER_DETAIL_TOGGLE:
+	case ToolBar::TOOLBAR_LAYER_FOREGROUND_TOGGLE:
+	case ToolBar::TOOLBAR_LAYER_COLLISION_TOGGLE:
+		mMap.drawBg(mToolBar.show_bg());
+		mMap.drawBgDetail(mToolBar.show_bg_detail());
+		mMap.drawDetail(mToolBar.show_detail());
+		mMap.drawForeground(mToolBar.show_foreground());
+		mMap.drawCollision(mToolBar.show_collision());
+
+		if (mToolBar.show_collision())
+			mTilePalette.reset();
+
 		break;
 	default:
 		break;

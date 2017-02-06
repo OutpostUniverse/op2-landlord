@@ -25,7 +25,6 @@ enum EditState
 	STATE_DETAIL_TILE_INDEX,
 	STATE_FOREGROUND_TILE_INDEX,
 	STATE_TILE_COLLISION,
-	STATE_TILE_ERASE,
 	STATE_MAP_LINK_EDIT
 };
 
@@ -87,9 +86,6 @@ private:
 	void patternStamp(Cell::TileLayer layer);
 	void patternErase(Cell::TileLayer layer);
 
-	void showTilePalette();
-	void hideTilePalette();
-
 	void handleLeftButtonDown(int x, int y);
 	void handleRightButtonDown();
 	void handleMiddleButtonDown();
@@ -103,7 +99,7 @@ private:
 	void drawMiniMap();
 	void createMiniMap();
 
-	void toolbar_event(ToolBar::ToolBarAction _act, bool _b);
+	void toolbar_event(ToolBar::ToolBarAction _act);
 
 
 private:

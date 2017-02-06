@@ -94,30 +94,35 @@ void ToolBar::initUi()
 	btnLayerBaseToggle.toggle(true);
 	btnLayerBaseToggle.size(22, 28);
 	btnLayerBaseToggle.position(btnLayerCollision.positionX() + btnLayerCollision.width() + 18 + BUTTON_SPACE, 2);
+	btnLayerBaseToggle.click().Connect(this, &ToolBar::btnLayerBaseToggle_Clicked);
 
 	btnLayerBaseDetailToggle.image("sys/layer_bd_show.png");
 	btnLayerBaseDetailToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerBaseDetailToggle.toggle(true);
 	btnLayerBaseDetailToggle.size(22, 28);
 	btnLayerBaseDetailToggle.position(btnLayerBaseToggle.positionX() + btnLayerBaseToggle.width() + BUTTON_SPACE, 2);
+	btnLayerBaseDetailToggle.click().Connect(this, &ToolBar::btnLayerBaseDetailToggle_Clicked);
 
 	btnLayerDetailToggle.image("sys/layer_d_show.png");
 	btnLayerDetailToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerDetailToggle.toggle(true);
 	btnLayerDetailToggle.size(22, 28);
 	btnLayerDetailToggle.position(btnLayerBaseDetailToggle.positionX() + btnLayerBaseDetailToggle.width() + BUTTON_SPACE, 2);
+	btnLayerDetailToggle.click().Connect(this, &ToolBar::btnLayerDetailToggle_Clicked);
 
 	btnLayerForegroundToggle.image("sys/layer_fg_show.png");
 	btnLayerForegroundToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerForegroundToggle.toggle(true);
 	btnLayerForegroundToggle.size(22, 28);
 	btnLayerForegroundToggle.position(btnLayerDetailToggle.positionX() + btnLayerDetailToggle.width() + BUTTON_SPACE, 2);
+	btnLayerForegroundToggle.click().Connect(this, &ToolBar::btnLayerForegroundToggle_Clicked);
 
 	btnLayerCollisionToggle.image("sys/collision_show.png");
 	btnLayerCollisionToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerCollisionToggle.toggle(false);
 	btnLayerCollisionToggle.size(22, 28);
 	btnLayerCollisionToggle.position(btnLayerForegroundToggle.positionX() + btnLayerForegroundToggle.width() + BUTTON_SPACE, 2);
+	btnLayerCollisionToggle.click().Connect(this, &ToolBar::btnLayerCollisionToggle_Clicked);
 
 	hookEvents();
 }
@@ -165,6 +170,17 @@ void ToolBar::update()
 }
 
 
+void ToolBar::resetTools()
+{
+	btnLayerCollisionToggle.toggle(false);
+	btnLayerCollisionToggle.enabled(true);
+	btnLayerBaseDetailToggle_Clicked();
+
+	btnFill.enabled(true);
+	btnErase.enabled(true);
+}
+
+
 void ToolBar::btnLayerBase_Clicked()
 {
 	btnLayerBase.toggle(true);
@@ -172,6 +188,10 @@ void ToolBar::btnLayerBase_Clicked()
 	btnLayerDetail.toggle(false);
 	btnLayerForeground.toggle(false);
 	btnLayerCollision.toggle(false);
+
+	resetTools();
+
+	mToolbarEvent(TOOLBAR_LAYER_BG_EDIT);
 }
 
 
@@ -182,6 +202,10 @@ void ToolBar::btnLayerBaseDetail_Clicked()
 	btnLayerDetail.toggle(false);
 	btnLayerForeground.toggle(false);
 	btnLayerCollision.toggle(false);
+
+	resetTools();
+
+	mToolbarEvent(TOOLBAR_LAYER_BG_DETAIL_EDIT);
 }
 
 
@@ -192,6 +216,10 @@ void ToolBar::btnLayerDetail_Clicked()
 	btnLayerDetail.toggle(true);
 	btnLayerForeground.toggle(false);
 	btnLayerCollision.toggle(false);
+
+	resetTools();
+
+	mToolbarEvent(TOOLBAR_LAYER_DETAIL_EDIT);
 }
 
 
@@ -202,6 +230,10 @@ void ToolBar::btnLayerForeground_Clicked()
 	btnLayerDetail.toggle(false);
 	btnLayerForeground.toggle(true);
 	btnLayerCollision.toggle(false);
+
+	resetTools();
+
+	mToolbarEvent(TOOLBAR_LAYER_FOREGROUND_EDIT);
 }
 
 
@@ -212,12 +244,22 @@ void ToolBar::btnLayerCollision_Clicked()
 	btnLayerDetail.toggle(false);
 	btnLayerForeground.toggle(false);
 	btnLayerCollision.toggle(true);
+
+	btnLayerCollisionToggle.toggle(true);
+	btnLayerCollisionToggle.enabled(false);
+	btnLayerBaseDetailToggle_Clicked();
+
+	btnFill.enabled(false);
+	btnErase.enabled(false);
+	btnPencil_Clicked();
+
+	mToolbarEvent(TOOLBAR_LAYER_COLLISION_EDIT);
 }
 
 
 void ToolBar::btnSave_Clicked()
 {
-	mToolbarEvent(TOOLBAR_SAVE, true);
+	mToolbarEvent(TOOLBAR_SAVE);
 }
 
 
@@ -242,4 +284,34 @@ void ToolBar::btnErase_Clicked()
 	btnPencil.toggle(false);
 	btnFill.toggle(false);
 	btnErase.toggle(true);
+}
+
+
+void ToolBar::btnLayerBaseToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_LAYER_BG_TOGGLE);
+}
+
+
+void ToolBar::btnLayerBaseDetailToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_LAYER_BG_DETAIL_TOGGLE);
+}
+
+
+void ToolBar::btnLayerDetailToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_LAYER_DETAIL_TOGGLE);
+}
+
+
+void ToolBar::btnLayerForegroundToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_LAYER_FOREGROUND_TOGGLE);
+}
+
+
+void ToolBar::btnLayerCollisionToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_LAYER_COLLISION_TOGGLE);
 }

@@ -53,9 +53,6 @@ public:
 
 	void dump(const std::string& filePath);
 
-	void drawCollision(bool draw);
-	void showLinks(bool show);
-
 	void viewport(const Rectangle_2d& _r);
 	const Rectangle_2d viewport() const { return mViewport; }
 
@@ -81,13 +78,13 @@ protected:
 
 	friend class EditorState;
 
+	void drawBg(bool draw);
 	void drawBgDetail(bool draw);
 	void drawDetail(bool draw);
 	void drawForeground(bool draw);
+	void drawCollision(bool draw);
 
-	void toggleBgDetail();
-	void toggleDetail();
-	void toggleForeground();
+	void showLinks(bool show);
 
 	GameField& field() { return mField; }
 	void field(const GameField& field) { mField = field; }
@@ -132,6 +129,7 @@ private:
 
 	EntityPtrList	mEntityList;
 
+	bool			mDrawBg;				/**< Flag indicating that the background layer should be drawn. */
 	bool			mDrawBgDetail;			/**< Flag indicating that the background detail layer should be drawn. */
 	bool			mDrawDetail;			/**< Flag indicating that the detail layer should be drawn. */
 	bool			mDrawForeground;		/**< Flag indicating that the foreground layer should be drawn. */
