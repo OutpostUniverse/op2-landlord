@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "Map.h"
 #include "Menu.h"
+#include "MiniMap.h"
 #include "TilePalette.h"
 #include "ToolBar.h"
 
@@ -88,7 +89,6 @@ private:
 
 	void handleLeftButtonDown(int x, int y);
 	void handleRightButtonDown();
-	void handleMiddleButtonDown();
 
 	void saveUndo();
 
@@ -96,27 +96,28 @@ private:
 	void restorePreviousState();
 
 	void updateUI();
-	void drawMiniMap();
-	void createMiniMap();
 
 	void toolbar_event(ToolBar::ToolBarAction _act);
 
-
 private:
+
+	// RESOURCES
 	Timer			mTimer;
 
-	Rectangle_2d	mSelectorRect;
+	Font			mFont;
 
-	Point_2d		mMouseCoords;
 	Image			mMousePointer;
 
-	TilePalette		mTilePalette;
-
+	// PRIMITIVES
+	Point_2d		mMouseCoords;
 	Point_2df		mScrollVector;
+	Rectangle_2d	mSelectorRect;
+	Rectangle_2d	mCellInspectRect;
 
-	Font			mFont;
-	
+	// UI ELEMENTS
+	TilePalette		mTilePalette;
 	ToolBar			mToolBar;
+	MiniMap			mMiniMap;
 
 	Button			mBtnLinkOkay;
 	Button			mBtnLinkCancel;
@@ -125,34 +126,25 @@ private:
 	TextField		mTxtLinkDestX;
 	TextField		mTxtLinkDestY;
 
-	Rectangle_2d	mCellInspectRect;
-
+	// MAP CONTROLS
 	Cell*			mLinkCell;
-
+	GameField		mFieldUndo;
 	Map				mMap;
 
-	GameField		mFieldUndo;
-
 	std::string		mMapSavePath;
-
-	Image*			mMiniMap;
 
 	EditState		mEditState;
 	EditState		mPreviousEditState;
 
+	// FLAGS
 	bool			mDrawDebug;
-
 	bool			mLeftButtonDown;
 	bool			mRightButtonDown;
-
 	bool			mPlacingCollision;		/**< Flag indicating whether or not to place or clear collision on mouse drags. */
-
 	bool			mHideUi;				/**< Flag indicating that only the map be drawn. */
-	bool			mDrawMiniMap;			/**< Flag indicating that we should draw the minimap. */
 	bool			mMapChanged;			/**< Used to determine if the map changed. */
 
 	State*			mReturnState;
 };
-
 
 #endif

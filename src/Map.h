@@ -77,6 +77,7 @@ public:
 protected:
 
 	friend class EditorState;
+	friend class MiniMap;
 
 	void drawBg(bool draw);
 	void drawBgDetail(bool draw);
