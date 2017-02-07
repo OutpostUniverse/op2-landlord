@@ -47,6 +47,8 @@ public:
 
 	bool dragging() const { return mDragging; }
 
+	bool responding_to_events() { return dragging() || mLeftButtonDown; }
+
 private:
 	typedef std::vector<std::vector<Rectangle_2d> > RectList;
 

@@ -448,7 +448,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 	if(mLeftButtonDown)
 	{
 		// Avoid modifying tiles if we're in the 'toolbar area'
-		if (y < 32 || mTilePalette.dragging() || mMiniMap.dragging() || mMiniMap.moving_camera())
+		if (y < 32 || mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
 			return;
 
 		if(mEditState == STATE_TILE_COLLISION)

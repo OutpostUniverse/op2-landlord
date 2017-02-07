@@ -142,7 +142,6 @@ void MiniMap::map(Map* _m)
 void MiniMap::update_minimap()
 {
 	createMiniMap();
-	cout << "MiniMap::update_minimap() called." << endl;
 }
 
 

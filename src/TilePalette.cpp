@@ -184,7 +184,7 @@ void TilePalette::update()
 		r.drawBox(rect.x(), rect.y(), (mBrushPattern.width() * mTset->width()), (mBrushPattern.height() * mTset->height()), 255, 255, 0);
 	}
 
-	if(mLeftButtonDown && mMouseOverTiles)
+	if(mDragging && mLeftButtonDown && mMouseOverTiles)
 	{
 		Rectangle_2d rect = getRectFromPoints(mMouseCoords, mDragOrigin);
 		r.drawBox(rect, 255, 255, 255);
@@ -194,6 +194,8 @@ void TilePalette::update()
 
 void TilePalette::onMouseMove(int x, int y, int relX, int relY)
 {
+	mMouseCoords(x, y);
+
 	if(hidden())
 		return;
 
@@ -219,8 +221,6 @@ void TilePalette::onMouseMove(int x, int y, int relX, int relY)
 
 		return;
 	}
-
-	mMouseCoords(x, y);
 
 	if(isPointInRect(mMouseCoords, mTileGridRect))
 		mMouseOverTiles = true;

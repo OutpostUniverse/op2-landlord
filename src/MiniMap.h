@@ -25,6 +25,8 @@ public:
 	bool dragging() const { return mDragging; }
 	bool moving_camera() const { return mMovingCamera; }
 
+	bool responding_to_events() const { return dragging() || moving_camera(); }
+
 	void update();
 
 	void update_minimap();
