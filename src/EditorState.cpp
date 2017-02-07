@@ -318,7 +318,7 @@ void EditorState::updateSelector()
 	int offsetX = 0, offsetY = 0;
 	
 	const Pattern* p = &mTilePalette.pattern();
-	if(mEditState == STATE_TILE_COLLISION) p = &mToolBar.brush();
+	if(mEditState == STATE_TILE_COLLISION || mToolBar.erase()) p = &mToolBar.brush();
 
 	for(int row = p->height(); row > 0; row--)
 	{
@@ -595,20 +595,24 @@ void EditorState::patternFill(Cell::TileLayer layer)
 */
 void EditorState::pattern(Cell::TileLayer layer, int value)
 {
-	const Pattern& _p = mTilePalette.pattern();
+	const Pattern* _p = &mTilePalette.pattern();
+	if (value < 0)
+		_p = &mToolBar.brush();
+
+
 	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
 
-	for (int row = 0; row < _p.height(); row++)
+	for (int row = 0; row < _p->height(); row++)
 	{
-		for (int col = 0; col < _p.width(); col++)
+		for (int col = 0; col < _p->width(); col++)
 		{
-			int index = _p.value(col, row);
-			int x = _pt.x() - ((_p.width() - 1) - col);
-			int y = _pt.y() - ((_p.height() - 1) - row);
+			int index = _p->value(col, row);
+			int x = _pt.x() - ((_p->width() - 1) - col);
+			int y = _pt.y() - ((_p->height() - 1) - row);
 
 			if (x >= 0 && y >= 0)
 			{
-				if (value >= 0) mMap.getCellByGridCoords(x, y).index(layer, _p.value(col, row));
+				if (value >= 0) mMap.getCellByGridCoords(x, y).index(layer, _p->value(col, row));
 				else mMap.getCellByGridCoords(x, y).index(layer, -1);
 			}
 		}
