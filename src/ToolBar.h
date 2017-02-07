@@ -69,6 +69,8 @@ private:
 
 	void onKeyDown(KeyCode code, KeyModifier mod, bool repeat);
 
+	void onMouseWheel(int x, int y);
+
 private:
 
 	void resetTools();

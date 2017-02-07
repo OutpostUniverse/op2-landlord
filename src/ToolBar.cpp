@@ -17,6 +17,7 @@ ToolBar::~ToolBar()
 	EventHandler& e = Utility<EventHandler>::get();
 
 	e.keyDown().Disconnect(this, &ToolBar::onKeyDown);
+	e.mouseWheel().Disconnect(this, &ToolBar::onMouseWheel);
 
 	mToolbarEvent.Clear();
 }
@@ -158,6 +159,7 @@ void ToolBar::hookEvents()
 	EventHandler& e = Utility<EventHandler>::get();
 
 	e.keyDown().Connect(this, &ToolBar::onKeyDown);
+	e.mouseWheel().Connect(this, &ToolBar::onMouseWheel);
 }
 
 
@@ -165,6 +167,15 @@ void ToolBar::onKeyDown(KeyCode code, KeyModifier mod, bool repeat)
 {
 	if (txtMapName.hasFocus() && code == KEY_ENTER || code == KEY_KP_ENTER)
 		txtMapName.hasFocus(false);
+}
+
+
+void ToolBar::onMouseWheel(int x, int y)
+{
+	if (y == 1)
+		btnSpinnerUp_Clicked();
+	else
+		btnSpinnerDown_Clicked();
 }
 
 
