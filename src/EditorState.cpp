@@ -316,10 +316,13 @@ void EditorState::updateSelector()
 
 	// Draw Tile Selector
 	int offsetX = 0, offsetY = 0;
-	const Pattern& p = mTilePalette.pattern();
-	for(int row = p.height(); row > 0; row--)
+	
+	const Pattern* p = &mTilePalette.pattern();
+	if(mEditState == STATE_TILE_COLLISION) p = &mToolBar.brush();
+
+	for(int row = p->height(); row > 0; row--)
 	{
-		for(int col = p.width(); col > 0; col--)
+		for(int col = p->width(); col > 0; col--)
 		{
 			r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.w(), mSelectorRect.h(), 255, 255, 255);
 			offsetX += 32;
@@ -621,7 +624,7 @@ void EditorState::pattern(Cell::TileLayer layer, int value)
  */
 void EditorState::pattern_collision()
 {
-	const Pattern& _p = mTilePalette.pattern();
+	const Pattern& _p = mToolBar.brush();
 	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
 
 	for (int row = 0; row < _p.height(); row++)

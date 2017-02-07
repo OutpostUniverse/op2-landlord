@@ -88,12 +88,22 @@ void ToolBar::initUi()
 	btnLayerCollision.position(btnLayerForeground.positionX() + btnLayerForeground.width() + BUTTON_SPACE, 2);
 	btnLayerCollision.click().Connect(this, &ToolBar::btnLayerCollision_Clicked);
 
+	btnSpinnerUp.image("sys/up.png");
+	btnSpinnerUp.size(22, 14);
+	btnSpinnerUp.position(btnLayerCollision.positionX() + btnLayerCollision.width() + BUTTON_SPACE + 21, 2);
+	btnSpinnerUp.click().Connect(this, &ToolBar::btnSpinnerUp_Clicked);
+
+	btnSpinnerDown.image("sys/down.png");
+	btnSpinnerDown.size(22, 13);
+	btnSpinnerDown.position(btnLayerCollision.positionX() + btnLayerCollision.width() + BUTTON_SPACE + 21, 17);
+	btnSpinnerDown.click().Connect(this, &ToolBar::btnSpinnerDown_Clicked);
+
 	// LAYER VISIBILITY
 	btnLayerBaseToggle.image("sys/layer_b_show.png");
 	btnLayerBaseToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerBaseToggle.toggle(true);
 	btnLayerBaseToggle.size(22, 28);
-	btnLayerBaseToggle.position(btnLayerCollision.positionX() + btnLayerCollision.width() + 18 + BUTTON_SPACE, 2);
+	btnLayerBaseToggle.position(btnSpinnerDown.positionX() + btnSpinnerDown.width() + 18 + BUTTON_SPACE, 2);
 	btnLayerBaseToggle.click().Connect(this, &ToolBar::btnLayerBaseToggle_Clicked);
 
 	btnLayerBaseDetailToggle.image("sys/layer_bd_show.png");
@@ -191,7 +201,14 @@ void ToolBar::update()
 	btnLayerForeground.update();
 	btnLayerCollision.update();
 
-	drawSeparator(btnLayerCollision, 9);
+	r.drawBoxFilled(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 255, 255, 255);
+	r.drawBox(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 0, 0, 0);
+	r.drawText(mFont, string_format("%i", static_cast<int>(mBrush.width())), btnSpinnerUp.rect().x() - 18 + (mFont.width(string_format("%i", static_cast<int>(mBrush.width()))) / 2), 12, 0, 0, 0);
+
+	btnSpinnerUp.update();
+	btnSpinnerDown.update();
+
+	drawSeparator(btnLayerBaseToggle, - 32);
 
 	btnLayerBaseToggle.update();
 	btnLayerBaseDetailToggle.update();
@@ -367,4 +384,17 @@ void ToolBar::btnMiniMapToggle_Clicked()
 void ToolBar::btnTilePaletteToggle_Clicked()
 {
 	mToolbarEvent(TOOLBAR_TILE_PALETTE_TOGGLE);
+}
+
+void ToolBar::btnSpinnerUp_Clicked()
+{
+	int size = clamp(mBrush.width() + 1, 1, 8);
+	mBrush.size(size, size);
+}
+
+
+void ToolBar::btnSpinnerDown_Clicked()
+{
+	int size = clamp(mBrush.width() - 1, 1, 8);
+	mBrush.size(size, size);
 }

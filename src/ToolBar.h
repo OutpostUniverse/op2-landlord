@@ -5,6 +5,8 @@
 #include "Button.h"
 #include "TextField.h"
 
+#include "Pattern.h"
+
 using namespace NAS2D;
 
 
@@ -57,6 +59,8 @@ public:
 	bool show_minimap() const { return btnMiniMapToggle.toggled(); }
 	bool show_tilepalette() const { return btnTilePaletteToggle.toggled(); }
 
+	const Pattern& brush() const { return mBrush; }
+
 private:
 
 	void initUi();
@@ -81,6 +85,9 @@ private:
 	void btnLayerForeground_Clicked();
 	void btnLayerCollision_Clicked();
 
+	void btnSpinnerUp_Clicked();
+	void btnSpinnerDown_Clicked();
+
 	void btnLayerBaseToggle_Clicked();
 	void btnLayerBaseDetailToggle_Clicked();
 	void btnLayerDetailToggle_Clicked();
@@ -94,6 +101,9 @@ private:
 
 	Font		mFont;
 
+	Pattern		mBrush;
+
+	// UI ELEMENTS
 	TextField	txtMapName;
 
 	Button		btnSave;
@@ -107,6 +117,9 @@ private:
 	Button		btnLayerDetail;
 	Button		btnLayerForeground;
 	Button		btnLayerCollision;
+
+	Button		btnSpinnerUp;
+	Button		btnSpinnerDown;
 
 	Button		btnLayerBaseToggle;
 	Button		btnLayerBaseDetailToggle;

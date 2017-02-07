@@ -1,6 +1,4 @@
-#ifndef __PATTERN__
-#define __PATTERN__
-
+#pragma once
 
 /**
  * \class	Pattern
@@ -67,6 +65,3 @@ private:
 
 	Grid	mPatternGrid;
 };
-
-
-#endif
