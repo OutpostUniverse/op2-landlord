@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	{
 		Game game("Landlord", argv[0], "editor.xml");
 		validateOptions();
-		game.mount("gfx_ed.zip");
+		game.mount("editor.zip");
 		game.go(new StartState());
 	}
 	catch(Exception e)
