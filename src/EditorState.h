@@ -83,12 +83,12 @@ private:
 	void instructions();
 
 	void changeTileTexture();
+	void pattern(Cell::TileLayer layer, int value = 0);
 	void patternFill(Cell::TileLayer layer);
-	void patternStamp(Cell::TileLayer layer);
-	void patternErase(Cell::TileLayer layer);
+
+	void pattern_collision();
 
 	void handleLeftButtonDown(int x, int y);
-	void handleRightButtonDown();
 
 	void saveUndo();
 

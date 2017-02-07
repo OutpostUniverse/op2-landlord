@@ -19,8 +19,8 @@ void DrawPixel(SDL_Surface *srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8 
 void BlendPixel(SDL_Surface *srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8 A);
 
 /**
-* Simple helper function to provide a printf like function.
-*/
+ * Simple helper function to provide a printf like function.
+ */
 template<typename ... Args>
 std::string string_format(const std::string& format, Args ... args)
 {

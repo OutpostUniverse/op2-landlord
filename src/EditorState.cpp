@@ -451,7 +451,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 		mMap.moveCamera(relX, relY);
 		return;
 	}
-	
+
 	mMouseCoords(x, y);
 
 	if(mLeftButtonDown)
@@ -461,7 +461,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 			return;
 
 		if(mEditState == STATE_TILE_COLLISION)
-			mMap.getCell(mMouseCoords).blocked(mPlacingCollision);
+			pattern_collision();
 		else
 			changeTileTexture();
 	}
@@ -483,7 +483,8 @@ void EditorState::onMouseDown(MouseButton button, int x, int y)
 	}
 	else if(button == BUTTON_RIGHT)
 	{
-		handleRightButtonDown();
+		mRightButtonDown = true;
+		Utility<EventHandler>::get().mouseRelativeMode(true);
 	}
 }
 
@@ -525,15 +526,10 @@ void EditorState::handleLeftButtonDown(int x, int y)
 {
 	Point_2d pt(x, y);
 
-	if (isPointInRect(pt, mTilePalette.rect()))
+	// Avoid edit conditions
+	if (isPointInRect(pt, mTilePalette.rect()) || mEditState == STATE_MAP_LINK_EDIT)
 		return;
 
-	if(mEditState == STATE_MAP_LINK_EDIT)
-	{
-		return;
-	}
-
-	// Avoid inserting tiles if we're in the 'toolbar area'
 	if (y < 32 || isPointInRect(pt, mMiniMap.rect()) || isPointInRect(pt, mTilePalette.rect()))
 		return;
 
@@ -542,29 +538,15 @@ void EditorState::handleLeftButtonDown(int x, int y)
 	if(mEditState == STATE_TILE_COLLISION)
 	{
 		saveUndo();
-		if(cell.blocked())
-		{
-			cell.blocked(false);
-			mPlacingCollision = false;
-		}
-		else
-		{
-			cell.blocked(true);
-			mPlacingCollision = true;
-		}
+		cell.blocked(!cell.blocked());
+		mPlacingCollision = cell.blocked();
+		pattern_collision();
 	}
 	else
 	{
 		saveUndo();
 		changeTileTexture();
 	}
-}
-
-
-void EditorState::handleRightButtonDown()
-{
-	mRightButtonDown = true;
-	Utility<EventHandler>::get().mouseRelativeMode(true);
 }
 
 
@@ -581,10 +563,12 @@ void EditorState::changeTileTexture()
 	if (mToolBar.flood())
 		patternFill(StateToLayer[mEditState]);
 	else if (mToolBar.pencil())
-		patternStamp(StateToLayer[mEditState]);
+		pattern(StateToLayer[mEditState]);
 	else
-		patternErase(StateToLayer[mEditState]);
-		return;
+		pattern(StateToLayer[mEditState], -1);
+
+	mMapChanged = true;
+	return;
 }
 
 
@@ -600,56 +584,57 @@ void EditorState::patternFill(Cell::TileLayer layer)
 	for(int row = 0; row < mMap.height(); row++)
 		for(int col = 0; col < mMap.width(); col++)
 			mMap.getCellByGridCoords(col, row).index(layer, p.value(col % p.width(), row % p.height()));
-
-	mMapChanged = true;
 }
 
 
 /**
- * Stamps a pattern onto a given layer.
- */
-void EditorState::patternStamp(Cell::TileLayer layer)
+* If value < 0, ignores the pattern values and writes -1 instead.
+*/
+void EditorState::pattern(Cell::TileLayer layer, int value)
 {
-	Point_2d& pt = mMap.getGridCoords(mMouseCoords);
+	const Pattern& _p = mTilePalette.pattern();
+	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
 
-	const Pattern& p = mTilePalette.pattern();
-
-	for(int row = 0; row < p.height(); row++)
+	for (int row = 0; row < _p.height(); row++)
 	{
-		for(int col = 0; col < p.width(); col++)
+		for (int col = 0; col < _p.width(); col++)
 		{
-			int index = p.value(col, row);
-			int x = pt.x() - ((p.width() - 1) - col);
-			int y = pt.y() - ((p.height() - 1) - row);
+			int index = _p.value(col, row);
+			int x = _pt.x() - ((_p.width() - 1) - col);
+			int y = _pt.y() - ((_p.height() - 1) - row);
 
-			if(x >= 0 && y >= 0)
-				mMap.getCellByGridCoords(x, y).index(layer, p.value(col, row));
+			if (x >= 0 && y >= 0)
+			{
+				if (value >= 0) mMap.getCellByGridCoords(x, y).index(layer, _p.value(col, row));
+				else mMap.getCellByGridCoords(x, y).index(layer, -1);
+			}
 		}
 	}
-
-	mMapChanged = true;
 }
 
 
-void EditorState::patternErase(Cell::TileLayer layer)
+/**
+ * Performs a pattern edit on collision layer.
+ * 
+ * \todo	Have this check the ToolBar for a pattern size
+ * 			instead of using a pattern from the TilePalette.
+ */
+void EditorState::pattern_collision()
 {
-	Point_2d& pt = mMap.getGridCoords(mMouseCoords);
+	const Pattern& _p = mTilePalette.pattern();
+	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
 
-	const Pattern& p = mTilePalette.pattern();
-
-	for (int row = 0; row < p.height(); row++)
+	for (int row = 0; row < _p.height(); row++)
 	{
-		for (int col = 0; col < p.width(); col++)
+		for (int col = 0; col < _p.width(); col++)
 		{
-			int x = pt.x() - ((p.width() - 1) - col);
-			int y = pt.y() - ((p.height() - 1) - row);
+			int x = _pt.x() - ((_p.width() - 1) - col);
+			int y = _pt.y() - ((_p.height() - 1) - row);
 
 			if (x >= 0 && y >= 0)
-				mMap.getCellByGridCoords(x, y).index(layer, -1);
+				mMap.getCellByGridCoords(x, y).blocked(mPlacingCollision);
 		}
 	}
-
-	mMapChanged = true;
 }
 
 
