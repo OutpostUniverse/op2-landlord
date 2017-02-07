@@ -158,6 +158,16 @@ void ToolBar::onKeyDown(KeyCode code, KeyModifier mod, bool repeat)
 }
 
 
+void drawSeparator(Button& btn, int margin)
+{
+	//bevelBox(btn.positionX() + btn.width() + margin, btn.positionY(), 2, btn.height());
+	Renderer& r = Utility<Renderer>::get();
+
+	r.drawLine(btn.positionX() + btn.width() + margin, btn.positionY(), btn.positionX() + btn.width() + margin, btn.positionY() + btn.height(), 130, 130, 130);
+	r.drawLine(btn.positionX() + btn.width() + margin + 1, btn.positionY(), btn.positionX() + btn.width() + margin + 1, btn.positionY() + btn.height(), 200, 200, 200);
+}
+
+
 void ToolBar::update()
 {
 	Renderer& r = Utility<Renderer>::get();
@@ -167,15 +177,21 @@ void ToolBar::update()
 
 	btnSave.update();
 
+	drawSeparator(btnSave, 9);
+
 	btnPencil.update();
 	btnFill.update();
 	btnErase.update();
+
+	drawSeparator(btnErase, 9);
 
 	btnLayerBase.update();
 	btnLayerBaseDetail.update();
 	btnLayerDetail.update();
 	btnLayerForeground.update();
 	btnLayerCollision.update();
+
+	drawSeparator(btnLayerCollision, 9);
 
 	btnLayerBaseToggle.update();
 	btnLayerBaseDetailToggle.update();
@@ -286,6 +302,8 @@ void ToolBar::btnPencil_Clicked()
 	btnPencil.toggle(true);
 	btnFill.toggle(false);
 	btnErase.toggle(false);
+
+	mToolbarEvent(TOOLBAR_TOOL_PENCIL);
 }
 
 
@@ -294,6 +312,8 @@ void ToolBar::btnFill_Clicked()
 	btnPencil.toggle(false);
 	btnFill.toggle(true);
 	btnErase.toggle(false);
+
+	mToolbarEvent(TOOLBAR_TOOL_FILL);
 }
 
 
@@ -302,6 +322,9 @@ void ToolBar::btnErase_Clicked()
 	btnPencil.toggle(false);
 	btnFill.toggle(false);
 	btnErase.toggle(true);
+
+	mToolbarEvent(TOOLBAR_TOOL_ERASER);
+
 }
 
 

@@ -106,7 +106,11 @@ private:
 
 	Font			mFont;
 
-	Image			mMousePointer;
+	Image*			mMousePointer;
+
+	Image			mPointer_Normal;
+	Image			mPointer_Fill;
+	Image			mPointer_Eraser;
 
 	// PRIMITIVES
 	Point_2d		mMouseCoords;

@@ -19,7 +19,10 @@ std::map<EditState, Cell::TileLayer> StateToLayer;	/**< Translation table betwee
 
 
 EditorState::EditorState(const string& mapPath):
-	mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
+	mMousePointer(nullptr),
+	mPointer_Normal("sys/normal.png"),
+	mPointer_Fill("sys/fill.png"),
+	mPointer_Eraser("sys/eraser.png"),
 	mFont("fonts/ui-normal.png", 7, 9, 0),
 	mLinkCell(nullptr),
 	mMap(mapPath),
@@ -37,7 +40,10 @@ EditorState::EditorState(const string& mapPath):
 
 
 EditorState::EditorState(const string& name, const string& mapPath, const string& tsetPath, int w, int h):
-	mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
+	mMousePointer(nullptr),
+	mPointer_Normal("sys/normal.png"),
+	mPointer_Fill("sys/fill.png"),
+	mPointer_Eraser("sys/eraser.png"),
 	mFont("fonts/ui-normal.png", 7, 9, 0),
 	mLinkCell(nullptr),
 	mMap(name, tsetPath, w, h),
@@ -78,6 +84,8 @@ void EditorState::initialize()
 
 	initUi();
 
+	mMousePointer = &mPointer_Normal;
+
 	// Fill tables
 	fillTables();
 	
@@ -88,8 +96,6 @@ void EditorState::initialize()
 	Utility<EventHandler>::get().mouseButtonUp().Connect(this, &EditorState::onMouseUp);
 	Utility<EventHandler>::get().mouseButtonDown().Connect(this, &EditorState::onMouseDown);
 	Utility<EventHandler>::get().quit().Connect(this, &EditorState::onQuit);
-
-	/// \todo	Minimap init here
 
 	mMap.viewport(Rectangle_2d(0, 32, Utility<Renderer>::get().width(), Utility<Renderer>::get().height() - 32));
 }
@@ -248,7 +254,7 @@ State* EditorState::update()
 
 	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.screenCenterX() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
 
-	r.drawImage(mMousePointer, mMouseCoords.x(), mMouseCoords.y());
+	r.drawImage(*mMousePointer, mMouseCoords.x(), mMouseCoords.y());
 
 	return mReturnState;
 }
@@ -686,6 +692,16 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 		break;
 	case ToolBar::TOOLBAR_TILE_PALETTE_TOGGLE:
 		mTilePalette.hidden(!mToolBar.show_tilepalette());
+		break;
+
+	case ToolBar::TOOLBAR_TOOL_PENCIL:
+		mMousePointer = &mPointer_Normal;
+		break;
+	case ToolBar::TOOLBAR_TOOL_FILL:
+		mMousePointer = &mPointer_Fill;
+		break;
+	case ToolBar::TOOLBAR_TOOL_ERASER:
+		mMousePointer = &mPointer_Eraser;
 		break;
 	default:
 		break;
