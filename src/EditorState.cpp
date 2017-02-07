@@ -303,6 +303,9 @@ void EditorState::updateSelector()
 	if(mHideUi || mMouseCoords.y() < 32)
 		return;
 
+	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
+		return;
+
 	Renderer& r = Utility<Renderer>::get();
 
 	// Draw Tile Selector

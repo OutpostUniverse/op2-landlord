@@ -142,14 +142,13 @@ void TilePalette::update()
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
 	r.drawBoxFilled(mTileGridRect, 70, 70, 70);
-	r.drawBoxFilled(rect().x(), rect().y(), rect().w(), 16, 200, 200, 200);
-	r.drawLine(rect().x(), rect().y() + 16, rect().x() + rect().w(), rect().y() + 16, 0, 0, 0);
+	r.drawBoxFilled(rect().x(), rect().y(), rect().w(), 16, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
 	if (mFont)
 	{
-		r.drawText(*mFont, "Tile Palette", mRect.x() + 2, mRect.y() + 4, 0, 0, 0);
-		r.drawText(*mFont, "Tile Palette", mRect.x() + 3, mRect.y() + 4, 0, 0, 0); // cheap way of getting a 'bold' typeface. Inefficient.
+		r.drawText(*mFont, "Tile Palette", mRect.x() + (mRect.w() / 2) - (mFont->width("Tile Palette") / 2), mRect.y() + 4, 255, 255, 255);
+		r.drawText(*mFont, "Tile Palette", mRect.x() + (mRect.w() / 2) - (mFont->width("Tile Palette") / 2) + 1, mRect.y() + 4, 255, 255, 255); // cheap way of getting a 'bold' typeface. Inefficient.
 		r.drawText(*mFont, string_format("Page: %i of %i", mCurrentPage + 1, mNumPages), mBtnPrev.positionX() + mBtnPrev.width() + 4, mRect.y() + 280, 0, 0, 0);
 	}
 
@@ -184,7 +183,7 @@ void TilePalette::update()
 		r.drawBox(rect.x(), rect.y(), (mBrushPattern.width() * mTset->width()), (mBrushPattern.height() * mTset->height()), 255, 255, 0);
 	}
 
-	if(mDragging && mLeftButtonDown && mMouseOverTiles)
+	if(mMouseOverTiles && responding_to_events())
 	{
 		Rectangle_2d rect = getRectFromPoints(mMouseCoords, mDragOrigin);
 		r.drawBox(rect, 255, 255, 255);

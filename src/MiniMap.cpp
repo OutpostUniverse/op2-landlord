@@ -108,12 +108,13 @@ void MiniMap::update()
 	Renderer& r = Utility<Renderer>::get();
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
+	r.drawBoxFilled(rect().x(), rect().y(), rect().w(), 16, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
 	if (mFont)
 	{
-		r.drawText(*mFont, "MiniMap", rect().x() + 2, rect().y() + 2, 0, 0, 0);
-		r.drawText(*mFont, "MiniMap", rect().x() + 3, rect().y() + 2, 0, 0, 0);
+		r.drawText(*mFont, "MiniMap", mRect.x() + (mRect.w() / 2) - (mFont->width("MiniMap") / 2) - 1, rect().y() + 4, 255, 255, 255);
+		r.drawText(*mFont, "MiniMap", mRect.x() + (mRect.w() / 2) - (mFont->width("MiniMap") / 2), rect().y() + 4, 255, 255, 255);
 	}
 
 	Point_2d pt(0, 0);
