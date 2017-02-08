@@ -114,6 +114,7 @@ private:
 
 	// PRIMITIVES
 	Point_2d		mMouseCoords;
+	Point_2d		mSavedMouseCoords;
 	Point_2df		mScrollVector;
 	Rectangle_2d	mSelectorRect;
 	Rectangle_2d	mCellInspectRect;

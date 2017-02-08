@@ -487,6 +487,7 @@ void EditorState::onMouseDown(MouseButton button, int x, int y)
 	else if(button == BUTTON_RIGHT)
 	{
 		mRightButtonDown = true;
+		mSavedMouseCoords = mMouseCoords;
 		Utility<EventHandler>::get().mouseRelativeMode(true);
 	}
 }
@@ -516,6 +517,7 @@ void EditorState::onMouseUp(MouseButton button, int x, int y)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);
+		Utility<EventHandler>::get().warpMouse(mSavedMouseCoords.x(), mSavedMouseCoords.y()); // a bit hacky but does the job
 	}
 
 	Utility<EventHandler>::get().releaseMouse();
