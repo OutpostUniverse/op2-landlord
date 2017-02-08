@@ -1,17 +1,14 @@
-#ifndef __EDITOR_STATE__
-#define __EDITOR_STATE__
+#pragma once
 
 #include "NAS2D/NAS2D.h"
 
-#include "Entity.h"
-#include "Map.h"
 #include "Menu.h"
 #include "MiniMap.h"
 #include "TilePalette.h"
 #include "ToolBar.h"
 
-#include "Button.h"
-#include "TextField.h"
+#include "Map/Entity.h"
+#include "Map/Map.h"
 
 #include <string>
 #include <map>
@@ -151,5 +148,3 @@ private:
 
 	State*			mReturnState;
 };
-
-#endif

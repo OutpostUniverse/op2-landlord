@@ -2,11 +2,11 @@
 
 #include "NAS2D/NAS2D.h"
 
-#include "Tileset.h"
 
 #include "Button.h"
-
 #include "Pattern.h"
+
+#include "Map/Tileset.h"
 
 using namespace NAS2D;
 

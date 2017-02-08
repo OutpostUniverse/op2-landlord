@@ -2,7 +2,7 @@
 
 #include "NAS2D/NAS2D.h"
 
-#include "Map.h"
+#include "Map/Map.h"
 
 using namespace NAS2D;
 
