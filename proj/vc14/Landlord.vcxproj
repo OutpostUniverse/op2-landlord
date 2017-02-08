@@ -92,15 +92,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Button.h" />
-    <ClInclude Include="..\..\src\Cell.h" />
     <ClInclude Include="..\..\src\Common.h" />
     <ClInclude Include="..\..\src\ConfigStrings.h" />
     <ClInclude Include="..\..\src\Control.h" />
     <ClInclude Include="..\..\src\Defaults.h" />
     <ClInclude Include="..\..\src\EditorState.h" />
-    <ClInclude Include="..\..\src\Entity.h" />
-    <ClInclude Include="..\..\src\GameField.h" />
-    <ClInclude Include="..\..\src\Map.h" />
+    <ClInclude Include="..\..\src\Map\Cell.h" />
+    <ClInclude Include="..\..\src\Map\Entity.h" />
+    <ClInclude Include="..\..\src\Map\GameField.h" />
+    <ClInclude Include="..\..\src\Map\Map.h" />
+    <ClInclude Include="..\..\src\Map\Tileset.h" />
     <ClInclude Include="..\..\src\Menu.h" />
     <ClInclude Include="..\..\src\MiniMap.h" />
     <ClInclude Include="..\..\src\Pattern.h" />
@@ -113,20 +114,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Button.cpp" />
-    <ClCompile Include="..\..\src\Cell.cpp" />
     <ClCompile Include="..\..\src\Common.cpp" />
     <ClCompile Include="..\..\src\Control.cpp" />
     <ClCompile Include="..\..\src\EditorState.cpp" />
-    <ClCompile Include="..\..\src\Entity.cpp" />
-    <ClCompile Include="..\..\src\GameField.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\Map.cpp" />
+    <ClCompile Include="..\..\src\Map\Cell.cpp" />
+    <ClCompile Include="..\..\src\Map\Entity.cpp" />
+    <ClCompile Include="..\..\src\Map\GameField.cpp" />
+    <ClCompile Include="..\..\src\Map\Map.cpp" />
+    <ClCompile Include="..\..\src\Map\Tileset.cpp" />
     <ClCompile Include="..\..\src\Menu.cpp" />
     <ClCompile Include="..\..\src\MiniMap.cpp" />
     <ClCompile Include="..\..\src\StartState.cpp" />
     <ClCompile Include="..\..\src\TextField.cpp" />
     <ClCompile Include="..\..\src\TilePalette.cpp" />
-    <ClCompile Include="..\..\src\Tileset.cpp" />
     <ClCompile Include="..\..\src\ToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
