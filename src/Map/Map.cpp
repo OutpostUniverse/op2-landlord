@@ -1,6 +1,6 @@
 #include "Map.h"
 
-#include "Common.h"
+#include "../Common.h"
 
 #include <cmath>
 #include <sstream>

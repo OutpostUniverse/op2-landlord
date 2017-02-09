@@ -48,6 +48,7 @@ public:
 
 	bool pencil() const { return btnPencil.toggled(); }
 	bool flood() const { return btnFill.toggled(); }
+	bool flood_contiguous() const { return btnFillContiguous.toggled(); }
 	bool erase() const { return btnErase.toggled(); }
 
 	bool show_bg() const { return btnLayerBaseToggle.toggled(); }
@@ -60,6 +61,8 @@ public:
 	bool show_tilepalette() const { return btnTilePaletteToggle.toggled(); }
 
 	const Pattern& brush() const { return mBrush; }
+
+	const Rectangle_2d flood_tool_extended_area() const { return mFloodFillExtendedArea; }
 
 private:
 
@@ -103,7 +106,12 @@ private:
 
 	Font		mFont;
 
+	Image		mToggle;
+
 	Pattern		mBrush;
+
+	// PRIMITIVES
+	Rectangle_2d	mFloodFillExtendedArea;
 
 	// UI ELEMENTS
 	TextField	txtMapName;
@@ -112,6 +120,7 @@ private:
 
 	Button		btnPencil;
 	Button		btnFill;
+	Button		btnFillContiguous;
 	Button		btnErase;
 
 	Button		btnLayerBase;

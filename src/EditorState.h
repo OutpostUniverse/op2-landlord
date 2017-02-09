@@ -82,6 +82,7 @@ private:
 	void changeTileTexture();
 	void pattern(Cell::TileLayer layer, int value = 0);
 	void patternFill(Cell::TileLayer layer);
+	void patternFill_Contig(Cell::TileLayer layer, const Point_2d& _pt, int seed_index);
 
 	void pattern_collision();
 

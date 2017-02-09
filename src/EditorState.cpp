@@ -4,6 +4,8 @@
 #include "Common.h"
 #include "ConfigStrings.h"
 
+#include <stack>
+
 
 const bool			SHOW_DEBUG_DEFAULT	= false;
 const bool			HIDE_UI_DEFAULT		= false;
@@ -11,6 +13,9 @@ const bool			HIDE_UI_DEFAULT		= false;
 const float			SCROLL_SPEED		= 250.0f;
 
 SDL_Surface*		MINI_MAP_SURFACE	= nullptr; // HACK!
+
+
+std::stack<Point_2d> FLOOD_STACK;		// Stack used for contiguous flood fill.
 
 
 std::map<EditState, string>	StateStringMap;			/**< EditState string table. */
@@ -460,7 +465,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 	if(mLeftButtonDown)
 	{
 		// Avoid modifying tiles if we're in the 'toolbar area'
-		if (y < 32 || mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
+		if (y < 32 || mToolBar.flood() || mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
 			return;
 
 		if(mEditState == STATE_TILE_COLLISION)
@@ -531,12 +536,15 @@ void EditorState::handleLeftButtonDown(int x, int y)
 {
 	Point_2d pt(x, y);
 
-	// Avoid edit conditions
-	if (isPointInRect(pt, mTilePalette.rect()) || mEditState == STATE_MAP_LINK_EDIT)
+	// Hate the look of this but it effectively condenses the ignore checks.
+	if (y < 32 ||
+		(mToolBar.flood() && isPointInRect(pt, mToolBar.flood_tool_extended_area())) ||
+		mEditState == STATE_MAP_LINK_EDIT ||
+		isPointInRect(pt, mTilePalette.rect()) ||
+		isPointInRect(pt, mMiniMap.rect()) ||
+		isPointInRect(pt, mTilePalette.rect()))
 		return;
 
-	if (y < 32 || isPointInRect(pt, mMiniMap.rect()) || isPointInRect(pt, mTilePalette.rect()))
-		return;
 
 	Cell& cell = mMap.getCell(mMouseCoords);
 
@@ -566,7 +574,12 @@ void EditorState::changeTileTexture()
 		throw Exception(0, "Bad State", "EditorState::changeTileTExture() called with an invalid state.");
 
 	if (mToolBar.flood())
-		patternFill(StateToLayer[mEditState]);
+	{
+		if (mToolBar.flood_contiguous())
+			patternFill_Contig(StateToLayer[mEditState], mMap.getGridCoords(mMouseCoords), mMap.getCell(mMouseCoords).index(StateToLayer[mEditState]));
+		else
+			patternFill(StateToLayer[mEditState]);
+	}
 	else if (mToolBar.pencil())
 		pattern(StateToLayer[mEditState]);
 	else
@@ -579,8 +592,6 @@ void EditorState::changeTileTexture()
 
 /**
  * Fills a given cell layer with a pattern.
- *
- * \todo	Implement actual pattern filling.
  */
 void EditorState::patternFill(Cell::TileLayer layer)
 {
@@ -589,6 +600,42 @@ void EditorState::patternFill(Cell::TileLayer layer)
 	for(int row = 0; row < mMap.height(); row++)
 		for(int col = 0; col < mMap.width(); col++)
 			mMap.getCellByGridCoords(col, row).index(layer, p.value(col % p.width(), row % p.height()));
+}
+
+
+/**
+ * Fills a contiguous area in a given layer with a pattern.
+ */
+void EditorState::patternFill_Contig(Cell::TileLayer layer, const Point_2d& _pt, int seed_index)
+{
+	const Pattern& _pCheck = mTilePalette.pattern();
+	if (seed_index == _pCheck.value(_pt.x() % _pCheck.width(), _pt.y() % _pCheck.height()))
+		return;
+
+	while (!FLOOD_STACK.empty())
+		FLOOD_STACK.pop();
+
+	static const vector<int> dX = { 0, 1, 0, -1 }; // Neighbor Coords
+	static const vector<int> dY = { -1, 0, 1, 0 }; // Neighbor Coords
+
+	FLOOD_STACK.push(_pt);
+	
+	while(!FLOOD_STACK.empty())
+	{
+		const Point_2d _pt_top = FLOOD_STACK.top();
+		FLOOD_STACK.pop();
+
+		const Pattern& p = mTilePalette.pattern();
+		mMap.getCellByGridCoords(_pt_top).index(layer, p.value(_pt_top.x() % p.width(), _pt_top.y() % p.height()));
+
+		for (int i = 0; i < 4; i++)
+		{
+			Point_2d coord(_pt_top.x() + dX[i], _pt_top.y() + dY[i]);
+			if (coord.x() >= 0 && coord.x() < mMap.width() && coord.y() >= 0 && coord.y() < mMap.height() && mMap.getCellByGridCoords(coord).index(layer) == seed_index)
+				FLOOD_STACK.push(coord);
+		}
+	}
+
 }
 
 

@@ -6,7 +6,7 @@
 
 const int BUTTON_SPACE = 2;
 
-ToolBar::ToolBar() : mFont("fonts/ui-normal.png", 7, 9, 0)
+ToolBar::ToolBar() : mFont("fonts/ui-normal.png", 7, 9, 0), mToggle("sys/square.png")
 {
 	initUi();
 }
@@ -49,6 +49,14 @@ void ToolBar::initUi()
 	btnFill.size(22, 28);
 	btnFill.position(btnPencil.positionX() + btnPencil.width() + BUTTON_SPACE, 2);
 	btnFill.click().Connect(this, &ToolBar::btnFill_Clicked);
+
+	btnFillContiguous.type(Button::BUTTON_TOGGLE);
+	btnFillContiguous.toggle(true);
+	btnFillContiguous.size(16, 16);
+	btnFillContiguous.position(btnFill.positionX() - 30, 40);
+	btnFillContiguous.visible(false);
+
+	mFloodFillExtendedArea(btnFillContiguous.positionX() - 4, btnFillContiguous.positionY() - 4, 104, btnFillContiguous.height() + 8);
 
 	btnErase.image("sys/erase.png");
 	btnErase.type(Button::BUTTON_TOGGLE);
@@ -204,6 +212,16 @@ void ToolBar::update()
 	btnFill.update();
 	btnErase.update();
 
+	if (btnFillContiguous.visible())
+	{
+		r.drawBoxFilled(mFloodFillExtendedArea.x() + 3, mFloodFillExtendedArea.y() + 4, mFloodFillExtendedArea.w(), mFloodFillExtendedArea.h(), 0, 0, 0, 100);
+		r.drawBoxFilled(mFloodFillExtendedArea, 180, 180, 180);
+		r.drawBox(mFloodFillExtendedArea, 0, 0, 0);
+		r.drawText(mFont, "Contiguous", btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4, 0, 0, 0);
+		btnFillContiguous.update();
+		if (btnFillContiguous.toggled()) r.drawImage(mToggle, btnFillContiguous.positionX() - 1, btnFillContiguous.positionY());
+	}
+
 	drawSeparator(btnErase, 9);
 
 	btnLayerBase.update();
@@ -312,6 +330,7 @@ void ToolBar::btnLayerCollision_Clicked()
 	btnLayerBaseDetailToggle_Clicked();
 
 	btnFill.enabled(false);
+	btnFillContiguous.visible(false);
 	btnErase.enabled(false);
 	btnPencil_Clicked();
 
@@ -329,6 +348,7 @@ void ToolBar::btnPencil_Clicked()
 {
 	btnPencil.toggle(true);
 	btnFill.toggle(false);
+	btnFillContiguous.visible(false);
 	btnErase.toggle(false);
 
 	mToolbarEvent(TOOLBAR_TOOL_PENCIL);
@@ -339,6 +359,7 @@ void ToolBar::btnFill_Clicked()
 {
 	btnPencil.toggle(false);
 	btnFill.toggle(true);
+	btnFillContiguous.visible(true);
 	btnErase.toggle(false);
 
 	mToolbarEvent(TOOLBAR_TOOL_FILL);
@@ -349,6 +370,7 @@ void ToolBar::btnErase_Clicked()
 {
 	btnPencil.toggle(false);
 	btnFill.toggle(false);
+	btnFillContiguous.visible(false);
 	btnErase.toggle(true);
 
 	mToolbarEvent(TOOLBAR_TOOL_ERASER);
