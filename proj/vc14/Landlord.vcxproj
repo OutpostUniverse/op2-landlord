@@ -93,7 +93,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\Button.h" />
     <ClInclude Include="..\..\src\Common.h" />
-    <ClInclude Include="..\..\src\ConfigStrings.h" />
     <ClInclude Include="..\..\src\Control.h" />
     <ClInclude Include="..\..\src\Defaults.h" />
     <ClInclude Include="..\..\src\EditorState.h" />

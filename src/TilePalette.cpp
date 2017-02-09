@@ -1,7 +1,5 @@
 #include "TilePalette.h"
 
-#include "ConfigStrings.h"
-
 #include "Common.h"
 
 const Point_2d		PALETTE_DIMENSIONS		= Point_2d(196, 300);

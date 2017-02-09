@@ -11,6 +11,8 @@
 
 #include <string>
 
+extern const std::string MAP_DRIVER_VERSION;
+
 /**
  * \class Map
  * \brief Implements a basic 2D tile map.

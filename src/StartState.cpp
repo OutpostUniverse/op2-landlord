@@ -24,6 +24,7 @@ void setMessage(const std::string& msg)
 StartState::StartState():	mFont("fonts/ui-normal.png", 7, 9, 0),
 							mMousePointer("sys/normal.png"),
 							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40),
+							mScanningMaps(true),
 							mReturnState(nullptr)
 {
 
@@ -64,6 +65,7 @@ void StartState::initialize()
 	mBtnLoadExisting.text("Load Map");
 	mBtnLoadExisting.position(mLayoutRect.x() + 10, mLayoutRect.y() + mLayoutRect.h() - 35);
 	mBtnLoadExisting.click().Connect(this, &StartState::button_LoadExisting_click);
+	mBtnLoadExisting.enabled(false);
 
 	mBtnRefreshLists.font(mFont);
 	mBtnRefreshLists.size(100, 25);
@@ -80,7 +82,7 @@ void StartState::initialize()
 
 	mTxtHeight.font(mFont);
 	mTxtHeight.width(100);
-	mTxtHeight.text(c.option(UI_TEXTFIELD_DEFAULT_HEIGHT));
+	mTxtHeight.text(UI_TEXTFIELD_DEFAULT_HEIGHT);
 	mTxtHeight.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 210 + mFont.width("Height:") + 5, mLayoutRect.y() + 10);
 	mTxtHeight.border(TextField::ALWAYS);
 
@@ -91,12 +93,10 @@ void StartState::initialize()
 
 	mMapFilesMenu.font(mFont);
 	mMapFilesMenu.position(mLayoutRect.x() + 10, mLayoutRect.y() + 10);
-	scanDirectory(EDITOR_MAPS_PATH, mMapFilesMenu);
 	mMapFilesMenu.width(mLayoutRect.w() / 2 - 20);
 
 	mTsetFilesMenu.font(mFont);
 	mTsetFilesMenu.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10, mLayoutRect.y() + 50);
-	scanDirectory(EDITOR_TSET_PATH, mTsetFilesMenu);
 	mTsetFilesMenu.width(mLayoutRect.w() / 2 - 20);
 
 
@@ -106,25 +106,70 @@ void StartState::initialize()
 	e.keyDown().Connect(this, &StartState::onKeyDown);
 	e.mouseMotion().Connect(this, &StartState::onMouseMove);
 	e.quit().Connect(this, &StartState::onQuit);
+
+	fillTilesetMenu();
+}
+
+
+void StartState::fillMapMenu()
+{
+	StringList lst = getFileList(EDITOR_MAPS_PATH);
+
+	for (size_t i = 0; i < lst.size(); ++i)
+	{
+		File xmlFile = Utility<Filesystem>::get().open(EDITOR_MAPS_PATH + lst[i]);
+
+		TiXmlDocument doc;
+		TiXmlElement  *root = nullptr;
+
+		doc.Parse(xmlFile.raw_bytes());
+		if (doc.Error())
+			continue;
+
+		if (doc.FirstChildElement("map"))
+		{
+			if (doc.FirstChildElement()->Attribute("version") != MAP_DRIVER_VERSION)
+			{
+				cout << "Map '" << EDITOR_MAPS_PATH + lst[i] << "' is version mismatched." << endl;
+				continue;
+			}
+
+			mMapFilesMenu.addItem(lst[i]);
+		}
+	}
+
+	mBtnLoadExisting.enabled(!mMapFilesMenu.empty());
+}
+
+
+void StartState::fillTilesetMenu()
+{
+	StringList lst = getFileList(EDITOR_TSET_PATH);
+
+	for (size_t i = 0; i < lst.size(); ++i)
+		mTsetFilesMenu.addItem(lst[i]);
 }
 
 
 /**
- * Scans a directory for files, ignoring directories, and
- * adds them to a Menu.
+ * Gets a list of files, ignoring directories.
  * 
  * \param	directory	Path to scan for files.
- * \param	menu		Reference to a Menu object to add file listings to.
+ * 
+ * \return	Returns a StringList.
  */
-void StartState::scanDirectory(const string& directory, Menu& menu)
+StringList StartState::getFileList(const string& directory)
 {
 	StringList fileList = Utility<Filesystem>::get().directoryList(directory);
+	StringList returnList;
 
-	for(size_t i = 0; i < fileList.size(); i++)
-	{
-		if(!Utility<Filesystem>::get().isDirectory(directory + fileList[i]))
-			menu.addItem(fileList[i]);
-	}
+	Filesystem& f = Utility<Filesystem>::get();
+
+	for (size_t i = 0; i < fileList.size(); i++)
+		if (!f.isDirectory(directory + fileList[i]))
+			returnList.push_back(fileList[i]);
+
+	return returnList;
 }
 
 
@@ -195,6 +240,11 @@ void StartState::button_LoadExisting_click()
 		return;
 	}
 
+	/// Doing it this way only so that the user can get feedback about what the app is doing.
+	/// \todo	This would benefit by spinning loading maps into its own thread.
+	Utility<Renderer>::get().drawText(mFont, "LOADING MAP. PLEASE WAIT...", mLayoutRect.x(), 5, 255, 255, 0);
+	Utility<Renderer>::get().update();
+
 	mReturnState = new EditorState(mapPath);
 }
 
@@ -204,10 +254,8 @@ void StartState::button_RefreshLists_click()
 	mMapFilesMenu.dropAllItems();
 	mTsetFilesMenu.dropAllItems();
 
-	Configuration& c = Utility<Configuration>::get();
-
-	scanDirectory(EDITOR_MAPS_PATH, mMapFilesMenu);
-	scanDirectory(EDITOR_TSET_PATH, mTsetFilesMenu);
+	mScanningMaps = true;
+	fillTilesetMenu();
 }
 
 
@@ -245,6 +293,16 @@ State* StartState::update()
 
 	if (!MESSAGE.empty() && MSG_FLASH)
 		r.drawText(mFont, MESSAGE, 15, r.height() - 15, 255, 0, 0);
+
+	/// Doing it this way only so that the user can get feedback about what the app is doing.
+	/// \todo	This would benefit by spinning loading maps into its own thread.
+	if (mScanningMaps)
+	{
+		r.drawText(mFont, "SCANNING MAPS. PLEASE WAIT...", mLayoutRect.x(), 5, 255, 255, 0);
+		r.update();
+		fillMapMenu();
+		mScanningMaps = false;
+	}
 
 	r.drawImage(mMousePointer, mMouseCoords.x(), mMouseCoords.y());
 

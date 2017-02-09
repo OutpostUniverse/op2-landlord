@@ -2,7 +2,6 @@
 #include "StartState.h"
 
 #include "Common.h"
-#include "ConfigStrings.h"
 
 #include <stack>
 

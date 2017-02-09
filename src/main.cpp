@@ -3,7 +3,6 @@
 #include "EditorState.h"
 #include "StartState.h"
 
-#include "ConfigStrings.h"
 #include "Defaults.h"
 
 
@@ -21,9 +20,6 @@ int main(int argc, char *argv[])
 	{
 		Game game("Landlord", argv[0], "editor.xml");
 		game.mount("editor.zip");
-
-		throw;
-
 		game.go(new StartState());
 	}
 	catch(Exception e)
@@ -39,7 +35,7 @@ int main(int argc, char *argv[])
 	catch(...)
 	{
 		#if defined(WINDOWS)
-		MessageBoxA(NULL, "An unexpected error occured. Please yell at Lee about\nthis so he can fix it.", "Unhandled Exception", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBoxA(NULL, "An unexpected error occured. Please yell at Lee about\nthis so he can fix it.\n\nAnd don't forget to include steps to reproduce and a\nlog! 'It crashed' will get you slapped.", "Unhandled Exception", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		#endif
 	}
 

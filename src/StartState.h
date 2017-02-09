@@ -38,7 +38,10 @@ protected:
 
 private:
 
-	void scanDirectory(const std::string& directory, Menu& menu);
+	StringList getFileList(const std::string& directory);
+
+	void fillMapMenu();
+	void fillTilesetMenu();
 
 	void button_CreateNew_click();
 	void button_LoadExisting_click();
@@ -63,6 +66,8 @@ private:
 
 	Menu			mMapFilesMenu;		/**< Map File List menu. */
 	Menu			mTsetFilesMenu;		/**< Tileset File List menu. */
+
+	bool			mScanningMaps;
 
 	State*			mReturnState;		/**< State to return during updates. */
 };
