@@ -1,6 +1,6 @@
 #include "StartState.h"
 
-#include "ConfigStrings.h"
+#include "Defaults.h"
 
 #include "Common.h"
 
@@ -22,7 +22,7 @@ void setMessage(const std::string& msg)
  * C'tpr
  */
 StartState::StartState():	mFont("fonts/ui-normal.png", 7, 9, 0),
-							mMousePointer(Utility<Configuration>::get().option(CONFIG_UI_MOUSE_POINTER_IMAGE)),
+							mMousePointer("sys/normal.png"),
 							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40),
 							mReturnState(nullptr)
 {
@@ -55,32 +55,32 @@ void StartState::initialize()
 
 	mBtnCreateNew.font(mFont);
 	mBtnCreateNew.size(85, 25);
-	mBtnCreateNew.text(c.option(CONFIG_UI_BUTTON_CREATE_NEW_MAP));
+	mBtnCreateNew.text("Create New");
 	mBtnCreateNew.position(mLayoutRect.x() + mLayoutRect.w() - 95, mLayoutRect.y() + mLayoutRect.h() - 35);
 	mBtnCreateNew.click().Connect(this, &StartState::button_CreateNew_click);
 
 	mBtnLoadExisting.font(mFont);
 	mBtnLoadExisting.size(85, 25);
-	mBtnLoadExisting.text(c.option(CONFIG_UI_BUTTON_LOAD_EXISTING_MAP));
+	mBtnLoadExisting.text("Load Map");
 	mBtnLoadExisting.position(mLayoutRect.x() + 10, mLayoutRect.y() + mLayoutRect.h() - 35);
 	mBtnLoadExisting.click().Connect(this, &StartState::button_LoadExisting_click);
 
 	mBtnRefreshLists.font(mFont);
 	mBtnRefreshLists.size(100, 25);
-	mBtnRefreshLists.text(c.option(CONFIG_UI_BUTTON_REFRESH_LISTS));
+	mBtnRefreshLists.text("Refresh List");
 	mBtnRefreshLists.position(mLayoutRect.x() + (mLayoutRect.w() / 2) - mBtnRefreshLists.rect().w() - 10, mLayoutRect.y() + mLayoutRect.h() - 35);
 	mBtnRefreshLists.click().Connect(this, &StartState::button_RefreshLists_click);
 
 
 	mTxtWidth.font(mFont);
 	mTxtWidth.width(100);
-	mTxtWidth.text(c.option(CONFIG_UI_TEXTFIELD_DEFAULT_WIDTH));
+	mTxtWidth.text(UI_TEXTFIELD_DEFAULT_WIDTH);
 	mTxtWidth.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10 + mFont.width("Width:") + 5, mLayoutRect.y() + 10);
 	mTxtWidth.border(TextField::ALWAYS);
 
 	mTxtHeight.font(mFont);
 	mTxtHeight.width(100);
-	mTxtHeight.text(c.option(CONFIG_UI_TEXTFIELD_DEFAULT_HEIGHT));
+	mTxtHeight.text(c.option(UI_TEXTFIELD_DEFAULT_HEIGHT));
 	mTxtHeight.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 210 + mFont.width("Height:") + 5, mLayoutRect.y() + 10);
 	mTxtHeight.border(TextField::ALWAYS);
 
@@ -91,12 +91,12 @@ void StartState::initialize()
 
 	mMapFilesMenu.font(mFont);
 	mMapFilesMenu.position(mLayoutRect.x() + 10, mLayoutRect.y() + 10);
-	scanDirectory(c.option(CONFIG_EDITOR_MAPS_PATH), mMapFilesMenu);
+	scanDirectory(EDITOR_MAPS_PATH, mMapFilesMenu);
 	mMapFilesMenu.width(mLayoutRect.w() / 2 - 20);
 
 	mTsetFilesMenu.font(mFont);
 	mTsetFilesMenu.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10, mLayoutRect.y() + 50);
-	scanDirectory(c.option(CONFIG_EDITOR_TILESETS_PATH), mTsetFilesMenu);
+	scanDirectory(EDITOR_TSET_PATH, mTsetFilesMenu);
 	mTsetFilesMenu.width(mLayoutRect.w() / 2 - 20);
 
 
@@ -175,7 +175,7 @@ void StartState::button_CreateNew_click()
 	}
 
 	Configuration& c = Utility<Configuration>::get();
-	mReturnState = new EditorState(c.option(CONFIG_EDITOR_NEW_MAP_NAME), c.option(CONFIG_EDITOR_MAPS_PATH) + txtMapPath.text(), c.option(CONFIG_EDITOR_TILESETS_PATH) + mTsetFilesMenu.selectionText(), mapWidth, mapHeight);
+	mReturnState = new EditorState(EDITOR_NEW_MAP_NAME, EDITOR_MAPS_PATH + txtMapPath.text(), EDITOR_TSET_PATH + mTsetFilesMenu.selectionText(), mapWidth, mapHeight);
 }
 
 
@@ -184,7 +184,7 @@ void StartState::button_CreateNew_click()
  */
 void StartState::button_LoadExisting_click()
 {
-	string mapPath = Utility<Configuration>::get().option(CONFIG_EDITOR_MAPS_PATH) + mMapFilesMenu.selectionText();
+	string mapPath = EDITOR_MAPS_PATH + mMapFilesMenu.selectionText();
 
 	// In the event someone does something completely idiotic like deleting map files after the
 	// editor has scanned the maps directory (or some other error occurs where the map file is
@@ -206,8 +206,8 @@ void StartState::button_RefreshLists_click()
 
 	Configuration& c = Utility<Configuration>::get();
 
-	scanDirectory(c.option(CONFIG_EDITOR_MAPS_PATH), mMapFilesMenu);
-	scanDirectory(c.option(CONFIG_EDITOR_TILESETS_PATH), mTsetFilesMenu);
+	scanDirectory(EDITOR_MAPS_PATH, mMapFilesMenu);
+	scanDirectory(EDITOR_TSET_PATH, mTsetFilesMenu);
 }
 
 

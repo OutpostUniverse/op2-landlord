@@ -45,12 +45,12 @@ void TilePalette::init()
 
 	mBtnPrev.size(30, 20);
 	mBtnPrev.position(mRect.x() + 3, yPosition);
-	mBtnPrev.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_PREV_IMAGE));
+	mBtnPrev.image("sys/prev.png");
 	mBtnPrev.click().Connect(this, &TilePalette::button_Prev_click);
 
 	mBtnNext.size(30, 20);
 	mBtnNext.position(mRect.x() + mRect.w() - (mBtnNext.width() + 2), yPosition);
-	mBtnNext.image(Utility<Configuration>::get().option(CONFIG_UI_TILEPALETTE_NEXT_IMAGE));
+	mBtnNext.image("sys/next.png");
 	mBtnNext.click().Connect(this, &TilePalette::button_Next_click);
 
 	// Hook events
