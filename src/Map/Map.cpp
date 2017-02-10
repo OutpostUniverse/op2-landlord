@@ -604,6 +604,10 @@ void Map::parseTilesets(TiXmlNode* node)
 		if(xmlNode->ValueStr() == "tileset")
 		{
 			string tsetpath = parser.stringAttribute(xmlNode, "path");
+
+			if (!Utility<Filesystem>::get().exists(tsetpath))
+				throw Exception(0, "Missing TileSet", "Referened TileSet missing: " + tsetpath);
+
 			mTileset = Tileset(tsetpath, CELL_DIMENSIONS.w(), CELL_DIMENSIONS.h());
 		}
 		else
