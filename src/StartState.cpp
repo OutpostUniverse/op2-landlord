@@ -245,7 +245,14 @@ void StartState::button_LoadExisting_click()
 	Utility<Renderer>::get().drawText(mFont, "LOADING MAP. PLEASE WAIT...", mLayoutRect.x(), 5, 255, 255, 0);
 	Utility<Renderer>::get().update();
 
-	mReturnState = new EditorState(mapPath);
+	try
+	{
+		mReturnState = new EditorState(mapPath);
+	}
+	catch (Exception& e)
+	{
+		setMessage("COULDN'T LOAD MAP: " + e.getDescription());
+	}
 }
 
 
