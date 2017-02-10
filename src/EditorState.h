@@ -110,6 +110,8 @@ private:
 	Image			mPointer_Fill;
 	Image			mPointer_Eraser;
 
+	Image			mLayerHidden;
+
 	// PRIMITIVES
 	Point_2d		mMouseCoords;
 	Point_2d		mSavedMouseCoords;

@@ -21,12 +21,32 @@ std::map<EditState, string>	StateStringMap;			/**< EditState string table. */
 std::map<int, EditState>	StateIntMap;			/**< EditState int table. */
 std::map<EditState, Cell::TileLayer> StateToLayer;	/**< Translation table between a specific edit state and tile layer. */
 
+bool layer_hidden(EditState _s, ToolBar& _t)
+{
+	switch (_s)
+	{
+	case STATE_BASE_TILE_INDEX:
+		return !_t.show_bg();
+	case STATE_BASE_DETAIL_TILE_INDEX:
+		return !_t.show_bg_detail();
+	case STATE_DETAIL_TILE_INDEX:
+		return !_t.show_detail();
+	case STATE_FOREGROUND_TILE_INDEX:
+		return !_t.show_foreground();
+	case STATE_TILE_COLLISION:
+		return !_t.show_collision();
+	default:
+		return false;
+	}
+}
+
 
 EditorState::EditorState(const string& mapPath):
 	mMousePointer(nullptr),
 	mPointer_Normal("sys/normal.png"),
 	mPointer_Fill("sys/fill.png"),
 	mPointer_Eraser("sys/eraser.png"),
+	mLayerHidden("sys/layer_hidden.png"),
 	mFont("fonts/ui-normal.png", 7, 9, 0),
 	mLinkCell(nullptr),
 	mMap(mapPath),
@@ -48,6 +68,7 @@ EditorState::EditorState(const string& name, const string& mapPath, const string
 	mPointer_Normal("sys/normal.png"),
 	mPointer_Fill("sys/fill.png"),
 	mPointer_Eraser("sys/eraser.png"),
+	mLayerHidden("sys/layer_hidden.png"),
 	mFont("fonts/ui-normal.png", 7, 9, 0),
 	mLinkCell(nullptr),
 	mMap(name, tsetPath, w, h),
@@ -259,6 +280,8 @@ State* EditorState::update()
 	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.screenCenterX() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
 
 	r.drawImage(*mMousePointer, mMouseCoords.x(), mMouseCoords.y());
+	if (layer_hidden(mEditState, mToolBar))
+		r.drawImage(mLayerHidden, mMouseCoords.x(), mMouseCoords.y() + 34, 1.0f, 255, 255, 0, 255);
 
 	return mReturnState;
 }
@@ -572,6 +595,9 @@ void EditorState::changeTileTexture()
 	if (StateToLayer.find(mEditState) == StateToLayer.end())
 		throw Exception(0, "Bad State", "EditorState::changeTileTExture() called with an invalid state.");
 
+	if (layer_hidden(mEditState, mToolBar))
+		return;
+
 	if (mToolBar.flood())
 	{
 		if (mToolBar.flood_contiguous())
@@ -581,8 +607,10 @@ void EditorState::changeTileTexture()
 	}
 	else if (mToolBar.pencil())
 		pattern(StateToLayer[mEditState]);
-	else
+	else if (mToolBar.erase())
 		pattern(StateToLayer[mEditState], -1);
+	else // Defined this way to avoid forgetting to add possible new tools to the check.
+		return;
 
 	mMapChanged = true;
 	return;
