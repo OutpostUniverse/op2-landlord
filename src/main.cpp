@@ -15,6 +15,11 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+	// redirect log entries on Release builds.
+	#ifndef _DEBUG
+	FILE *stream;
+	freopen_s(&stream, "log_editor.txt", "w", stdout);
+	#endif
 
 	try
 	{
