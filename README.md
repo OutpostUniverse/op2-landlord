@@ -1,45 +1,15 @@
-# Landlord
+# OP2-Landlord
 
-A straightforward tile editor designed for jRPG style games.
+A tile map editor for Outpost 2.
+
+This is an experimental set of code attempting to adapt Landlord for use with Outpost 2 maps.
 
 ## Features
 
-Landlord offers the following features:
-
-* Multi-layer editing
-* Collision Mask suport
-* Transparent tile support
-* Placing down single tiles and groups of tiles on any of four tile layers
-* Fill tool allows filling a layer with a single tile or a tile pattern
-* Eraser tool with an adjustable brush size
-* Dynamically generated minimap window
-* Draggable minimap/tile palette windows, similar to graphic editing programs
-
-## Why Landlord vs any other editor?
-
-Landlord was built as a lightweigt editor for [NAS2D](https://github.com/lairworks/nas2d-core) based games. Many other editors exist but were either too complicated, too large or didn't provide the functionality needed.
-
-Landlord isn't as fully featured as many of these editors. It's simple, straight forward and to the point without a lot of bells and whistles. That's it's strength -- simple tools often provide the best experiences.
-
-It's also built to be extensible. It's easy to add new features if you need something tailored toward your own game. We use it at LairWorks for many of our 2D tile-based games because it just works.
-
-## Installation
-
-Binaries aren't as easily accessible as we'd like but so long as you have NAS2D and its dependencies, downloading and compiling Landlord should be fairly straight forward.
-
-## Settings
-
-Landlord doesn't offer much in the way of settings. You can change video and audio settings and that's about it.
-
-In order to do so you will need to edit the 'editor.xml' configuration file in the '/data/' folder. Remember, Landlord is a simple program and leaving configuration to the XML file makes it a lot simpler.
-
-## Troubleshooting
-
-As with all NAS2D applications, the first step in troubleshooting problems is to make sure you have the latest versions of all of your device drivers. If all of your drivers are up to date and your video card supports an OpenGL 3.0 context, make sure that Landlord is installed in a directory with write permissions (e.g., installing it in 'c:\Program Files\' will make life difficult for you).
 
 ## License & Disclaimer
 
-Copyright © 2014 - 2017 LairWorks Entertainment
+Copyright © 2014 - 2017 Outpost Universe
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
