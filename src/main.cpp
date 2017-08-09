@@ -5,6 +5,8 @@
 
 #include "Defaults.h"
 
+#include <sstream>
+
 
 #ifdef WINDOWS
 #include <Windows.h>
@@ -27,13 +29,13 @@ int main(int argc, char *argv[])
 		game.mount("editor.zip");
 		game.go(new StartState());
 	}
-	catch(Exception e)
+	catch(std::runtime_error& e)
 	{
 		stringstream errorMessage;
-		errorMessage << "Error (" << e.getCode() << "):" << endl << endl << e.getDescription();
+		errorMessage <<  e.what();
 	
 		#if defined(WINDOWS)
-		MessageBoxA(NULL, errorMessage.str().c_str(), e.getBriefDescription().c_str(), MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBoxA(NULL, errorMessage.str().c_str(), "Application Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		#endif
 		
 	}

@@ -33,7 +33,7 @@ public:
 		TOOLBAR_TOOL_ERASER
 	};
 
-	typedef Gallant::Signal1<ToolBarAction> ToolBarEvent;
+	typedef NAS2D::Signals::Signal1<ToolBarAction> ToolBarEvent;
 
 public:
 	ToolBar();
@@ -70,7 +70,7 @@ private:
 
 	void hookEvents();
 
-	void onKeyDown(KeyCode code, KeyModifier mod, bool repeat);
+	void onKeyDown(NAS2D::EventHandler::KeyCode code, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 
 	void onMouseWheel(int x, int y);
 

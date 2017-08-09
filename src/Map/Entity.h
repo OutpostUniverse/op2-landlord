@@ -154,12 +154,12 @@ private:
 
 	void validateX()
 	{
-		mPosition.x(clamp(mPosition.x(), 0.0f, mArea.w()));
+		mPosition.x(clamp(mPosition.x(), 0.0f, mArea.width()));
 	}
 
 	void validateY()
 	{
-		mPosition.y(clamp(mPosition.y(), 0.0f, mArea.h()));
+		mPosition.y(clamp(mPosition.y(), 0.0f, mArea.height()));
 	}
 
 	/**
@@ -167,7 +167,7 @@ private:
 	 */
 	void updatePositionRect()
 	{
-		mPositionRect(static_cast<int>(mPosition.x() + mBoundingBox.x()), static_cast<int>(mPosition.y() + mBoundingBox.y()), static_cast<int>(mBoundingBox.w()), static_cast<int>(mBoundingBox.h()));
+		mPositionRect(static_cast<int>(mPosition.x() + mBoundingBox.x()), static_cast<int>(mPosition.y() + mBoundingBox.y()), static_cast<int>(mBoundingBox.width()), static_cast<int>(mBoundingBox.height()));
 	}
 
 	Entity();	/**< Intentionally undefined. */

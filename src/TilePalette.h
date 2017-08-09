@@ -61,8 +61,8 @@ private:
 
 	Rectangle_2d getRectFromPoints(const Point_2d& pt1, const Point_2d& pt2);
 
-	void onMouseDown(MouseButton button, int x, int y);
-	void onMouseUp(MouseButton button, int x, int y);
+	void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
+	void onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
 	void onMouseMove(int x, int y, int relX, int relY);
 
 private:

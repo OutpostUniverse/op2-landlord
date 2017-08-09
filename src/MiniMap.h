@@ -2,6 +2,8 @@
 
 #include "NAS2D/NAS2D.h"
 
+#include <SDL.h>
+
 #include "Map/Map.h"
 
 using namespace NAS2D;
@@ -35,8 +37,8 @@ private:
 
 	void init();
 
-	void onMouseDown(MouseButton b, int x, int y);
-	void onMouseUp(MouseButton b, int x, int y);
+	void onMouseDown(NAS2D::EventHandler::MouseButton b, int x, int y);
+	void onMouseUp(NAS2D::EventHandler::MouseButton b, int x, int y);
 	void onMouseMotion(int x, int y, int relX, int relY);
 
 	void createMiniMap();

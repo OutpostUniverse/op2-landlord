@@ -1,5 +1,7 @@
 #include "Tileset.h"
 
+#include <iostream>
+
 #include "NAS2D/NAS2D.h"
 
 using namespace std;
@@ -44,7 +46,7 @@ const Rectangle_2d Tileset::getTsetCoordsFromIndex(int index) const
 void Tileset::drawTile(int index, int x, int y)
 {
 	const Rectangle_2d rect = getTsetCoordsFromIndex(index);
-	Utility<Renderer>::get().drawSubImage(mTileset, x, y, rect.x(), rect.y(), rect.w(), rect.h());
+	Utility<Renderer>::get().drawSubImage(mTileset, x, y, rect.x(), rect.y(), rect.width(), rect.height());
 }
 
 
@@ -89,7 +91,7 @@ void Tileset::init()
 {
 	if(!mTileset.loaded())
 	{
-		cout << "Tileset image did not loaded properly." << endl;
+		std::cout << "Tileset image did not loaded properly." << endl;
 		return;
 	}
 
@@ -119,9 +121,9 @@ void Tileset::fillTileColorList()
 		int r = 0, g = 0, b = 0, a = 0;
 		int pixel_count = 0;
 
-		for(int y = 0; y < rect.h(); y++)
+		for(int y = 0; y < rect.height(); y++)
 		{
-			for(int x = 0; x < rect.w(); x++)
+			for(int x = 0; x < rect.width(); x++)
 			{
 				Color_4ub& c = mTileset.pixelColor(rect.x() + x, rect.y() + y);
 

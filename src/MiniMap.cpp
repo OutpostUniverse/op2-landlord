@@ -2,6 +2,7 @@
 
 #include "Common.h"
 
+using namespace NAS2D;
 
 MiniMap::MiniMap():
 	mFont(nullptr),
@@ -21,9 +22,9 @@ MiniMap::~MiniMap()
 {
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.mouseButtonDown().Disconnect(this, &MiniMap::onMouseDown);
-	e.mouseButtonUp().Disconnect(this, &MiniMap::onMouseUp);
-	e.mouseMotion().Disconnect(this, &MiniMap::onMouseMotion);
+	e.mouseButtonDown().disconnect(this, &MiniMap::onMouseDown);
+	e.mouseButtonUp().disconnect(this, &MiniMap::onMouseUp);
+	e.mouseMotion().disconnect(this, &MiniMap::onMouseMotion);
 }
 
 
@@ -31,9 +32,9 @@ void MiniMap::init()
 {
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.mouseButtonDown().Connect(this, &MiniMap::onMouseDown);
-	e.mouseButtonUp().Connect(this, &MiniMap::onMouseUp);
-	e.mouseMotion().Connect(this, &MiniMap::onMouseMotion);
+	e.mouseButtonDown().connect(this, &MiniMap::onMouseDown);
+	e.mouseButtonUp().connect(this, &MiniMap::onMouseUp);
+	e.mouseMotion().connect(this, &MiniMap::onMouseMotion);
 
 	Renderer& r = Utility<Renderer>::get();
 	mRect.x(2);
@@ -54,12 +55,12 @@ void MiniMap::adjustCamera(int x, int y)
 }
 
 
-void MiniMap::onMouseDown(MouseButton b, int x, int y)
+void MiniMap::onMouseDown(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != BUTTON_LEFT || hidden())
+	if (b != EventHandler::BUTTON_LEFT || hidden())
 		return;
 
-	if (isPointInRect(x, y, rect().x(), rect().y(), rect().w(), 17))
+	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), 17))
 		mDragging = true;
 
 	if (isPointInRect(x, y, mRect.x() + 4, mRect.y() + 21, mMiniMap->width(), mMiniMap->height()))
@@ -73,9 +74,9 @@ void MiniMap::onMouseDown(MouseButton b, int x, int y)
 }
 
 
-void MiniMap::onMouseUp(MouseButton b, int x, int y)
+void MiniMap::onMouseUp(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != BUTTON_LEFT || hidden())
+	if (b != EventHandler::BUTTON_LEFT || hidden())
 		return;
 
 	mDragging = false;
@@ -88,7 +89,7 @@ void MiniMap::onMouseMotion(int x, int y, int relX, int relY)
 {
 	if (mDragging)
 	{
-		mRect(mRect.x() + relX, mRect.y() + relY, mRect.w(), mRect.h());
+		mRect(mRect.x() + relX, mRect.y() + relY, mRect.width(), mRect.height());
 		return;
 	}
 
@@ -108,13 +109,13 @@ void MiniMap::update()
 	Renderer& r = Utility<Renderer>::get();
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
-	r.drawBoxFilled(rect().x(), rect().y(), rect().w(), 16, 75, 95, 130);
+	r.drawBoxFilled(rect().x(), rect().y(), rect().width(), 16, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
 	if (mFont)
 	{
-		r.drawText(*mFont, "MiniMap", mRect.x() + (mRect.w() / 2) - (mFont->width("MiniMap") / 2) - 1, rect().y() + 4, 255, 255, 255);
-		r.drawText(*mFont, "MiniMap", mRect.x() + (mRect.w() / 2) - (mFont->width("MiniMap") / 2), rect().y() + 4, 255, 255, 255);
+		r.drawText(*mFont, "MiniMap", mRect.x() + (mRect.width() / 2) - (mFont->width("MiniMap") / 2) - 1, rect().y() + 4, 255, 255, 255);
+		r.drawText(*mFont, "MiniMap", mRect.x() + (mRect.width() / 2) - (mFont->width("MiniMap") / 2), rect().y() + 4, 255, 255, 255);
 	}
 
 	Point_2d pt(0, 0);

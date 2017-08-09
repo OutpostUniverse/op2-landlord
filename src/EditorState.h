@@ -50,11 +50,11 @@ protected:
 	void initialize();
 	State* update();
 
-	void onKeyUp(KeyCode key, KeyModifier mod);
-	void onKeyDown(KeyCode key, KeyModifier mod, bool repeat);
+	void onKeyUp(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod);
+	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onMouseMove(int x, int y, int relX, int relY);
-	void onMouseUp(MouseButton button, int x, int y);
-	void onMouseDown(MouseButton button, int x, int y);
+	void onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
+	void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
 	
 	void onQuit();
 

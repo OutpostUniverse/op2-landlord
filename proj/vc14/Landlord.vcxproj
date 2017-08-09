@@ -44,12 +44,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\NAS2D\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.5\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\NAS2D\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\API\NAS2D\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.3\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\NAS2D\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\API\glew-1.13.0\include;C:\API\physfs-2.0.3\;C:\API\SDL2-2.0.5\include;C:\API\SDL2_image-2.0.0\include;C:\API\SDL2_mixer-2.0.0\include;C:\API\SDL2_ttf-2.0.12\include;C:\API\NAS2D\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\API\NAS2D\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

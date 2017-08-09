@@ -1,10 +1,10 @@
 #include "ToolBar.h"
 
-
 #include "Common.h"
 
-
 const int BUTTON_SPACE = 2;
+
+using namespace NAS2D;
 
 ToolBar::ToolBar() : mFont("fonts/ui-normal.png", 7, 9, 0), mToggle("sys/square.png")
 {
@@ -16,10 +16,10 @@ ToolBar::~ToolBar()
 {
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.keyDown().Disconnect(this, &ToolBar::onKeyDown);
-	e.mouseWheel().Disconnect(this, &ToolBar::onMouseWheel);
+	e.keyDown().disconnect(this, &ToolBar::onKeyDown);
+	e.mouseWheel().disconnect(this, &ToolBar::onMouseWheel);
 
-	mToolbarEvent.Clear();
+	mToolbarEvent.clear();
 }
 
 
@@ -34,7 +34,7 @@ void ToolBar::initUi()
 	btnSave.image("sys/save.png");
 	btnSave.size(22, 28);
 	btnSave.position(txtMapName.positionX() + txtMapName.width() + 20, 2);
-	btnSave.click().Connect(this, &ToolBar::btnSave_Clicked);
+	btnSave.click().connect(this, &ToolBar::btnSave_Clicked);
 
 	// EDIT TOOLS
 	btnPencil.image("sys/pencil.png");
@@ -42,13 +42,13 @@ void ToolBar::initUi()
 	btnPencil.toggle(true);
 	btnPencil.size(22, 28);
 	btnPencil.position(btnSave.positionX() + btnSave.width() + 18 + BUTTON_SPACE, 2);
-	btnPencil.click().Connect(this, &ToolBar::btnPencil_Clicked);
+	btnPencil.click().connect(this, &ToolBar::btnPencil_Clicked);
 
 	btnFill.image("sys/paintcan.png");
 	btnFill.type(Button::BUTTON_TOGGLE);
 	btnFill.size(22, 28);
 	btnFill.position(btnPencil.positionX() + btnPencil.width() + BUTTON_SPACE, 2);
-	btnFill.click().Connect(this, &ToolBar::btnFill_Clicked);
+	btnFill.click().connect(this, &ToolBar::btnFill_Clicked);
 
 	btnFillContiguous.type(Button::BUTTON_TOGGLE);
 	btnFillContiguous.toggle(true);
@@ -62,7 +62,7 @@ void ToolBar::initUi()
 	btnErase.type(Button::BUTTON_TOGGLE);
 	btnErase.size(22, 28);
 	btnErase.position(btnFill.positionX() + btnFill.width() + BUTTON_SPACE, 2);
-	btnErase.click().Connect(this, &ToolBar::btnErase_Clicked);
+	btnErase.click().connect(this, &ToolBar::btnErase_Clicked);
 
 
 	// LAYER EDIT
@@ -71,41 +71,41 @@ void ToolBar::initUi()
 	btnLayerBase.toggle(true);
 	btnLayerBase.size(22, 28);
 	btnLayerBase.position(btnErase.positionX() + btnErase.width() + 18 + BUTTON_SPACE, 2);
-	btnLayerBase.click().Connect(this, &ToolBar::btnLayerBase_Clicked);
+	btnLayerBase.click().connect(this, &ToolBar::btnLayerBase_Clicked);
 
 	btnLayerBaseDetail.image("sys/layer_bd_edit.png");
 	btnLayerBaseDetail.type(Button::BUTTON_TOGGLE);
 	btnLayerBaseDetail.size(22, 28);
 	btnLayerBaseDetail.position(btnLayerBase.positionX() + btnLayerBase.width() + BUTTON_SPACE, 2);
-	btnLayerBaseDetail.click().Connect(this, &ToolBar::btnLayerBaseDetail_Clicked);
+	btnLayerBaseDetail.click().connect(this, &ToolBar::btnLayerBaseDetail_Clicked);
 
 	btnLayerDetail.image("sys/layer_d_edit.png");
 	btnLayerDetail.type(Button::BUTTON_TOGGLE);
 	btnLayerDetail.size(22, 28);
 	btnLayerDetail.position(btnLayerBaseDetail.positionX() + btnLayerBaseDetail.width() + BUTTON_SPACE, 2);
-	btnLayerDetail.click().Connect(this, &ToolBar::btnLayerDetail_Clicked);
+	btnLayerDetail.click().connect(this, &ToolBar::btnLayerDetail_Clicked);
 
 	btnLayerForeground.image("sys/layer_fg_edit.png");
 	btnLayerForeground.type(Button::BUTTON_TOGGLE);
 	btnLayerForeground.size(22, 28);
 	btnLayerForeground.position(btnLayerDetail.positionX() + btnLayerDetail.width() + BUTTON_SPACE, 2);
-	btnLayerForeground.click().Connect(this, &ToolBar::btnLayerForeground_Clicked);
+	btnLayerForeground.click().connect(this, &ToolBar::btnLayerForeground_Clicked);
 
 	btnLayerCollision.image("sys/collision.png");
 	btnLayerCollision.type(Button::BUTTON_TOGGLE);
 	btnLayerCollision.size(22, 28);
 	btnLayerCollision.position(btnLayerForeground.positionX() + btnLayerForeground.width() + BUTTON_SPACE, 2);
-	btnLayerCollision.click().Connect(this, &ToolBar::btnLayerCollision_Clicked);
+	btnLayerCollision.click().connect(this, &ToolBar::btnLayerCollision_Clicked);
 
 	btnSpinnerUp.image("sys/up.png");
 	btnSpinnerUp.size(22, 14);
 	btnSpinnerUp.position(btnLayerCollision.positionX() + btnLayerCollision.width() + BUTTON_SPACE + 21, 2);
-	btnSpinnerUp.click().Connect(this, &ToolBar::btnSpinnerUp_Clicked);
+	btnSpinnerUp.click().connect(this, &ToolBar::btnSpinnerUp_Clicked);
 
 	btnSpinnerDown.image("sys/down.png");
 	btnSpinnerDown.size(22, 13);
 	btnSpinnerDown.position(btnLayerCollision.positionX() + btnLayerCollision.width() + BUTTON_SPACE + 21, 17);
-	btnSpinnerDown.click().Connect(this, &ToolBar::btnSpinnerDown_Clicked);
+	btnSpinnerDown.click().connect(this, &ToolBar::btnSpinnerDown_Clicked);
 
 	// LAYER VISIBILITY
 	btnLayerBaseToggle.image("sys/layer_b_show.png");
@@ -113,35 +113,35 @@ void ToolBar::initUi()
 	btnLayerBaseToggle.toggle(true);
 	btnLayerBaseToggle.size(22, 28);
 	btnLayerBaseToggle.position(btnSpinnerDown.positionX() + btnSpinnerDown.width() + 18 + BUTTON_SPACE, 2);
-	btnLayerBaseToggle.click().Connect(this, &ToolBar::btnLayerBaseToggle_Clicked);
+	btnLayerBaseToggle.click().connect(this, &ToolBar::btnLayerBaseToggle_Clicked);
 
 	btnLayerBaseDetailToggle.image("sys/layer_bd_show.png");
 	btnLayerBaseDetailToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerBaseDetailToggle.toggle(true);
 	btnLayerBaseDetailToggle.size(22, 28);
 	btnLayerBaseDetailToggle.position(btnLayerBaseToggle.positionX() + btnLayerBaseToggle.width() + BUTTON_SPACE, 2);
-	btnLayerBaseDetailToggle.click().Connect(this, &ToolBar::btnLayerBaseDetailToggle_Clicked);
+	btnLayerBaseDetailToggle.click().connect(this, &ToolBar::btnLayerBaseDetailToggle_Clicked);
 
 	btnLayerDetailToggle.image("sys/layer_d_show.png");
 	btnLayerDetailToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerDetailToggle.toggle(true);
 	btnLayerDetailToggle.size(22, 28);
 	btnLayerDetailToggle.position(btnLayerBaseDetailToggle.positionX() + btnLayerBaseDetailToggle.width() + BUTTON_SPACE, 2);
-	btnLayerDetailToggle.click().Connect(this, &ToolBar::btnLayerDetailToggle_Clicked);
+	btnLayerDetailToggle.click().connect(this, &ToolBar::btnLayerDetailToggle_Clicked);
 
 	btnLayerForegroundToggle.image("sys/layer_fg_show.png");
 	btnLayerForegroundToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerForegroundToggle.toggle(true);
 	btnLayerForegroundToggle.size(22, 28);
 	btnLayerForegroundToggle.position(btnLayerDetailToggle.positionX() + btnLayerDetailToggle.width() + BUTTON_SPACE, 2);
-	btnLayerForegroundToggle.click().Connect(this, &ToolBar::btnLayerForegroundToggle_Clicked);
+	btnLayerForegroundToggle.click().connect(this, &ToolBar::btnLayerForegroundToggle_Clicked);
 
 	btnLayerCollisionToggle.image("sys/collision_show.png");
 	btnLayerCollisionToggle.type(Button::BUTTON_TOGGLE);
 	btnLayerCollisionToggle.toggle(false);
 	btnLayerCollisionToggle.size(22, 28);
 	btnLayerCollisionToggle.position(btnLayerForegroundToggle.positionX() + btnLayerForegroundToggle.width() + BUTTON_SPACE, 2);
-	btnLayerCollisionToggle.click().Connect(this, &ToolBar::btnLayerCollisionToggle_Clicked);
+	btnLayerCollisionToggle.click().connect(this, &ToolBar::btnLayerCollisionToggle_Clicked);
 
 	// WINDOW VISIBILITY
 	btnMiniMapToggle.image("sys/map.png");
@@ -149,14 +149,14 @@ void ToolBar::initUi()
 	btnMiniMapToggle.toggle(true);
 	btnMiniMapToggle.size(22, 28);
 	btnMiniMapToggle.position(Utility<Renderer>::get().width() - 48, 2);
-	btnMiniMapToggle.click().Connect(this, &ToolBar::btnMiniMapToggle_Clicked);
+	btnMiniMapToggle.click().connect(this, &ToolBar::btnMiniMapToggle_Clicked);
 
 	btnTilePaletteToggle.image("sys/palette.png");
 	btnTilePaletteToggle.type(Button::BUTTON_TOGGLE);
 	btnTilePaletteToggle.toggle(true);
 	btnTilePaletteToggle.size(22, 28);
 	btnTilePaletteToggle.position(Utility<Renderer>::get().width() - 24, 2);
-	btnTilePaletteToggle.click().Connect(this, &ToolBar::btnTilePaletteToggle_Clicked);
+	btnTilePaletteToggle.click().connect(this, &ToolBar::btnTilePaletteToggle_Clicked);
 
 	hookEvents();
 }
@@ -166,14 +166,14 @@ void ToolBar::hookEvents()
 {
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.keyDown().Connect(this, &ToolBar::onKeyDown);
-	e.mouseWheel().Connect(this, &ToolBar::onMouseWheel);
+	e.keyDown().connect(this, &ToolBar::onKeyDown);
+	e.mouseWheel().connect(this, &ToolBar::onMouseWheel);
 }
 
 
-void ToolBar::onKeyDown(KeyCode code, KeyModifier mod, bool repeat)
+void ToolBar::onKeyDown(EventHandler::KeyCode code, EventHandler::KeyModifier mod, bool repeat)
 {
-	if (txtMapName.hasFocus() && code == KEY_ENTER || code == KEY_KP_ENTER)
+	if (txtMapName.hasFocus() && code == EventHandler::KEY_ENTER || code == EventHandler::KEY_KP_ENTER)
 		txtMapName.hasFocus(false);
 }
 
@@ -214,7 +214,7 @@ void ToolBar::update()
 
 	if (btnFillContiguous.visible())
 	{
-		r.drawBoxFilled(mFloodFillExtendedArea.x() + 3, mFloodFillExtendedArea.y() + 4, mFloodFillExtendedArea.w(), mFloodFillExtendedArea.h(), 0, 0, 0, 100);
+		r.drawBoxFilled(mFloodFillExtendedArea.x() + 3, mFloodFillExtendedArea.y() + 4, mFloodFillExtendedArea.width(), mFloodFillExtendedArea.height(), 0, 0, 0, 100);
 		r.drawBoxFilled(mFloodFillExtendedArea, 180, 180, 180);
 		r.drawBox(mFloodFillExtendedArea, 0, 0, 0);
 		r.drawText(mFont, "Contiguous", btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4, 0, 0, 0);
@@ -232,7 +232,7 @@ void ToolBar::update()
 
 	r.drawBoxFilled(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 255, 255, 255);
 	r.drawBox(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 0, 0, 0);
-	r.drawText(mFont, string_format("%i", static_cast<int>(mBrush.width())), btnSpinnerUp.rect().x() - 18 + (mFont.width(string_format("%i", static_cast<int>(mBrush.width()))) / 2), 12, 0, 0, 0);
+	r.drawText(mFont, NAS2D::string_format("%i", static_cast<int>(mBrush.width())), btnSpinnerUp.rect().x() - 18 + (mFont.width(NAS2D::string_format("%i", static_cast<int>(mBrush.width()))) / 2), 12, 0, 0, 0);
 
 	btnSpinnerUp.update();
 	btnSpinnerDown.update();

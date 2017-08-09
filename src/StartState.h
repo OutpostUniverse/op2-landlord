@@ -31,7 +31,7 @@ protected:
 
 	State* update();
 
-	void onKeyDown(KeyCode key, KeyModifier mod, bool repeat);
+	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onMouseMove(int x, int y, int relX, int relY);
 
 	void onQuit();

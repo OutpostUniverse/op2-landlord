@@ -61,7 +61,7 @@ public:
 	void value(int x, int y, int value) { mPatternGrid[y][x] = value; }
 
 private:
-	typedef vector<vector<int> > Grid;
+	typedef std::vector<std::vector<int> > Grid;
 
 	Grid	mPatternGrid;
 };

@@ -12,7 +12,7 @@ class Menu: public Control
 {
 public:
 
-	typedef Gallant::Signal0<void> SelectionChangedCallback;
+	typedef NAS2D::Signals::Signal0<void> SelectionChangedCallback;
 
 	Menu();
 	~Menu();
@@ -48,7 +48,7 @@ public:
 
 protected:
 
-	virtual void onMouseDown(MouseButton button, int x, int y);
+	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
 	virtual void onMouseMove(int x, int y, int relX, int relY);
 
 private:

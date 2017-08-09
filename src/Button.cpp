@@ -2,25 +2,28 @@
 
 #include "Common.h"
 
+#include <iostream>
+
 using namespace std;
+using namespace NAS2D;
 
 Button::Button():	mState(STATE_NORMAL),
 					mType(BUTTON_NORMAL),
 					mMouseHover(false),
 					mImage(nullptr)
 {
-	Utility<EventHandler>::get().mouseButtonDown().Connect(this, &Button::onMouseDown);
-	Utility<EventHandler>::get().mouseButtonUp().Connect(this, &Button::onMouseUp);
-	Utility<EventHandler>::get().mouseMotion().Connect(this, &Button::onMouseMotion);
+	Utility<EventHandler>::get().mouseButtonDown().connect(this, &Button::onMouseDown);
+	Utility<EventHandler>::get().mouseButtonUp().connect(this, &Button::onMouseUp);
+	Utility<EventHandler>::get().mouseMotion().connect(this, &Button::onMouseMotion);
 	hasFocus(true);
 }
 
 
 Button::~Button()
 {
-	Utility<EventHandler>::get().mouseButtonDown().Disconnect(this, &Button::onMouseDown);
-	Utility<EventHandler>::get().mouseButtonUp().Disconnect(this, &Button::onMouseUp);
-	Utility<EventHandler>::get().mouseMotion().Disconnect(this, &Button::onMouseMotion);
+	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &Button::onMouseDown);
+	Utility<EventHandler>::get().mouseButtonUp().disconnect(this, &Button::onMouseUp);
+	Utility<EventHandler>::get().mouseMotion().disconnect(this, &Button::onMouseMotion);
 
 	if (mImage)
 		delete mImage;
@@ -31,7 +34,7 @@ void Button::image(const std::string path)
 {
 	if (!Utility<Filesystem>::get().exists(path))
 	{
-		cout << "Button::image(): specified image file doesn't exist." << endl;
+		std::cout << "Button::image(): specified image file doesn't exist." << endl;
 		return;
 	}
 
@@ -66,12 +69,12 @@ bool Button::toggled() const
 }
 
 
-void Button::onMouseDown(MouseButton button, int x, int y)
+void Button::onMouseDown(EventHandler::MouseButton button, int x, int y)
 {
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
-	if(button == BUTTON_LEFT)
+	if(button == EventHandler::BUTTON_LEFT)
 	{
 		Point_2d click(x, y);
 
@@ -92,12 +95,12 @@ void Button::onMouseDown(MouseButton button, int x, int y)
 }
 
 
-void Button::onMouseUp(MouseButton button, int x, int y)
+void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
 {
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
-	if(button == BUTTON_LEFT)
+	if(button == EventHandler::BUTTON_LEFT)
 	{
 		Point_2d click(x, y);
 		
@@ -114,7 +117,7 @@ void Button::onMouseUp(MouseButton button, int x, int y)
 
 void Button::onMouseMotion(int x, int y, int dX, int dY)
 {
-	if (isPointInRect(x, y, rect().x(), rect().y(), rect().w(), rect().h()))
+	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), rect().height()))
 	{
 		mMouseHover = true;
 		return;
@@ -141,26 +144,26 @@ void Button::draw()
 
 	if (mState == STATE_NORMAL)
 	{
-		bevelBox(rect().x(), rect().y(), rect().w(), rect().h(), false);
+		bevelBox(rect().x(), rect().y(), rect().width(), rect().height(), false);
 	}
 	else //(mState == STATE_PRESSED)
 	{
-		bevelBox(rect().x(), rect().y(), rect().w(), rect().h(), true);
+		bevelBox(rect().x(), rect().y(), rect().width(), rect().height(), true);
 	}
 
 
 	if (mImage)
 	{
-		int x = static_cast<int>(rect().x() + (rect().w() / 2) - ((mImage->width() / 2) + 1));
-		int y = static_cast<int>(rect().y() + (rect().h() / 2) - (mImage->height() / 2));
+		int x = static_cast<int>(rect().x() + (rect().width() / 2) - ((mImage->width() / 2) + 1));
+		int y = static_cast<int>(rect().y() + (rect().height() / 2) - (mImage->height() / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
 		r.drawImage(*mImage, x, y);
 	}
 	else if (fontSet() && !text().empty())
 	{
-		int x = static_cast<int>(rect().x() + (rect().w() / 2) - (font().width(text()) / 2));
-		int y = static_cast<int>(rect().y() + (rect().h() / 2) - (font().height() / 2));
+		int x = static_cast<int>(rect().x() + (rect().width() / 2) - (font().width(text()) / 2));
+		int y = static_cast<int>(rect().y() + (rect().height() / 2) - (font().height() / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
 		r.drawText(font(), text(), x, y, 0, 0, 0);

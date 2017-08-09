@@ -4,6 +4,10 @@
 
 #include "Common.h"
 
+#include <iostream>
+
+using namespace NAS2D;
+
 const int LAYOUT_RECT_WIDTH			= 790;
 const int LAYOUT_RECT_HEIGHT		= 590;
 
@@ -14,9 +18,8 @@ bool	MSG_FLASH = false;
 void setMessage(const std::string& msg)
 {
 	MESSAGE = msg;
-	cout << msg << endl;
+	std::cout << msg << endl;
 }
-
 
 /**
  * C'tpr
@@ -34,9 +37,9 @@ StartState::StartState():	mFont("fonts/ui-normal.png", 7, 9, 0),
 StartState::~StartState()
 {
 	EventHandler& e = Utility<EventHandler>::get();
-	e.keyDown().Disconnect(this, &StartState::onKeyDown);
-	e.mouseMotion().Disconnect(this, &StartState::onMouseMove);
-	e.quit().Disconnect(this, &StartState::onQuit);
+	e.keyDown().disconnect(this, &StartState::onKeyDown);
+	e.mouseMotion().disconnect(this, &StartState::onMouseMove);
+	e.quit().disconnect(this, &StartState::onQuit);
 }
 
 
@@ -57,55 +60,55 @@ void StartState::initialize()
 	mBtnCreateNew.font(mFont);
 	mBtnCreateNew.size(85, 25);
 	mBtnCreateNew.text("Create New");
-	mBtnCreateNew.position(mLayoutRect.x() + mLayoutRect.w() - 95, mLayoutRect.y() + mLayoutRect.h() - 35);
-	mBtnCreateNew.click().Connect(this, &StartState::button_CreateNew_click);
+	mBtnCreateNew.position(mLayoutRect.x() + mLayoutRect.width() - 95, mLayoutRect.y() + mLayoutRect.height() - 35);
+	mBtnCreateNew.click().connect(this, &StartState::button_CreateNew_click);
 
 	mBtnLoadExisting.font(mFont);
 	mBtnLoadExisting.size(85, 25);
 	mBtnLoadExisting.text("Load Map");
-	mBtnLoadExisting.position(mLayoutRect.x() + 10, mLayoutRect.y() + mLayoutRect.h() - 35);
-	mBtnLoadExisting.click().Connect(this, &StartState::button_LoadExisting_click);
+	mBtnLoadExisting.position(mLayoutRect.x() + 10, mLayoutRect.y() + mLayoutRect.height() - 35);
+	mBtnLoadExisting.click().connect(this, &StartState::button_LoadExisting_click);
 	mBtnLoadExisting.enabled(false);
 
 	mBtnRefreshLists.font(mFont);
 	mBtnRefreshLists.size(100, 25);
 	mBtnRefreshLists.text("Refresh List");
-	mBtnRefreshLists.position(mLayoutRect.x() + (mLayoutRect.w() / 2) - mBtnRefreshLists.rect().w() - 10, mLayoutRect.y() + mLayoutRect.h() - 35);
-	mBtnRefreshLists.click().Connect(this, &StartState::button_RefreshLists_click);
+	mBtnRefreshLists.position(mLayoutRect.x() + (mLayoutRect.width() / 2) - mBtnRefreshLists.rect().width() - 10, mLayoutRect.y() + mLayoutRect.height() - 35);
+	mBtnRefreshLists.click().connect(this, &StartState::button_RefreshLists_click);
 
 
 	mTxtWidth.font(mFont);
 	mTxtWidth.width(100);
 	mTxtWidth.text(UI_TEXTFIELD_DEFAULT_WIDTH);
-	mTxtWidth.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10 + mFont.width("Width:") + 5, mLayoutRect.y() + 10);
+	mTxtWidth.position(mLayoutRect.x() + mLayoutRect.width() / 2 + 10 + mFont.width("Width:") + 5, mLayoutRect.y() + 10);
 	mTxtWidth.border(TextField::ALWAYS);
 
 	mTxtHeight.font(mFont);
 	mTxtHeight.width(100);
 	mTxtHeight.text(UI_TEXTFIELD_DEFAULT_HEIGHT);
-	mTxtHeight.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 210 + mFont.width("Height:") + 5, mLayoutRect.y() + 10);
+	mTxtHeight.position(mLayoutRect.x() + mLayoutRect.width() / 2 + 210 + mFont.width("Height:") + 5, mLayoutRect.y() + 10);
 	mTxtHeight.border(TextField::ALWAYS);
 
 	txtMapPath.font(mFont);
-	txtMapPath.width(mLayoutRect.x() + mLayoutRect.w() / 2 - 40);
+	txtMapPath.width(mLayoutRect.x() + mLayoutRect.width() / 2 - 40);
 	txtMapPath.text("");
-	txtMapPath.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10, mBtnCreateNew.positionY() - 30);
+	txtMapPath.position(mLayoutRect.x() + mLayoutRect.width() / 2 + 10, mBtnCreateNew.positionY() - 30);
 
 	mMapFilesMenu.font(mFont);
 	mMapFilesMenu.position(mLayoutRect.x() + 10, mLayoutRect.y() + 10);
-	mMapFilesMenu.width(mLayoutRect.w() / 2 - 20);
+	mMapFilesMenu.width(mLayoutRect.width() / 2 - 20);
 
 	mTsetFilesMenu.font(mFont);
-	mTsetFilesMenu.position(mLayoutRect.x() + mLayoutRect.w() / 2 + 10, mLayoutRect.y() + 50);
-	mTsetFilesMenu.width(mLayoutRect.w() / 2 - 20);
+	mTsetFilesMenu.position(mLayoutRect.x() + mLayoutRect.width() / 2 + 10, mLayoutRect.y() + 50);
+	mTsetFilesMenu.width(mLayoutRect.width() / 2 - 20);
 
 
 	// Hook up event handlers
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.keyDown().Connect(this, &StartState::onKeyDown);
-	e.mouseMotion().Connect(this, &StartState::onMouseMove);
-	e.quit().Connect(this, &StartState::onQuit);
+	e.keyDown().connect(this, &StartState::onKeyDown);
+	e.mouseMotion().connect(this, &StartState::onMouseMove);
+	e.quit().connect(this, &StartState::onQuit);
 
 	fillTilesetMenu();
 }
@@ -119,16 +122,16 @@ void StartState::fillMapMenu()
 	{
 		File xmlFile = Utility<Filesystem>::get().open(EDITOR_MAPS_PATH + lst[i]);
 
-		TiXmlDocument doc;
-		TiXmlElement  *root = nullptr;
+		Xml::XmlDocument doc;
+		Xml::XmlElement  *root = nullptr;
 
-		doc.Parse(xmlFile.raw_bytes());
-		if (doc.Error())
+		doc.parse(xmlFile.raw_bytes());
+		if (doc.error())
 			continue;
 
-		if (doc.FirstChildElement("map"))
+		if (doc.firstChildElement("map"))
 		{
-			if (doc.FirstChildElement()->Attribute("version") != MAP_DRIVER_VERSION)
+			if (doc.firstChildElement()->attribute("version") != MAP_DRIVER_VERSION)
 			{
 				cout << "Map '" << EDITOR_MAPS_PATH + lst[i] << "' is version mismatched." << endl;
 				continue;
@@ -184,14 +187,25 @@ void StartState::button_CreateNew_click()
 	mTxtHeight.highlight(false);
 	txtMapPath.highlight(false);
 
-	if(!from_string<int>(mapWidth, mTxtWidth.text(), std::dec))
+	try
 	{
+		mapWidth = std::stoi(mTxtWidth.text());
 	}
-
-	if(!from_string<int>(mapHeight, mTxtHeight.text(), std::dec))
+	catch (std::invalid_argument)
 	{
 		mTxtHeight.highlight(true);
 		setMessage("Map width field must be an integer.");
+		return;
+	}
+
+	try
+	{
+		mapHeight = std::stoi(mTxtHeight.text());
+	}
+	catch (std::invalid_argument)
+	{
+		mTxtHeight.highlight(true);
+		setMessage("Map height field must be an integer.");
 		return;
 	}
 
@@ -249,9 +263,9 @@ void StartState::button_LoadExisting_click()
 	{
 		mReturnState = new EditorState(mapPath);
 	}
-	catch (Exception& e)
+	catch (std::runtime_error& e)
 	{
-		setMessage("COULDN'T LOAD MAP: " + e.getDescription());
+		setMessage("COULDN'T LOAD MAP: " + std::string(e.what()));
 	}
 }
 
@@ -276,14 +290,14 @@ State* StartState::update()
 	r.clearScreen(COLOR_BLACK);
 
 	r.drawBox(mLayoutRect, 255, 255, 255);
-	r.drawLine(mLayoutRect.x() + mLayoutRect.w() / 2, mLayoutRect.y(), mLayoutRect.x() + mLayoutRect.w() / 2, mLayoutRect.y() + mLayoutRect.h());
+	r.drawLine(mLayoutRect.x() + mLayoutRect.width() / 2, mLayoutRect.y(), mLayoutRect.x() + mLayoutRect.width() / 2, mLayoutRect.y() + mLayoutRect.height());
 
 	mBtnCreateNew.update();
 	mBtnLoadExisting.update();
 	mBtnRefreshLists.update();
 
-	r.drawText(mFont, "Width:", mLayoutRect.x() + mLayoutRect.w() / 2 + 10, mLayoutRect.y() + 15, 255, 255, 255);
-	r.drawText(mFont, "Height:", mLayoutRect.x() + mLayoutRect.w() / 2 + 210, mLayoutRect.y() + 15, 255, 255, 255);
+	r.drawText(mFont, "Width:", mLayoutRect.x() + mLayoutRect.width() / 2 + 10, mLayoutRect.y() + 15, 255, 255, 255);
+	r.drawText(mFont, "Height:", mLayoutRect.x() + mLayoutRect.width() / 2 + 210, mLayoutRect.y() + 15, 255, 255, 255);
 
 	mTxtWidth.update();
 	mTxtHeight.update();
@@ -322,9 +336,9 @@ State* StartState::update()
 /**
  * Key Down handler.
  */
-void StartState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
+void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
 {
-	if(key == KEY_ESCAPE)
+	if(key == EventHandler::KEY_ESCAPE)
 		mReturnState = NULL;
 }
 

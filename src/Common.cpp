@@ -35,16 +35,6 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color_4ub& bgcolor)
 }
 
 
-int stringToInt(const std::string& s)
-{
-	int retInt = 0;
-
-	from_string<int>(retInt, s, std::dec);
-	
-	return retInt;
-}
-
-
 std::string TrimString(const std::string& src, const std::string& c)
 {
 	int p2 = src.find_last_not_of(c);

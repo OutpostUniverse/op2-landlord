@@ -4,6 +4,9 @@
 #include "Common.h"
 
 #include <stack>
+#include <sstream>
+
+using namespace NAS2D;
 
 
 const bool			SHOW_DEBUG_DEFAULT	= false;
@@ -86,12 +89,12 @@ EditorState::EditorState(const string& name, const string& mapPath, const string
 
 EditorState::~EditorState()
 {
-	Utility<EventHandler>::get().keyUp().Disconnect(this, &EditorState::onKeyUp);
-	Utility<EventHandler>::get().keyDown().Disconnect(this, &EditorState::onKeyDown);
-	Utility<EventHandler>::get().mouseMotion().Disconnect(this, &EditorState::onMouseMove);
-	Utility<EventHandler>::get().mouseButtonUp().Disconnect(this, &EditorState::onMouseUp);
-	Utility<EventHandler>::get().mouseButtonDown().Disconnect(this, &EditorState::onMouseDown);
-	Utility<EventHandler>::get().quit().Disconnect(this, &EditorState::onQuit);
+	Utility<EventHandler>::get().keyUp().disconnect(this, &EditorState::onKeyUp);
+	Utility<EventHandler>::get().keyDown().disconnect(this, &EditorState::onKeyDown);
+	Utility<EventHandler>::get().mouseMotion().disconnect(this, &EditorState::onMouseMove);
+	Utility<EventHandler>::get().mouseButtonUp().disconnect(this, &EditorState::onMouseUp);
+	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &EditorState::onMouseDown);
+	Utility<EventHandler>::get().quit().disconnect(this, &EditorState::onQuit);
 
 	if (MINI_MAP_SURFACE)
 	{
@@ -115,12 +118,12 @@ void EditorState::initialize()
 	fillTables();
 	
 	// Hook up event handlers
-	Utility<EventHandler>::get().keyUp().Connect(this, &EditorState::onKeyUp);
-	Utility<EventHandler>::get().keyDown().Connect(this, &EditorState::onKeyDown);
-	Utility<EventHandler>::get().mouseMotion().Connect(this, &EditorState::onMouseMove);
-	Utility<EventHandler>::get().mouseButtonUp().Connect(this, &EditorState::onMouseUp);
-	Utility<EventHandler>::get().mouseButtonDown().Connect(this, &EditorState::onMouseDown);
-	Utility<EventHandler>::get().quit().Connect(this, &EditorState::onQuit);
+	Utility<EventHandler>::get().keyUp().connect(this, &EditorState::onKeyUp);
+	Utility<EventHandler>::get().keyDown().connect(this, &EditorState::onKeyDown);
+	Utility<EventHandler>::get().mouseMotion().connect(this, &EditorState::onMouseMove);
+	Utility<EventHandler>::get().mouseButtonUp().connect(this, &EditorState::onMouseUp);
+	Utility<EventHandler>::get().mouseButtonDown().connect(this, &EditorState::onMouseDown);
+	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
 
 	mMap.viewport(Rectangle_2d(0, 32, Utility<Renderer>::get().width(), Utility<Renderer>::get().height() - 32));
 }
@@ -134,7 +137,7 @@ void EditorState::initUi()
 
 	// ToolBar
 	mToolBar.map_name(mMap.name());
-	mToolBar.toolbar_event().Connect(this, &EditorState::toolbar_event);
+	mToolBar.toolbar_event().connect(this, &EditorState::toolbar_event);
 
 	// Mini Map
 	mMiniMap.font(&mFont);
@@ -146,14 +149,14 @@ void EditorState::initUi()
 	mBtnLinkOkay.size(50, 25);
 	mBtnLinkOkay.position(10, 160);
 	mBtnLinkOkay.text("Okay");
-	mBtnLinkOkay.click().Connect(this, &EditorState::button_MapLinkOkay_Click);
+	mBtnLinkOkay.click().connect(this, &EditorState::button_MapLinkOkay_Click);
 	mBtnLinkOkay.visible(false);
 
 	mBtnLinkCancel.font(mFont);
 	mBtnLinkCancel.size(50, 25);
 	mBtnLinkCancel.position(75, 160);
 	mBtnLinkCancel.text("Cancel");
-	mBtnLinkCancel.click().Connect(this, &EditorState::button_MapLinkCancel_Click);
+	mBtnLinkCancel.click().connect(this, &EditorState::button_MapLinkCancel_Click);
 	mBtnLinkCancel.visible(false);
 
 	mTxtLinkDestination.font(mFont);
@@ -221,7 +224,7 @@ void EditorState::button_MapLinkOkay_Click()
 	if(mLinkCell)
 	{
 		mLinkCell->link(mTxtLinkDestination.text());
-		mLinkCell->link_destination(Point_2d(stringToInt(mTxtLinkDestX.text()), stringToInt(mTxtLinkDestY.text())));
+		mLinkCell->link_destination(Point_2d(std::stoi(mTxtLinkDestX.text()), std::stoi(mTxtLinkDestY.text())));
 	}
 
 	mBtnLinkOkay.visible(false);
@@ -277,7 +280,7 @@ State* EditorState::update()
 
 	updateUI();
 
-	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.screenCenterX() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.center_x() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
 
 	r.drawImage(*mMousePointer, mMouseCoords.x(), mMouseCoords.y());
 	if (layer_hidden(mEditState, mToolBar))
@@ -295,8 +298,8 @@ void EditorState::updateUI()
 	mToolBar.update();
 	mMiniMap.update();
 
-	r.drawTextShadow(mFont, string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()), static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y()) / mMap.tileset().height())), 5, r.height() - 28, 1, 255, 255, 255, 0, 0, 0);
-	r.drawTextShadow(mFont, string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mFont, NAS2D::string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()), static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y()) / mMap.tileset().height())), 5, r.height() - 28, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mFont, NAS2D::string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
 
 	mTilePalette.update();
 
@@ -351,7 +354,7 @@ void EditorState::updateSelector()
 	{
 		for(int col = p->width(); col > 0; col--)
 		{
-			r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.w(), mSelectorRect.h(), 255, 255, 255);
+			r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.width(), mSelectorRect.height(), 255, 255, 255);
 			offsetX += 32;
 		}
 		offsetX = 0;
@@ -363,7 +366,7 @@ void EditorState::updateSelector()
 /**
  * Handles KeyDown events.
  */
-void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
+void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
 {
 	if(repeat)
 		return;
@@ -375,37 +378,37 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 
 	switch(key)
 	{
-		case KEY_ESCAPE:
+		case EventHandler::KEY_ESCAPE:
 			mReturnState = new StartState();
 			break;
 
-		case KEY_LEFT:
+		case EventHandler::KEY_LEFT:
 			mScrollVector.x() = -SCROLL_SPEED;
 			break;
 
-		case KEY_RIGHT:
+		case EventHandler::KEY_RIGHT:
 			mScrollVector.x() = SCROLL_SPEED;
 			break;
 
-		case KEY_UP:
+		case EventHandler::KEY_UP:
 			mScrollVector.y() = -SCROLL_SPEED;
 			break;
 
-		case KEY_DOWN:
+		case EventHandler::KEY_DOWN:
 			mScrollVector.y() = SCROLL_SPEED;
 			break;
 
-		case KEY_F1:
+		case EventHandler::KEY_F1:
 			mDrawDebug = !mDrawDebug;
 			mMap.showLinks(mDrawDebug);
 			break;
 
 		// Stealing this for dumping the minimap for now
-		case KEY_F2:
+		case EventHandler::KEY_F2:
 			SDL_SaveBMP(MINI_MAP_SURFACE, "minimap.bmp");
 			break;
 
-		case KEY_F3:
+		case EventHandler::KEY_F3:
 			mBtnLinkOkay.visible(true);
 			mBtnLinkCancel.visible(true);
 			mTxtLinkDestination.visible(true);
@@ -414,17 +417,17 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 			mLinkCell = &mMap.getCell(mMouseCoords);
 			mCellInspectRect = mMap.injectMousePosition(mMouseCoords);
 			mTxtLinkDestination.text(mLinkCell->link());
-			mTxtLinkDestX.text(string_format("%i", mLinkCell->link_destination().x()));
-			mTxtLinkDestY.text(string_format("%i", mLinkCell->link_destination().y()));
+			mTxtLinkDestX.text(NAS2D::string_format("%i", mLinkCell->link_destination().x()));
+			mTxtLinkDestY.text(NAS2D::string_format("%i", mLinkCell->link_destination().y()));
 			setState(STATE_MAP_LINK_EDIT);
 			break;
 
-		case KEY_F10:
+		case EventHandler::KEY_F10:
 			mHideUi = !mHideUi;
 			break;
 
-		case KEY_z:
-			if(KeyTranslator::control(mod))
+		case EventHandler::KEY_z:
+			if(Utility<EventHandler>::get().control(mod))
 			{
 				if(!mFieldUndo.empty())
 				{
@@ -444,20 +447,20 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 /**
  * Handles KeyUp events.
  */
-void EditorState::onKeyUp(KeyCode key, KeyModifier mod)
+void EditorState::onKeyUp(EventHandler::KeyCode key, EventHandler::KeyModifier mod)
 {
 	if(mEditState == STATE_MAP_LINK_EDIT)
 	{
 		return;
 	}
 
-	if(key == KEY_LEFT)
+	if(key == EventHandler::KEY_LEFT)
 		mScrollVector.x() = 0.0f;
-	else if(key == KEY_RIGHT)
+	else if(key == EventHandler::KEY_RIGHT)
 		mScrollVector.x() = 0.0f;
-	else if(key == KEY_UP)
+	else if(key == EventHandler::KEY_UP)
 		mScrollVector.y() = 0.0f;
-	else if(key == KEY_DOWN)
+	else if(key == EventHandler::KEY_DOWN)
 		mScrollVector.y() = 0.0f;
 }
 
@@ -501,17 +504,17 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 /**
  * Handles MouseDown events.
  */
-void EditorState::onMouseDown(MouseButton button, int x, int y)
+void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
 {
 	Utility<EventHandler>::get().grabMouse();
 
 	// Left Mouse Button
-	if(button == BUTTON_LEFT)
+	if(button == EventHandler::BUTTON_LEFT)
 	{
 		mLeftButtonDown = true;
 		handleLeftButtonDown(x, y);
 	}
-	else if(button == BUTTON_RIGHT)
+	else if(button == EventHandler::BUTTON_RIGHT)
 	{
 		mRightButtonDown = true;
 		mSavedMouseCoords = mMouseCoords;
@@ -523,9 +526,9 @@ void EditorState::onMouseDown(MouseButton button, int x, int y)
 /**
  * Handles MouseUp events
  */
-void EditorState::onMouseUp(MouseButton button, int x, int y)
+void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 {
-	if(button == BUTTON_LEFT)
+	if(button == EventHandler::BUTTON_LEFT)
 	{
 		mLeftButtonDown = false;
 		if(mEditState == STATE_MAP_LINK_EDIT)
@@ -540,7 +543,7 @@ void EditorState::onMouseUp(MouseButton button, int x, int y)
 			}
 		}
 	}
-	else if(button == BUTTON_RIGHT)
+	else if(button == EventHandler::BUTTON_RIGHT)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);
@@ -593,7 +596,7 @@ void EditorState::handleLeftButtonDown(int x, int y)
 void EditorState::changeTileTexture()
 {
 	if (StateToLayer.find(mEditState) == StateToLayer.end())
-		throw Exception(0, "Bad State", "EditorState::changeTileTExture() called with an invalid state.");
+		throw std::runtime_error("EditorState::changeTileTExture() called with an invalid state.");
 
 	if (layer_hidden(mEditState, mToolBar))
 		return;

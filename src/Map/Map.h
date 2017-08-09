@@ -102,11 +102,11 @@ private:
 
 	void load(const std::string& filepath);
 
-	void parseProperties(TiXmlNode* node);
-	void parseTilesets(TiXmlNode* node);
-	void parseLevels(TiXmlNode* node);
-	void parseObjects(TiXmlNode* node);
-	void parseLinks(TiXmlNode* node);
+	void parseProperties(NAS2D::Xml::XmlNode* node);
+	void parseTilesets(NAS2D::Xml::XmlNode* node);
+	void parseLevels(NAS2D::Xml::XmlNode* node);
+	void parseObjects(NAS2D::Xml::XmlNode* node);
+	void parseLinks(NAS2D::Xml::XmlNode* node);
 
 	void validateCameraPosition();
 
