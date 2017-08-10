@@ -20,71 +20,12 @@ SDL_Surface*		MINI_MAP_SURFACE	= nullptr; // HACK!
 std::stack<Point_2d> FLOOD_STACK;		// Stack used for contiguous flood fill.
 
 
-std::map<EditState, string>	StateStringMap;			/**< EditState string table. */
-std::map<int, EditState>	StateIntMap;			/**< EditState int table. */
-std::map<EditState, Cell::TileLayer> StateToLayer;	/**< Translation table between a specific edit state and tile layer. */
-
-bool layer_hidden(EditState _s, ToolBar& _t)
+EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12),
+													mBoldFont("fonts/opensans-bold.ttf", 12),
+													mMapSavePath(mapPath)
 {
-	switch (_s)
-	{
-	case STATE_BASE_TILE_INDEX:
-		return !_t.show_bg();
-	case STATE_BASE_DETAIL_TILE_INDEX:
-		return !_t.show_bg_detail();
-	case STATE_DETAIL_TILE_INDEX:
-		return !_t.show_detail();
-	case STATE_FOREGROUND_TILE_INDEX:
-		return !_t.show_foreground();
-	case STATE_TILE_COLLISION:
-		return !_t.show_collision();
-	default:
-		return false;
-	}
+	mMapFile = new MapFile(mapPath, MapFile::TileGroups);
 }
-
-
-EditorState::EditorState(const string& mapPath):
-	mMousePointer(nullptr),
-	mPointer_Normal("sys/normal.png"),
-	mPointer_Fill("sys/fill.png"),
-	mPointer_Eraser("sys/eraser.png"),
-	mLayerHidden("sys/layer_hidden.png"),
-	mFont("fonts/ui-normal.png", 7, 9, 0),
-	mLinkCell(nullptr),
-	mMap(mapPath),
-	mMapSavePath(mapPath),
-	mEditState(STATE_BASE_TILE_INDEX),
-	mPreviousEditState(mEditState),
-	mDrawDebug(SHOW_DEBUG_DEFAULT),
-	mLeftButtonDown(false),
-	mRightButtonDown(false),
-	mPlacingCollision(false),
-	mHideUi(HIDE_UI_DEFAULT),
-	mMapChanged(false),
-	mReturnState(nullptr)
-{}
-
-
-EditorState::EditorState(const string& name, const string& mapPath, const string& tsetPath, int w, int h):
-	mMousePointer(nullptr),
-	mPointer_Normal("sys/normal.png"),
-	mPointer_Fill("sys/fill.png"),
-	mPointer_Eraser("sys/eraser.png"),
-	mLayerHidden("sys/layer_hidden.png"),
-	mFont("fonts/ui-normal.png", 7, 9, 0),
-	mLinkCell(nullptr),
-	mMap(name, tsetPath, w, h),
-	mMapSavePath(mapPath),
-	mPreviousEditState(STATE_BASE_TILE_INDEX),
-	mDrawDebug(SHOW_DEBUG_DEFAULT),
-	mLeftButtonDown(false),
-	mRightButtonDown(false),
-	mPlacingCollision(false),
-	mHideUi(HIDE_UI_DEFAULT),
-	mMapChanged(false),
-	mReturnState(nullptr)
-{}
 
 
 EditorState::~EditorState()
@@ -112,11 +53,6 @@ void EditorState::initialize()
 
 	initUi();
 
-	mMousePointer = &mPointer_Normal;
-
-	// Fill tables
-	fillTables();
-	
 	// Hook up event handlers
 	Utility<EventHandler>::get().keyUp().connect(this, &EditorState::onKeyUp);
 	Utility<EventHandler>::get().keyDown().connect(this, &EditorState::onKeyDown);
@@ -125,23 +61,22 @@ void EditorState::initialize()
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &EditorState::onMouseDown);
 	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
 
-	mMap.viewport(Rectangle_2d(0, 32, Utility<Renderer>::get().width(), Utility<Renderer>::get().height() - 32));
+	//mMap.viewport(Rectangle_2d(0, 32, Utility<Renderer>::get().width(), Utility<Renderer>::get().height() - 32));
 }
 
 
 void EditorState::initUi()
 {
 	// Tile Palette
-	mTilePalette.tileset(&mMap.tileset());
 	mTilePalette.font(mFont);
+	mTilePalette.boldFont(mBoldFont);
 
 	// ToolBar
-	mToolBar.map_name(mMap.name());
 	mToolBar.toolbar_event().connect(this, &EditorState::toolbar_event);
 
 	// Mini Map
-	mMiniMap.font(&mFont);
-	mMiniMap.map(&mMap);
+	mMiniMap.font(mFont);
+	mMiniMap.boldFont(mBoldFont);
 	mMiniMap.hidden(!mToolBar.show_minimap());
 
 	// Link Edit UI
@@ -181,38 +116,6 @@ void EditorState::initUi()
 }
 
 
-void EditorState::fillTables()
-{
-	fillEditStateStringTable();
-	fillStateToLayerTable();
-}
-
-
-/**
- * Fills a table with Ints and maps them to EditStates.
- */
-void EditorState::fillEditStateStringTable()
-{
-	StateStringMap[STATE_BASE_TILE_INDEX]			= "Base Layer Editing";
-	StateStringMap[STATE_BASE_DETAIL_TILE_INDEX]	= "Base Detail Layer Editing";
-	StateStringMap[STATE_DETAIL_TILE_INDEX]			= "Detail Layer Editing";
-	StateStringMap[STATE_FOREGROUND_TILE_INDEX]		= "Foreground Layer Editing";
-	StateStringMap[STATE_TILE_COLLISION]			= "Collision Layer Editing";
-	StateStringMap[STATE_MAP_LINK_EDIT]				= "Map Link Editing";
-}
-
-
-/**
- * Fills a table to use as an easy translation from layer edit state to cell layer.
- */
-void EditorState::fillStateToLayerTable()
-{
-	StateToLayer[STATE_BASE_TILE_INDEX]			= Cell::LAYER_BASE;
-	StateToLayer[STATE_BASE_DETAIL_TILE_INDEX]	= Cell::LAYER_BASE_DETAIL;
-	StateToLayer[STATE_DETAIL_TILE_INDEX]		= Cell::LAYER_DETAIL;
-	StateToLayer[STATE_FOREGROUND_TILE_INDEX]	= Cell::LAYER_FOREGROUND;
-}
-
 /**
  * Handler link okay button click.
  * 
@@ -221,21 +124,11 @@ void EditorState::fillStateToLayerTable()
  */
 void EditorState::button_MapLinkOkay_Click()
 {
-	if(mLinkCell)
-	{
-		mLinkCell->link(mTxtLinkDestination.text());
-		mLinkCell->link_destination(Point_2d(std::stoi(mTxtLinkDestX.text()), std::stoi(mTxtLinkDestY.text())));
-	}
-
 	mBtnLinkOkay.visible(false);
 	mBtnLinkCancel.visible(false);
 	mTxtLinkDestination.visible(false);
 	mTxtLinkDestX.visible(false);
 	mTxtLinkDestY.visible(false);
-
-	mLinkCell = NULL;
-
-	restorePreviousState();
 }
 
 
@@ -244,8 +137,6 @@ void EditorState::button_MapLinkOkay_Click()
  */
 void EditorState::button_MapLinkCancel_Click()
 {
-	restorePreviousState();
-
 	mBtnLinkOkay.visible(false);
 	mBtnLinkCancel.visible(false);
 	mTxtLinkDestination.visible(false);
@@ -265,26 +156,15 @@ State* EditorState::update()
 	updateScroll();
 	updateSelector();
 
-
 	if(mHideUi)
 		return mReturnState;
 
 	if(mDrawDebug)
 		debug();
 
-	if(mEditState == STATE_MAP_LINK_EDIT)
-	{
-		r.drawBoxFilled(0, 0, r.width(), r.height(), 0, 0, 0, 65);
-		r.drawBox(mCellInspectRect, 255, 255, 0);
-	}
-
 	updateUI();
 
 	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.center_x() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
-
-	r.drawImage(*mMousePointer, mMouseCoords.x(), mMouseCoords.y());
-	if (layer_hidden(mEditState, mToolBar))
-		r.drawImage(mLayerHidden, mMouseCoords.x(), mMouseCoords.y() + 34, 1.0f, 255, 255, 0, 255);
 
 	return mReturnState;
 }
@@ -298,8 +178,8 @@ void EditorState::updateUI()
 	mToolBar.update();
 	mMiniMap.update();
 
-	r.drawTextShadow(mFont, NAS2D::string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()), static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y()) / mMap.tileset().height())), 5, r.height() - 28, 1, 255, 255, 255, 0, 0, 0);
-	r.drawTextShadow(mFont, NAS2D::string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
+	//r.drawTextShadow(mFont, NAS2D::string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()), static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y()) / mMap.tileset().height())), 5, r.height() - 28, 1, 255, 255, 255, 0, 0, 0);
+	//r.drawTextShadow(mFont, NAS2D::string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
 
 	mTilePalette.update();
 
@@ -319,14 +199,10 @@ void EditorState::updateUI()
  */
 void EditorState::updateScroll()
 {
-	mMap.update();
 	if(!mHideUi)
-	{
-		mSelectorRect = mMap.injectMousePosition(mMouseCoords);
-	}
+	{}
 
 	float delta = (mTimer.delta() / 1000.0f);
-	mMap.moveCamera(static_cast<float>(mScrollVector.x()) * delta, static_cast<float>(mScrollVector.y()) * delta);
 }
 
 
@@ -335,6 +211,8 @@ void EditorState::updateScroll()
  */
 void EditorState::updateSelector()
 {
+	return;
+
 	// Don't draw selector if the UI is hidden.
 	if(mHideUi || mMouseCoords.y() < 32)
 		return;
@@ -347,14 +225,15 @@ void EditorState::updateSelector()
 	// Draw Tile Selector
 	int offsetX = 0, offsetY = 0;
 	
-	const Pattern* p = &mTilePalette.pattern();
-	if(mEditState == STATE_TILE_COLLISION || mToolBar.erase()) p = &mToolBar.brush();
+	const Pattern* p = nullptr;
+	if(mToolBar.erase())
+		p = &mToolBar.brush();
 
 	for(int row = p->height(); row > 0; row--)
 	{
 		for(int col = p->width(); col > 0; col--)
 		{
-			r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.width(), mSelectorRect.height(), 255, 255, 255);
+			//r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.width(), mSelectorRect.height(), 255, 255, 255);
 			offsetX += 32;
 		}
 		offsetX = 0;
@@ -370,11 +249,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 {
 	if(repeat)
 		return;
-
-	if(mEditState == STATE_MAP_LINK_EDIT)
-	{
-		return;
-	}
 
 	switch(key)
 	{
@@ -400,26 +274,11 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 
 		case EventHandler::KEY_F1:
 			mDrawDebug = !mDrawDebug;
-			mMap.showLinks(mDrawDebug);
 			break;
 
 		// Stealing this for dumping the minimap for now
 		case EventHandler::KEY_F2:
 			SDL_SaveBMP(MINI_MAP_SURFACE, "minimap.bmp");
-			break;
-
-		case EventHandler::KEY_F3:
-			mBtnLinkOkay.visible(true);
-			mBtnLinkCancel.visible(true);
-			mTxtLinkDestination.visible(true);
-			mTxtLinkDestX.visible(true);
-			mTxtLinkDestY.visible(true);
-			mLinkCell = &mMap.getCell(mMouseCoords);
-			mCellInspectRect = mMap.injectMousePosition(mMouseCoords);
-			mTxtLinkDestination.text(mLinkCell->link());
-			mTxtLinkDestX.text(NAS2D::string_format("%i", mLinkCell->link_destination().x()));
-			mTxtLinkDestY.text(NAS2D::string_format("%i", mLinkCell->link_destination().y()));
-			setState(STATE_MAP_LINK_EDIT);
 			break;
 
 		case EventHandler::KEY_F10:
@@ -429,11 +288,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 		case EventHandler::KEY_z:
 			if(Utility<EventHandler>::get().control(mod))
 			{
-				if(!mFieldUndo.empty())
-				{
-					mMap.field(mFieldUndo);
-					mMiniMap.update_minimap();
-				}
 			}
 
 			break;
@@ -449,11 +303,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
  */
 void EditorState::onKeyUp(EventHandler::KeyCode key, EventHandler::KeyModifier mod)
 {
-	if(mEditState == STATE_MAP_LINK_EDIT)
-	{
-		return;
-	}
-
 	if(key == EventHandler::KEY_LEFT)
 		mScrollVector.x() = 0.0f;
 	else if(key == EventHandler::KEY_RIGHT)
@@ -479,9 +328,9 @@ void EditorState::onQuit()
  */
 void EditorState::onMouseMove(int x, int y, int relX, int relY)
 {
-	if(mRightButtonDown && mEditState != STATE_MAP_LINK_EDIT)
+	if(mRightButtonDown)
 	{
-		mMap.moveCamera(relX, relY);
+		//mMap.moveCamera(relX, relY);
 		return;
 	}
 
@@ -493,10 +342,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 		if (y < 32 || mToolBar.flood() || mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
 			return;
 
-		if(mEditState == STATE_TILE_COLLISION)
-			pattern_collision();
-		else
-			changeTileTexture();
+		changeTileTexture();
 	}
 }
 
@@ -531,17 +377,14 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	if(button == EventHandler::BUTTON_LEFT)
 	{
 		mLeftButtonDown = false;
-		if(mEditState == STATE_MAP_LINK_EDIT)
-		{
-		}
-		else if(mEditState == STATE_BASE_TILE_INDEX || mEditState == STATE_BASE_DETAIL_TILE_INDEX || mEditState == STATE_DETAIL_TILE_INDEX || mEditState == STATE_FOREGROUND_TILE_INDEX)
-		{
+		//if(mEditState == STATE_BASE_TILE_INDEX || mEditState == STATE_BASE_DETAIL_TILE_INDEX || mEditState == STATE_DETAIL_TILE_INDEX || mEditState == STATE_FOREGROUND_TILE_INDEX)
+		//{
 			if(mMapChanged)
 			{
 				mMiniMap.update_minimap();
 				mMapChanged = false;
 			}
-		}
+		//}
 	}
 	else if(button == EventHandler::BUTTON_RIGHT)
 	{
@@ -564,27 +407,16 @@ void EditorState::handleLeftButtonDown(int x, int y)
 	// Hate the look of this but it effectively condenses the ignore checks.
 	if (y < 32 ||
 		(mToolBar.flood() && isPointInRect(pt, mToolBar.flood_tool_extended_area())) ||
-		mEditState == STATE_MAP_LINK_EDIT ||
 		isPointInRect(pt, mTilePalette.rect()) ||
 		isPointInRect(pt, mMiniMap.rect()) ||
 		isPointInRect(pt, mTilePalette.rect()))
 		return;
 
 
-	Cell& cell = mMap.getCell(mMouseCoords);
+	//Cell& cell = mMap.getCell(mMouseCoords);
 
-	if(mEditState == STATE_TILE_COLLISION)
-	{
-		saveUndo();
-		cell.blocked(!cell.blocked());
-		mPlacingCollision = cell.blocked();
-		pattern_collision();
-	}
-	else
-	{
-		saveUndo();
-		changeTileTexture();
-	}
+	saveUndo();
+	changeTileTexture();
 }
 
 
@@ -595,12 +427,7 @@ void EditorState::handleLeftButtonDown(int x, int y)
  */
 void EditorState::changeTileTexture()
 {
-	if (StateToLayer.find(mEditState) == StateToLayer.end())
-		throw std::runtime_error("EditorState::changeTileTExture() called with an invalid state.");
-
-	if (layer_hidden(mEditState, mToolBar))
-		return;
-
+	/*
 	if (mToolBar.flood())
 	{
 		if (mToolBar.flood_contiguous())
@@ -616,34 +443,43 @@ void EditorState::changeTileTexture()
 		return;
 
 	mMapChanged = true;
-	return;
+	*/
 }
 
 
 /**
  * Fills a given cell layer with a pattern.
  */
-void EditorState::patternFill(Cell::TileLayer layer)
+void EditorState::patternFill()
 {
+	/*
 	const Pattern& p = mTilePalette.pattern();
 
-	for(int row = 0; row < mMap.height(); row++)
-		for(int col = 0; col < mMap.width(); col++)
+	for (int row = 0; row < mMap.height(); row++)
+	{
+		for (int col = 0; col < mMap.width(); col++)
+		{
 			mMap.getCellByGridCoords(col, row).index(layer, p.value(col % p.width(), row % p.height()));
+		}
+	}
+	*/
 }
 
 
 /**
  * Fills a contiguous area in a given layer with a pattern.
  */
-void EditorState::patternFill_Contig(Cell::TileLayer layer, const Point_2d& _pt, int seed_index)
+void EditorState::patternFill_Contig(const Point_2d& _pt, int seed_index)
 {
+	/*
 	const Pattern& _pCheck = mTilePalette.pattern();
 	if (seed_index == _pCheck.value(_pt.x() % _pCheck.width(), _pt.y() % _pCheck.height()))
 		return;
 
 	while (!FLOOD_STACK.empty())
+	{
 		FLOOD_STACK.pop();
+	}
 
 	static const vector<int> dX = { 0, 1, 0, -1 }; // Neighbor Coords
 	static const vector<int> dY = { -1, 0, 1, 0 }; // Neighbor Coords
@@ -662,21 +498,23 @@ void EditorState::patternFill_Contig(Cell::TileLayer layer, const Point_2d& _pt,
 		{
 			Point_2d coord(_pt_top.x() + dX[i], _pt_top.y() + dY[i]);
 			if (coord.x() >= 0 && coord.x() < mMap.width() && coord.y() >= 0 && coord.y() < mMap.height() && mMap.getCellByGridCoords(coord).index(layer) == seed_index)
+			{
 				FLOOD_STACK.push(coord);
+			}
 		}
 	}
-
+	*/
 }
 
 
 /**
 * If value < 0, ignores the pattern values and writes -1 instead.
 */
-void EditorState::pattern(Cell::TileLayer layer, int value)
+void EditorState::pattern(int value)
 {
+	/*
 	const Pattern* _p = &mTilePalette.pattern();
-	if (value < 0)
-		_p = &mToolBar.brush();
+	if (value < 0) { _p = &mToolBar.brush(); }
 
 
 	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
@@ -696,6 +534,7 @@ void EditorState::pattern(Cell::TileLayer layer, int value)
 			}
 		}
 	}
+	*/
 }
 
 
@@ -707,6 +546,7 @@ void EditorState::pattern(Cell::TileLayer layer, int value)
  */
 void EditorState::pattern_collision()
 {
+	/*
 	const Pattern& _p = mToolBar.brush();
 	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
 
@@ -718,9 +558,12 @@ void EditorState::pattern_collision()
 			int y = _pt.y() - ((_p.height() - 1) - row);
 
 			if (x >= 0 && y >= 0)
+			{
 				mMap.getCellByGridCoords(x, y).blocked(mPlacingCollision);
+			}
 		}
 	}
+	*/
 }
 
 
@@ -731,49 +574,27 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 	case ToolBar::TOOLBAR_SAVE:
 		saveMap();
 		break;
-	case ToolBar::TOOLBAR_LAYER_BG_EDIT:
-		mEditState = STATE_BASE_TILE_INDEX;
-		break;
-	case ToolBar::TOOLBAR_LAYER_BG_DETAIL_EDIT:
-		mEditState = STATE_BASE_DETAIL_TILE_INDEX;
-		break;
-	case ToolBar::TOOLBAR_LAYER_DETAIL_EDIT:
-		mEditState = STATE_DETAIL_TILE_INDEX;
-		break;
-	case ToolBar::TOOLBAR_LAYER_FOREGROUND_EDIT:
-		mEditState = STATE_FOREGROUND_TILE_INDEX;
-		break;
-	case ToolBar::TOOLBAR_LAYER_COLLISION_EDIT:
-		mEditState = STATE_TILE_COLLISION;
-		break;
-	case ToolBar::TOOLBAR_LAYER_BG_TOGGLE:
-	case ToolBar::TOOLBAR_LAYER_BG_DETAIL_TOGGLE:
-	case ToolBar::TOOLBAR_LAYER_DETAIL_TOGGLE:
-	case ToolBar::TOOLBAR_LAYER_FOREGROUND_TOGGLE:
-	case ToolBar::TOOLBAR_LAYER_COLLISION_TOGGLE:
-		mMap.drawBg(mToolBar.show_bg());
-		mMap.drawBgDetail(mToolBar.show_bg_detail());
-		mMap.drawDetail(mToolBar.show_detail());
-		mMap.drawForeground(mToolBar.show_foreground());
-		mMap.drawCollision(mToolBar.show_collision());
-		if (mToolBar.show_collision()) mTilePalette.reset();
-		break;
+
 	case ToolBar::TOOLBAR_MINIMAP_TOGGLE:
 		mMiniMap.hidden(!mToolBar.show_minimap());
 		break;
+
 	case ToolBar::TOOLBAR_TILE_PALETTE_TOGGLE:
 		mTilePalette.hidden(!mToolBar.show_tilepalette());
 		break;
 
 	case ToolBar::TOOLBAR_TOOL_PENCIL:
-		mMousePointer = &mPointer_Normal;
+		Utility<Renderer>::get().setCursor(POINTER_NORMAL);
 		break;
+
 	case ToolBar::TOOLBAR_TOOL_FILL:
-		mMousePointer = &mPointer_Fill;
+		Utility<Renderer>::get().setCursor(POINTER_FILL);
 		break;
+
 	case ToolBar::TOOLBAR_TOOL_ERASER:
-		mMousePointer = &mPointer_Eraser;
+		Utility<Renderer>::get().setCursor(POINTER_ERASE);
 		break;
+
 	default:
 		break;
 	}
@@ -788,11 +609,10 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 void EditorState::saveMap()
 {
 	Filesystem& f = Utility<Filesystem>::get();
-	if (!f.exists("maps"))
-		f.makeDirectory("maps");
 
-	mMap.name(mToolBar.map_name());
-	mMap.save(mMapSavePath);
+	if (!f.exists("maps")) { f.makeDirectory("maps"); }
+
+	//mMap.save(mMapSavePath);
 }
 
 
@@ -801,31 +621,7 @@ void EditorState::saveMap()
  */
 void EditorState::saveUndo()
 {
-	mFieldUndo = mMap.field();
-}
-
-
-/**
- * Sets the current state and saves the previous state.
- */
-void EditorState::setState(EditState state)
-{
-	if(mEditState == state)
-		return;
-
-	mPreviousEditState = mEditState;
-	mEditState = state;
-}
-
-
-/**
- * Restores the previous state.
- */
-void EditorState::restorePreviousState()
-{
-	EditState state = mEditState;
-	mEditState = mPreviousEditState;
-	mPreviousEditState = state;
+	//mFieldUndo = mMap.field();
 }
 
 
@@ -834,6 +630,7 @@ void EditorState::restorePreviousState()
  */
 void EditorState::debug()
 {
+	/*
 	Renderer& r = Utility<Renderer>::get();
 
 	// Cell coords pointed at by mouse.
@@ -841,12 +638,6 @@ void EditorState::debug()
 	Point_2d pt = mMap.getGridCoords(mMouseCoords);
 	ss << "Cell Coords: " << pt.x() << ", " << pt.y();
 	r.drawTextShadow(mFont, ss.str(), 4, 100, 1, 255, 255, 255, 0, 0, 0);
-
-
-	// Edit State
-	ss.str("");
-	ss.str("Edit State: " + StateStringMap[mEditState]);
-	r.drawTextShadow(mFont, ss.str(), 4, 115, 1, 255, 255, 255, 0, 0, 0);
 
 	// Tile Index
 	Cell& cell = mMap.getCell(mMouseCoords);
@@ -880,6 +671,7 @@ void EditorState::debug()
 	r.drawTextShadow(mFont, ss.str(), 4, 250, 1, 255, 255, 255, 0, 0, 0);
 
 	mMap.tileset().drawTileColorPalette(r.width() - 32, 50, 4, 6);
+	*/
 }
 
 
@@ -891,4 +683,3 @@ void EditorState::instructions()
 	string str1 = "F1: Show/Hide Debug | F3: Map Link | F4: Save | F5: BG Detail | F6: Detail | F7: Foreground | F10: Hide/Show UI";
 	Utility<Renderer>::get().drawTextShadow(mFont, str1, Utility<Renderer>::get().width() - mFont.width(str1) - 4, 4, 1, 255, 255, 255, 0, 0, 0);
 }
-

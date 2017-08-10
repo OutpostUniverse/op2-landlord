@@ -2,11 +2,9 @@
 
 #include "NAS2D/NAS2D.h"
 
-
 #include "Button.h"
 #include "Pattern.h"
 
-#include "Map/Tileset.h"
 
 using namespace NAS2D;
 
@@ -27,21 +25,15 @@ public:
 	TilePalette();
 	~TilePalette();
 
-	// Sets the internal tileset pointer.
-	void tileset(Tileset* tset);
-
 	void update();
 
 	void hidden(bool hidden);
 	bool hidden() const { return mHidden; }
 
 	void font(Font& font);
-
-	const Pattern& pattern() const { return mBrushPattern; }
+	void boldFont(Font& font);
 
 	const Rectangle_2d& rect() const { return mRect; }
-
-	int index() const { return mTsetIndex; }
 
 	void reset();
 
@@ -50,48 +42,25 @@ public:
 	bool responding_to_events() { return dragging() || mLeftButtonDown; }
 
 private:
-	typedef std::vector<std::vector<Rectangle_2d> > RectList;
-
 	void init();
-
-	void button_Prev_click();
-	void button_Next_click();
-
-	void determinePattern();
-
-	Rectangle_2d getRectFromPoints(const Point_2d& pt1, const Point_2d& pt2);
 
 	void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
 	void onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
 	void onMouseMove(int x, int y, int relX, int relY);
 
 private:
-
-	Font*			mFont;				/**< Font to use to draw basic information. */
-	Tileset*		mTset;				/**< Pointer to a Tileset. TilePalette does not own this Tileset object. */
+	Font*			mFont = nullptr;		/**< Font to use to draw basic information. */
+	Font*			mBoldFont = nullptr;		/**< Font to use to draw basic information. */
 
 	Rectangle_2d	mRect;				/**< Area and position of the palette. */
-	Rectangle_2d	mTileGridRect;		/**< Area that the tiles are over. */
-
-	RectList		mSlots;				/**< List of rectangles for each slot. */
-
-	Button			mBtnPrev;			/**<  */
-	Button			mBtnNext;			/**<  */
-
-	Pattern			mBrushPattern;		/**< Brush pattern for stamp and pattern floods. */
-
-	int				mNumPages;			/**< Number of pages the palette needs to show. */
-	int				mCurrentPage;		/**< Current tile page. */
-	int				mTsetIndex;			/**< Currently selected tileset index. */
 
 	Point_2d		mStartIndex;		/**< Index of the selected tile(s). */
 	Point_2d		mEndIndex;			/**< Index of the selected tile(s). */
 
 	Point_2d		mMouseCoords;		/**< Point where a drag started. */
-	Point_2d		mDragOrigin;		/**< Point where a drag started. */
 
-	bool			mHidden;			/**< Flag indicating that the palette shouldn't be drawn. */
-	bool			mLeftButtonDown;	/**< Flag indicating that the left mouse button is depressed. */
-	bool			mMouseOverTiles;	/**< Flag indicating that the mouse is actually over the tiles. */
-	bool			mDragging;			/**< Flag indicating that the tile palette is being dragged from its title bar. */
+	bool			mHidden = false;			/**< Flag indicating that the palette shouldn't be drawn. */
+	bool			mLeftButtonDown = false;	/**< Flag indicating that the left mouse button is depressed. */
+	bool			mMouseOverTiles = false;	/**< Flag indicating that the mouse is actually over the tiles. */
+	bool			mDragging = false;			/**< Flag indicating that the tile palette is being dragged from its title bar. */
 };

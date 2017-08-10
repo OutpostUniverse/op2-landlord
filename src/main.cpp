@@ -3,6 +3,7 @@
 #include "EditorState.h"
 #include "StartState.h"
 
+#include "Common.h"
 #include "Defaults.h"
 
 #include <sstream>
@@ -27,7 +28,17 @@ int main(int argc, char *argv[])
 	{
 		Game game("Landlord", argv[0], "editor.xml");
 		game.mount("editor.zip");
-		game.go(new StartState());
+
+		Renderer& r = Utility<Renderer>::get();
+		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);
+		r.addCursor("sys/fill.png", POINTER_FILL, 0, 0);
+		r.addCursor("sys/eraser.png", POINTER_ERASE, 0, 0);
+		r.showSystemPointer(true);
+		r.minimum_size(800, 600);
+		r.resizeable(true);
+
+		//game.go(new StartState());
+		game.go(new EditorState("maps/eden02.map"));
 	}
 	catch(std::runtime_error& e)
 	{

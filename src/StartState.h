@@ -37,7 +37,6 @@ protected:
 	void onQuit();
 
 private:
-
 	StringList getFileList(const std::string& directory);
 
 	void fillMapMenu();
@@ -47,12 +46,12 @@ private:
 	void button_LoadExisting_click();
 	void button_RefreshLists_click();
 
+private:
 	Timer			mTimer;				// used to flash messages.
 
 	Font			mFont;				/**< Internal Font to use. */
 
 	Point_2d		mMouseCoords;		/**< Mouse pointer coordinates. */
-	Image			mMousePointer;		/**< Mouse pointer image. */
 
 	Rectangle_2d	mLayoutRect;		/**< Rectangle used to position UI elements on screen. */
 

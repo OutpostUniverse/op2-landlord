@@ -4,7 +4,6 @@
 
 #include <SDL.h>
 
-#include "Map/Map.h"
 
 using namespace NAS2D;
 
@@ -18,8 +17,8 @@ public:
 
 	Rectangle_2d& rect() { return mRect; }
 
-	void font(Font* _f) { mFont = _f; }
-	void map(Map* _m);
+	void font(Font& _f) { mFont = &_f; }
+	void boldFont(Font& _f) { mBoldFont = &_f; }
 
 	void hidden(bool _b);
 	bool hidden() const { return mHidden; }
@@ -49,15 +48,14 @@ private:
 
 	Rectangle_2d	mRect;
 
-	Font*			mFont;
+	Font*			mFont = nullptr;
+	Font*			mBoldFont = nullptr;
 
-	SDL_Surface*	mSurface;
-	Image*			mMiniMap;
+	SDL_Surface*	mSurface = nullptr;
+	Image*			mMiniMap = nullptr;
 
-	Map*			mMap;
-
-	bool			mDragging;
-	bool			mLeftButtonDown;
-	bool			mMovingCamera;
-	bool			mHidden;
+	bool			mDragging = false;
+	bool			mLeftButtonDown = false;
+	bool			mMovingCamera = false;
+	bool			mHidden = false;
 };

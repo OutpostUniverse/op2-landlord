@@ -38,7 +38,7 @@ TextField::TextField():	mCursorPosition(0),
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &TextField::onMouseDown);
 	Utility<EventHandler>::get().keyDown().connect(this, &TextField::onKeyDown);
 	Utility<EventHandler>::get().textInput().connect(this, &TextField::onTextInput);
-	hasFocus(true);
+	hasFocus(false);
 	Utility<EventHandler>::get().textInputMode(true);
 }
 
@@ -118,7 +118,7 @@ void TextField::draw()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(rect(), 185, 185, 185);
+	r.drawBoxFilled(rect(), 255, 255, 255);
 
 	if (hasFocus())
 	{
@@ -131,14 +131,16 @@ void TextField::draw()
 
 
 
-	if(highlight())
+	if (highlight())
+	{
 		r.drawBox(rect(), 255, 255, 0);
+	}
 
 	drawCursor();
 
 	if (fontSet())
 	{
-		r.drawText(font(), text(), positionX() + FIELD_PADDING, positionY() + FIELD_PADDING, 255, 255, 255);
+		r.drawText(font(), text(), positionX() + FIELD_PADDING, positionY() + FIELD_PADDING, 0, 0, 0);
 	}
 }
 
@@ -180,14 +182,20 @@ void TextField::updateCursor()
 {
 	int cursorX = font().width(text().substr(0, mCursorPosition));
 
-	if(cursorX - mScrollOffset >= textAreaWidth())
+	if (cursorX - mScrollOffset >= textAreaWidth())
+	{
 		mScrollOffset = cursorX - textAreaWidth();
-	if(cursorX - mScrollOffset <= 0)
+	}
+
+	if (cursorX - mScrollOffset <= 0)
+	{
 		mScrollOffset = cursorX - textAreaWidth() / 2;
+	}
 
-	if(mScrollOffset < 0)
+	if (mScrollOffset < 0)
+	{
 		mScrollOffset = 0;
-
+	}
 
 	mCursorX = static_cast<int>(rect().x() + FIELD_PADDING + cursorX - mScrollOffset);
 }
@@ -195,8 +203,7 @@ void TextField::updateCursor()
 
 void TextField::update()
 {
-	if (!visible())
-		return;
+	if (!visible()) { return; }
 
 	draw();
 }
@@ -207,16 +214,12 @@ void TextField::update()
  */
 void TextField::onTextInput(const std::string& _s)
 {
-	if (!hasFocus() || !visible() || !editable() || _s.empty())
-		return;
-
-	if (mMaxCharacters > 0 && text().length() == mMaxCharacters)
-		return;
+	if (!hasFocus() || !visible() || !editable() || _s.empty()) { return; }
+	if (mMaxCharacters > 0 && text().length() == mMaxCharacters) { return; }
 
 	int prvLen = text().length();
 
-	if (mNumbersOnly && !std::isdigit(_s[0], LOC))
-		return;
+	if (mNumbersOnly && !std::isdigit(_s[0], LOC)) { return; }
 
 	_text() = _text().insert(mCursorPosition, _s);
 

@@ -24,8 +24,7 @@ void setMessage(const std::string& msg)
 /**
  * C'tpr
  */
-StartState::StartState():	mFont("fonts/ui-normal.png", 7, 9, 0),
-							mMousePointer("sys/normal.png"),
+StartState::StartState():	mFont("fonts/opensans.ttf", 12),
 							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40),
 							mScanningMaps(true),
 							mReturnState(nullptr)
@@ -116,6 +115,7 @@ void StartState::initialize()
 
 void StartState::fillMapMenu()
 {
+	/*
 	StringList lst = getFileList(EDITOR_MAPS_PATH);
 
 	for (size_t i = 0; i < lst.size(); ++i)
@@ -142,6 +142,7 @@ void StartState::fillMapMenu()
 	}
 
 	mBtnLoadExisting.enabled(!mMapFilesMenu.empty());
+	*/
 }
 
 
@@ -234,7 +235,7 @@ void StartState::button_CreateNew_click()
 	}
 
 	Configuration& c = Utility<Configuration>::get();
-	mReturnState = new EditorState(EDITOR_NEW_MAP_NAME, EDITOR_MAPS_PATH + txtMapPath.text(), EDITOR_TSET_PATH + mTsetFilesMenu.selectionText(), mapWidth, mapHeight);
+	mReturnState = new EditorState("test");
 }
 
 
@@ -324,8 +325,6 @@ State* StartState::update()
 		fillMapMenu();
 		mScanningMaps = false;
 	}
-
-	r.drawImage(mMousePointer, mMouseCoords.x(), mMouseCoords.y());
 
 	return mReturnState;
 }

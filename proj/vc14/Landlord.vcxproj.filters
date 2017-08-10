@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Map">
       <UniqueIdentifier>{cbfc5601-1e6f-4cd1-8040-cf4f4b66a0ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Stream">
+      <UniqueIdentifier>{bfd03563-8c6a-408c-b124-60bf69dc5c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Stream">
+      <UniqueIdentifier>{d7b5076a-7cbf-4716-8a4f-71a22c398fb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Defaults.h">
@@ -72,23 +78,26 @@
     <ClInclude Include="..\..\src\MiniMap.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\Cell.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Map\Entity.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Map\GameField.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Map\Map.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Map\Tileset.h">
-      <Filter>Header Files\Map</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Tileset.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\MapFile.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\TileGroup.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\TileSet.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Map\TileSetManager.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Stream\StreamReader.h">
+      <Filter>Header Files\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Stream\StreamWriter.h">
+      <Filter>Header Files\Stream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -125,20 +134,20 @@
     <ClCompile Include="..\..\src\MiniMap.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\Cell.cpp">
+    <ClCompile Include="..\..\src\Map\MapFile.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\Entity.cpp">
+    <ClCompile Include="..\..\src\Map\TileGroup.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\GameField.cpp">
+    <ClCompile Include="..\..\src\Map\TileSet.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\Map.cpp">
+    <ClCompile Include="..\..\src\Map\TileSetManager.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\Tileset.cpp">
-      <Filter>Source Files\Map</Filter>
+    <ClCompile Include="..\..\src\Stream\StreamReader.cpp">
+      <Filter>Source Files\Stream</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

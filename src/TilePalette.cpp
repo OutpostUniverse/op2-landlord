@@ -16,16 +16,7 @@ using namespace NAS2D;
 /**
  * C'Tor
  */
-TilePalette::TilePalette():		mFont(nullptr),
-								mTset(nullptr),
-								mRect(Utility<Renderer>::get().width() - PALETTE_DIMENSIONS.x()- 2, Utility<Renderer>::get().height() - PALETTE_DIMENSIONS.y() - 2, PALETTE_DIMENSIONS.x(), PALETTE_DIMENSIONS.y()),
-								mNumPages(0),
-								mCurrentPage(0),
-								mTsetIndex(0),
-								mHidden(false),
-								mLeftButtonDown(false),
-								mMouseOverTiles(false),
-								mDragging(false)
+TilePalette::TilePalette():	mRect(Utility<Renderer>::get().width() - PALETTE_DIMENSIONS.x()- 2, Utility<Renderer>::get().height() - PALETTE_DIMENSIONS.y() - 2, PALETTE_DIMENSIONS.x(), PALETTE_DIMENSIONS.y())
 {
 	init();
 }
@@ -43,33 +34,11 @@ void TilePalette::init()
 {
 	int yPosition = rect().y() + rect().height() - 23;
 
-	mBtnPrev.size(30, 20);
-	mBtnPrev.position(mRect.x() + 3, yPosition);
-	mBtnPrev.image("sys/prev.png");
-	mBtnPrev.click().connect(this, &TilePalette::button_Prev_click);
-
-	mBtnNext.size(30, 20);
-	mBtnNext.position(mRect.x() + mRect.width() - (mBtnNext.width() + 2), yPosition);
-	mBtnNext.image("sys/next.png");
-	mBtnNext.click().connect(this, &TilePalette::button_Next_click);
-
 	// Hook events
 	EventHandler& e = Utility<EventHandler>::get();
 	e.mouseButtonDown().connect(this, &TilePalette::onMouseDown);
 	e.mouseButtonUp().connect(this, &TilePalette::onMouseUp);
 	e.mouseMotion().connect(this, &TilePalette::onMouseMove);
-}
-
-
-void TilePalette::button_Prev_click()
-{
-	mCurrentPage = clamp(mCurrentPage - 1, 0, mNumPages - 1);
-}
-
-
-void TilePalette::button_Next_click()
-{
-	mCurrentPage = clamp(mCurrentPage + 1, 0, mNumPages - 1);
 }
 
 
@@ -82,36 +51,9 @@ void TilePalette::font(Font& font)
 }
 
 
-/**
- * Sets the current tileset.
- * 
- * \param	tset	A pointer to a Tileset. May be NULL.
- */
-void TilePalette::tileset(Tileset* tset)
+void TilePalette::boldFont(Font& font)
 {
-	mTset = tset;
-
-	if(!tset)
-	{
-		mNumPages = 0;
-		mCurrentPage = 0;
-		mHidden = true;
-		return;
-	}
-
-	mNumPages = divideUp(mTset->numTiles(), NUM_TILES_PER_PAGE);
-
-	mSlots.clear();
-	mSlots.resize(TILE_GRID_DIMENSIONS.y());
-	for(int row = 0; row < TILE_GRID_DIMENSIONS.y(); row++)
-	{
-		for(int col = 0; col < TILE_GRID_DIMENSIONS.x(); col++)
-		{
-			mSlots[row].push_back(Rectangle_2d(FIRST_TILE_COORDINATE.x() + (col * mTset->width()) + (col * TILE_SLOT_PADDING.x()) + mRect.x(), FIRST_TILE_COORDINATE.y() + (row * mTset->height()) + (row * TILE_SLOT_PADDING.y()) + rect().y(), mTset->width(), mTset->height()));
-		}
-	}
-
-	mTileGridRect(mRect.x() + FIRST_TILE_COORDINATE.x(), mRect.y() + FIRST_TILE_COORDINATE.y(), TILE_GRID_DIMENSIONS.x() * mTset->width(), TILE_GRID_DIMENSIONS.y() * mTset->height());
+	mBoldFont = &font;
 }
 
 
@@ -123,9 +65,6 @@ void TilePalette::tileset(Tileset* tset)
  */
 void TilePalette::hidden(bool hidden)
 {
-	if(!mTset)
-		return;
-
 	mHidden = hidden;
 }
 
@@ -141,53 +80,14 @@ void TilePalette::update()
 	Renderer& r = Utility<Renderer>::get();
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
-	r.drawBoxFilled(mTileGridRect, 70, 70, 70);
 	r.drawBoxFilled(rect().x(), rect().y(), rect().width(), 16, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
 	if (mFont)
 	{
-		r.drawText(*mFont, "Tile Palette", mRect.x() + (mRect.width() / 2) - (mFont->width("Tile Palette") / 2), mRect.y() + 4, 255, 255, 255);
-		r.drawText(*mFont, "Tile Palette", mRect.x() + (mRect.width() / 2) - (mFont->width("Tile Palette") / 2) + 1, mRect.y() + 4, 255, 255, 255); // cheap way of getting a 'bold' typeface. Inefficient.
-		r.drawText(*mFont, NAS2D::string_format("Page: %i of %i", mCurrentPage + 1, mNumPages), mBtnPrev.positionX() + mBtnPrev.width() + 4, mRect.y() + 280, 0, 0, 0);
+		r.drawText(*mBoldFont, "Tile Palette", mRect.x() + (mRect.width() / 2) - (mFont->width("Tile Palette") / 2), mRect.y(), 255, 255, 255);
 	}
 
-
-	if(!mTset)
-		return;
-
-	// Draw buttons
-	mBtnPrev.update();
-	mBtnNext.update();
-
-	// Draw the tile page
-	for(int row = 0; row < TILE_GRID_DIMENSIONS.y(); row++)
-	{
-		for(int col = 0; col < TILE_GRID_DIMENSIONS.x(); col++)
-		{
-			int index = (row * TILE_GRID_DIMENSIONS.x() + col) + (mCurrentPage * NUM_TILES_PER_PAGE);
-
-			if(index < mTset->numTiles())
-				mTset->drawTile(index, FIRST_TILE_COORDINATE.x() + (col * mTset->width()) + (col * TILE_SLOT_PADDING.x()) + mRect.x(), FIRST_TILE_COORDINATE.y() + (row * mTset->height()) + (row * TILE_SLOT_PADDING.y()) + mRect.y());
-
-			r.drawBox(mSlots[row][col], 0, 0, 0);
-		}
-	}
-
-	// Draw Selectors
-	if(mTsetIndex / NUM_TILES_PER_PAGE == mCurrentPage)
-	{
-		Rectangle_2d rect = mSlots[mStartIndex.y()][mStartIndex.x()];
-
-		r.drawBoxFilled(rect.x(), rect.y(), (mBrushPattern.width() * mTset->width()), (mBrushPattern.height() * mTset->height()), 255, 255, 0, 50);
-		r.drawBox(rect.x(), rect.y(), (mBrushPattern.width() * mTset->width()), (mBrushPattern.height() * mTset->height()), 255, 255, 0);
-	}
-
-	if(mMouseOverTiles && responding_to_events())
-	{
-		Rectangle_2d rect = getRectFromPoints(mMouseCoords, mDragOrigin);
-		r.drawBox(rect, 255, 255, 255);
-	}
 }
 
 
@@ -203,35 +103,14 @@ void TilePalette::onMouseMove(int x, int y, int relX, int relY)
 		mRect.x(mRect.x() + relX);
 		mRect.y(mRect.y() + relY);
 
-		mBtnPrev.position(mBtnPrev.positionX() + relX, mBtnPrev.positionY() + relY);
-		mBtnNext.position(mBtnNext.positionX() + relX, mBtnNext.positionY() + relY);
-
-		mTileGridRect.x(mTileGridRect.x() + relX);
-		mTileGridRect.y(mTileGridRect.y() + relY);
-
-		for (size_t row = 0; row < mSlots.size(); ++row)
-		{
-			for (size_t col = 0; col < mSlots[row].size(); ++col)
-			{
-				mSlots[row][col].x(mSlots[row][col].x() + relX);
-				mSlots[row][col].y(mSlots[row][col].y() + relY);
-			}
-		}
-
 		return;
 	}
-
-	if(isPointInRect(mMouseCoords, mTileGridRect))
-		mMouseOverTiles = true;
-	else
-		mMouseOverTiles = false;
 }
 
 
 void TilePalette::onMouseDown(EventHandler::MouseButton button, int x, int y)
 {
-	if(hidden() || (button != EventHandler::BUTTON_LEFT))
-		return;
+	if (hidden() || (button != EventHandler::BUTTON_LEFT)) { return; }
 
 	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), 17))
 	{
@@ -239,68 +118,22 @@ void TilePalette::onMouseDown(EventHandler::MouseButton button, int x, int y)
 		return;
 	}
 
-	if (!(isPointInRect(x, y, rect().x(), rect().y(), rect().width(), rect().height())))
+	if (!(isPointInRect(mMouseCoords, rect())))
+	{
 		return;
+	}
 
 	mLeftButtonDown = true;
-
-	Point_2d pt(x, y);
-	mDragOrigin = pt;
-
-	for(int row = 0; row < TILE_GRID_DIMENSIONS.y(); row++)
-	{
-		for(int col = 0; col < TILE_GRID_DIMENSIONS.x(); col++)
-		{
-			if(isPointInRect(pt, mSlots[row][col]))
-			{
-				// Ignore if tile index is out of range.
-				int newIndex = (mCurrentPage * NUM_TILES_PER_PAGE) + (TILE_GRID_DIMENSIONS.x() * row) + col;
-				if(newIndex < mTset->numTiles())
-				{
-					mStartIndex.x() = col;
-					mStartIndex.y() = row;
-					mEndIndex = mStartIndex;
-
-					mTsetIndex = newIndex;
-					// Reset the brush pattern.
-					mBrushPattern.size(1, 1);
-				}
-
-				break;
-			}
-		}
-	}
 }
 
 
 void TilePalette::onMouseUp(EventHandler::MouseButton button, int x, int y)
 {
-	if (hidden() || mSlots.empty() || (button != EventHandler::BUTTON_LEFT))
-		return;
+	if (hidden() || (button != EventHandler::BUTTON_LEFT)) { return; }
 
 	if(!mLeftButtonDown && !mDragging)
 		return;
 
-	Point_2d pt(x, y);
-
-	for(int row = 0; row < TILE_GRID_DIMENSIONS.y(); row++)
-	{
-		for(int col = 0; col < TILE_GRID_DIMENSIONS.x(); col++)
-		{
-			if(isPointInRect(pt, mSlots[row][col]))
-			{
-				// Ignore if tile index is out of range.
-				int newIndex = (mCurrentPage * NUM_TILES_PER_PAGE) + (TILE_GRID_DIMENSIONS.x() * row) + col;
-				if(newIndex < mTset->numTiles())
-				{
-					mEndIndex.x() = col;
-					mEndIndex.y() = row;
-					determinePattern();
-					break;
-				}
-			}
-		}
-	}
 
 	mDragging = false;
 	mLeftButtonDown = !(button == EventHandler::BUTTON_LEFT);
@@ -311,64 +144,4 @@ void TilePalette::onMouseUp(EventHandler::MouseButton button, int x, int y)
  * Determine a pattern using two selected points.
  */
 void TilePalette::reset()
-{
-	mTsetIndex = 0;
-	mCurrentPage = 0;
-
-	mBrushPattern.size(1, 1);
-}
-
-
-/**
- * Determine a pattern using two selected points.
- */
-void TilePalette::determinePattern()
-{
-	Rectangle_2d rect = getRectFromPoints(mStartIndex, mEndIndex);
-
-	mTsetIndex = (mCurrentPage * NUM_TILES_PER_PAGE) + (TILE_GRID_DIMENSIONS.x() * rect.y()) + rect.x();
-
-	// Set start and end positions.
-	mStartIndex.x() = rect.x();
-	mStartIndex.y() = rect.y();
-
-	mEndIndex.x() = rect.x() + rect.width() - 1;
-	mEndIndex.y() = rect.y() + rect.height() - 1;
-
-	mBrushPattern.size(rect.width(), rect.height());
-
-	for(int row = 0; row < rect.height(); row++)
-		for(int col = 0; col < rect.width(); col++)
-			mBrushPattern.value(col, row, ((TILE_GRID_DIMENSIONS.x() * row) + col) + mTsetIndex);
-}
-
-
-Rectangle_2d TilePalette::getRectFromPoints(const Point_2d& pt1, const Point_2d& pt2)
-{
-	Rectangle_2d rect;
-
-	if(pt1.x() < pt2.x())
-	{
-		rect.x() = pt1.x();
-		rect.width() = pt2.x() - pt1.x() + 1;
-	}
-	else
-	{
-		rect.x() = pt2.x();
-		rect.width() = pt1.x() - pt2.x() + 1;
-	}
-
-
-	if(pt1.y() < pt2.y())
-	{
-		rect.y() = pt1.y();
-		rect.height() = pt2.y() - pt1.y() + 1;
-	}
-	else
-	{
-		rect.y() = pt2.y();
-		rect.height() = pt1.y() - pt2.y() + 1;
-	}
-
-	return rect;
-}
+{}

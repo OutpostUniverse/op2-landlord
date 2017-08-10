@@ -1,68 +1,42 @@
-#ifndef __TILESET__
-#define __TILESET__
+#pragma once
 
-#include "NAS2D/Resources/Image.h"
+#include <NAS2D/NAS2D.h>
 
-#include <string>
-#include <vector>
 
-using namespace NAS2D;
-
-/**
- * \class	Tileset
- * \brief	A basic tileset class.
- */
-class Tileset
+class TileSet
 {
 public:
+	struct Color
+	{
+		Color() {}
+		Color(int r, int g, int b) : red(r), green(g), blue(b) {}
 
-	Tileset() {}
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+	};
 
-	Tileset(const std::string& path, int tileWidth, int tileHeight);
+	typedef std::vector<Color>	ColorTable;
 
-	void drawTile(int index, int x, int y);
+public:
+	TileSet(const std::string& filename);
+	~TileSet();
 
-	void drawTileToImage(Image& img, int index, int x, int y);
+	int tileCount();
 
-	/**
-	 * Gets the width of a Tile.
-	 */
-	int width() const { return mTileDimensions.x(); }
-	
-	/**
-	 * Gets the height of a Tile.
-	 */
-	int height() const { return mTileDimensions.y(); }
+	void draw(int index, int x, int y);
 
-	int halfWidth() const { return mTileHalfDimensions.x(); }
-	int halfHeight() const { return mTileHalfDimensions.y(); }
-
-	int numTiles() const { return mTilesetDimensions.x() * mTilesetDimensions.y(); }
-
-	const std::string& filepath() const { return mTsetPath; }
-
-	const Color_4ub& averageColor(int index);
-
-	void drawTileColorPalette(int x, int y, int cell_size, int columns = 16);
+	const Color& color(int index);
 
 private:
-	typedef std::vector<Color_4ub> ColorList;
+	void buildTileColorTable();
 
-	void init();
-	void fillTileColorList();
+private:
+	TileSet() {};
 
-	const Rectangle_2d getTsetCoordsFromIndex(int index) const;
+private:
+	NAS2D::Image	mTileSetImage;
+	int				mTileCount = 0;
 
-	Image		mTileset;
-
-	std::string	mTsetPath;
-
-	Point_2d	mTileDimensions;
-	Point_2d	mTileHalfDimensions;
-	Point_2d	mTilesetDimensions;
-
-	ColorList	mAverageTileColorsList;
+	ColorTable		mColorTable;
 };
-
-
-#endif
