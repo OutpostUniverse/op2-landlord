@@ -133,56 +133,45 @@ void MapFile::index(int x, int y, int index)
 }
 
 
-void MapFile::draw(int x, int y)
+int MapFile::tset_index(int x, int y)
 {
-	/*
-	int startXTile = sourcePixelX >> 5;
-	int startYTile = sourcePixelY >> 5;
-	int endXTile = (sourcePixelX+pixelWidth+31) >> 5;
-	int endYTile = (sourcePixelY+pixelHeight+31) >> 5;
-	int x, y;
-	int tileXUpper, tileXLower;
-	int tileOffset;
-	int tile;
-	int tileIndex;
-	TileSet *tileSet;
-	TileSetManager::TileSetTileMapping *tileMap;
-	int destPixelX = -(sourcePixelX & 0x1F);
-	int destPixelY = -(sourcePixelY & 0x1F);
+	int tileXUpper = x / 32;
+	int tileXLower = x % 32;
+	int tileOffset = (((tileXUpper * mTileHeight) + y) * 32) + tileXLower;
 
-	if (endYTile > mapHeadInfo.tileHeight)
-		endYTile = mapHeadInfo.tileHeight;
-	if (endXTile > tileWidth)
-		endXTile = tileWidth;
+	return clamp((mTileData[tileOffset] & 0x0000FFE0) / 32, 0, mTilesetManager->mNumMappings);
+}
 
-	// Draw all tiles in visible range
-	for (y = startYTile; y < endYTile; y++)
+
+void MapFile::draw(int x, int y, int width, int height)
+{
+	int columns = (width / 32) + (width % 32);
+	int rows = (height / 32) + (height % 32);
+
+	int tileXUpper = 0, tileXLower = 0, tileOffset = 0, tileIndex = 0, tile = 0;
+
+	TileSet* tileSet = nullptr;
+	TileSetManager::TileSetTileMapping* tileMap = nullptr;
+
+	for (int row = 0; row < rows; ++row)
 	{
-		for (x = startXTile; x < endXTile; x++)
+		for (int col = 0; col < columns; ++col)
 		{
-			// Calculate the offset of the tile
-			tileXUpper = x >> 5;
-			tileXLower = x & 0x1F;
-			tileOffset = (((tileXUpper*mapHeadInfo.tileHeight) + y) << 5) + tileXLower;
-			// Load the tile data
-			tile = tileData[tileOffset];
-			// Get the tile index
-			tileIndex = (tile & 0x0000FFE0) >> 5;
-
 			// Make sure the tileIndex is in range
-			if (tileIndex >= tileSetManager->numMappings)
-				tileIndex = 0;
-			// Get the tile mapping
-			tileMap = &tileSetManager->mapping[tileIndex];
-			// Paste the tile
-			tileSet = tileSetManager->tileSetInfo[tileMap->tileSetIndex].tileSet;
+			tileIndex = tset_index(col, row);
+
+			tileMap = &mTilesetManager->mMapping[tileIndex];
+			tileSet = mTilesetManager->mTileSetInfo[tileMap->tileSetIndex].tileSet;
 			if (tileSet)
 			{
-				tileSet->PasteTile(destDC, destPixelX+((x-startXTile)*32), destPixelY+((y-startYTile)*32), tileMap->tileIndex);
+				tileSet->draw(tileMap->tileIndex, x + (col * 32), y + (row * 32));
+			}
+			else
+			{
+				Utility<Renderer>::get().drawBoxFilled(x + (col * 32), y + (row * 32), 32, 32, 0, 0, 0);
 			}
 		}
 	}
-	*/
 }
 
 

@@ -129,9 +129,10 @@ private:
 
 private:
 	int					numTileSets = 512;			/**< Number of loaded tile sets */
-	TileSetInfo*		tileSetInfo = nullptr;		/**< List of loaded tile sets */
-	int					numMappings = 0;			/**< Number of tile mappings in the tile mapping array */
-	TileSetTileMapping*	mapping = nullptr;			/**< Tile set tile mapping array */
+	int					mNumMappings = 0;			/**< Number of tile mappings in the tile mapping array */
 	int					mTerrainCount = 0;			/**< Number of terrain types in the terrain type array */
-	TerrainType*		terrain = nullptr;			/**< Tarrain type array */
+
+	TileSetInfo*		mTileSetInfo = nullptr;		/**< List of loaded tile sets */
+	TileSetTileMapping*	mMapping = nullptr;			/**< Tile set tile mapping array */
+	TerrainType*		mTerrain = nullptr;			/**< Tarrain type array */
 };

@@ -60,8 +60,6 @@ void EditorState::initialize()
 	Utility<EventHandler>::get().mouseButtonUp().connect(this, &EditorState::onMouseUp);
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &EditorState::onMouseDown);
 	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
-
-	//mMap.viewport(Rectangle_2d(0, 32, Utility<Renderer>::get().width(), Utility<Renderer>::get().height() - 32));
 }
 
 
@@ -78,70 +76,6 @@ void EditorState::initUi()
 	mMiniMap.font(mFont);
 	mMiniMap.boldFont(mBoldFont);
 	mMiniMap.hidden(!mToolBar.show_minimap());
-
-	// Link Edit UI
-	mBtnLinkOkay.font(mFont);
-	mBtnLinkOkay.size(50, 25);
-	mBtnLinkOkay.position(10, 160);
-	mBtnLinkOkay.text("Okay");
-	mBtnLinkOkay.click().connect(this, &EditorState::button_MapLinkOkay_Click);
-	mBtnLinkOkay.visible(false);
-
-	mBtnLinkCancel.font(mFont);
-	mBtnLinkCancel.size(50, 25);
-	mBtnLinkCancel.position(75, 160);
-	mBtnLinkCancel.text("Cancel");
-	mBtnLinkCancel.click().connect(this, &EditorState::button_MapLinkCancel_Click);
-	mBtnLinkCancel.visible(false);
-
-	mTxtLinkDestination.font(mFont);
-	mTxtLinkDestination.width(300);
-	mTxtLinkDestination.position(10, 100);
-	mTxtLinkDestination.border(TextField::ALWAYS);
-	mTxtLinkDestination.visible(false);
-
-	mTxtLinkDestX.font(mFont);
-	mTxtLinkDestX.width(100);
-	mTxtLinkDestX.position(10, 130);
-	mTxtLinkDestX.text("0");
-	mTxtLinkDestX.border(TextField::ALWAYS);
-	mTxtLinkDestX.visible(false);
-
-	mTxtLinkDestY.font(mFont);
-	mTxtLinkDestY.width(100);
-	mTxtLinkDestY.position(150, 130);
-	mTxtLinkDestY.text("0");
-	mTxtLinkDestY.border(TextField::ALWAYS);
-	mTxtLinkDestY.visible(false);
-}
-
-
-/**
- * Handler link okay button click.
- * 
- * \warning	Does absolutely no error checking at all
- *			so make sure values are good.
- */
-void EditorState::button_MapLinkOkay_Click()
-{
-	mBtnLinkOkay.visible(false);
-	mBtnLinkCancel.visible(false);
-	mTxtLinkDestination.visible(false);
-	mTxtLinkDestX.visible(false);
-	mTxtLinkDestY.visible(false);
-}
-
-
-/**
- * Handler for the button's Click event.
- */
-void EditorState::button_MapLinkCancel_Click()
-{
-	mBtnLinkOkay.visible(false);
-	mBtnLinkCancel.visible(false);
-	mTxtLinkDestination.visible(false);
-	mTxtLinkDestX.visible(false);
-	mTxtLinkDestY.visible(false);
 }
 
 
@@ -153,18 +87,17 @@ State* EditorState::update()
 	Renderer& r = Utility<Renderer>::get();
 	r.clearScreen(COLOR_MAGENTA);
 
+	mMapFile->draw(0, 32, r.width(), r.height() - 32);
+
 	updateScroll();
 	updateSelector();
-
-	if(mHideUi)
-		return mReturnState;
 
 	if(mDrawDebug)
 		debug();
 
 	updateUI();
 
-	r.drawTextShadow(mFont, "Map File: " + mMapSavePath, r.center_x() - (mFont.width("Map File: " + mMapSavePath) / 2), r.height() - (mFont.height() + 2), 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, 5.0f, r.height() - mBoldFont.height(), 1, 255, 255, 255, 0, 0, 0);
 
 	return mReturnState;
 }
@@ -182,13 +115,6 @@ void EditorState::updateUI()
 	//r.drawTextShadow(mFont, NAS2D::string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
 
 	mTilePalette.update();
-
-	mBtnLinkOkay.update();
-	mBtnLinkCancel.update();
-
-	mTxtLinkDestination.update();
-	mTxtLinkDestX.update();
-	mTxtLinkDestY.update();
 }
 
 
@@ -199,9 +125,6 @@ void EditorState::updateUI()
  */
 void EditorState::updateScroll()
 {
-	if(!mHideUi)
-	{}
-
 	float delta = (mTimer.delta() / 1000.0f);
 }
 
@@ -214,7 +137,7 @@ void EditorState::updateSelector()
 	return;
 
 	// Don't draw selector if the UI is hidden.
-	if(mHideUi || mMouseCoords.y() < 32)
+	if(mMouseCoords.y() < 32)
 		return;
 
 	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
@@ -279,10 +202,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 		// Stealing this for dumping the minimap for now
 		case EventHandler::KEY_F2:
 			SDL_SaveBMP(MINI_MAP_SURFACE, "minimap.bmp");
-			break;
-
-		case EventHandler::KEY_F10:
-			mHideUi = !mHideUi;
 			break;
 
 		case EventHandler::KEY_z:

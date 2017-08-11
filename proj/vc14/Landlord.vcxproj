@@ -96,6 +96,7 @@
     <ClInclude Include="..\..\src\Control.h" />
     <ClInclude Include="..\..\src\Defaults.h" />
     <ClInclude Include="..\..\src\EditorState.h" />
+    <ClInclude Include="..\..\src\Map\color_table.h" />
     <ClInclude Include="..\..\src\Map\MapFile.h" />
     <ClInclude Include="..\..\src\Map\TileGroup.h" />
     <ClInclude Include="..\..\src\Map\TileSet.h" />
@@ -118,6 +119,7 @@
     <ClCompile Include="..\..\src\Control.cpp" />
     <ClCompile Include="..\..\src\EditorState.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\Map\color_table.cpp" />
     <ClCompile Include="..\..\src\Map\MapFile.cpp" />
     <ClCompile Include="..\..\src\Map\TileGroup.cpp" />
     <ClCompile Include="..\..\src\Map\TileSet.cpp" />

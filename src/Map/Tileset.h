@@ -2,41 +2,33 @@
 
 #include <NAS2D/NAS2D.h>
 
+#include "color_table.h"
 
 class TileSet
 {
 public:
-	struct Color
-	{
-		Color() {}
-		Color(int r, int g, int b) : red(r), green(g), blue(b) {}
-
-		int red = 0;
-		int green = 0;
-		int blue = 0;
-	};
-
-	typedef std::vector<Color>	ColorTable;
+	const std::string& name() { return mTileSetName; }
 
 public:
 	TileSet(const std::string& filename);
 	~TileSet();
 
-	int tileCount();
+	int tileCount() const;
+	const NAS2D::Color_4ub& color(int index) const;
 
 	void draw(int index, int x, int y);
 
-	const Color& color(int index);
+private:
+	TileSet() = delete;								// Not allowed
+	TileSet(const TileSet&) = delete;				// Not allowed
+	TileSet& operator=(const TileSet&) = delete;	// Not allowed
 
 private:
-	void buildTileColorTable();
+	std::string			mTileSetName;
 
-private:
-	TileSet() {};
+	NAS2D::Image		mTileSetImage;
 
-private:
-	NAS2D::Image	mTileSetImage;
-	int				mTileCount = 0;
+	int					mTileCount = 0;
 
-	ColorTable		mColorTable;
+	const ColorTable&	mColorTable;
 };

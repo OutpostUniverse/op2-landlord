@@ -6,6 +6,9 @@
 #include "Common.h"
 #include "Defaults.h"
 
+#include "Map/color_table.h"
+
+#include <map>
 #include <sstream>
 
 
@@ -15,7 +18,6 @@
 
 using namespace std;
 
-
 int main(int argc, char *argv[])
 {
 	// redirect log entries on Release builds.
@@ -23,6 +25,8 @@ int main(int argc, char *argv[])
 	FILE *stream;
 	freopen_s(&stream, "log_editor.txt", "w", stdout);
 	#endif
+
+	fillColorTables();
 
 	try
 	{

@@ -9,8 +9,8 @@ const char TILESET_TAG[] = "TILE SET\x01A";
 TileSetManager::TileSetManager(const std::string& tilesetName)
 {
 	// Allocate memory for the tile sets and clear it out
-	tileSetInfo = new TileSetInfo[numTileSets];
-	memset(tileSetInfo, 0, sizeof(*tileSetInfo) * numTileSets);
+	mTileSetInfo = new TileSetInfo[numTileSets];
+	memset(mTileSetInfo, 0, sizeof(*mTileSetInfo) * numTileSets);
 }
 
 
@@ -62,7 +62,7 @@ void TileSetManager::validateIndex(int index)
 const std::string& TileSetManager::tileSetName(int index)
 {
 	validateIndex(index);
-	return tileSetInfo[index].wideTileSetName;
+	return mTileSetInfo[index].wideTileSetName;
 }
 
 
@@ -72,7 +72,7 @@ const std::string& TileSetManager::tileSetName(int index)
 TileSet* TileSetManager::tileSet(int index)
 {
 	validateIndex(index);
-	return tileSetInfo[index].tileSet;
+	return mTileSetInfo[index].tileSet;
 }
 
 
@@ -307,9 +307,9 @@ int TileSetManager::getMappingIndex(int tileSetIndex, int tileIndex, int numTile
 {
 	int i;
 
-	for (i = 0; i < numMappings; i++)
+	for (i = 0; i < mNumMappings; i++)
 	{
-		TileSetTileMapping &map = mapping[i];
+		TileSetTileMapping &map = mMapping[i];
 		if ((map.tileSetIndex == tileSetIndex) && (map.tileIndex == tileIndex))
 		{
 			// TileSet and TileSetIndex match.
@@ -334,7 +334,7 @@ int TileSetManager::getMappingIndex(int tileSetIndex, int tileIndex, int numTile
  */
 int TileSetManager::get_NumMappings()
 {
-	return numMappings;
+	return mNumMappings;
 }
 
 
@@ -343,7 +343,7 @@ int TileSetManager::get_NumMappings()
  */
 void TileSetManager::validateMappingIndex(int index)
 {
-	if ((index < 0) || (index >= numMappings))
+	if ((index < 0) || (index >= mNumMappings))
 	{
 		throw std::runtime_error("TileSetManager::validateMappingIndex(): Invalid mapping index.");
 	}
@@ -356,7 +356,7 @@ void TileSetManager::validateMappingIndex(int index)
 int TileSetManager::get_TileSetIndex(int mappingIndex)
 {
 	validateMappingIndex(mappingIndex);
-	return mapping[mappingIndex].tileSetIndex;
+	return mMapping[mappingIndex].tileSetIndex;
 }
 
 
@@ -366,7 +366,7 @@ int TileSetManager::get_TileSetIndex(int mappingIndex)
 void TileSetManager::put_TileSetIndex(int mappingIndex, int tileSetIndex)
 {
 	validateMappingIndex(mappingIndex);
-	mapping[mappingIndex].tileSetIndex = tileSetIndex;
+	mMapping[mappingIndex].tileSetIndex = tileSetIndex;
 }
 
 
@@ -376,7 +376,7 @@ void TileSetManager::put_TileSetIndex(int mappingIndex, int tileSetIndex)
 int TileSetManager::get_TileSetTileIndex(int mappingIndex)
 {
 	validateMappingIndex(mappingIndex);
-	return mapping[mappingIndex].tileIndex;
+	return mMapping[mappingIndex].tileIndex;
 }
 
 
@@ -386,7 +386,7 @@ int TileSetManager::get_TileSetTileIndex(int mappingIndex)
 void TileSetManager::put_TileSetTileIndex(int mappingIndex, int tileSetTileIndex)
 {
 	validateMappingIndex(mappingIndex);
-	mapping[mappingIndex].tileIndex = tileSetTileIndex;
+	mMapping[mappingIndex].tileIndex = tileSetTileIndex;
 }
 
 
@@ -396,7 +396,7 @@ void TileSetManager::put_TileSetTileIndex(int mappingIndex, int tileSetTileIndex
 int TileSetManager::get_NumTileReplacements(int mappingIndex)
 {
 	validateMappingIndex(mappingIndex);
-	return mapping[mappingIndex].numTileReplacements;
+	return mMapping[mappingIndex].numTileReplacements;
 }
 
 
@@ -406,7 +406,7 @@ int TileSetManager::get_NumTileReplacements(int mappingIndex)
 void TileSetManager::put_NumTileReplacements(int mappingIndex, int numTileReplacements)
 {
 	validateMappingIndex(mappingIndex);
-	mapping[mappingIndex].numTileReplacements = numTileReplacements;
+	mMapping[mappingIndex].numTileReplacements = numTileReplacements;
 }
 
 
@@ -416,7 +416,7 @@ void TileSetManager::put_NumTileReplacements(int mappingIndex, int numTileReplac
 int TileSetManager::get_CycleDelay(int mappingIndex)
 {
 	validateMappingIndex(mappingIndex);
-	return mapping[mappingIndex].cycleDelay;
+	return mMapping[mappingIndex].cycleDelay;
 }
 
 
@@ -426,7 +426,7 @@ int TileSetManager::get_CycleDelay(int mappingIndex)
 void TileSetManager::put_CycleDelay(int mappingIndex, int cycleDelay)
 {
 	validateMappingIndex(mappingIndex);
-	mapping[mappingIndex].cycleDelay = cycleDelay;
+	mMapping[mappingIndex].cycleDelay = cycleDelay;
 }
 
 
@@ -453,22 +453,22 @@ void TileSetManager::set_NumTerrains(int numTerrains)
 	TerrainType *newTerrain = new TerrainType[numTerrains];
 
 	// Zero it
-	memset(newTerrain, 0, sizeof(terrain[0])*numTerrains);
+	memset(newTerrain, 0, sizeof(mTerrain[0]) * numTerrains);
 
 	// Copy the old array into the new one
 	if (numTerrains < mTerrainCount)
 	{
-		memcpy(newTerrain, terrain, sizeof(terrain[0]) * numTerrains);
+		memcpy(newTerrain, mTerrain, sizeof(mTerrain[0]) * numTerrains);
 	}
 	else
 	{
-		memcpy(newTerrain, terrain, sizeof(terrain[0]) * mTerrainCount);
+		memcpy(newTerrain, mTerrain, sizeof(mTerrain[0]) * mTerrainCount);
 	}
 
 	// Release the old memory
-	delete[] terrain;
+	delete[] mTerrain;
 	// Update the array pointer & numTerrains var
-	terrain = newTerrain;
+	mTerrain = newTerrain;
 	mTerrainCount = numTerrains;
 }
 
@@ -492,7 +492,7 @@ int TileSetManager::get_TerrainStartTile(int terrainIndex)
 {
 	validateTerrainIndex(terrainIndex);
 
-	return terrain[terrainIndex].firstTile;
+	return mTerrain[terrainIndex].firstTile;
 }
 
 
@@ -502,7 +502,7 @@ int TileSetManager::get_TerrainStartTile(int terrainIndex)
 void TileSetManager::put_TerrainStartTile(int terrainIndex, int startMapping)
 {
 	validateTerrainIndex(terrainIndex);
-	terrain[terrainIndex].firstTile = startMapping;
+	mTerrain[terrainIndex].firstTile = startMapping;
 }
 
 
@@ -512,7 +512,7 @@ void TileSetManager::put_TerrainStartTile(int terrainIndex, int startMapping)
 int TileSetManager::get_TerrainEndTile(int terrainIndex)
 {
 	validateTerrainIndex(terrainIndex);
-	return terrain[terrainIndex].lastTile;
+	return mTerrain[terrainIndex].lastTile;
 }
 
 
@@ -522,7 +522,7 @@ int TileSetManager::get_TerrainEndTile(int terrainIndex)
 void TileSetManager::put_TerrainEndTile(int terrainIndex, int endMapping)
 {
 	validateTerrainIndex(terrainIndex);
-	terrain[terrainIndex].lastTile = endMapping;
+	mTerrain[terrainIndex].lastTile = endMapping;
 }
 
 
@@ -531,24 +531,24 @@ void TileSetManager::put_TerrainEndTile(int terrainIndex, int endMapping)
  */
 void TileSetManager::FreeMemory()
 {
-	if (mapping) { delete[] mapping; }
-	if (terrain) { delete[] terrain; }
+	if (mMapping) { delete[] mMapping; }
+	if (mTerrain) { delete[] mTerrain; }
 
-	if (tileSetInfo)
+	if (mTileSetInfo)
 	{
 		// Free all the string data
 		for (int i = 0; i < numTileSets; i++)
 		{
-			TileSetInfo* tileSet = &tileSetInfo[i];
+			TileSetInfo* tileSet = &mTileSetInfo[i];
 
 			if (tileSet->tileSetName)
 			{
 				// Free the memory for the string
-				delete[] tileSetInfo[i].tileSetName;
+				delete[] mTileSetInfo[i].tileSetName;
 			}
 		}
 
-		delete[] tileSetInfo;
+		delete[] mTileSetInfo;
 	}
 }
 
@@ -602,12 +602,12 @@ int TileSetManager::Load(StreamReader* stream)
 	try
 	{
 		// Allocate space for the tile set info
-		tileSetInfo = new TileSetInfo[numTileSets];
+		mTileSetInfo = new TileSetInfo[numTileSets];
 		// Load Tile Set file list
 		for (int i = 0; i < numTileSets; i++)
 		{
 			// Cache the tileSet address
-			TileSetInfo* tileSet = &tileSetInfo[i];
+			TileSetInfo* tileSet = &mTileSetInfo[i];
 
 			// Read the length of the string
 			int stringLen = 0;
@@ -626,7 +626,7 @@ int TileSetManager::Load(StreamReader* stream)
 
 				stream->read(tileSet->tileSetName, stringLen);
 
-				tileSetInfo[i].wideTileSetName = tileSet->tileSetName;
+				mTileSetInfo[i].wideTileSetName = tileSet->tileSetName;
 
 				tileSet->tileSet = new TileSet(tileSet->tileSetName);
 
@@ -645,20 +645,20 @@ int TileSetManager::Load(StreamReader* stream)
 		}
 
 		// Read the number of tile set tile mappings
-		stream->read(&numMappings, 4);
-		mapping = new TileSetTileMapping[numMappings];
+		stream->read(&mNumMappings, 4);
+		mMapping = new TileSetTileMapping[mNumMappings];
 
 		// Read the tile set tile mapping info
-		stream->read(mapping, sizeof(mapping[0]) * numMappings);
+		stream->read(mMapping, sizeof(mMapping[0]) * mNumMappings);
 
 		// Read the number of terrain types
 		stream->read(&mTerrainCount, 4);
 
 		// Allocate space for terrain type info
-		terrain = new TerrainType[mTerrainCount];
+		mTerrain = new TerrainType[mTerrainCount];
 
 		// Read the terrain type info
-		stream->read(terrain, sizeof(*terrain) * mTerrainCount);
+		stream->read(mTerrain, sizeof(*mTerrain) * mTerrainCount);
 	}
 	catch (...)
 	{

@@ -1,43 +1,42 @@
 #include "TileSet.h"
-//#include "GlobalFunctions.h"
 
 using namespace NAS2D;
 
-
-TileSet::TileSet(const std::string& filename): mTileSetImage(filename + ".png"), mTileCount(mTileSetImage.height() / 32)
+/**
+ * C'Tor
+ */
+TileSet::TileSet(const std::string& filename):	mTileSetName(filename),
+												mTileSetImage(filename + ".png"),
+												mTileCount(mTileSetImage.height() / 32),
+												mColorTable(selectColorTable(filename))
 {
 	if (mTileCount == 0)
 	{
 		throw std::runtime_error("TileSet: Unable to load '" + filename + "'");
 	}
-	
-	buildTileColorTable();
 }
 
 
+/**
+ * D'Tor
+ */
 TileSet::~TileSet()
 {}
 
 
-int TileSet::tileCount()
+/**
+ * 
+ */
+int TileSet::tileCount() const
 {
 	return mTileCount;
 }
 
 
-void TileSet::draw(int index, int x, int y)
-{
-	if (index * 32 > mTileCount)
-	{
-		// Should probably throw an exception here instead of silently failing as this would basically be an error.
-		return;
-	}
-
-	Utility<Renderer>::get().drawSubImage(mTileSetImage, static_cast<float>(x), static_cast<float>(y), 0, static_cast<float>(index * 32), 32, 32);
-}
-
-
-const TileSet::Color& TileSet::color(int index)
+/**
+ * 
+ */
+const NAS2D::Color_4ub& TileSet::color(int index) const
 {
 	if (index < 0 || index >= mTileCount)
 	{
@@ -48,10 +47,38 @@ const TileSet::Color& TileSet::color(int index)
 }
 
 
+/**
+ * 
+ */
+void TileSet::draw(int index, int x, int y)
+{
+	if (index > mTileCount)
+	{
+		// Should probably throw an exception here instead of silently failing as this would basically be an error.
+		return;
+	}
+
+	Utility<Renderer>::get().drawSubImage(mTileSetImage, static_cast<float>(x), static_cast<float>(y), 0, static_cast<float>(index * 32), 32, 32);
+}
+
+
+
+/**
+ * Builds a color table of each tile's average color.
+ */
+ /*
 void TileSet::buildTileColorTable()
 {
-	/*
-	mColorTable.resize(mTileCount);
+
+	ofstream _file_header;
+	_file_header.open("color_table.h", ios::app);
+	_file_header << endl << endl << "extern ColorTable " << name() << "_color_table" << ";" << endl;
+	_file_header.close();
+
+	ofstream _file;
+	_file.open("color_table.cpp", ios::app);
+	_file << endl << endl << "ColorTable " << name() << "_color_table" << ";" << endl << endl;
+	_file << "void fill_" << name() << "_color_table()" << endl << "{" << endl;
 
 	int pixel_count = 32 * 32;
 
@@ -75,7 +102,12 @@ void TileSet::buildTileColorTable()
 		g /= pixel_count;
 		b /= pixel_count;
 
-		mColorTable[i] = Color(r, g, b);
+		_file << "\t" << name() << "_color_table.push_back(NAS2D::Color_4ub(" << r << ", " << g << ", " << b << ", 255));" << endl;
+
 	}
-	*/
+
+	_file << "}" << endl;
+	_file.close();
+
 }
+*/

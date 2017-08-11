@@ -99,6 +99,9 @@
     <ClInclude Include="..\..\src\Stream\StreamWriter.h">
       <Filter>Header Files\Stream</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Map\color_table.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\EditorState.cpp">
@@ -148,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Stream\StreamReader.cpp">
       <Filter>Source Files\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Map\color_table.cpp">
+      <Filter>Source Files\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

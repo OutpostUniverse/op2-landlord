@@ -84,13 +84,6 @@ private:
 	ToolBar			mToolBar;
 	MiniMap			mMiniMap;
 
-	Button			mBtnLinkOkay;
-	Button			mBtnLinkCancel;
-
-	TextField		mTxtLinkDestination;
-	TextField		mTxtLinkDestX;
-	TextField		mTxtLinkDestY;
-
 	std::string		mMapSavePath;
 
 	// FLAGS
@@ -98,7 +91,6 @@ private:
 	bool			mLeftButtonDown = false;
 	bool			mRightButtonDown = false;
 	bool			mPlacingCollision = false;	/**< Flag indicating whether or not to place or clear collision on mouse drags. */
-	bool			mHideUi = false;				/**< Flag indicating that only the map be drawn. */
 	bool			mMapChanged = false;		/**< Used to determine if the map changed. */
 
 	State*			mReturnState = nullptr;
