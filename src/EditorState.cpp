@@ -82,7 +82,7 @@ State* EditorState::update()
 	Renderer& r = Utility<Renderer>::get();
 	r.clearScreen(COLOR_MAGENTA);
 
-	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), true);
+	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), mToolBar.show_collision_mask());
 
 	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x(), mTileHighlight.y())), 5, 50, 1, 255, 255, 255, 0, 0, 0);
 

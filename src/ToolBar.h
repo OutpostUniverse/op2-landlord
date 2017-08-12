@@ -38,6 +38,8 @@ public:
 	bool flood_contiguous() const { return btnFillContiguous.toggled(); }
 	bool erase() const { return btnErase.toggled(); }
 
+	bool show_collision_mask() const { return btnLayerCollision.toggled(); }
+
 	bool show_minimap() const { return btnMiniMapToggle.toggled(); }
 	bool show_tilepalette() const { return btnTilePaletteToggle.toggled(); }
 
