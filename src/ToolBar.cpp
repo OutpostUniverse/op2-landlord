@@ -81,14 +81,14 @@ void ToolBar::initUi()
 	// WINDOW VISIBILITY
 	btnMiniMapToggle.image("sys/map.png");
 	btnMiniMapToggle.type(Button::BUTTON_TOGGLE);
-	btnMiniMapToggle.toggle(true);
+	btnMiniMapToggle.toggle(false);
 	btnMiniMapToggle.size(22, 28);
 	btnMiniMapToggle.position(Utility<Renderer>::get().width() - 48, 2);
 	btnMiniMapToggle.click().connect(this, &ToolBar::btnMiniMapToggle_Clicked);
 
 	btnTilePaletteToggle.image("sys/palette.png");
 	btnTilePaletteToggle.type(Button::BUTTON_TOGGLE);
-	btnTilePaletteToggle.toggle(true);
+	btnTilePaletteToggle.toggle(false);
 	btnTilePaletteToggle.size(22, 28);
 	btnTilePaletteToggle.position(Utility<Renderer>::get().width() - 24, 2);
 	btnTilePaletteToggle.click().connect(this, &ToolBar::btnTilePaletteToggle_Clicked);

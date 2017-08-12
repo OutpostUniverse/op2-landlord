@@ -20,6 +20,15 @@ SDL_Surface*		MINI_MAP_SURFACE	= nullptr; // HACK!
 std::stack<Point_2d> FLOOD_STACK;		// Stack used for contiguous flood fill.
 
 
+/**
+ * Helper function for mouse picking.
+ */
+int gridLocation(int point, int cameraPoint, int viewportDimension)
+{
+	return ((point - -(cameraPoint % TILE_SIZE)) / TILE_SIZE) % viewportDimension;
+}
+
+
 EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12),
 													mBoldFont("fonts/opensans-bold.ttf", 12),
 													mMapSavePath(mapPath),
@@ -50,8 +59,6 @@ EditorState::~EditorState()
  */
 void EditorState::initialize()
 {
-	initUi();
-
 	// Hook up event handlers
 	Utility<EventHandler>::get().keyUp().connect(this, &EditorState::onKeyUp);
 	Utility<EventHandler>::get().keyDown().connect(this, &EditorState::onKeyDown);
@@ -61,22 +68,27 @@ void EditorState::initialize()
 	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
 	Utility<EventHandler>::get().windowResized().connect(this, &EditorState::onWindowResized);
 
+	mSelectorRect(0, 0, TILE_SIZE, TILE_SIZE);
+
+	initUi();
 
 	Renderer& r = Utility<Renderer>::get();
 	mMap = new MapFile(mMapSavePath, MapFile::TileGroups);
 	mMap->updateCameraAnchorArea(r.width(), r.height() - mToolBar.height());
 
+	mMiniMap.map(mMap);
 }
 
 
 void EditorState::initUi()
 {
+	// ToolBar
+	mToolBar.toolbar_event().connect(this, &EditorState::toolbar_event);
+
 	// Tile Palette
 	mTilePalette.font(mFont);
 	mTilePalette.boldFont(mBoldFont);
-
-	// ToolBar
-	mToolBar.toolbar_event().connect(this, &EditorState::toolbar_event);
+	mTilePalette.hidden(!mToolBar.show_tilepalette());
 
 	// Mini Map
 	mMiniMap.font(mFont);
@@ -96,10 +108,6 @@ State* EditorState::update()
 	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height());
 
 	updateSelector();
-
-	if(mDrawDebug)
-		debug();
-
 	updateUI();
 
 	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, 5.0f, r.height() - mBoldFont.height(), 1, 255, 255, 255, 0, 0, 0);
@@ -126,8 +134,6 @@ void EditorState::updateUI()
  */
 void EditorState::updateSelector()
 {
-	return;
-
 	// Don't draw selector if the UI is hidden.
 	if(mMouseCoords.y() < 32)
 		return;
@@ -137,18 +143,24 @@ void EditorState::updateSelector()
 
 	Renderer& r = Utility<Renderer>::get();
 
+	int rectOffsetX = (mMap->cameraPosition().x() % TILE_SIZE);
+	int rectOffsetY = (mMap->cameraPosition().y() % TILE_SIZE) + TILE_SIZE; // offset for the toolbar
+
+	int gridX = gridLocation(mMouseCoords.x(), mMap->cameraPosition().x(), r.width());
+	int gridY = gridLocation(mMouseCoords.y(), mMap->cameraPosition().y() + TILE_SIZE, r.height() - TILE_SIZE);
+
+	mSelectorRect(gridX * TILE_SIZE - rectOffsetX, gridY * TILE_SIZE - rectOffsetY, TILE_SIZE, TILE_SIZE);
+
 	// Draw Tile Selector
 	int offsetX = 0, offsetY = 0;
 	
-	const Pattern* p = nullptr;
-	if(mToolBar.erase())
-		p = &mToolBar.brush();
+	const Pattern& p = mToolBar.brush();
 
-	for(int row = p->height(); row > 0; row--)
+	for(int row = p.height(); row > 0; row--)
 	{
-		for(int col = p->width(); col > 0; col--)
+		for(int col = p.width(); col > 0; col--)
 		{
-			//r.drawBox(mSelectorRect.x() - offsetX + mMap.viewport().x(), mSelectorRect.y() - offsetY + mMap.viewport().y(), mSelectorRect.width(), mSelectorRect.height(), 255, 255, 255);
+			r.drawBox(mSelectorRect.x() - offsetX, mSelectorRect.y() - offsetY + TILE_SIZE, mSelectorRect.width(), mSelectorRect.height(), 255, 255, 255);
 			offsetX += 32;
 		}
 		offsetX = 0;
@@ -171,11 +183,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 			mReturnState = new StartState();
 			break;
 
-		case EventHandler::KEY_F1:
-			mDrawDebug = !mDrawDebug;
-			break;
-
-		// Stealing this for dumping the minimap for now
 		case EventHandler::KEY_F2:
 			SDL_SaveBMP(MINI_MAP_SURFACE, "minimap.bmp");
 			break;

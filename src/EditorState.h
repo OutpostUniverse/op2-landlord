@@ -83,7 +83,6 @@ private:
 	std::string		mMapSavePath;
 
 	// FLAGS
-	bool			mDrawDebug = false;
 	bool			mLeftButtonDown = false;
 	bool			mRightButtonDown = false;
 	bool			mPlacingCollision = false;	/**< Flag indicating whether or not to place or clear collision on mouse drags. */
