@@ -2,7 +2,6 @@
 
 #include "NAS2D/NAS2D.h"
 
-#include "Menu.h"
 #include "MiniMap.h"
 #include "TilePalette.h"
 #include "ToolBar.h"

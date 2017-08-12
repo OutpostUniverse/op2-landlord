@@ -63,9 +63,6 @@
     <ClInclude Include="..\..\src\Control.h">
       <Filter>Header Files\UI Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Menu.h">
-      <Filter>Header Files\UI Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\TextField.h">
       <Filter>Header Files\UI Core</Filter>
     </ClInclude>
@@ -132,9 +129,6 @@
       <Filter>Source Files\UI Core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Control.cpp">
-      <Filter>Source Files\UI Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Menu.cpp">
       <Filter>Source Files\UI Core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TextField.cpp">
