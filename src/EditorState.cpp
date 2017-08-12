@@ -113,11 +113,9 @@ void EditorState::updateUI()
 void EditorState::updateSelector()
 {
 	// Don't draw selector if the UI is hidden.
-	if(mMouseCoords.y() < 32)
-		return;
+	if (mMouseCoords.y() < 32 || mRightButtonDown) { return; }
 
-	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events() || mRightButtonDown)
-		return;
+	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events()) { return; }
 
 	Renderer& r = Utility<Renderer>::get();
 
@@ -152,8 +150,7 @@ void EditorState::updateSelector()
  */
 void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
 {
-	if(repeat)
-		return;
+	if (repeat) { return; }
 
 	switch(key)
 	{
