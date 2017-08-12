@@ -6,7 +6,7 @@
 
 // UI
 #include "Button.h"
-#include "Menu.h"
+#include "ListBox.h"
 #include "TextField.h"
 
 
@@ -40,33 +40,31 @@ private:
 	StringList getFileList(const std::string& directory);
 
 	void fillMapMenu();
-	void fillTilesetMenu();
 
 	void button_CreateNew_click();
 	void button_LoadExisting_click();
 	void button_RefreshLists_click();
 
 private:
-	Timer			mTimer;				// used to flash messages.
+	Timer			mTimer;					/**< used to flash messages. */
 
-	Font			mFont;				/**< Internal Font to use. */
+	Font			mFont;					/**< Internal Font to use. */
 
-	Point_2d		mMouseCoords;		/**< Mouse pointer coordinates. */
+	Point_2d		mMouseCoords;			/**< Mouse pointer coordinates. */
 
-	Rectangle_2d	mLayoutRect;		/**< Rectangle used to position UI elements on screen. */
+	Rectangle_2d	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
 
-	Button			mBtnCreateNew;		/**< Create New button. */
-	Button			mBtnLoadExisting;	/**< Load Existing button. */
-	Button			mBtnRefreshLists;	/**< Refresh File Lists button. */
+	Button			mBtnCreateNew;			/**< Create New button. */
+	Button			mBtnLoadExisting;		/**< Load Existing button. */
+	Button			mBtnRefreshLists;		/**< Refresh File Lists button. */
 
-	TextField		mTxtWidth;			/**< Map Width text field. */
-	TextField		mTxtHeight;			/**< Map Height text field. */
-	TextField		txtMapPath;			/**< Filename for the map. */
+	TextField		mTxtWidth;				/**< Map Width text field. */
+	TextField		mTxtHeight;				/**< Map Height text field. */
+	TextField		txtMapPath;				/**< Filename for the map. */
 
-	Menu			mMapFilesMenu;		/**< Map File List menu. */
-	Menu			mTsetFilesMenu;		/**< Tileset File List menu. */
+	ListBox			mMapFilesMenu;			/**< Map File List menu. */
 
-	bool			mScanningMaps;
+	bool			mScanningMaps = true;	/**<  */
 
-	State*			mReturnState;		/**< State to return during updates. */
+	State*			mReturnState = this;	/**< State to return during updates. */
 };

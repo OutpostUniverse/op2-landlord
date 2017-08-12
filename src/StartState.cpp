@@ -24,10 +24,8 @@ void setMessage(const std::string& msg)
 /**
  * C'tpr
  */
-StartState::StartState():	mFont("fonts/opensans.ttf", 12),
-							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40),
-							mScanningMaps(true),
-							mReturnState(nullptr)
+StartState::StartState():	mFont("fonts/opensans-bold.ttf", 12),
+							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40)
 {
 
 }
@@ -95,12 +93,7 @@ void StartState::initialize()
 
 	mMapFilesMenu.font(mFont);
 	mMapFilesMenu.position(mLayoutRect.x() + 10, mLayoutRect.y() + 10);
-	mMapFilesMenu.width(mLayoutRect.width() / 2 - 20);
-
-	mTsetFilesMenu.font(mFont);
-	mTsetFilesMenu.position(mLayoutRect.x() + mLayoutRect.width() / 2 + 10, mLayoutRect.y() + 50);
-	mTsetFilesMenu.width(mLayoutRect.width() / 2 - 20);
-
+	mMapFilesMenu.size(mLayoutRect.width() / 2 - 20, mLayoutRect.height() - 30 - mBtnLoadExisting.height());
 
 	// Hook up event handlers
 	EventHandler& e = Utility<EventHandler>::get();
@@ -108,50 +101,19 @@ void StartState::initialize()
 	e.keyDown().connect(this, &StartState::onKeyDown);
 	e.mouseMotion().connect(this, &StartState::onMouseMove);
 	e.quit().connect(this, &StartState::onQuit);
-
-	fillTilesetMenu();
 }
 
 
 void StartState::fillMapMenu()
 {
-	/*
 	StringList lst = getFileList(EDITOR_MAPS_PATH);
 
-	for (size_t i = 0; i < lst.size(); ++i)
+	for (auto item : lst)
 	{
-		File xmlFile = Utility<Filesystem>::get().open(EDITOR_MAPS_PATH + lst[i]);
-
-		Xml::XmlDocument doc;
-		Xml::XmlElement  *root = nullptr;
-
-		doc.parse(xmlFile.raw_bytes());
-		if (doc.error())
-			continue;
-
-		if (doc.firstChildElement("map"))
-		{
-			if (doc.firstChildElement()->attribute("version") != MAP_DRIVER_VERSION)
-			{
-				cout << "Map '" << EDITOR_MAPS_PATH + lst[i] << "' is version mismatched." << endl;
-				continue;
-			}
-
-			mMapFilesMenu.addItem(lst[i]);
-		}
+		mMapFilesMenu.addItem(item);
 	}
 
 	mBtnLoadExisting.enabled(!mMapFilesMenu.empty());
-	*/
-}
-
-
-void StartState::fillTilesetMenu()
-{
-	StringList lst = getFileList(EDITOR_TSET_PATH);
-
-	for (size_t i = 0; i < lst.size(); ++i)
-		mTsetFilesMenu.addItem(lst[i]);
 }
 
 
@@ -170,8 +132,12 @@ StringList StartState::getFileList(const string& directory)
 	Filesystem& f = Utility<Filesystem>::get();
 
 	for (size_t i = 0; i < fileList.size(); i++)
+	{
 		if (!f.isDirectory(directory + fileList[i]))
+		{
 			returnList.push_back(fileList[i]);
+		}
+	}
 
 	return returnList;
 }
@@ -274,10 +240,7 @@ void StartState::button_LoadExisting_click()
 void StartState::button_RefreshLists_click()
 {
 	mMapFilesMenu.dropAllItems();
-	mTsetFilesMenu.dropAllItems();
-
 	mScanningMaps = true;
-	fillTilesetMenu();
 }
 
 
@@ -305,7 +268,6 @@ State* StartState::update()
 	txtMapPath.update();
 
 	mMapFilesMenu.update();
-	mTsetFilesMenu.update();
 
 	if (mTimer.accumulator() > 200)
 	{
@@ -314,13 +276,15 @@ State* StartState::update()
 	}
 
 	if (!MESSAGE.empty() && MSG_FLASH)
-		r.drawText(mFont, MESSAGE, 15, r.height() - 15, 255, 0, 0);
+	{
+		r.drawText(mFont, MESSAGE, 15, r.height() - 20, 255, 0, 0);
+	}
 
 	/// Doing it this way only so that the user can get feedback about what the app is doing.
 	/// \todo	This would benefit by spinning loading maps into its own thread.
 	if (mScanningMaps)
 	{
-		r.drawText(mFont, "SCANNING MAPS. PLEASE WAIT...", mLayoutRect.x(), 5, 255, 255, 0);
+		r.drawText(mFont, "SCANNING MAPS. PLEASE WAIT...", mLayoutRect.x(), 0, 255, 255, 0);
 		r.update();
 		fillMapMenu();
 		mScanningMaps = false;

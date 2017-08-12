@@ -84,6 +84,7 @@ void Button::onMouseDown(EventHandler::MouseButton button, int x, int y)
 			if(mType == BUTTON_NORMAL)
 			{
 				mState = STATE_PRESSED;
+				mPressed(true);
 			}
 			else
 			{
@@ -108,8 +109,12 @@ void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
 		{
 			mState = STATE_NORMAL;
 
-			if(isPointInRect(click, rect()))
+			mPressed(false);
+
+			if (isPointInRect(click, rect()))
+			{
 				mCallback();
+			}
 		}
 	}
 }
@@ -137,8 +142,7 @@ void Button::update()
  */
 void Button::draw()
 {
-	if(!visible())
-		return;
+	if (!visible()) { return; }
 
 	Renderer& r = Utility<Renderer>::get();
 
@@ -169,6 +173,5 @@ void Button::draw()
 		r.drawText(font(), text(), x, y, 0, 0, 0);
 	}
 
-	if (!enabled())
-		r.drawBoxFilled(rect(), 125, 125, 125, 100);
+	if (!enabled()) { r.drawBoxFilled(rect(), 125, 125, 125, 100); }
 }

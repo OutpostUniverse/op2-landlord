@@ -11,15 +11,16 @@ using namespace NAS2D;
 class Button: public Control
 {
 public:
-
-	typedef NAS2D::Signals::Signal0<void> ClickCallback;
-
 	enum Type
 	{
 		BUTTON_NORMAL,
 		BUTTON_TOGGLE
 	};
 
+	typedef NAS2D::Signals::Signal0<void> ClickCallback;
+	typedef NAS2D::Signals::Signal1<bool> PressCallback;
+
+public:
 	Button();
 	~Button();
 
@@ -29,6 +30,7 @@ public:
 	bool toggled() const;
 
 	ClickCallback& click() { return mCallback; }
+	PressCallback& press() { return mPressed; }
 
 	void image(const std::string path);
 
@@ -53,7 +55,8 @@ private:
 	State			mState;				/**< Current state of the Button. */
 	Type			mType;				/**< Modifies Button behavior. */
 
-	ClickCallback	mCallback;			/**< Object to notify when the Button is activated. */
+	ClickCallback	mCallback;			/**< Signal when the Button is activated. */
+	PressCallback	mPressed;			/**< Signal when the Button is pressed (as in click and hold). */
 
 	Image*			mImage;
 

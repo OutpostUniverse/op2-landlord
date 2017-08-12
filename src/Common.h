@@ -12,7 +12,7 @@ using namespace NAS2D;
 const int TILE_SIZE			= 32;	/**< Tile size in pixels. */
 const int MAP_CHUNK_SIZE	= 4;	/**< Size of an int value, in bytes. Since it can potentially change
 										 between platforms, this is used instead of sizeof(int). */
-
+const int NO_SELECTION		= -1;
 
 enum MousePointer
 {
@@ -48,3 +48,15 @@ void readTag(StreamReader* in, int tag);
  * Helper function for mouse picking.
  */
 int gridLocation(int point, int cameraPoint, int viewportDimension);
+
+
+/**
+ * Convenience function to pass a Rectangle_2df to \c isPointInRect()
+ */
+bool pointInRect_f(int x, int y, const NAS2D::Rectangle_2df& rect);
+
+
+/**
+ * Convenience function to pass a \c float's to \c isPointInRect()
+ */
+bool pointInRect_f(int x, int y, float rectX, float rectY, float rectW, float rectH);
