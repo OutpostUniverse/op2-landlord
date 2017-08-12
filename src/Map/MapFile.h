@@ -16,8 +16,8 @@ public:
 
 public:
 	// Class specific
-	MapFile(const std::string& tsetName, int width, int height);
 	MapFile(const std::string& mapName, MapLoadSaveFormat loadFlags);
+	MapFile(const std::string& tsetName, int width, int height);
 	~MapFile();
 
 	int width();
@@ -35,6 +35,11 @@ public:
 	void lavaPossible(int x, int y, int lavaPossible);
 
 	bool aroundTheWorld() const;
+
+	const NAS2D::Point_2d& cameraPosition() const { return mCameraPosition; }
+	void updateCameraAnchorArea(int width, int height);
+	void moveCamera(int x, int y);
+	void setCamera(int x, int y);
 
 	void draw(int x, int y, int width, int height);
 
@@ -68,7 +73,6 @@ private:
 private:
 	int LoadMap(const std::string& mapName, int loadFlags);
 	int SaveMap(const std::string& filename, enum MapLoadSaveFormat saveFlags);
-	void FreeMemory();
 
 	void initMapHeader();
 	void validateCoords(int x, int y) const;
@@ -79,12 +83,15 @@ private:
 	typedef std::vector<TileSet*> TileSetList;
 
 private:
+	// Feature extention values -- these are never saved to the map file.
 	TileSetManager*		mTilesetManager = nullptr;		/**<  */
+	NAS2D::Point_2d		mCameraPosition;				/**< Current position of the camera. */
+	NAS2D::Rectangle_2d	mCameraAnchorArea;				/**< Area that the camera is allowed to move around in. */
 
+private:
+	// These values are saved to the map file.
 	MapHeader			mMapHeadInfo;					/**<  */
 	ClippingRect		mClipRect;						/**<  */
-
-	NAS2D::Point_2d		mCameraPosition;				/**<  */
 
 	int					mTileWidth = 0;					/**< Cached width value (header contains lgTileWidth) */
 	int					mTileHeight = 0;				/**<  */

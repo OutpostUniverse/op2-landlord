@@ -22,9 +22,9 @@ std::stack<Point_2d> FLOOD_STACK;		// Stack used for contiguous flood fill.
 
 EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12),
 													mBoldFont("fonts/opensans-bold.ttf", 12),
-													mMapSavePath(mapPath)
+													mMapSavePath(mapPath),
+													mReturnState(this)
 {
-	mMapFile = new MapFile(mapPath, MapFile::TileGroups);
 }
 
 
@@ -36,6 +36,7 @@ EditorState::~EditorState()
 	Utility<EventHandler>::get().mouseButtonUp().disconnect(this, &EditorState::onMouseUp);
 	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &EditorState::onMouseDown);
 	Utility<EventHandler>::get().quit().disconnect(this, &EditorState::onQuit);
+	Utility<EventHandler>::get().windowResized().disconnect(this, &EditorState::onWindowResized);
 
 	if (MINI_MAP_SURFACE)
 	{
@@ -49,8 +50,6 @@ EditorState::~EditorState()
  */
 void EditorState::initialize()
 {
-	mReturnState = this;
-
 	initUi();
 
 	// Hook up event handlers
@@ -60,6 +59,13 @@ void EditorState::initialize()
 	Utility<EventHandler>::get().mouseButtonUp().connect(this, &EditorState::onMouseUp);
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &EditorState::onMouseDown);
 	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
+	Utility<EventHandler>::get().windowResized().connect(this, &EditorState::onWindowResized);
+
+
+	Renderer& r = Utility<Renderer>::get();
+	mMap = new MapFile(mMapSavePath, MapFile::TileGroups);
+	mMap->updateCameraAnchorArea(r.width(), r.height() - mToolBar.height());
+
 }
 
 
@@ -87,9 +93,8 @@ State* EditorState::update()
 	Renderer& r = Utility<Renderer>::get();
 	r.clearScreen(COLOR_MAGENTA);
 
-	mMapFile->draw(0, 32, r.width(), r.height() - 32);
+	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height());
 
-	updateScroll();
 	updateSelector();
 
 	if(mDrawDebug)
@@ -105,27 +110,14 @@ State* EditorState::update()
 
 void EditorState::updateUI()
 {
-	//instructions();
 	Renderer& r = Utility<Renderer>::get();
 
 	mToolBar.update();
 	mMiniMap.update();
 
-	//r.drawTextShadow(mFont, NAS2D::string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap.cameraPosition().x()) / mMap.tileset().width()), static_cast<int>((mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y()) / mMap.tileset().height())), 5, r.height() - 28, 1, 255, 255, 255, 0, 0, 0);
-	//r.drawTextShadow(mFont, NAS2D::string_format("World Fine: %i, %i", static_cast<int>(mMouseCoords.x() + mMap.cameraPosition().x() - mMap.viewport().x()), static_cast<int>(mMouseCoords.y() + mMap.cameraPosition().y() - mMap.viewport().y())), 5, r.height() - 15, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mBoldFont, NAS2D::string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap->cameraPosition().x()) / TILE_SIZE), static_cast<int>((mMouseCoords.y() + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE)), 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
 
 	mTilePalette.update();
-}
-
-
-/**
- * Updates the map scrolling.
- * 
- * Also updates the current tick time.
- */
-void EditorState::updateScroll()
-{
-	float delta = (mTimer.delta() / 1000.0f);
 }
 
 
@@ -179,22 +171,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 			mReturnState = new StartState();
 			break;
 
-		case EventHandler::KEY_LEFT:
-			mScrollVector.x() = -SCROLL_SPEED;
-			break;
-
-		case EventHandler::KEY_RIGHT:
-			mScrollVector.x() = SCROLL_SPEED;
-			break;
-
-		case EventHandler::KEY_UP:
-			mScrollVector.y() = -SCROLL_SPEED;
-			break;
-
-		case EventHandler::KEY_DOWN:
-			mScrollVector.y() = SCROLL_SPEED;
-			break;
-
 		case EventHandler::KEY_F1:
 			mDrawDebug = !mDrawDebug;
 			break;
@@ -221,16 +197,7 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
  * Handles KeyUp events.
  */
 void EditorState::onKeyUp(EventHandler::KeyCode key, EventHandler::KeyModifier mod)
-{
-	if(key == EventHandler::KEY_LEFT)
-		mScrollVector.x() = 0.0f;
-	else if(key == EventHandler::KEY_RIGHT)
-		mScrollVector.x() = 0.0f;
-	else if(key == EventHandler::KEY_UP)
-		mScrollVector.y() = 0.0f;
-	else if(key == EventHandler::KEY_DOWN)
-		mScrollVector.y() = 0.0f;
-}
+{}
 
 
 /**
@@ -243,13 +210,23 @@ void EditorState::onQuit()
 
 
 /**
+ * Window resized event handler.
+ */
+void EditorState::onWindowResized(int x, int y)
+{
+	// Need to account for the toolbar height for map drawing calculations to be correct.
+	mMap->updateCameraAnchorArea(x, y - mToolBar.height());
+}
+
+
+/**
  *
  */
 void EditorState::onMouseMove(int x, int y, int relX, int relY)
 {
 	if(mRightButtonDown)
 	{
-		//mMap.moveCamera(relX, relY);
+		mMap->moveCamera(-relX, -relY);
 		return;
 	}
 
@@ -548,57 +525,4 @@ void EditorState::saveUndo()
  * Draws debug information.
  */
 void EditorState::debug()
-{
-	/*
-	Renderer& r = Utility<Renderer>::get();
-
-	// Cell coords pointed at by mouse.
-	std::stringstream ss;
-	Point_2d pt = mMap.getGridCoords(mMouseCoords);
-	ss << "Cell Coords: " << pt.x() << ", " << pt.y();
-	r.drawTextShadow(mFont, ss.str(), 4, 100, 1, 255, 255, 255, 0, 0, 0);
-
-	// Tile Index
-	Cell& cell = mMap.getCell(mMouseCoords);
-
-	ss.str("");
-	ss << "Base: " << cell.index(Cell::LAYER_BASE);
-	r.drawTextShadow(mFont, ss.str(), 4, 145, 1, 255, 255, 255, 0, 0, 0);
-
-	ss.str("");
-	ss << "Base Detail: " << cell.index(Cell::LAYER_BASE_DETAIL);
-	r.drawTextShadow(mFont, ss.str(), 4, 160, 1, 255, 255, 255, 0, 0, 0);
-
-	ss.str("");
-	ss << "Detail: " << cell.index(Cell::LAYER_DETAIL);
-	r.drawTextShadow(mFont, ss.str(), 4, 175, 1, 255, 255, 255, 0, 0, 0);
-
-	ss.str("");
-	ss << "Foreground: " << cell.index(Cell::LAYER_FOREGROUND);
-	r.drawTextShadow(mFont, ss.str(), 4, 190, 1, 255, 255, 255, 0, 0, 0);
-
-	ss.str("");
-	cell.blocked() ? ss << "Blocked: true" : ss << "Blocked: false";
-	r.drawTextShadow(mFont, ss.str(), 4, 205, 1, 255, 255, 255, 0, 0, 0);
-
-	ss.str("");
-	ss << "Link: " << cell.link();
-	r.drawTextShadow(mFont, ss.str(), 4, 235, 1, 255, 255, 255, 0, 0, 0);
-
-	ss.str("");
-	ss << "Destination: " << cell.link_destination().x() << ", " << cell.link_destination().y();
-	r.drawTextShadow(mFont, ss.str(), 4, 250, 1, 255, 255, 255, 0, 0, 0);
-
-	mMap.tileset().drawTileColorPalette(r.width() - 32, 50, 4, 6);
-	*/
-}
-
-
-/**
- * Draws a key mapping string.
- */
-void EditorState::instructions()
-{
-	string str1 = "F1: Show/Hide Debug | F3: Map Link | F4: Save | F5: BG Detail | F6: Detail | F7: Foreground | F10: Hide/Show UI";
-	Utility<Renderer>::get().drawTextShadow(mFont, str1, Utility<Renderer>::get().width() - mFont.width(str1) - 4, 4, 1, 255, 255, 255, 0, 0, 0);
-}
+{}

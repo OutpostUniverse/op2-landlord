@@ -31,6 +31,7 @@ protected:
 	void onMouseMove(int x, int y, int relX, int relY);
 	void onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
 	void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
+	void onWindowResized(int x, int y);
 	
 	void onQuit();
 
@@ -38,17 +39,12 @@ private:
 	EditorState();	// Explicitly undefined
 
 	void initUi();
-
-	void button_MapLinkOkay_Click();
-	void button_MapLinkCancel_Click();
 	
-	void updateScroll();
 	void updateSelector();
 
 	void saveMap();
 
 	void debug();
-	void instructions();
 
 	void changeTileTexture();
 	void pattern(int value = 0);
@@ -70,12 +66,12 @@ private:
 	Font			mFont;
 	Font			mBoldFont;
 
-	MapFile*		mMapFile = nullptr;
+	MapFile*		mMap = nullptr;
 
 	// PRIMITIVES
 	Point_2d		mMouseCoords;
 	Point_2d		mSavedMouseCoords;
-	Point_2df		mScrollVector;
+
 	Rectangle_2d	mSelectorRect;
 	Rectangle_2d	mCellInspectRect;
 
@@ -93,5 +89,5 @@ private:
 	bool			mPlacingCollision = false;	/**< Flag indicating whether or not to place or clear collision on mouse drags. */
 	bool			mMapChanged = false;		/**< Used to determine if the map changed. */
 
-	State*			mReturnState = nullptr;
+	State*			mReturnState = this;
 };

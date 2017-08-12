@@ -97,6 +97,12 @@ void ToolBar::initUi()
 }
 
 
+int ToolBar::height()
+{
+	return 32;
+}
+
+
 void ToolBar::hookEvents()
 {
 	EventHandler& e = Utility<EventHandler>::get();
@@ -137,7 +143,7 @@ void drawSeparator(Button& btn, int margin)
 void ToolBar::update()
 {
 	Renderer& r = Utility<Renderer>::get();
-	bevelBox(0, 0, r.width(), 32);
+	bevelBox(0, 0, r.width(), height());
 
 	btnSave.update();
 

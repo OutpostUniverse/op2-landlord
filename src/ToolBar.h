@@ -45,6 +45,8 @@ public:
 
 	const Rectangle_2d flood_tool_extended_area() const { return mFloodFillExtendedArea; }
 
+	int height();
+
 private:
 	void initUi();
 

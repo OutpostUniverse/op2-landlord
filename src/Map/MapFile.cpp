@@ -14,19 +14,26 @@ using namespace NAS2D;
 const int MAP_CHUNK_SIZE = 4;
 
 
-void MapFile::initMapHeader()
+/**
+ * C'tor
+ * 
+ * Loads an existing map file.
+ */
+MapFile::MapFile(const std::string& mapName, enum MapLoadSaveFormat loadFlags)
 {
-	// Initialize map header structure
-	mMapHeadInfo.tag = 0x00001011;
-	mMapHeadInfo.unknown = 0;
-	mMapHeadInfo.tileHeight = mTileHeight;
-	mMapHeadInfo.numTileSets = 512;
-
-	// Calculate the log (base 2) of the map width
-	mMapHeadInfo.lgTileWidth = LogBase2(mTileWidth);
+	// Initialize variables
+	if (LoadMap(mapName, loadFlags) != 0)
+	{
+		throw std::runtime_error("Error loading map data from stream.");
+	}
 }
 
 
+/**
+ * C'tor
+ * 
+ * Creates a new map from scratch.
+ */
 MapFile::MapFile(const std::string& tsetName, int width, int height)
 {
 	mTileWidth = RoundUpPowerOf2(width);
@@ -62,21 +69,42 @@ MapFile::MapFile(const std::string& tsetName, int width, int height)
 }
 
 
-MapFile::MapFile(const std::string& mapName, enum MapLoadSaveFormat loadFlags)
+/**
+ * D'tor
+ */
+MapFile::~MapFile()
 {
-	// Initialize variables
-	if (LoadMap(mapName, loadFlags) != 0)
+	if (mTileData)
 	{
-		throw std::runtime_error("Error loading map data from stream.");
+		delete[] mTileData;
+	}
+
+	if (mTilesetManager)
+	{
+		delete mTilesetManager;
+	}
+
+	if (mTileGroupInfo)
+	{
+		delete[] mTileGroupInfo;
 	}
 }
 
 
 /**
- * D'tor
+ * 
  */
-MapFile::~MapFile()
-{}
+void MapFile::initMapHeader()
+{
+	// Initialize map header structure
+	mMapHeadInfo.tag = 0x00001011;
+	mMapHeadInfo.unknown = 0;
+	mMapHeadInfo.tileHeight = mTileHeight;
+	mMapHeadInfo.numTileSets = 512;
+
+	// Calculate the log (base 2) of the map width
+	mMapHeadInfo.lgTileWidth = LogBase2(mTileWidth);
+}
 
 
 int MapFile::width()
@@ -143,32 +171,52 @@ int MapFile::tset_index(int x, int y)
 }
 
 
+void MapFile::updateCameraAnchorArea(int width, int height)
+{
+	mCameraAnchorArea(0, 0, mTileWidth * 32 - width, mTileHeight * 32 - height);
+	setCamera(mCameraPosition.x(), mCameraPosition.y());
+}
+
+
+void MapFile::moveCamera(int x, int y)
+{
+	setCamera(mCameraPosition.x() + x, mCameraPosition.y() + y);
+}
+
+
+void MapFile::setCamera(int x, int y)
+{
+	mCameraPosition(clamp(x, 0, mCameraAnchorArea.width()),
+					clamp(y, 0, mCameraAnchorArea.height()));
+}
+
+
 void MapFile::draw(int x, int y, int width, int height)
 {
-	int columns = (width / 32) + (width % 32);
-	int rows = (height / 32) + (height % 32);
+	int offsetX = mCameraPosition.x() / 32;
+	int offsetY = mCameraPosition.y() / 32;
 
-	int tileXUpper = 0, tileXLower = 0, tileOffset = 0, tileIndex = 0, tile = 0;
+	int drawOffsetX = mCameraPosition.x() % 32;
+	int drawOffsetY = mCameraPosition.y() % 32;
+
+	int columns = (width / 32) + (drawOffsetX % 32);
+	int rows = (height / 32) + (drawOffsetY % 32);
+
+	int tileIndex = 0;
 
 	TileSet* tileSet = nullptr;
 	TileSetManager::TileSetTileMapping* tileMap = nullptr;
-
-	for (int row = 0; row < rows; ++row)
+	for (int row = 0; row <= rows && row + offsetY < mTileHeight; ++row)
 	{
-		for (int col = 0; col < columns; ++col)
+		for (int col = 0; col <= columns && col + offsetX < mTileWidth; ++col)
 		{
-			// Make sure the tileIndex is in range
-			tileIndex = tset_index(col, row);
+			tileIndex = tset_index(col + offsetX, row + offsetY);
 
 			tileMap = &mTilesetManager->mMapping[tileIndex];
 			tileSet = mTilesetManager->mTileSetInfo[tileMap->tileSetIndex].tileSet;
 			if (tileSet)
 			{
-				tileSet->draw(tileMap->tileIndex, x + (col * 32), y + (row * 32));
-			}
-			else
-			{
-				Utility<Renderer>::get().drawBoxFilled(x + (col * 32), y + (row * 32), 32, 32, 0, 0, 0);
+				tileSet->draw(tileMap->tileIndex, x + (col * 32) - drawOffsetX, y + (row * 32) - drawOffsetY);
 			}
 		}
 	}
@@ -303,7 +351,7 @@ int MapFile::LoadMap(const std::string& mapName, int loadFlags)
 		// Allocate space for the tile group info
 		mTileGroupInfo = new TileGroupInfo[mTileGroupCount];
 		// Initialize the array
-		memset(mTileGroupInfo, 0, sizeof(mTileGroupInfo[0]) * mTileGroupCount);
+		memset(mTileGroupInfo, 0, sizeof(TileGroupInfo) * mTileGroupCount);
 
 		// Read all group info
 		for (int i = 0; i < mTileGroupCount; i++)

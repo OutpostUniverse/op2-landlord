@@ -9,6 +9,8 @@ using namespace NAS2D;
 
 #include <SDL.h>
 
+const int TILE_SIZE = 32;
+
 
 enum MousePointer
 {
