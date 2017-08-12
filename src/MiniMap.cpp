@@ -42,7 +42,7 @@ void MiniMap::hidden(bool _b)
 void MiniMap::adjustCamera(int x, int y)
 {
 	Renderer& r = Utility<Renderer>::get();
-	mMap->setCamera((TILE_SIZE * (x - mRect.x() + 4)) - (r.width() / 2), (TILE_SIZE * (y - mRect.y() - 21)) - (r.height() / 2));
+	mMap->setCamera((TILE_SIZE * (x - (int)mRect.x() + 4)) - ((int)r.width() / 2),(TILE_SIZE * (y - (int)mRect.y() - 21)) - ((int)r.height() / 2));
 }
 
 
@@ -98,19 +98,19 @@ void MiniMap::update()
 	Renderer& r = Utility<Renderer>::get();
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
-	r.drawBoxFilled(rect().x(), rect().y(), rect().width(), 16, 75, 95, 130);
+	r.drawBoxFilled((float)rect().x(), (float)rect().y(), (float)rect().width(), 16, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
 	if (mFont)
 	{
-		r.drawText(*mBoldFont, "MiniMap", mRect.x() + (mRect.width() / 2) - (mBoldFont->width("MiniMap") / 2), rect().y(), 255, 255, 255);
+		r.drawText(*mBoldFont, "MiniMap", (float)(mRect.x() + (mRect.width() / 2) - (mBoldFont->width("MiniMap") / 2)), (float)rect().y(), 255, 255, 255);
 	}
 
 
-	r.drawBoxFilled(mRect.x() + 5, mRect.y() + 21, mMiniMap->width(), mMiniMap->height(), 255, 0, 255);
-	r.drawImage(*mMiniMap, mRect.x() + 5, mRect.y() + 21);
+	r.drawBoxFilled((float)mRect.x() + 5, (float)mRect.y() + 21, (float)mMiniMap->width(), (float)mMiniMap->height(), 255, 0, 255);
+	r.drawImage(*mMiniMap, (float)mRect.x() + 5, (float)mRect.y() + 21);
 
-	mViewRect(mRect.x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE), mRect.y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE), r.width() / TILE_SIZE, r.height() / TILE_SIZE);
+	mViewRect(mRect.x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE), mRect.y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE));
 	r.drawBox(mViewRect, 255, 255, 255);
 }
 
