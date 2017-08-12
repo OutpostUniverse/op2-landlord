@@ -123,71 +123,6 @@ void get_pixel32(SDL_Surface *surface, int x, int y, Uint8 &r, Uint8 &g, Uint8 &
 }
 
 
-void BlendPixel(SDL_Surface *srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8 A)
-{
-	Uint8 bR = 0, bG = 0, bB = 0, bA = 0;
-	get_pixel32(srf, x, y, bR, bG, bB, bA);
-
-	int outR = (R * A) + (bR * (1.0 - A));
-	int outG = (G * A) + (bG * (1.0 - A));
-	int outB = (B * A) + (bB * (1.0 - A));
-	int outA = (A * A) + (bA * (1.0 - A));
-
-	//outR = srcR * srcA + dstR(1 - srcA);
-
-	Uint32 color = SDL_MapRGBA(srf->format, outR, outG, outB, outA);
-
-	if(SDL_MUSTLOCK(srf))
-		if(SDL_LockSurface(srf) < 0 )
-			return;
-
-	switch(srf->format->BytesPerPixel)
-	{
-		case 1:		// 8-bpp
-			{
-			Uint8 *bufp;
-
-			bufp = (Uint8*)srf->pixels + y*srf->pitch + x;
-			*bufp = color;
-			}
-			break;
-
-	case 2: // 15-bpp or 16-bpp
-		{
-		Uint16 *bufp;
-
-		bufp = (Uint16*)srf->pixels + y*srf->pitch/2 + x;
-		*bufp = color;
-		}
-		break;
-
-	case 3: // 24-bpp
-		{
-		Uint8 *bufp;
-
-		bufp = (Uint8*)srf->pixels + y * srf->pitch + x;
-		*(bufp + srf->format->Rshift / 8) = R;
-		*(bufp + srf->format->Gshift / 8) = G;
-		*(bufp + srf->format->Bshift / 8) = B;
-		*(bufp + srf->format->Ashift / 8) = A;
-		}
-		break;
-
-	case 4: // Probably 32-bpp
-		{
-			Uint32 *bufp;
-
-			bufp = (Uint32*)srf->pixels + y * srf->pitch / 4 + x;
-			*bufp = color;
-		}
-		break;
-	}
-
-	if(SDL_MUSTLOCK(srf))
-		SDL_UnlockSurface(srf);
-}
-
-
 int RoundUpPowerOf2(int num)
 {
 	num = num - 1;
@@ -217,13 +152,6 @@ int LogBase2(int num)
 }
 
 
-/**
- * Helper function.
- * 
- * Reads a map tag.
- * 
- * \note throws if tag is incorrect.
- */
 void readTag(StreamReader* in, int tag)
 {
 	int _tag = 0;
@@ -232,4 +160,10 @@ void readTag(StreamReader* in, int tag)
 	{
 		throw std::runtime_error("MapFile::Load(): tag mismatch");
 	}
+}
+
+
+int gridLocation(int point, int cameraPoint, int viewportDimension)
+{
+	return ((point - -(cameraPoint % TILE_SIZE)) / TILE_SIZE) % viewportDimension;
 }

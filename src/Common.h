@@ -28,7 +28,6 @@ void bevelBox(int x, int y, int w, int h, bool sunk = false, const Color_4ub& bg
 std::string TrimString(const std::string& src, const std::string& c = " \r\n");
 
 void DrawPixel(SDL_Surface* srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8 A);
-void BlendPixel(SDL_Surface* srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8 A);
 
 int RoundUpPowerOf2(int num);
 int LogBase2(int num);
@@ -43,3 +42,9 @@ class StreamReader;
  * \note throws if tag is incorrect.
  */
 void readTag(StreamReader* in, int tag);
+
+
+/**
+ * Helper function for mouse picking.
+ */
+int gridLocation(int point, int cameraPoint, int viewportDimension);

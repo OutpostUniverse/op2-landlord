@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
 		r.minimum_size(800, 600);
 		r.resizeable(true);
 
-		//game.go(new StartState());
-		game.go(new EditorState("maps/mp6_01.map"));
+		game.go(new StartState());
+		//game.go(new EditorState("maps/mp6_01.map"));
 	}
 	catch(std::runtime_error& e)
 	{

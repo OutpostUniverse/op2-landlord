@@ -2136,4 +2136,8 @@ const ColorTable& selectColorTable(const std::string& tsetName)
 	if (tsetName == "well0010") { return well0010_color_table; }
 	if (tsetName == "well0011") { return well0011_color_table; }
 	if (tsetName == "well0012") { return well0012_color_table; }
+	else
+	{
+		throw std::runtime_error("selectColorTable(): Invalid tileset name.");
+	}
 }

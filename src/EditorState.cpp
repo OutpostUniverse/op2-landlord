@@ -8,31 +8,12 @@
 
 using namespace NAS2D;
 
-
-const bool			SHOW_DEBUG_DEFAULT	= false;
-const bool			HIDE_UI_DEFAULT		= false;
-
-const float			SCROLL_SPEED		= 250.0f;
-
-SDL_Surface*		MINI_MAP_SURFACE	= nullptr; // HACK!
-
-
-std::stack<Point_2d> FLOOD_STACK;		// Stack used for contiguous flood fill.
-
-
-/**
- * Helper function for mouse picking.
- */
-int gridLocation(int point, int cameraPoint, int viewportDimension)
-{
-	return ((point - -(cameraPoint % TILE_SIZE)) / TILE_SIZE) % viewportDimension;
-}
+std::stack<Point_2d> FLOOD_STACK;					/**< Stack used for contiguous flood fill. */
 
 
 EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12),
 													mBoldFont("fonts/opensans-bold.ttf", 12),
-													mMapSavePath(mapPath),
-													mReturnState(this)
+													mMapSavePath(mapPath)
 {
 }
 
@@ -46,12 +27,6 @@ EditorState::~EditorState()
 	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &EditorState::onMouseDown);
 	Utility<EventHandler>::get().quit().disconnect(this, &EditorState::onQuit);
 	Utility<EventHandler>::get().windowResized().disconnect(this, &EditorState::onWindowResized);
-
-	if (MINI_MAP_SURFACE)
-	{
-		SDL_FreeSurface(MINI_MAP_SURFACE);
-		MINI_MAP_SURFACE = nullptr;
-	}
 }
 
 /**
@@ -181,10 +156,6 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 	{
 		case EventHandler::KEY_ESCAPE:
 			mReturnState = new StartState();
-			break;
-
-		case EventHandler::KEY_F2:
-			SDL_SaveBMP(MINI_MAP_SURFACE, "minimap.bmp");
 			break;
 
 		case EventHandler::KEY_z:
