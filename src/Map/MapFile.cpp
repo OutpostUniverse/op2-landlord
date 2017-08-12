@@ -140,6 +140,17 @@ int MapFile::index(int x, int y)
 }
 
 
+const Color_4ub& MapFile::averageColor(int x, int y)
+{
+	validateCoords(x, y);
+
+	TileSetManager::TileSetTileMapping* tileMap = &mTilesetManager->mMapping[tset_index(x, y)];
+	TileSet* tileSet = mTilesetManager->mTileSetInfo[tileMap->tileSetIndex].tileSet;
+
+	return tileSet->color(tileMap->tileIndex);
+}
+
+
 void MapFile::index(int x, int y, int index)
 {
 	validateCoords(x, y);

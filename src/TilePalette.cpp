@@ -85,7 +85,7 @@ void TilePalette::update()
 
 	if (mFont)
 	{
-		r.drawText(*mBoldFont, "Tile Palette", mRect.x() + (mRect.width() / 2) - (mFont->width("Tile Palette") / 2), mRect.y(), 255, 255, 255);
+		r.drawText(*mBoldFont, "Tile Palette", mRect.x() + (mRect.width() / 2) - (mBoldFont->width("Tile Palette") / 2), mRect.y(), 255, 255, 255);
 	}
 
 }

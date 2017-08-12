@@ -25,6 +25,8 @@ public:
 
 	int tileGroups() const;
 
+	const NAS2D::Color_4ub& averageColor(int x, int y);
+
 	int index(int x, int y);
 	void index(int x, int y, int index);
 

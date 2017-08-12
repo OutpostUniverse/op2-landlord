@@ -26,7 +26,6 @@ public:
 	/** Returns index of the removed tileset. */
 	int removeTileSet(const std::string& tileSetName);
 
-
 	int MapInTiles(int tileSetIndex, int startTile, int numTiles /* [retval][out] int* mappingIndex*/);
 
 	int getMappingIndex(int tileSetIndex, int tileIndex, int numTileReplacements, int cycleDelay);

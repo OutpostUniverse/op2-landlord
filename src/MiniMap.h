@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Map/MapFile.h"
+
 #include "NAS2D/NAS2D.h"
 
 #include <SDL.h>
@@ -28,12 +30,13 @@ public:
 
 	bool responding_to_events() const { return dragging() || moving_camera(); }
 
+	void map(MapFile* map) { mMap = map; update_minimap(); }
+
 	void update();
 
 	void update_minimap();
 
 private:
-
 	void init();
 
 	void onMouseDown(NAS2D::EventHandler::MouseButton b, int x, int y);
@@ -45,14 +48,16 @@ private:
 	void adjustCamera(int x, int y);
 
 private:
-
 	Rectangle_2d	mRect;
+	Rectangle_2d	mViewRect;
 
 	Font*			mFont = nullptr;
 	Font*			mBoldFont = nullptr;
 
 	SDL_Surface*	mSurface = nullptr;
 	Image*			mMiniMap = nullptr;
+
+	MapFile*		mMap = nullptr;
 
 	bool			mDragging = false;
 	bool			mLeftButtonDown = false;
