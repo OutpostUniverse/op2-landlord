@@ -102,6 +102,9 @@
     <ClInclude Include="..\..\src\Map\color_table.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Map\cell_types.h">
+      <Filter>Header Files\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\EditorState.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files\Stream</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Map\color_table.cpp">
+      <Filter>Source Files\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Map\cell_types.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
   </ItemGroup>

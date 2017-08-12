@@ -51,7 +51,7 @@ void ToolBar::initUi()
 	btnFillContiguous.position(btnFill.positionX() - 30, 40);
 	btnFillContiguous.visible(false);
 
-	mFloodFillExtendedArea(btnFillContiguous.positionX() - 4, btnFillContiguous.positionY() - 4, 104, btnFillContiguous.height() + 8);
+	mFloodFillExtendedArea((int)btnFillContiguous.positionX() - 4, (int)btnFillContiguous.positionY() - 4, 104, (int)btnFillContiguous.height() + 8);
 
 	btnErase.image("sys/erase.png");
 	btnErase.type(Button::BUTTON_TOGGLE);
@@ -143,7 +143,7 @@ void drawSeparator(Button& btn, int margin)
 void ToolBar::update()
 {
 	Renderer& r = Utility<Renderer>::get();
-	bevelBox(0, 0, r.width(), height());
+	bevelBox(0, 0, (int)r.width(), (int)height());
 
 	btnSave.update();
 
@@ -155,7 +155,7 @@ void ToolBar::update()
 
 	if (btnFillContiguous.visible())
 	{
-		r.drawBoxFilled(mFloodFillExtendedArea.x() + 3, mFloodFillExtendedArea.y() + 4, mFloodFillExtendedArea.width(), mFloodFillExtendedArea.height(), 0, 0, 0, 100);
+		r.drawBoxFilled((float)mFloodFillExtendedArea.x() + 3, (float)mFloodFillExtendedArea.y() + 4, (float)mFloodFillExtendedArea.width(), (float)mFloodFillExtendedArea.height(), 0, 0, 0, 100);
 		r.drawBoxFilled(mFloodFillExtendedArea, 180, 180, 180);
 		r.drawBox(mFloodFillExtendedArea, 0, 0, 0);
 		r.drawText(mFont, "Contiguous", btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4, 0, 0, 0);

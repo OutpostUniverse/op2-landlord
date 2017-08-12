@@ -3,6 +3,8 @@
 
 #include "Common.h"
 
+#include "Map/cell_types.h"
+
 #include <stack>
 #include <sstream>
 
@@ -80,11 +82,14 @@ State* EditorState::update()
 	Renderer& r = Utility<Renderer>::get();
 	r.clearScreen(COLOR_MAGENTA);
 
-	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height());
+	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), true);
+
+	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x(), mTileHighlight.y())), 5, 50, 1, 255, 255, 255, 0, 0, 0);
 
 	updateSelector();
 	updateUI();
 
+	r.drawTextShadow(mBoldFont, string_format("World Tile: %i, %i", mTileHighlight.x(), mTileHighlight.y()), 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
 	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, 5.0f, r.height() - mBoldFont.height(), 1, 255, 255, 255, 0, 0, 0);
 
 	return mReturnState;
@@ -97,8 +102,6 @@ void EditorState::updateUI()
 
 	mToolBar.update();
 	mMiniMap.update();
-
-	r.drawTextShadow(mBoldFont, NAS2D::string_format("World Tile: %i, %i", static_cast<int>((mMouseCoords.x() + mMap->cameraPosition().x()) / TILE_SIZE), static_cast<int>((mMouseCoords.y() + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE)), 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
 
 	mTilePalette.update();
 }
@@ -113,7 +116,7 @@ void EditorState::updateSelector()
 	if(mMouseCoords.y() < 32)
 		return;
 
-	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
+	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events() || mRightButtonDown)
 		return;
 
 	Renderer& r = Utility<Renderer>::get();
@@ -209,6 +212,9 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 	}
 
 	mMouseCoords(x, y);
+
+	mTileHighlight(	clamp((x + mMap->cameraPosition().x()) / TILE_SIZE, 0, mMap->width() - 1),
+					clamp((y + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1));
 
 	if(mLeftButtonDown)
 	{

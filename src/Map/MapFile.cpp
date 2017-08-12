@@ -1,7 +1,8 @@
 #include "MapFile.h"
 
-#include "../Common.h"
+#include "cell_types.h"
 
+#include "../Common.h"
 #include "../Stream/StreamReader.h"
 
 #include <iostream>
@@ -11,15 +12,25 @@
 using namespace NAS2D;
 
 
+Image* CELL_TYPE_OVERLAY = nullptr;
+
+
 /**
  * C'tor
  * 
  * Loads an existing map file.
  */
-MapFile::MapFile(const std::string& mapName)
+MapFile::MapFile(const std::string& filename)
 {
 	// Initialize variables
-	if (LoadMap(mapName) != 0)
+
+	if(!CELL_TYPE_OVERLAY) { CELL_TYPE_OVERLAY = new Image("sys/celltypemask.png"); }
+
+	try
+	{
+		load(filename);
+	}
+	catch (...)
 	{
 		throw std::runtime_error("Error loading map data from stream.");
 	}
@@ -30,39 +41,12 @@ MapFile::MapFile(const std::string& mapName)
  * C'tor
  * 
  * Creates a new map from scratch.
+ * 
+ * \todo	Make this actually do something.
  */
-MapFile::MapFile(const std::string& tsetName, int width, int height)
+MapFile::MapFile(const std::string& filename, int width, int height)
 {
-	mTileWidth = RoundUpPowerOf2(width);
-	mTileHeight = RoundUpPowerOf2(height);
-
-	// Check size is valid
-	if (mTileWidth < 16 || mTileWidth > 512) { throw std::runtime_error("MapFile(): Invalid map size."); }
-	if (mTileHeight < 16 || mTileHeight > 256) { throw std::runtime_error("MapFile(): Invalid map size."); }
-
-	initMapHeader();
-
-	// Initialize the clipping rectangle
-	if (mMapHeadInfo.lgTileWidth >= 9)
-	{
-		mClipRect.x1 = -1;
-		mClipRect.y1 = 0;
-		mClipRect.x2 = 0x7FFFFFFF;
-		mClipRect.y2 = mTileHeight - 2;
-	}
-	else
-	{
-		mClipRect.x1 = 32;
-		mClipRect.y1 = 0;
-		mClipRect.x2 = mTileWidth + 0x1F;
-		mClipRect.y2 = mTileHeight - 2;
-	}
-
-	// Allocate space for data
-	mTileData = new int[mTileWidth * mTileHeight];
-
-	// Clear tile data to 0
-	memset(mTileData, 0, mTileWidth * mTileHeight);
+	if (!CELL_TYPE_OVERLAY) { CELL_TYPE_OVERLAY = new Image("sys/celltypemask.png"); }
 }
 
 
@@ -91,6 +75,8 @@ MapFile::~MapFile()
 
 		delete[] mTileGroupInfo;
 	}
+
+	if (CELL_TYPE_OVERLAY) { delete CELL_TYPE_OVERLAY; }
 }
 
 
@@ -131,13 +117,19 @@ void MapFile::validateCoords(int x, int y) const
 }
 
 
+int MapFile::tile_offset(int x, int y) const
+{
+	int tileXUpper = x / 32;
+	int tileXLower = x % 32;
+	return (((tileXUpper * mTileHeight) + y) * 32) + tileXLower;
+}
+
+
 int MapFile::index(int x, int y)
 {
 	validateCoords(x, y);
 
-	int tileXUpper = x >> 5;
-	int tileXLower = y & 0x1F;
-	int tileOffset = (((tileXUpper * mTileHeight) + y) << 5) + tileXLower;
+	int tileOffset = tile_offset(x, y);
 
 	return (mTileData[tileOffset] & 0x0000FFE0) >> 5;;
 }
@@ -164,30 +156,22 @@ void MapFile::index(int x, int y, int index)
 		throw std::runtime_error("MapFile::Index(): Invalid tile index.");
 	}
 
-	// **TODO** Check if index is out of array bounds?
-
-	int tileXUpper = x >> 5;
-	int tileXLower = x & 0x1F;
-	int tileOffset = (((tileXUpper * mTileHeight) + y) << 5) + tileXLower;
+	int tileOffset = tile_offset(x, y);
 
 	// Set the tile mapping index
 	mTileData[tileOffset] = (mTileData[tileOffset] & 0xFFFF001F) | (index << 5);
 }
 
 
-int MapFile::tset_index(int x, int y)
+int MapFile::tset_index(int x, int y) const
 {
-	int tileXUpper = x / 32;
-	int tileXLower = x % 32;
-	int tileOffset = (((tileXUpper * mTileHeight) + y) * 32) + tileXLower;
-
-	return clamp((mTileData[tileOffset] & 0x0000FFE0) / 32, 0, mTilesetManager->mNumMappings);
+	return clamp((mTileData[tile_offset(x, y)] & 0x0000FFE0) / TILE_SIZE, 0, mTilesetManager->mNumMappings);
 }
 
 
 void MapFile::updateCameraAnchorArea(int width, int height)
 {
-	mCameraAnchorArea(0, 0, mTileWidth * 32 - width, mTileHeight * 32 - height);
+	mCameraAnchorArea(0, 0, mTileWidth * TILE_SIZE - width, mTileHeight * TILE_SIZE - height);
 	setCamera(mCameraPosition.x(), mCameraPosition.y());
 }
 
@@ -205,7 +189,7 @@ void MapFile::setCamera(int x, int y)
 }
 
 
-void MapFile::draw(int x, int y, int width, int height)
+void MapFile::draw(int x, int y, int width, int height, bool draw_overlay)
 {
 	int offsetX = mCameraPosition.x() / 32;
 	int offsetY = mCameraPosition.y() / 32;
@@ -218,19 +202,31 @@ void MapFile::draw(int x, int y, int width, int height)
 
 	int tileIndex = 0;
 
+	Renderer& r = Utility<Renderer>::get();
+
+	int rasterX = 0, rasterY = 0;
+
 	TileSet* tileSet = nullptr;
 	TileSetManager::TileSetTileMapping* tileMap = nullptr;
 	for (int row = 0; row <= rows && row + offsetY < mTileHeight; ++row)
 	{
 		for (int col = 0; col <= columns && col + offsetX < mTileWidth; ++col)
 		{
+			rasterX = x + (col * 32) - drawOffsetX;
+			rasterY = y + (row * 32) - drawOffsetY;
+
 			tileIndex = tset_index(col + offsetX, row + offsetY);
 
 			tileMap = &mTilesetManager->mMapping[tileIndex];
 			tileSet = mTilesetManager->mTileSetInfo[tileMap->tileSetIndex].tileSet;
 			if (tileSet)
 			{
-				tileSet->draw(tileMap->tileIndex, x + (col * 32) - drawOffsetX, y + (row * 32) - drawOffsetY);
+				tileSet->draw(tileMap->tileIndex, rasterX, rasterY);
+			}
+
+			if (draw_overlay)
+			{
+				r.drawSubImage(*CELL_TYPE_OVERLAY, rasterX, rasterY, 0, static_cast<int>(cellType(col + offsetX, row + offsetY)) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 			}
 		}
 	}
@@ -243,24 +239,21 @@ bool MapFile::aroundTheWorld() const
 }
 
 
-int MapFile::cellType(int x, int y) const
+CellType MapFile::cellType(int x, int y) const
 {
 	validateCoords(x, y);
-
-	int tileXUpper = x >> 5;
-	int tileXLower = y & 0x1F;
-	int tileOffset = (((tileXUpper * mTileHeight) + y) << 5) + tileXLower;
-
-	return mTileData[tileOffset] & 0x1F;
+	return static_cast<CellType>(mTileData[tile_offset(x, y)] & 0x1F);
 }
 
 
-void MapFile::cellType(int x, int y, int cell_type)
+void MapFile::cellType(int x, int y, CellType type)
 {
 	validateCoords(x, y);
 
+	int _ctype = static_cast<int>(type);
+
 	// Check for invalid cell type
-	if ((cell_type & ~0x1F) != 0)	// Only 5 bits allowed
+	if ((_ctype & ~0x1F) != 0)	// Only 5 bits allowed
 	{
 		throw std::runtime_error("MapFile::Index(): Invalid cell type.");
 	}
@@ -269,7 +262,7 @@ void MapFile::cellType(int x, int y, int cell_type)
 	int tileXLower = y & 0x1F;
 	int tileOffset = (((tileXUpper * mTileHeight) + y) << 5) + tileXLower;
 
-	mTileData[tileOffset] = (mTileData[tileOffset] & 0xFFFFFFE0) | (cell_type & 0x1F);
+	mTileData[tileOffset] = (mTileData[tileOffset] & 0xFFFFFFE0) | (_ctype & 0x1F);
 }
 
 
@@ -294,7 +287,6 @@ void MapFile::lavaPossible(int x, int y, int lavaPossible)
 	int tileXLower = x & 0x1F;
 	int tileOffset = (((tileXUpper * mTileHeight) + y) << 5) + tileXLower;
 
-	// Set the LavaPossible bit
 	mTileData[tileOffset] |= (lavaPossible & 0x1) << 28;
 }
 
@@ -305,7 +297,7 @@ int MapFile::tileGroups() const
 }
 
 
-int MapFile::LoadMap(const std::string& mapName)
+void MapFile::load(const std::string& filename)
 {
 	// **NOTE**: Changed the 'format errors' to just post an error rather than throw an exception.
 	// Although they can cause problems, it shouldn't prevent the map from loading.
@@ -316,7 +308,7 @@ int MapFile::LoadMap(const std::string& mapName)
 
 	try
 	{
-		File _f = Utility<Filesystem>::get().open(mapName);
+		File _f = Utility<Filesystem>::get().open(filename);
 		File::RawByteStream stream = _f.raw_bytes();
 		StreamReader stream_reader(stream);
 
@@ -386,18 +378,13 @@ int MapFile::LoadMap(const std::string& mapName)
 	catch (const std::string& errorMsg)
 	{
 		std::cout << errorMsg << std::endl;
-		return -1;	// Failed to load file
 	}
 	catch (...)
-	{
-		return -1;	// Failed to load file
-	}
-
-	return 0;	// Success
+	{}
 }
 
 
-int MapFile::SaveMap(const std::string& filename, enum MapLoadSaveFormat saveFlags)
+void MapFile::save(const std::string& filename)
 {
 	/*
 	int numBytesWritten;
@@ -485,5 +472,4 @@ int MapFile::SaveMap(const std::string& filename, enum MapLoadSaveFormat saveFla
 	*status = 0;	// Success
 	return S_OK;	// Success
 	*/
-	return 0;
 }

@@ -6,8 +6,8 @@
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommand>c:\dev\landlord\$(ProjectName).exe</LocalDebuggerCommand>
-    <LocalDebuggerWorkingDirectory>c:\dev\landlord</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommand>c:\dev\op2-landlord\$(ProjectName).exe</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>../..</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

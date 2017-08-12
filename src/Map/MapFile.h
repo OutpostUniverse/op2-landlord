@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cell_types.h"
 #include "TileGroup.h"
 #include "TileSetManager.h"
 
@@ -7,8 +8,8 @@ class MapFile
 {
 public:
 	// Class specific
-	MapFile(const std::string& mapName);
-	MapFile(const std::string& tsetName, int width, int height);
+	MapFile(const std::string& filename);
+	MapFile(const std::string& filename, int width, int height);
 	~MapFile();
 
 	int width();
@@ -21,8 +22,8 @@ public:
 	int index(int x, int y);
 	void index(int x, int y, int index);
 
-	int cellType(int x, int y) const;
-	void cellType(int x, int y, int cell_type);
+	CellType cellType(int x, int y) const;
+	void cellType(int x, int y, CellType type);
 
 	bool lavaPossible(int x, int y);
 	void lavaPossible(int x, int y, int lavaPossible);
@@ -34,7 +35,7 @@ public:
 	void moveCamera(int x, int y);
 	void setCamera(int x, int y);
 
-	void draw(int x, int y, int width, int height);
+	void draw(int x, int y, int width, int height, bool draw_overlay = false);
 
 private:
 	#pragma pack(push, 1) // Make sure structures are byte aligned
@@ -64,13 +65,15 @@ private:
 	};
 
 private:
-	int LoadMap(const std::string& mapName);
-	int SaveMap(const std::string& filename, enum MapLoadSaveFormat saveFlags);
+	void load(const std::string& filename);
+	void save(const std::string& filename);
 
 	void initMapHeader();
 	void validateCoords(int x, int y) const;
 
-	int tset_index(int x, int y);
+	int tset_index(int x, int y) const;
+
+	int tile_offset(int x, int y) const;
 
 private:
 	typedef std::vector<TileSet*> TileSetList;

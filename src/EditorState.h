@@ -71,6 +71,7 @@ private:
 	// PRIMITIVES
 	Point_2d		mMouseCoords;
 	Point_2d		mSavedMouseCoords;
+	Point_2d		mTileHighlight;
 
 	Rectangle_2d	mSelectorRect;
 	Rectangle_2d	mCellInspectRect;

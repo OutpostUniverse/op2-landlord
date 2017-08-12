@@ -6,6 +6,7 @@
 #include "Common.h"
 #include "Defaults.h"
 
+#include "Map/cell_types.h"
 #include "Map/color_table.h"
 
 #include <map>
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
 	freopen_s(&stream, "log_editor.txt", "w", stdout);
 	#endif
 
+	fillCellTypes();
 	fillColorTables();
 
 	try
@@ -42,7 +44,7 @@ int main(int argc, char *argv[])
 		r.resizeable(true);
 
 		game.go(new StartState());
-		//game.go(new EditorState("maps/mp6_01.map"));
+		//game.go(new EditorState("maps/mp2_11.map"));
 	}
 	catch(std::runtime_error& e)
 	{
