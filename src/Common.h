@@ -9,7 +9,9 @@ using namespace NAS2D;
 
 #include <SDL.h>
 
-const int TILE_SIZE = 32;
+const int TILE_SIZE			= 32;	/**< Tile size in pixels. */
+const int MAP_CHUNK_SIZE	= 4;	/**< Size of an int value, in bytes. Since it can potentially change
+										 between platforms, this is used instead of sizeof(int). */
 
 
 enum MousePointer
@@ -30,3 +32,14 @@ void BlendPixel(SDL_Surface* srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8
 
 int RoundUpPowerOf2(int num);
 int LogBase2(int num);
+
+class StreamReader;
+
+/**
+ * Helper function.
+ * 
+ * Reads a map tag.
+ * 
+ * \note throws if tag is incorrect.
+ */
+void readTag(StreamReader* in, int tag);

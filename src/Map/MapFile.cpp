@@ -11,18 +11,15 @@
 using namespace NAS2D;
 
 
-const int MAP_CHUNK_SIZE = 4;
-
-
 /**
  * C'tor
  * 
  * Loads an existing map file.
  */
-MapFile::MapFile(const std::string& mapName, enum MapLoadSaveFormat loadFlags)
+MapFile::MapFile(const std::string& mapName)
 {
 	// Initialize variables
-	if (LoadMap(mapName, loadFlags) != 0)
+	if (LoadMap(mapName) != 0)
 	{
 		throw std::runtime_error("Error loading map data from stream.");
 	}
@@ -86,6 +83,12 @@ MapFile::~MapFile()
 
 	if (mTileGroupInfo)
 	{
+		for (int i = 0; i < mTileGroupCount; i++)
+		{
+			delete mTileGroupInfo[i].tileGroup;
+			delete mTileGroupInfo[i].name;
+		}
+
 		delete[] mTileGroupInfo;
 	}
 }
@@ -140,7 +143,7 @@ int MapFile::index(int x, int y)
 }
 
 
-const Color_4ub& MapFile::averageColor(int x, int y)
+const Color_4ub& MapFile::tile_color(int x, int y)
 {
 	validateCoords(x, y);
 
@@ -302,7 +305,7 @@ int MapFile::tileGroups() const
 }
 
 
-int MapFile::LoadMap(const std::string& mapName, int loadFlags)
+int MapFile::LoadMap(const std::string& mapName)
 {
 	// **NOTE**: Changed the 'format errors' to just post an error rather than throw an exception.
 	// Although they can cause problems, it shouldn't prevent the map from loading.
@@ -321,7 +324,7 @@ int MapFile::LoadMap(const std::string& mapName, int loadFlags)
 
 		// Update map header fields
 		mMapHeadInfo.tileHeight = RoundUpPowerOf2(mMapHeadInfo.tileHeight);
-	
+
 		mTileWidth = 1 << mMapHeadInfo.lgTileWidth;	// Calculate map width
 		mTileHeight = mMapHeadInfo.tileHeight;
 
@@ -336,25 +339,10 @@ int MapFile::LoadMap(const std::string& mapName, int loadFlags)
 
 		mTilesetManager = new TileSetManager(mMapHeadInfo.numTileSets, &stream_reader);
 
-		// Read tag
-		stream_reader.read(&temp, MAP_CHUNK_SIZE);
-		// Check if tag matches the opening tag of the file
-		if (temp != mMapHeadInfo.tag)
-		{
-			throw std::runtime_error("MapFile::Load(): tag mismatch");
-		}
-
+		readTag(&stream_reader, mMapHeadInfo.tag);
 		// Something about units between reads of the tag.
+		readTag(&stream_reader, mMapHeadInfo.tag);
 
-		// Read tag
-		stream_reader.read(&temp, MAP_CHUNK_SIZE);
-		// Check if tag matches the opening tag of the file
-		if (temp != mMapHeadInfo.tag)
-		{
-			throw std::runtime_error("MapFile::Load(): tag mismatch");
-		}
-
-		
 		// Load tile groups from file
 		stream_reader.read(&mTileGroupCount, MAP_CHUNK_SIZE);
 		stream_reader.read(&temp, MAP_CHUNK_SIZE);
@@ -362,20 +350,20 @@ int MapFile::LoadMap(const std::string& mapName, int loadFlags)
 		// Allocate space for the tile group info
 		mTileGroupInfo = new TileGroupInfo[mTileGroupCount];
 		// Initialize the array
-		memset(mTileGroupInfo, 0, sizeof(TileGroupInfo) * mTileGroupCount);
+		memset(mTileGroupInfo, 0, sizeof(mTileGroupInfo) * mTileGroupCount);
 
 		// Read all group info
 		for (int i = 0; i < mTileGroupCount; i++)
 		{
-			int width, height;
-			int x, y;
+			int width = 0, height = 0;
+			int x = 0, y = 0;
 
 			// Read the dimensions
 			stream_reader.read(&width, MAP_CHUNK_SIZE);
 			stream_reader.read(&height, MAP_CHUNK_SIZE);
 			// Create a new TileGroup
 			mTileGroupInfo[i].tileGroup = new TileGroup(width, height, mTilesetManager);
-				
+
 			// Read in the tile data
 			for (y = 0; y < height; y++)
 			{
@@ -395,12 +383,12 @@ int MapFile::LoadMap(const std::string& mapName, int loadFlags)
 			mTileGroupInfo[i].name[mTileGroupInfo[i].nameLen] = 0;
 		}
 	}
-	catch(const std::string& errorMsg)
+	catch (const std::string& errorMsg)
 	{
 		std::cout << errorMsg << std::endl;
 		return -1;	// Failed to load file
 	}
-	catch(...)
+	catch (...)
 	{
 		return -1;	// Failed to load file
 	}

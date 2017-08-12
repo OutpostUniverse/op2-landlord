@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 		r.resizeable(true);
 
 		//game.go(new StartState());
-		game.go(new EditorState("maps/eden02.map"));
+		game.go(new EditorState("maps/mp6_01.map"));
 	}
 	catch(std::runtime_error& e)
 	{

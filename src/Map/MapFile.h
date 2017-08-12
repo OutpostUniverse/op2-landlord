@@ -6,17 +6,8 @@
 class MapFile
 {
 public:
-	enum MapLoadSaveFormat
-	{
-		MapOnly = 0,
-		TileGroups = 1,
-		Units = 2,
-		SavedGameHeader = 4
-	};
-
-public:
 	// Class specific
-	MapFile(const std::string& mapName, MapLoadSaveFormat loadFlags);
+	MapFile(const std::string& mapName);
 	MapFile(const std::string& tsetName, int width, int height);
 	~MapFile();
 
@@ -25,7 +16,7 @@ public:
 
 	int tileGroups() const;
 
-	const NAS2D::Color_4ub& averageColor(int x, int y);
+	const NAS2D::Color_4ub& tile_color(int x, int y);
 
 	int index(int x, int y);
 	void index(int x, int y, int index);
@@ -73,7 +64,7 @@ private:
 	};
 
 private:
-	int LoadMap(const std::string& mapName, int loadFlags);
+	int LoadMap(const std::string& mapName);
 	int SaveMap(const std::string& filename, enum MapLoadSaveFormat saveFlags);
 
 	void initMapHeader();

@@ -140,7 +140,7 @@ void MiniMap::createMiniMap()
 	{
 		for (int x = 0; x < mMap->width(); x++)
 		{
-			_c = mMap->averageColor(x, y);
+			_c = mMap->tile_color(x, y);
 
 			DrawPixel(mSurface, x, y, _c.red(), _c.green(), _c.blue(), _c.alpha());
 		}

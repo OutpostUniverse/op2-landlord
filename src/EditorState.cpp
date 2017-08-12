@@ -73,7 +73,7 @@ void EditorState::initialize()
 	initUi();
 
 	Renderer& r = Utility<Renderer>::get();
-	mMap = new MapFile(mMapSavePath, MapFile::TileGroups);
+	mMap = new MapFile(mMapSavePath);
 	mMap->updateCameraAnchorArea(r.width(), r.height() - mToolBar.height());
 
 	mMiniMap.map(mMap);

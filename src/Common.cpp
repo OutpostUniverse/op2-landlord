@@ -1,5 +1,7 @@
 #include "Common.h"
 
+#include "Stream/StreamReader.h"
+
 #include "NAS2D/NAS2D.h"
 
 #include <sstream>
@@ -212,4 +214,22 @@ int LogBase2(int num)
 	y = num << 1;  if (y != 0) { log = log - 1; }
 
 	return log;
+}
+
+
+/**
+ * Helper function.
+ * 
+ * Reads a map tag.
+ * 
+ * \note throws if tag is incorrect.
+ */
+void readTag(StreamReader* in, int tag)
+{
+	int _tag = 0;
+	in->read(&_tag, MAP_CHUNK_SIZE);
+	if (_tag != tag)
+	{
+		throw std::runtime_error("MapFile::Load(): tag mismatch");
+	}
 }
