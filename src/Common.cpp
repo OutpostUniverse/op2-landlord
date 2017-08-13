@@ -24,15 +24,23 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color_4ub& bgcolor)
 	{
 		r.drawLine(x, y, x + w, y, COLOR_WHITE);
 		r.drawLine(x, y, x, y + h, COLOR_WHITE);
-		r.drawLine(x - 1, y + h, x + w, y + h, COLOR_GREY);
-		r.drawLine(x + w, y, x + w, y + h, COLOR_GREY);
+
+		r.drawLine(x - 1, y + h - 1, x + w, y + h - 1, COLOR_GREY);
+		r.drawLine(x + w - 1, y + 1, x + w - 1, y + h - 1, COLOR_GREY);
+
+		r.drawLine(x - 0.5f, y + h, x + w, y + h, COLOR_BLACK);
+		r.drawLine(x + w, y, x + w, y + h, COLOR_BLACK);
 	}
 	else
 	{
-		r.drawLine(x, y, x + w, y, COLOR_GREY);
-		r.drawLine(x, y, x, y + h, COLOR_GREY);
-		r.drawLine(x - 1, y + h, x + w, y + h, COLOR_WHITE);
+		r.drawLine(x, y + h, x + w, y + h, COLOR_WHITE);
 		r.drawLine(x + w, y, x + w, y + h, COLOR_WHITE);
+		
+		r.drawLine(x + 1, y + 1, x + w, y + 1, COLOR_GREY);
+		r.drawLine(x + 1, y + 1, x + 1, y + h, COLOR_GREY);
+
+		r.drawLine(x, y, x + w, y, COLOR_BLACK);
+		r.drawLine(x, y, x, y + h + 0.5f, COLOR_BLACK);
 	}
 }
 
