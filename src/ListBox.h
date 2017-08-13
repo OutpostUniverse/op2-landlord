@@ -37,8 +37,6 @@ public:
 	int currentSelection() const { return mCurrentSelection; }
 	void currentSelection(int selection) { mCurrentSelection = selection; mSelectionChanged(); }
 
-	int currentHighlight() const { return mCurrentHighlight; }
-
 	const std::string& selectionText() const { return mItems[mCurrentSelection]; }
 
 	void update();
@@ -61,7 +59,6 @@ private:
 	Font& font() { return *mFont; }
 
 private:
-	int							mCurrentHighlight = NO_SELECTION;	/**< Currently highlighted selection index. */
 	int							mCurrentSelection = NO_SELECTION;	/**< Current selection index. */
 	int							mCurrentOffset = 0;					/**< Current selection index. */
 

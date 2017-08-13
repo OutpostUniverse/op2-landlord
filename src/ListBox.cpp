@@ -140,19 +140,15 @@ void ListBox::dropAllItems()
 void ListBox::onMouseDown(EventHandler::MouseButton button, int x, int y)
 {
 	// Ignore if menu is empty or invisible
-	if(empty() || !visible())
-		return;
+	if (empty() || !visible()) { return; }
 
-	if(!isPointInRect(Point_2d(x, y), rect()) || mCurrentHighlight == NO_SELECTION)
-		return;
+	if (!isPointInRect(Point_2d(x, y), rect())) { return; }
 
 	if (mSlider.visible() && isPointInRect(Point_2d(x, y), mSlider.rect()))
 		return;		// if the mouse is on the slider then the slider should handle that
 
-	if (mCurrentHighlight < 0 || static_cast<size_t>(mCurrentHighlight) >= mItems.size())
-		return;
-
-	currentSelection(mCurrentHighlight);
+	int idx = ((y - (int)rect().y()) / (font().height() + 2)) % ((int)rect().height() / (font().height() + 2)) + mCurrentOffset;
+	currentSelection(idx);
 }
 
 
@@ -162,27 +158,6 @@ void ListBox::onMouseMove(int x, int y, int relX, int relY)
 	if (empty() || !visible()) { return; }
 
 	mMouseCoords(x, y);
-
-	// Ignore mouse motion events if the pointer isn't within the menu rect.
-	if (!isPointInRect(Point_2d(x, y), rect()))
-	{
-		mCurrentHighlight = NO_SELECTION;
-		return;
-	}
-
-	// if the mouse is on the slider then the slider should handle that
-	if (mSlider.visible() && isPointInRect(Point_2d(x, y), mSlider.rect()))
-	{
-		mCurrentHighlight = NO_SELECTION;
-		return;
-	}
-
-	mCurrentHighlight = ((y - (int)rect().y()) / (font().height() + 2)) % ((int)rect().height() / (font().height() + 2)) + mCurrentOffset;
-	if (static_cast<size_t>(mCurrentHighlight) >= mItems.size() ||
-		(mCurrentHighlight == 0 && y > rect().y() + font().height() + 2))
-	{
-		mCurrentHighlight = NO_SELECTION;
-	}
 }
 
 
@@ -193,13 +168,15 @@ void ListBox::update()
 
 	Renderer& r = Utility<Renderer>::get();
 
+	r.drawBoxFilled(rect(), 0, 0, 0);
+
 	int line_height = (font().height() + 2);
 	int itemY;
 	int itemWidth = rect().width();
 	int iItemsDisplayable;
 	int iMin = 0;
 	int iMax = mItems.size();
-	
+
 	if ((line_height*mItems.size()) > rect().height())
 	{
 		iItemsDisplayable = static_cast<int>(rect().height() / line_height);
@@ -223,29 +200,20 @@ void ListBox::update()
 	r.drawBoxFilled(rect().x(), rect().y(), itemWidth, rect().height(), 225, 225, 0, 85);
 
 	// Highlight currently selected file
-	if (iMin<=mCurrentSelection && mCurrentSelection<iMax )
+	if (iMin <= mCurrentSelection && mCurrentSelection < iMax)
 	{
 		itemY = rect().y() + ((mCurrentSelection - mCurrentOffset)  * line_height);
 		r.drawBoxFilled(rect().x(), itemY, itemWidth, line_height, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), 80);
 	}
 
-	// Highlight On mouse Over
-	if(mCurrentHighlight != NO_SELECTION && iMin <= mCurrentSelection && mCurrentSelection < iMax)
+	// display actuals values that are ment to be
+	for (int i = iMin; i < iMax; i++)
 	{
-		itemY = rect().y() + ((mCurrentHighlight - mCurrentOffset)  * line_height);
-		r.drawBox(rect().x(), itemY, itemWidth, line_height, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue());
+		itemY = rect().y() + ((i - iMin) * line_height);
+		r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
 	}
 
-	
-	// display actuals values that are ment to be
-	for(int i = iMin; i < iMax; i++)
-	{
-		itemY = rect().y() + ((i-iMin) * line_height);
-		if(i == mCurrentHighlight)
-			r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mHighlightText.red(), mHighlightText.green(), mHighlightText.blue(), 0, 0, 0);
-		else
-			r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
-	}
+	r.drawBox(rect(), 0, 0, 0);
 
 	// draw the slider if needed
 	mSlider.update();
