@@ -197,8 +197,8 @@ void MapFile::draw(int x, int y, int width, int height, bool draw_overlay)
 	int drawOffsetX = mCameraPosition.x() % 32;
 	int drawOffsetY = mCameraPosition.y() % 32;
 
-	int columns = (width / 32) + (drawOffsetX % 32);
-	int rows = (height / 32) + (drawOffsetY % 32);
+	int columns = (width / 32) + 2;
+	int rows = (height / 32) + 2;
 
 	int tileIndex = 0;
 
