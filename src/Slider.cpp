@@ -231,8 +231,8 @@ void Slider::draw()
 	int _x = 0, _y = 0, _w = 0, _h = 0;
 	float thumbPosition = 0.0f;
 
-	r.drawBoxFilled(mSlideBar.x() - 1, mSlideBar.y(), mSlideBar.width() + 2, mSlideBar.height(), 100, 100, 100);
-	r.drawBox(rect().x() - 1, rect().y(), rect().width() + 2, rect().height(), 0, 0, 0);
+	r.drawBoxFilled(mSlideBar.x() - 0.5f, mSlideBar.y(), mSlideBar.width(), mSlideBar.height(), 100, 100, 100);
+	r.drawBox(mSlideBar.x() - 0.5f, mSlideBar.y(), mSlideBar.width(), mSlideBar.height(), 50, 50, 50);
 
 	mButton1.update();
 	mButton2.update();
