@@ -12,14 +12,36 @@ using namespace NAS2D;
 
 std::stack<Point_2d> FLOOD_STACK;					/**< Stack used for contiguous flood fill. */
 
-
+/**
+ * C'tor
+ * 
+ * This version of the constructor is used to load an existing map file.
+ */
 EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12),
 													mBoldFont("fonts/opensans-bold.ttf", 12),
 													mMapSavePath(mapPath)
+{}
+
+
+/**
+ * C'tor
+ * 
+ * This version of the constructor is used to generate a new map file.
+ */
+EditorState::EditorState(const std::string& mapPath, TerrainType base, int width, int height)
 {
+	throw std::runtime_error("Not supported yet.");
+
+	/**
+	 * \todo	A map file must be generated here before the call to
+	 *			initialize() is made.
+	 */
 }
 
 
+/**
+ * D'tor
+ */
 EditorState::~EditorState()
 {
 	Utility<EventHandler>::get().keyUp().disconnect(this, &EditorState::onKeyUp);
@@ -30,6 +52,7 @@ EditorState::~EditorState()
 	Utility<EventHandler>::get().quit().disconnect(this, &EditorState::onQuit);
 	Utility<EventHandler>::get().windowResized().disconnect(this, &EditorState::onWindowResized);
 }
+
 
 /**
  * Initializes internal values and sets up event handlers.
@@ -50,6 +73,7 @@ void EditorState::initialize()
 	initUi();
 
 	Renderer& r = Utility<Renderer>::get();
+
 	mMap = new MapFile(mMapSavePath);
 	mMap->updateCameraAnchorArea(r.width(), r.height() - mToolBar.height());
 
