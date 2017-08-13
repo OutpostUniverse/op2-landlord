@@ -49,20 +49,23 @@ public:
 	SelectionChangedCallback& selectionChanged() { return mSelectionChanged; }
 
 protected:
-	virtual void onMouseDown(EventHandler::MouseButton button, int x, int y);
-	virtual void onMouseMove(int x, int y, int relX, int relY);
+	virtual void onMouseDown(EventHandler::MouseButton button, int x, int y) final;
+	virtual void onMouseMove(int x, int y, int relX, int relY) final;
 	void onMouseWheel(int x, int y);
-	virtual void slideChanged(double _position);
+	void slideChanged(double _position);
 
 private:
+	ListBox(const ListBox&) = delete;				/**< Not allowed */
+	ListBox& operator=(const ListBox&) = delete;	/**< Not allowed */
+
 	Font& font() { return *mFont; }
 
 private:
-	int							mCurrentHighlight;	/**< Currently highlighted selection index. */
-	int							mCurrentSelection;	/**< Current selection index. */
-	int							mCurrentOffset;		/**< Current selection index. */
+	int							mCurrentHighlight = NO_SELECTION;	/**< Currently highlighted selection index. */
+	int							mCurrentSelection = NO_SELECTION;	/**< Current selection index. */
+	int							mCurrentOffset = 0;					/**< Current selection index. */
 
-	Font*						mFont;				/**< Internal font to use for the menu. */
+	Font*						mFont = nullptr;	/**< Internal font to use for the menu. */
 
 	StringList					mItems;				/**< List of items preserved in the order in which they're added. */
 
@@ -75,5 +78,5 @@ private:
 	SelectionChangedCallback	mSelectionChanged;	/**< Callback for selection changed callback. */
 	Slider						mSlider;			/**<  */
 	
-	bool						mSorted;			/**< Flag indicating that all Items should be sorted. */
+	bool						mSorted = false;	/**< Flag indicating that all Items should be sorted. */
 };

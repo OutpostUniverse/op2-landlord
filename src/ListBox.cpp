@@ -8,13 +8,9 @@ using namespace std;
 /**
  * C'tor
  */
-ListBox::ListBox():	mCurrentHighlight(NO_SELECTION),
-					mCurrentSelection(0),
-					mCurrentOffset(0),
-					mText(COLOR_WHITE),
+ListBox::ListBox():	mText(COLOR_WHITE),
 					mHighlightBg(COLOR_GREEN),
-					mHighlightText(COLOR_WHITE),
-					mSorted(false)
+					mHighlightText(COLOR_WHITE)
 {
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &ListBox::onMouseDown);
 	Utility<EventHandler>::get().mouseMotion().connect(this, &ListBox::onMouseMove);
