@@ -22,10 +22,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 	// redirect log entries on Release builds.
-	#ifndef _DEBUG
 	FILE *stream;
 	freopen_s(&stream, "log_editor.txt", "w", stdout);
-	#endif
 
 	fillCellTypes();
 	fillColorTables();
@@ -34,6 +32,7 @@ int main(int argc, char *argv[])
 	{
 		Game game("Landlord", argv[0], "editor.xml");
 		game.mount("editor.zip");
+		game.mount("tsets.dat");
 
 		Renderer& r = Utility<Renderer>::get();
 		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);
@@ -63,5 +62,6 @@ int main(int argc, char *argv[])
 		#endif
 	}
 
+	fclose(stream);
 	return 0;
 }

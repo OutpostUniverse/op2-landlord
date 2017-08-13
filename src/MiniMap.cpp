@@ -49,11 +49,14 @@ void MiniMap::adjustCamera(int x, int y)
 void MiniMap::onMouseDown(EventHandler::MouseButton b, int x, int y)
 {
 	if (b != EventHandler::BUTTON_LEFT || hidden()) { return; }
+	mLeftButtonDown = true;
 
 	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), 17))
 	{
 		mDragging = true;
 	}
+
+	if (!mMiniMap) { return; }
 
 	if (isPointInRect(x, y, mRect.x() + 4, mRect.y() + 21, mMiniMap->width(), mMiniMap->height()))
 	{
@@ -61,7 +64,6 @@ void MiniMap::onMouseDown(EventHandler::MouseButton b, int x, int y)
 		adjustCamera(x, y);
 	}
 
-	mLeftButtonDown = true;
 }
 
 

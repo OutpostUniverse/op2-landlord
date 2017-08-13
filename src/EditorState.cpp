@@ -472,6 +472,10 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 		Utility<Renderer>::get().setCursor(POINTER_ERASE);
 		break;
 
+	case ToolBar::TOOLBAR_QUIT:
+		mReturnState = new StartState();
+		break;
+
 	default:
 		break;
 	}

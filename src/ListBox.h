@@ -51,6 +51,7 @@ public:
 protected:
 	virtual void onMouseDown(EventHandler::MouseButton button, int x, int y);
 	virtual void onMouseMove(int x, int y, int relX, int relY);
+	void onMouseWheel(int x, int y);
 	virtual void slideChanged(double _position);
 
 private:
@@ -68,6 +69,8 @@ private:
 	Color_4ub					mText;				/**< Text Color */
 	Color_4ub					mHighlightBg;		/**< Highlight Background color. */
 	Color_4ub					mHighlightText;		/**< Text Color for an item that is currently highlighted. */
+
+	Point_2d					mMouseCoords;		/**< Mouse position. */
 
 	SelectionChangedCallback	mSelectionChanged;	/**< Callback for selection changed callback. */
 	Slider						mSlider;			/**<  */

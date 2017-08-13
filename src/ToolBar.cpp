@@ -18,6 +18,7 @@ ToolBar::~ToolBar()
 
 	e.keyDown().disconnect(this, &ToolBar::onKeyDown);
 	e.mouseWheel().disconnect(this, &ToolBar::onMouseWheel);
+	e.windowResized().disconnect(this, &ToolBar::onWindowResized);
 
 	mToolbarEvent.clear();
 }
@@ -79,19 +80,25 @@ void ToolBar::initUi()
 
 
 	// WINDOW VISIBILITY
-	btnMiniMapToggle.image("sys/map.png");
-	btnMiniMapToggle.type(Button::BUTTON_TOGGLE);
-	btnMiniMapToggle.toggle(false);
-	btnMiniMapToggle.size(22, 28);
-	btnMiniMapToggle.position(Utility<Renderer>::get().width() - 48, 2);
-	btnMiniMapToggle.click().connect(this, &ToolBar::btnMiniMapToggle_Clicked);
+	btnExit.image("sys/exit.png");
+	btnExit.size(22, 28);
+	btnExit.position(Utility<Renderer>::get().width() - 24, 2);
+	btnExit.click().connect(this, &ToolBar::btnExit_Clicked);
+
 
 	btnTilePaletteToggle.image("sys/palette.png");
 	btnTilePaletteToggle.type(Button::BUTTON_TOGGLE);
 	btnTilePaletteToggle.toggle(false);
 	btnTilePaletteToggle.size(22, 28);
-	btnTilePaletteToggle.position(Utility<Renderer>::get().width() - 24, 2);
+	btnTilePaletteToggle.position(btnExit.positionX() - 41, 2);
 	btnTilePaletteToggle.click().connect(this, &ToolBar::btnTilePaletteToggle_Clicked);
+
+	btnMiniMapToggle.image("sys/map.png");
+	btnMiniMapToggle.type(Button::BUTTON_TOGGLE);
+	btnMiniMapToggle.toggle(false);
+	btnMiniMapToggle.size(22, 28);
+	btnMiniMapToggle.position(btnTilePaletteToggle.positionX() - 24, 2);
+	btnMiniMapToggle.click().connect(this, &ToolBar::btnMiniMapToggle_Clicked);
 
 	hookEvents();
 }
@@ -126,8 +133,10 @@ void ToolBar::onMouseWheel(int x, int y)
 
 void ToolBar::onWindowResized(int width, int height)
 {
-	btnMiniMapToggle.position(Utility<Renderer>::get().width() - 48, 2);
-	btnTilePaletteToggle.position(Utility<Renderer>::get().width() - 24, 2);
+	btnExit.position(Utility<Renderer>::get().width() - 24, 2);
+
+	btnTilePaletteToggle.position(btnExit.positionX() - 41, 2);
+	btnMiniMapToggle.position(btnTilePaletteToggle.positionX() - 24, 2);
 }
 
 
@@ -175,6 +184,9 @@ void ToolBar::update()
 
 	btnMiniMapToggle.update();
 	btnTilePaletteToggle.update();
+
+	drawSeparator(btnExit, -32);
+	btnExit.update();
 }
 
 
@@ -247,4 +259,10 @@ void ToolBar::btnSpinnerDown_Clicked()
 {
 	int size = clamp(mBrush.width() - 1, 1, 8);
 	mBrush.size(size, size);
+}
+
+
+void ToolBar::btnExit_Clicked()
+{
+	mToolbarEvent(TOOLBAR_QUIT);
 }

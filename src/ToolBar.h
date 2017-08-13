@@ -20,7 +20,8 @@ public:
 		TOOLBAR_TILE_PALETTE_TOGGLE,
 		TOOLBAR_TOOL_PENCIL,
 		TOOLBAR_TOOL_FILL,
-		TOOLBAR_TOOL_ERASER
+		TOOLBAR_TOOL_ERASER,
+		TOOLBAR_QUIT
 	};
 
 	typedef NAS2D::Signals::Signal1<ToolBarAction> ToolBarEvent;
@@ -73,6 +74,8 @@ private:
 	void btnMiniMapToggle_Clicked();
 	void btnTilePaletteToggle_Clicked();
 
+	void btnExit_Clicked();
+
 private:
 	Font			mFont;
 
@@ -98,6 +101,7 @@ private:
 
 	Button			btnMiniMapToggle;
 	Button			btnTilePaletteToggle;
+	Button			btnExit;
 
 	ToolBarEvent	mToolbarEvent;
 };

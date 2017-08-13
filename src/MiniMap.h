@@ -62,5 +62,5 @@ private:
 	bool			mDragging = false;
 	bool			mLeftButtonDown = false;
 	bool			mMovingCamera = false;
-	bool			mHidden = false;
+	bool			mHidden = true;
 };

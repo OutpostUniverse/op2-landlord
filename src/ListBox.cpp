@@ -18,6 +18,7 @@ ListBox::ListBox():	mCurrentHighlight(NO_SELECTION),
 {
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &ListBox::onMouseDown);
 	Utility<EventHandler>::get().mouseMotion().connect(this, &ListBox::onMouseMove);
+	Utility<EventHandler>::get().mouseWheel().connect(this, &ListBox::onMouseWheel);
 	
 	init();
 }
@@ -30,6 +31,7 @@ ListBox::~ListBox()
 {
 	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &ListBox::onMouseDown);
 	Utility<EventHandler>::get().mouseMotion().disconnect(this, &ListBox::onMouseMove);
+	Utility<EventHandler>::get().mouseWheel().disconnect(this, &ListBox::onMouseWheel);
 
 	mSlider.change().disconnect(this, &ListBox::slideChanged);
 }
@@ -163,6 +165,8 @@ void ListBox::onMouseMove(int x, int y, int relX, int relY)
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }
 
+	mMouseCoords(x, y);
+
 	// Ignore mouse motion events if the pointer isn't within the menu rect.
 	if (!isPointInRect(Point_2d(x, y), rect()))
 	{
@@ -250,6 +254,22 @@ void ListBox::update()
 	// draw the slider if needed
 	mSlider.update();
 }
+
+
+void ListBox::onMouseWheel(int x, int y)
+{
+	if (!isPointInRect(mMouseCoords, rect())) { return; }
+
+	if (y < 0)
+	{
+		mSlider.changePosition(1.0);
+	}
+	else if (y > 0)
+	{
+		mSlider.changePosition(-1.0);
+	}
+}
+
 
 void ListBox::slideChanged(double _position)
 {

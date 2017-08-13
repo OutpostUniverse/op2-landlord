@@ -26,9 +26,7 @@ void setMessage(const std::string& msg)
  */
 StartState::StartState():	mFont("fonts/opensans-bold.ttf", 12),
 							mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40)
-{
-
-}
+{}
 
 
 StartState::~StartState()
@@ -36,6 +34,7 @@ StartState::~StartState()
 	EventHandler& e = Utility<EventHandler>::get();
 	e.keyDown().disconnect(this, &StartState::onKeyDown);
 	e.mouseMotion().disconnect(this, &StartState::onMouseMove);
+	e.mouseDoubleClick().disconnect(this, &StartState::onDoubleClick);
 	e.quit().disconnect(this, &StartState::onQuit);
 }
 
@@ -100,6 +99,7 @@ void StartState::initialize()
 
 	e.keyDown().connect(this, &StartState::onKeyDown);
 	e.mouseMotion().connect(this, &StartState::onMouseMove);
+	e.mouseDoubleClick().connect(this, &StartState::onDoubleClick);
 	e.quit().connect(this, &StartState::onQuit);
 }
 
@@ -312,6 +312,17 @@ void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier 
 void StartState::onMouseMove(int x, int y, int relX, int relY)
 {
 	mMouseCoords(x, y);
+}
+
+
+void StartState::onDoubleClick(EventHandler::MouseButton button, int x, int y)
+{
+	if (button != EventHandler::BUTTON_LEFT) { return; }
+
+	if (isPointInRect(mMouseCoords, mMapFilesMenu.rect()))
+	{
+		button_LoadExisting_click();
+	}
 }
 
 
