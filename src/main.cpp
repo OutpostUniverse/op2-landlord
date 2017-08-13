@@ -1,4 +1,5 @@
-#include "NAS2D/NAS2D.h"
+#include <NAS2D/NAS2D.h>
+#include <NAS2D/Renderer/OGL_Renderer.h>
 
 #include "EditorState.h"
 #include "StartState.h"
@@ -30,20 +31,38 @@ int main(int argc, char *argv[])
 
 	try
 	{
-		Game game("Landlord", argv[0], "editor.xml");
-		game.mount("editor.zip");
-		game.mount("tsets.dat");
+		Filesystem& f = Utility<Filesystem>::get();
+		f.init(argv[0], "data");
+		f.addToSearchPath("editor.zip");
+		f.addToSearchPath("tsets.dat");
+
+		Configuration& cf = Utility<Configuration>::get();
+		cf.load("config.xml");
+		if (cf.graphicsWidth() < 1000 || cf.graphicsHeight() < 650)
+		{
+			cf.graphicsWidth(1000);
+			cf.graphicsHeight(650);
+		}
+		cf.save();
+
+		Utility<Renderer>::instantiateDerived(new OGL_Renderer("OutpostHD"));
 
 		Renderer& r = Utility<Renderer>::get();
 		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);
 		r.addCursor("sys/fill.png", POINTER_FILL, 0, 0);
 		r.addCursor("sys/eraser.png", POINTER_ERASE, 0, 0);
 		r.showSystemPointer(true);
-		r.minimum_size(800, 600);
+		r.minimum_size(1000, 650);
 		r.resizeable(true);
 
-		game.go(new StartState());
-		//game.go(new EditorState("maps/mp2_11.map"));
+		StateManager stateManager;
+		stateManager.setState(new StartState());
+
+		while (stateManager.update())
+		{
+			Utility<Renderer>::get().update();
+		}
+
 	}
 	catch(std::runtime_error& e)
 	{
