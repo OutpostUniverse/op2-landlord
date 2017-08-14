@@ -88,13 +88,13 @@ void EditorState::initUi()
 
 	// Tile Palette
 	mTilePalette.font(mFont);
-	mTilePalette.boldFont(mBoldFont);
-	mTilePalette.hidden(!mToolBar.show_tilepalette());
+	mTilePalette.titleFont(mBoldFont);
+	mTilePalette.visible(mToolBar.show_tilepalette());
 
 	// Mini Map
 	mMiniMap.font(mFont);
-	mMiniMap.boldFont(mBoldFont);
-	mMiniMap.hidden(!mToolBar.show_minimap());
+	mMiniMap.titleFont(mBoldFont);
+	mMiniMap.visible(mToolBar.show_minimap());
 }
 
 
@@ -477,11 +477,11 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 		break;
 
 	case ToolBar::TOOLBAR_MINIMAP_TOGGLE:
-		mMiniMap.hidden(!mToolBar.show_minimap());
+		mMiniMap.visible(mToolBar.show_minimap());
 		break;
 
 	case ToolBar::TOOLBAR_TILE_PALETTE_TOGGLE:
-		mTilePalette.hidden(!mToolBar.show_tilepalette());
+		mTilePalette.visible(mToolBar.show_tilepalette());
 		break;
 
 	case ToolBar::TOOLBAR_TOOL_PENCIL:

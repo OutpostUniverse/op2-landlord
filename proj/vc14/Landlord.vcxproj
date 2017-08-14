@@ -120,6 +120,7 @@
     <ClInclude Include="..\..\src\Tileset.h" />
     <ClInclude Include="..\..\src\ToolBar.h" />
     <ClInclude Include="..\..\src\UIContainer.h" />
+    <ClInclude Include="..\..\src\Window.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,7 @@
     <ClCompile Include="..\..\src\TilePalette.cpp" />
     <ClCompile Include="..\..\src\ToolBar.cpp" />
     <ClCompile Include="..\..\src\UIContainer.cpp" />
+    <ClCompile Include="..\..\src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Landlord.rc" />

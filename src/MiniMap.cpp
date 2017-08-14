@@ -6,59 +6,38 @@ using namespace NAS2D;
 
 MiniMap::MiniMap()
 {
-	init();
+	_init();
 }
 
 
 MiniMap::~MiniMap()
+{}
+
+
+void MiniMap::_init()
 {
-	EventHandler& e = Utility<EventHandler>::get();
-
-	e.mouseButtonDown().disconnect(this, &MiniMap::onMouseDown);
-	e.mouseButtonUp().disconnect(this, &MiniMap::onMouseUp);
-	e.mouseMotion().disconnect(this, &MiniMap::onMouseMotion);
-}
-
-
-void MiniMap::init()
-{
-	EventHandler& e = Utility<EventHandler>::get();
-
-	e.mouseButtonDown().connect(this, &MiniMap::onMouseDown);
-	e.mouseButtonUp().connect(this, &MiniMap::onMouseUp);
-	e.mouseMotion().connect(this, &MiniMap::onMouseMotion);
-
-	Renderer& r = Utility<Renderer>::get();
-	mRect(2, 34, 70, 70);
-}
-
-
-void MiniMap::hidden(bool _b)
-{
-	mHidden = _b;
+	position(2, 34);
+	size(70, 70);
+	text("Mini Map");
 }
 
 
 void MiniMap::adjustCamera(int x, int y)
 {
 	Renderer& r = Utility<Renderer>::get();
-	mMap->setCamera((TILE_SIZE * (x - (int)mRect.x() + 4)) - ((int)r.width() / 2),(TILE_SIZE * (y - (int)mRect.y() - 21)) - ((int)r.height() / 2));
+	mMap->setCamera((TILE_SIZE * (x - (int)rect().x() + 4)) - ((int)r.width() / 2),(TILE_SIZE * (y - (int)rect().y() - 21)) - ((int)r.height() / 2));
 }
 
 
-void MiniMap::onMouseDown(EventHandler::MouseButton b, int x, int y)
+void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != EventHandler::BUTTON_LEFT || hidden()) { return; }
+	if (b != EventHandler::BUTTON_LEFT) { return; }
+	
 	mLeftButtonDown = true;
-
-	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), 17))
-	{
-		mDragging = true;
-	}
 
 	if (!mMiniMap) { return; }
 
-	if (isPointInRect(x, y, mRect.x() + 4, mRect.y() + 21, mMiniMap->width(), mMiniMap->height()))
+	if (isPointInRect(x, y, rect().x() + 4, rect().y() + 21, mMiniMap->width(), mMiniMap->height()))
 	{
 		mMovingCamera = true;
 		adjustCamera(x, y);
@@ -67,23 +46,18 @@ void MiniMap::onMouseDown(EventHandler::MouseButton b, int x, int y)
 }
 
 
-void MiniMap::onMouseUp(EventHandler::MouseButton b, int x, int y)
+void MiniMap::mouseUp(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != EventHandler::BUTTON_LEFT || hidden()) { return; }
+	if (b != EventHandler::BUTTON_LEFT) { return; }
 
-	mDragging = false;
 	mLeftButtonDown = false;
 	mMovingCamera = false;
 }
 
 
-void MiniMap::onMouseMotion(int x, int y, int relX, int relY)
+void MiniMap::mouseMotion(int x, int y, int relX, int relY)
 {
-	if (mDragging)
-	{
-		mRect(mRect.x() + relX, mRect.y() + relY, mRect.width(), mRect.height());
-		return;
-	}
+	if (dragging()) { return; }
 
 	if(mMovingCamera)
 	{
@@ -93,26 +67,19 @@ void MiniMap::onMouseMotion(int x, int y, int relX, int relY)
 }
 
 
-void MiniMap::update()
+void MiniMap::draw()
 {
-	if (hidden()) { return; }
-
 	Renderer& r = Utility<Renderer>::get();
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
 	r.drawBoxFilled((float)rect().x(), (float)rect().y(), (float)rect().width(), 16, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
-	if (mFont)
-	{
-		r.drawText(*mBoldFont, "MiniMap", (float)(mRect.x() + (mRect.width() / 2) - (mBoldFont->width("MiniMap") / 2)), (float)rect().y(), 255, 255, 255);
-	}
 
+	r.drawBoxFilled(rect().x() + 5, rect().y() + 21, (float)mMiniMap->width(), (float)mMiniMap->height(), 255, 0, 255);
+	r.drawImage(*mMiniMap, rect().x() + 5, rect().y() + 21);
 
-	r.drawBoxFilled((float)mRect.x() + 5, (float)mRect.y() + 21, (float)mMiniMap->width(), (float)mMiniMap->height(), 255, 0, 255);
-	r.drawImage(*mMiniMap, (float)mRect.x() + 5, (float)mRect.y() + 21);
-
-	mViewRect(mRect.x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE), mRect.y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE));
+	mViewRect(rect().x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE), rect().y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE));
 	r.drawBox(mViewRect, 255, 255, 255);
 }
 
@@ -120,7 +87,7 @@ void MiniMap::update()
 void MiniMap::update_minimap()
 {
 	createMiniMap();
-	mRect(mRect.x(), mRect.y(), mMiniMap->width() + 10, mMiniMap->height() + 26);
+	size(mMiniMap->width() + 10, mMiniMap->height() + 26);
 }
 
 

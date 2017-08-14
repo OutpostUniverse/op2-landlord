@@ -117,6 +117,9 @@
     <ClInclude Include="..\..\src\Strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Window.h">
+      <Filter>Header Files\UI Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\EditorState.cpp">
@@ -180,6 +183,9 @@
       <Filter>Source Files\UI Core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TextArea.cpp">
+      <Filter>Source Files\UI Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Window.cpp">
       <Filter>Source Files\UI Core</Filter>
     </ClCompile>
   </ItemGroup>

@@ -20,7 +20,6 @@ using namespace NAS2D;
 class Control
 {
 public:
-
 	typedef NAS2D::Signals::Signal1<Control*> ResizeCallback;
 	typedef NAS2D::Signals::Signal1<Control*> TextChangedCallback;
 	typedef NAS2D::Signals::Signal2<float, float> PositionChangedCallback;
