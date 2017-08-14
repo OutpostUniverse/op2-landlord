@@ -113,6 +113,8 @@
     <ClInclude Include="..\..\src\StartState.h" />
     <ClInclude Include="..\..\src\Stream\StreamReader.h" />
     <ClInclude Include="..\..\src\Stream\StreamWriter.h" />
+    <ClInclude Include="..\..\src\Strings.h" />
+    <ClInclude Include="..\..\src\TextArea.h" />
     <ClInclude Include="..\..\src\TextField.h" />
     <ClInclude Include="..\..\src\TilePalette.h" />
     <ClInclude Include="..\..\src\Tileset.h" />
@@ -137,6 +139,7 @@
     <ClCompile Include="..\..\src\Slider.cpp" />
     <ClCompile Include="..\..\src\StartState.cpp" />
     <ClCompile Include="..\..\src\Stream\StreamReader.cpp" />
+    <ClCompile Include="..\..\src\TextArea.cpp" />
     <ClCompile Include="..\..\src\TextField.cpp" />
     <ClCompile Include="..\..\src\TilePalette.cpp" />
     <ClCompile Include="..\..\src\ToolBar.cpp" />

@@ -18,17 +18,8 @@ using namespace NAS2D;
 class EditorState: public State
 {
 public:
-	enum TerrainType
-	{
-		TERRAIN_MUD,
-		TERRAIN_ROCK,
-		TERRAIN_SAND
-	};
-
-
-public:
 	EditorState(const std::string& mapPath);
-	EditorState(const std::string& mapPath, TerrainType base, int width, int height);
+	EditorState(const std::string& mapPath, BaseTerrain base, int width, int height);
 	virtual ~EditorState();
 
 protected:

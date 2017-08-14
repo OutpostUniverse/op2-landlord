@@ -28,7 +28,7 @@ EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12)
  * 
  * This version of the constructor is used to generate a new map file.
  */
-EditorState::EditorState(const std::string& mapPath, TerrainType base, int width, int height)
+EditorState::EditorState(const std::string& mapPath, BaseTerrain base, int width, int height)
 {
 	throw std::runtime_error("Not supported yet.");
 

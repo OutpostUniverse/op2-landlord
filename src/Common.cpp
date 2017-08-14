@@ -160,6 +160,13 @@ int LogBase2(int num)
 }
 
 
+/**
+ * Helper function.
+ * 
+ * Reads a map tag.
+ * 
+ * \note throws if tag is incorrect.
+ */
 void readTag(StreamReader* in, int tag)
 {
 	int _tag = 0;
@@ -171,6 +178,9 @@ void readTag(StreamReader* in, int tag)
 }
 
 
+/**
+ * Helper function for mouse picking.
+ */
 int gridLocation(int point, int cameraPoint, int viewportDimension)
 {
 	return ((point - -(cameraPoint % TILE_SIZE)) / TILE_SIZE) % viewportDimension;

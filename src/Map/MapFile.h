@@ -4,12 +4,19 @@
 #include "TileGroup.h"
 #include "TileSetManager.h"
 
+
+#include "../Common.h"
+
+
+/**
+ * 
+ */
 class MapFile
 {
 public:
 	// Class specific
 	MapFile(const std::string& filename);
-	MapFile(const std::string& filename, int width, int height);
+	MapFile(const std::string& filename, BaseTerrain base, int width, int height);
 	~MapFile();
 
 	int width();

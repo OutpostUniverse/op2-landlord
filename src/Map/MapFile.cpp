@@ -44,7 +44,7 @@ MapFile::MapFile(const std::string& filename)
  * 
  * \todo	Make this actually do something.
  */
-MapFile::MapFile(const std::string& filename, int width, int height)
+MapFile::MapFile(const std::string& filename, BaseTerrain base, int width, int height)
 {
 	if (!CELL_TYPE_OVERLAY) { CELL_TYPE_OVERLAY = new Image("sys/celltypemask.png"); }
 }

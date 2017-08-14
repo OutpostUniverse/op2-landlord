@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 	{
 		Filesystem& f = Utility<Filesystem>::get();
 		f.init(argv[0], "data");
-		f.addToSearchPath("editor.zip");
 		f.addToSearchPath("tsets.dat");
+		f.addToSearchPath("sys.dat");
 
 		Configuration& cf = Utility<Configuration>::get();
 		cf.load("config.xml");
