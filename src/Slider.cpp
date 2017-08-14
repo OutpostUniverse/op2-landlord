@@ -53,6 +53,19 @@ void Slider::size(float w, float h)
 }
 
 
+void Slider::positionChanged(float dX, float dY)
+{
+	mSlideBar.x(mSlideBar.x() + dX);
+	mSlideBar.y(mSlideBar.y() + dY);
+
+	mSlider.x(mSlider.x() + dX);
+	mSlider.y(mSlider.y() + dY);
+
+	mButton1.position(mButton1.positionX() + dX, mButton1.positionY() + dY);
+	mButton2.position(mButton2.positionX() + dX, mButton2.positionY() + dY);
+}
+
+
 /**
  *
  */
@@ -112,7 +125,7 @@ void Slider::positionInternal(double _pos)
 
 void Slider::button1_Pressed(bool pressed)
 {
-	if (pressed) { changePosition(-1.0); }
+	if (pressed) { changeThumbPosition(-1.0); }
 	mButton1Held = pressed;
 
 	mTimer.reset();
@@ -122,7 +135,7 @@ void Slider::button1_Pressed(bool pressed)
 
 void Slider::button2_Pressed(bool pressed)
 {
-	if (pressed) { changePosition(+1.0); }
+	if (pressed) { changeThumbPosition(+1.0); }
 	mButton2Held = pressed;
 	mTimer.reset();
 	mPressedAccumulator = 300;
@@ -164,13 +177,13 @@ void Slider::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	{
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			if (y < mSlider.y()) { changePosition(-3.0); }
-			else { changePosition(+3.0); }
+			if (y < mSlider.y()) { changeThumbPosition(-3.0); }
+			else { changeThumbPosition(+3.0); }
 		}
 		else
 		{
-			if (x < mSlider.x()) { changePosition(-3.0); }
-			else { changePosition(+3.0); }
+			if (x < mSlider.x()) { changeThumbPosition(-3.0); }
+			else { changeThumbPosition(+3.0); }
 		}
 	}
 }
@@ -197,6 +210,7 @@ void Slider::onMouseMotion(int x, int y, int dX, int dY)
 		}
 
 		positionInternal(mLenght * ((y - mSlideBar.y()) / mSlideBar.height()));
+		mCallback(thumbPosition());
 	}
 	else
 	{
@@ -206,6 +220,7 @@ void Slider::onMouseMotion(int x, int y, int dX, int dY)
 		}
 
 		positionInternal(mLenght * (x - mSlideBar.x()) / mSlideBar.width());
+		mCallback(thumbPosition());
 	}
 }
 
@@ -229,7 +244,7 @@ void Slider::draw()
 	Renderer& r = Utility<Renderer>::get();
 	string textHover;
 	int _x = 0, _y = 0, _w = 0, _h = 0;
-	float thumbPosition = 0.0f;
+	float _thumbPosition = 0.0f;
 
 	r.drawBoxFilled(mSlideBar.x() - 0.5f, mSlideBar.y(), mSlideBar.width(), mSlideBar.height(), 100, 100, 100);
 	r.drawBox(mSlideBar.x() - 0.5f, mSlideBar.y(), mSlideBar.width(), mSlideBar.height(), 50, 50, 50);
@@ -243,8 +258,8 @@ void Slider::draw()
 		{
 			mPressedAccumulator = 75;
 			mTimer.reset();
-			if(mButton1Held) { changePosition(-1.0); }
-			else { changePosition(1.0); }
+			if(mButton1Held) { changeThumbPosition(-1.0); }
+			else { changeThumbPosition(1.0); }
 		}
 	}
 
@@ -258,10 +273,10 @@ void Slider::draw()
 			mSlider.height(mSlider.width());
 		}
 
-		thumbPosition = (mSlideBar.height() - mSlider.height())  * (mPosition / mLenght); //relative width
+		_thumbPosition = (mSlideBar.height() - mSlider.height())  * (mPosition / mLenght); //relative width
 
 		mSlider.x(mSlideBar.x());
-		mSlider.y(mSlideBar.y() + thumbPosition);
+		mSlider.y(mSlideBar.y() + _thumbPosition);
 	}
 	else
 	{
@@ -274,18 +289,18 @@ void Slider::draw()
 			mSlider.width(mSlider.height());
 		}
 
-		thumbPosition = (mSlideBar.width() - mSlider.width())  * (mPosition / mLenght); //relative width
+		_thumbPosition = (mSlideBar.width() - mSlider.width())  * (mPosition / mLenght); //relative width
 
-		mSlider.x(mSlideBar.x() + thumbPosition);
+		mSlider.x(mSlideBar.x() + _thumbPosition);
 		mSlider.y(mSlideBar.y());
 	}
 
 	bevelBox(mSlider.x(), mSlider.y(), mSlider.width(), mSlider.height());
 
 
-	if (mDisplayPosition && mMouseHoverSlide)
+	if (fontSet() && mDisplayPosition && mMouseHoverSlide)
 	{
-		textHover = string_format("%i / %i", static_cast<int>(position()), static_cast<int>(mLenght));
+		textHover = string_format("%i / %i", static_cast<int>(thumbPosition()), static_cast<int>(mLenght));
 		_w = font().width(textHover) + 4;
 		_h = font().height() + 4;
 
@@ -300,9 +315,9 @@ void Slider::draw()
 			_y = mSlideBar.y() - 2 - _h;
 		}
 
-		r.drawBox(_x, _y, _w, _h, 255, 255, 255, 180);
-		r.drawBoxFilled(_x + 1, _y + 1, _w - 2, _h - 2, 0, 0, 0, 180);
-		r.drawText(font(), textHover, _x + 2, _y + 2, 220, 220, 220);
+		r.drawBox(_x - _w / 2, _y, _w, _h, 255, 255, 255, 180);
+		r.drawBoxFilled(_x + 1 - _w / 2, _y + 1, _w - 2, _h - 2, 0, 0, 0, 180);
+		r.drawText(font(), textHover, _x + 2 - _w / 2, _y + 2, 220, 220, 220);
 	}
 }
 
@@ -310,20 +325,20 @@ void Slider::draw()
 /**
  * Set the current value
  */
-void Slider::position(double value)
+void Slider::thumbPosition(double value)
 {
 	if (mBackward) { value = mLenght - value; }
 
 	positionInternal(value);
 
-	mCallback(position());
+	mCallback(thumbPosition());
 }
 
 
 /**
 * Gets the current value of position
 */
-double Slider::position()
+double Slider::thumbPosition()
 {
 	double value = mPosition;
 	if (mBackward) { value = mLenght - value; }
@@ -338,9 +353,10 @@ double Slider::position()
  * \param	change	Amount to change in percent to change the
  *					slider's position. Must be between 0.0 1.0.
  */
-void Slider::changePosition(double change)
+void Slider::changeThumbPosition(double change)
 {
 	positionInternal(mPosition + change);
+	mCallback(thumbPosition());
 }
 
 

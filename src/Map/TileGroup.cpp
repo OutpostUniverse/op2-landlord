@@ -1,48 +1,92 @@
 #include "TileGroup.h"
 
-
-TileGroup::TileGroup(int width, int height, TileSetManager* tilesetmanager):	mTileWidth(width),
-																				mTileHeight(height),
-																				mTileData(new int[width * height]),
-																				mTileSetManager(tilesetmanager)
-{}
+#include "../Common.h"
 
 
-TileGroup::~TileGroup()
+/**
+ * C'tor
+ */
+TileGroup::TileGroup(int width, int height, TileSetManager* tsetmanager):	mWidth(width),
+																			mHeight(height),
+																			mTileSetManager(tsetmanager)
 {
-	if (mTileData != NULL)
-	{
-		delete[] mTileData;
-	}
+	mTileData.resize(width * height);
 }
 
 
+/**
+ * D'tor
+ */
+TileGroup::~TileGroup()
+{}
 
-int TileGroup::mappingIndex(int x, int y)
+
+/**
+ * Width, in tiles, of the TileGroup.
+ */
+int TileGroup::width() const
 {
-	if ((x < 0) || (x >= mTileWidth) || (y < 0) || (y >= mTileHeight))
+	return mWidth;
+}
+
+
+/**
+ * Height, in tiles, of the TileGroup.
+ */
+int TileGroup::height() const
+{
+	return mHeight;
+}
+
+
+/**
+ * Gets a TileSet mapping index.
+ */
+int TileGroup::index(int x, int y) const
+{
+	if ((x < 0) || (x >= mWidth) || (y < 0) || (y >= mHeight))
 	{
 		throw std::runtime_error("TileGroup::mappingIndex(): Invalid coordinates.");
 	}
 
 	// Get the tile mapping index
-	return mTileData[y * mTileWidth + y];
+	return mTileData[y * mWidth + x];
 }
 
 
-void TileGroup::mappingIndex(int x, int y, int index)
+/**
+ * Sets a TileSet mapping index.
+ */
+void TileGroup::index(int x, int y, int index)
 {
-	if ((x < 0) || (x >= mTileWidth) || (y < 0) || (y >= mTileHeight))
+	if ((x < 0) || (x >= mWidth) || (y < 0) || (y >= mHeight))
 	{
 		throw std::runtime_error("TileGroup::mappingIndex(): Invalid coordinates.");
 	}
 
 	// Set the tile mapping index
-	mTileData[(y * mTileWidth) + x] = index;
+	mTileData[(y * mWidth) + x] = index;
 }
 
 
+/**
+ * Draws the TileGroup at coordinates { x, y }
+ */
 void TileGroup::draw(int x, int y)
 {
-
+	// Draw all tiles in visible range
+	for (int row = 0; row < mHeight; ++row)
+	{
+		for (int col = 0; col < mWidth; ++col)
+		{
+			//int tileIndex = mTileData[row * mWidth + col];
+			TileSetManager::TileSetTileMapping* tileMap = &mTileSetManager->mMapping[index(col, row)];
+			TileSet* tileSet = mTileSetManager->mTileSetInfo[tileMap->tileSetIndex].tileSet;
+			
+			if (tileSet)
+			{
+				tileSet->draw(tileMap->tileIndex, x + col * TILE_SIZE, y + row * TILE_SIZE);
+			}
+		}
+	}
 }

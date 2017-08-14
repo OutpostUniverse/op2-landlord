@@ -27,9 +27,9 @@ public:
 	Slider();
 	virtual ~Slider();
 
-	void position(double value);		/*!< Set the current position. */
-	double position();					/*!< Get the current position. */
-	void changePosition(double change);	/*!< Adds the change amount to the current position. */
+	void thumbPosition(double value);		/*!< Set the current position. */
+	double thumbPosition();					/*!< Get the current position. */
+	void changeThumbPosition(double change);/*!< Adds the change amount to the current position. */
 
 	bool displayPosition() { return mDisplayPosition; }			/*!< Get the position display flag. */
 	void displayPosition(bool _d) { mDisplayPosition = _d; }	/*!< Set the position display flag. */
@@ -68,6 +68,8 @@ private:
 	double positionInternal();
 	void positionInternal(double _pos);
 
+	virtual void positionChanged(float dX, float dY);
+
 	void draw();		/*!< Draw the widget on screen. */
 	void logic();		/*!< Compute some values before drawing the control. */
 
@@ -89,7 +91,7 @@ private:
 	bool					mThumbPressed = false;		/*!< Flag to indicate if this control is pressed. */
 
 	// Slider button responses
-	int						mPressedAccumulator = 0;	/**< Accumulation value for pressed responses. */
+	uint32_t				mPressedAccumulator = 0;	/**< Accumulation value for pressed responses. */
 	bool					mButton1Held = false;		/**< Flag indicating that a button is being held down. */
 	bool					mButton2Held = false;		/**< Flag indicating that a button is being held down. */
 

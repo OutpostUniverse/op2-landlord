@@ -77,6 +77,7 @@ void EditorState::initialize()
 	mMap = new MapFile(mMapSavePath);
 	mMap->updateCameraAnchorArea(r.width(), r.height() - mToolBar.height());
 
+	mTileGroups.map(mMap);
 	mMiniMap.map(mMap);
 }
 
@@ -85,6 +86,10 @@ void EditorState::initUi()
 {
 	// ToolBar
 	mToolBar.toolbar_event().connect(this, &EditorState::toolbar_event);
+
+	mTileGroups.font(mFont);
+	mTileGroups.titleFont(mBoldFont);
+	mTileGroups.visible(true);
 
 	// Tile Palette
 	mTilePalette.font(mFont);
@@ -125,9 +130,10 @@ void EditorState::updateUI()
 	Renderer& r = Utility<Renderer>::get();
 
 	mToolBar.update();
-	mMiniMap.update();
 
+	mTileGroups.update();
 	mTilePalette.update();
+	mMiniMap.update();
 }
 
 

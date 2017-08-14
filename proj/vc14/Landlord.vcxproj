@@ -116,6 +116,7 @@
     <ClInclude Include="..\..\src\Strings.h" />
     <ClInclude Include="..\..\src\TextArea.h" />
     <ClInclude Include="..\..\src\TextField.h" />
+    <ClInclude Include="..\..\src\TileGroups.h" />
     <ClInclude Include="..\..\src\TilePalette.h" />
     <ClInclude Include="..\..\src\Tileset.h" />
     <ClInclude Include="..\..\src\ToolBar.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="..\..\src\Stream\StreamReader.cpp" />
     <ClCompile Include="..\..\src\TextArea.cpp" />
     <ClCompile Include="..\..\src\TextField.cpp" />
+    <ClCompile Include="..\..\src\TileGroups.cpp" />
     <ClCompile Include="..\..\src\TilePalette.cpp" />
     <ClCompile Include="..\..\src\ToolBar.cpp" />
     <ClCompile Include="..\..\src\UIContainer.cpp" />

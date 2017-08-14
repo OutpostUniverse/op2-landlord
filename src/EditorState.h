@@ -3,6 +3,7 @@
 #include "NAS2D/NAS2D.h"
 
 #include "MiniMap.h"
+#include "TileGroups.h"
 #include "TilePalette.h"
 #include "ToolBar.h"
 
@@ -77,6 +78,7 @@ private:
 	Rectangle_2d	mCellInspectRect;			/**<  */
 
 	// UI ELEMENTS
+	TileGroups		mTileGroups;				/**<  */
 	TilePalette		mTilePalette;				/**<  */
 	ToolBar			mToolBar;					/**<  */
 	MiniMap			mMiniMap;					/**<  */

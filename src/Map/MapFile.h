@@ -22,7 +22,11 @@ public:
 	int width();
 	int height();
 
-	int tileGroups() const;
+	int tileGroupCount() const;
+	const NAS2D::Point_2d& tileGroupExtents() const;
+
+	TileGroup* tileGroup(int tg_index);
+	const std::string& tileGroupName(int tg_index);
 
 	const NAS2D::Color_4ub& tile_color(int x, int y);
 
@@ -62,14 +66,18 @@ private:
 		int x2 = 0;			// Rigth edge of map (x coordinate)
 		int y2 = 0;			// Bottom edge of map (y coordinate)
 	};
-
 	#pragma pack(pop)
-	struct TileGroupInfo
+
+	struct TileGroupDescriptor
 	{
-		TileGroup* tileGroup;
-		int nameLen;
-		char* name;
+		TileGroupDescriptor(const std::string _name, TileGroup* tg) : name(_name), tilegroup(tg) {}
+
+		std::string name;
+		TileGroup* tilegroup = nullptr;
 	};
+
+	typedef std::vector<TileGroupDescriptor> TileGroupInfoTable;
+
 
 private:
 	void load(const std::string& filename);
@@ -88,8 +96,13 @@ private:
 private:
 	// Feature extention values -- these are never saved to the map file.
 	TileSetManager*		mTilesetManager = nullptr;		/**<  */
+
+	NAS2D::Point_2d		mLargestTileGroupExtents;		/**< Largest width and height in tiles of all the TileGroups. */
+
 	NAS2D::Point_2d		mCameraPosition;				/**< Current position of the camera. */
 	NAS2D::Rectangle_2d	mCameraAnchorArea;				/**< Area that the camera is allowed to move around in. */
+
+	void _readTileGroupName(StreamReader& in, TileGroup& tilegroup);
 
 private:
 	// These values are saved to the map file.
@@ -103,5 +116,6 @@ private:
 	TileSetList			mTileSets;						/**< Source of all tile sets that need to be loaded */
 
 	int					mTileGroupCount = 0;			/**< Number of tile groups stored in map file */
-	TileGroupInfo*		mTileGroupInfo = nullptr;		/**< Array of named tile groups */
+
+	TileGroupInfoTable	mTileGroups;
 };

@@ -6,19 +6,29 @@
 class TileGroup
 {
 public:
-	TileGroup(int tileWidth, int tileHeight, TileSetManager* tilesetmanager);
+	TileGroup(int width, int height, TileSetManager* tilesetmanager);
 	~TileGroup();
 
-	int mappingIndex(int x, int y);
-	void mappingIndex(int tileX, int tileY, int tileMappingIndex);
+	int index(int x, int y) const;
+	void index(int x, int y, int index);
+
+	int width() const;
+	int height() const;
 
 	void draw(int x, int y);
 
 private:
-	int				mTileWidth = 0;				/**< Width of this tile group */
-	int				mTileHeight = 0;			/**< Height of this tile group */
+	typedef std::vector<int> TileIndexArray;
 
-	int*			mTileData = nullptr;		/**< Array of mapping indexes */
+private:
+	TileGroup(const TileGroup&) = delete;				/**< Not allowed. */
+	TileGroup& operator=(const TileGroup&) = delete;	/**< Not allowed. */
 
-	TileSetManager*	mTileSetManager = nullptr;
+private:
+	int				mWidth = 0;					/**< Width of this tile group */
+	int				mHeight = 0;				/**< Height of this tile group */
+
+	TileSetManager*	mTileSetManager = nullptr;	/**<  */
+
+	TileIndexArray	mTileData;					/**<  */
 };

@@ -38,7 +38,7 @@ ListBox::~ListBox()
 void ListBox::init()
 {
 	mSlider.length(0);
-	mSlider.position(0);
+	mSlider.thumbPosition(0);
 	mSlider.change().connect(this, &ListBox::slideChanged);
 }
 
@@ -184,7 +184,7 @@ void ListBox::update()
 		{
 			mSlider.length(mItems.size() - iItemsDisplayable);
 			mSlider.visible(true);
-			mCurrentOffset = mSlider.position();
+			mCurrentOffset = mSlider.thumbPosition();
 			iMin = mCurrentOffset;
 			iMax = mCurrentOffset + iItemsDisplayable;
 			itemWidth = rect().width() - mSlider.rect().width();
@@ -226,11 +226,11 @@ void ListBox::onMouseWheel(int x, int y)
 
 	if (y < 0)
 	{
-		mSlider.changePosition(1.0);
+		mSlider.changeThumbPosition(1.0);
 	}
 	else if (y > 0)
 	{
-		mSlider.changePosition(-1.0);
+		mSlider.changeThumbPosition(-1.0);
 	}
 }
 
@@ -240,5 +240,5 @@ void ListBox::slideChanged(double _position)
 	int pos;
 	pos = static_cast<int>(_position);
 	if (static_cast<float>(pos) != _position)
-		mSlider.position(static_cast<double>(pos));
+		mSlider.thumbPosition(static_cast<double>(pos));
 }

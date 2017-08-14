@@ -65,15 +65,9 @@ MapFile::~MapFile()
 		delete mTilesetManager;
 	}
 
-	if (mTileGroupInfo)
+	for (auto _tgd : mTileGroups)
 	{
-		for (int i = 0; i < mTileGroupCount; i++)
-		{
-			delete mTileGroupInfo[i].tileGroup;
-			delete mTileGroupInfo[i].name;
-		}
-
-		delete[] mTileGroupInfo;
+		delete _tgd.tilegroup;
 	}
 
 	if (CELL_TYPE_OVERLAY) { delete CELL_TYPE_OVERLAY; }
@@ -96,17 +90,27 @@ void MapFile::initMapHeader()
 }
 
 
+/**
+ * 
+ */
 int MapFile::width()
 {
 	return mTileWidth;
 }
 
 
+/**
+ * 
+ */
 int MapFile::height()
 {
 	return mTileHeight;
 }
 
+
+/**
+ * 
+ */
 void MapFile::validateCoords(int x, int y) const
 {
 	// Error check array indicies
@@ -117,6 +121,9 @@ void MapFile::validateCoords(int x, int y) const
 }
 
 
+/**
+ * 
+ */
 int MapFile::tile_offset(int x, int y) const
 {
 	int tileXUpper = x / 32;
@@ -125,6 +132,9 @@ int MapFile::tile_offset(int x, int y) const
 }
 
 
+/**
+ * 
+ */
 int MapFile::index(int x, int y)
 {
 	validateCoords(x, y);
@@ -135,6 +145,9 @@ int MapFile::index(int x, int y)
 }
 
 
+/**
+ * 
+ */
 const Color_4ub& MapFile::tile_color(int x, int y)
 {
 	validateCoords(x, y);
@@ -146,6 +159,9 @@ const Color_4ub& MapFile::tile_color(int x, int y)
 }
 
 
+/**
+ * 
+ */
 void MapFile::index(int x, int y, int index)
 {
 	validateCoords(x, y);
@@ -163,12 +179,18 @@ void MapFile::index(int x, int y, int index)
 }
 
 
+/**
+ * 
+ */
 int MapFile::tset_index(int x, int y) const
 {
 	return clamp((mTileData[tile_offset(x, y)] & 0x0000FFE0) / TILE_SIZE, 0, mTilesetManager->mNumMappings);
 }
 
 
+/**
+ * 
+ */
 void MapFile::updateCameraAnchorArea(int width, int height)
 {
 	mCameraAnchorArea(0, 0, mTileWidth * TILE_SIZE - width, mTileHeight * TILE_SIZE - height);
@@ -176,19 +198,55 @@ void MapFile::updateCameraAnchorArea(int width, int height)
 }
 
 
+/**
+ * 
+ */
+TileGroup* MapFile::tileGroup(int tg_index)
+{
+	if (tg_index < 0 || tg_index >= tileGroupCount())
+	{
+		throw std::runtime_error("MapFile::tileGroup(): invalid index.");
+	}
+
+	return mTileGroups[tg_index].tilegroup;
+}
+
+
+/**
+ * 
+ */
+const std::string& MapFile::tileGroupName(int tg_index)
+{
+	if (tg_index < 0 || tg_index >= tileGroupCount())
+	{
+		throw std::runtime_error("MapFile::tileGroupName(): invalid index.");
+	}
+
+	return mTileGroups[tg_index].name;
+}
+
+
+/**
+ * 
+ */
 void MapFile::moveCamera(int x, int y)
 {
 	setCamera(mCameraPosition.x() + x, mCameraPosition.y() + y);
 }
 
 
+/**
+ * 
+ */
 void MapFile::setCamera(int x, int y)
 {
-	mCameraPosition(clamp(x, 0, mCameraAnchorArea.width()),
-					clamp(y, 0, mCameraAnchorArea.height()));
+	mCameraPosition(clamp(x, 0, mCameraAnchorArea.width()),	clamp(y, 0, mCameraAnchorArea.height()));
 }
 
 
+/**
+ * 
+ */
 void MapFile::draw(int x, int y, int width, int height, bool draw_overlay)
 {
 	int offsetX = mCameraPosition.x() / 32;
@@ -233,12 +291,18 @@ void MapFile::draw(int x, int y, int width, int height, bool draw_overlay)
 }
 
 
+/**
+ * 
+ */
 bool MapFile::aroundTheWorld() const
 {
 	return (mMapHeadInfo.lgTileWidth >= 9);
 }
 
 
+/**
+ * 
+ */
 CellType MapFile::cellType(int x, int y) const
 {
 	validateCoords(x, y);
@@ -246,6 +310,9 @@ CellType MapFile::cellType(int x, int y) const
 }
 
 
+/**
+ * 
+ */
 void MapFile::cellType(int x, int y, CellType type)
 {
 	validateCoords(x, y);
@@ -266,7 +333,9 @@ void MapFile::cellType(int x, int y, CellType type)
 }
 
 
-
+/**
+ * 
+ */
 bool MapFile::lavaPossible(int x, int y)
 {
 	validateCoords(x, y);
@@ -279,6 +348,9 @@ bool MapFile::lavaPossible(int x, int y)
 }
 
 
+/**
+ * 
+ */
 void MapFile::lavaPossible(int x, int y, int lavaPossible)
 {
 	validateCoords(x, y);
@@ -291,20 +363,49 @@ void MapFile::lavaPossible(int x, int y, int lavaPossible)
 }
 
 
-int MapFile::tileGroups() const
+/**
+ * 
+ */
+int MapFile::tileGroupCount() const
 {
 	return mTileGroupCount;
 }
 
 
+/**
+ * Gets the largest extents for all TileGroups.
+ */
+const Point_2d& MapFile::tileGroupExtents() const
+{
+	return mLargestTileGroupExtents;
+}
+
+
+/**
+ * Internal function to read a tile group name out of an input stream.
+ */
+void MapFile::_readTileGroupName(StreamReader& in, TileGroup& tilegroup)
+{
+	// Read in the tile group name length
+	int name_len = 0;
+	in.read(&name_len, MAP_CHUNK_SIZE);
+
+	char* tilegroup_name = new char[name_len + 1];
+	in.read(tilegroup_name, name_len);
+	tilegroup_name[name_len] = '\0';
+
+	mTileGroups.push_back(TileGroupDescriptor(tilegroup_name, &tilegroup));
+
+	delete[] tilegroup_name;
+}
+
+
+/**
+ * 
+ */
 void MapFile::load(const std::string& filename)
 {
-	// **NOTE**: Changed the 'format errors' to just post an error rather than throw an exception.
-	// Although they can cause problems, it shouldn't prevent the map from loading.
-	int status = 0;
 	int temp = 0;
-
-	int stream_position = 0;
 
 	try
 	{
@@ -325,8 +426,6 @@ void MapFile::load(const std::string& filename)
 
 		// Read in the tile data
 		stream_reader.read(mTileData, cellCount * MAP_CHUNK_SIZE);
-
-		/// Clip rect (really? this can't be done based on the rest of the information?)
 		stream_reader.read(&mClipRect, sizeof(mClipRect));
 
 		mTilesetManager = new TileSetManager(mMapHeadInfo.numTileSets, &stream_reader);
@@ -339,40 +438,29 @@ void MapFile::load(const std::string& filename)
 		stream_reader.read(&mTileGroupCount, MAP_CHUNK_SIZE);
 		stream_reader.read(&temp, MAP_CHUNK_SIZE);
 
-		// Allocate space for the tile group info
-		mTileGroupInfo = new TileGroupInfo[mTileGroupCount];
-		// Initialize the array
-		memset(mTileGroupInfo, 0, sizeof(mTileGroupInfo) * mTileGroupCount);
-
-		// Read all group info
 		for (int i = 0; i < mTileGroupCount; i++)
 		{
 			int width = 0, height = 0;
-			int x = 0, y = 0;
-
-			// Read the dimensions
 			stream_reader.read(&width, MAP_CHUNK_SIZE);
 			stream_reader.read(&height, MAP_CHUNK_SIZE);
-			// Create a new TileGroup
-			mTileGroupInfo[i].tileGroup = new TileGroup(width, height, mTilesetManager);
 
+			if (width > mLargestTileGroupExtents.x()) { mLargestTileGroupExtents.x(width); }
+			if (height > mLargestTileGroupExtents.y()) { mLargestTileGroupExtents.y(height); }
+	
+			//TileGroupInfo _tgi;
+			TileGroup* _tg = new TileGroup(width, height, mTilesetManager);
+			
 			// Read in the tile data
-			for (y = 0; y < height; y++)
+			for (int y = 0; y < height; y++)
 			{
-				for (x = 0; x < width; x++)
+				for (int x = 0; x < width; x++)
 				{
 					stream_reader.read(&temp, MAP_CHUNK_SIZE);
-					mTileGroupInfo[i].tileGroup->mappingIndex(x, y, temp);
+					_tg->index(x, y, temp);
 				}
 			}
 
-			// Read in the tile group name length
-			stream_reader.read(&mTileGroupInfo[i].nameLen, MAP_CHUNK_SIZE);
-			mTileGroupInfo[i].name = new char[mTileGroupInfo[i].nameLen + 1];
-
-			// Read in the tile group name
-			stream_reader.read(mTileGroupInfo[i].name, mTileGroupInfo[i].nameLen);
-			mTileGroupInfo[i].name[mTileGroupInfo[i].nameLen] = 0;
+			_readTileGroupName(stream_reader, *_tg);
 		}
 	}
 	catch (const std::string& errorMsg)
@@ -384,6 +472,9 @@ void MapFile::load(const std::string& filename)
 }
 
 
+/**
+ * 
+ */
 void MapFile::save(const std::string& filename)
 {
 	/*

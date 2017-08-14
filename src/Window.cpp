@@ -83,9 +83,7 @@ void Window::onMouseMotion(int x, int y, int dX, int dY)
 
 	if (mDragging)
 	{
-		_rect().x(rect().x() + dX);
-		_rect().y(rect().y() + dY);
-
+		position(positionX() + dX, positionY() + dY);
 		return;
 	}
 }
@@ -107,4 +105,6 @@ void Window::update()
 	}
 
 	draw();
+
+	UIContainer::update();
 }
