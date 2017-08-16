@@ -33,6 +33,9 @@ private:
 
 	void mouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
 	void mouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
+	void mouseWheel(int x, int y);
+
+	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 
 	virtual void positionChanged(float dX, float dY);
 

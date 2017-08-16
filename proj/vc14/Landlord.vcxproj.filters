@@ -123,6 +123,9 @@
     <ClInclude Include="..\..\src\TileGroups.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Map\tilegroup_ignore.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\EditorState.cpp">

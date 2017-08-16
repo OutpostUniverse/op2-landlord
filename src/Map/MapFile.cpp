@@ -1,6 +1,7 @@
 #include "MapFile.h"
 
 #include "cell_types.h"
+#include "tilegroup_ignore.h"
 
 #include "../Common.h"
 #include "../Stream/StreamReader.h"
@@ -368,7 +369,7 @@ void MapFile::lavaPossible(int x, int y, int lavaPossible)
  */
 int MapFile::tileGroupCount() const
 {
-	return mTileGroupCount;
+	return mTileGroups.size();
 }
 
 
@@ -394,9 +395,23 @@ void MapFile::_readTileGroupName(StreamReader& in, TileGroup& tilegroup)
 	in.read(tilegroup_name, name_len);
 	tilegroup_name[name_len] = '\0';
 
+	for (auto _tgname : TILEGROUP_IGNORE_LIST)
+	{
+		if (tilegroup_name == _tgname)
+		{
+			delete[] tilegroup_name;
+			delete (&tilegroup);
+			return;
+		}
+	}
+
+	if (tilegroup.width() > mLargestTileGroupExtents.x()) { mLargestTileGroupExtents.x(tilegroup.width()); }
+	if (tilegroup.height() > mLargestTileGroupExtents.y()) { mLargestTileGroupExtents.y(tilegroup.height()); }
+
 	mTileGroups.push_back(TileGroupDescriptor(tilegroup_name, &tilegroup));
 
 	delete[] tilegroup_name;
+	return;
 }
 
 
@@ -435,18 +450,16 @@ void MapFile::load(const std::string& filename)
 		readTag(&stream_reader, mMapHeadInfo.tag);
 
 		// Load tile groups from file
-		stream_reader.read(&mTileGroupCount, MAP_CHUNK_SIZE);
+		int group_count = 0;
+		stream_reader.read(&group_count, MAP_CHUNK_SIZE);
 		stream_reader.read(&temp, MAP_CHUNK_SIZE);
 
-		for (int i = 0; i < mTileGroupCount; i++)
+		for (int i = 0; i < group_count; i++)
 		{
 			int width = 0, height = 0;
 			stream_reader.read(&width, MAP_CHUNK_SIZE);
 			stream_reader.read(&height, MAP_CHUNK_SIZE);
 
-			if (width > mLargestTileGroupExtents.x()) { mLargestTileGroupExtents.x(width); }
-			if (height > mLargestTileGroupExtents.y()) { mLargestTileGroupExtents.y(height); }
-	
 			//TileGroupInfo _tgi;
 			TileGroup* _tg = new TileGroup(width, height, mTilesetManager);
 			

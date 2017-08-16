@@ -115,7 +115,5 @@ private:
 
 	TileSetList			mTileSets;						/**< Source of all tile sets that need to be loaded */
 
-	int					mTileGroupCount = 0;			/**< Number of tile groups stored in map file */
-
 	TileGroupInfoTable	mTileGroups;
 };

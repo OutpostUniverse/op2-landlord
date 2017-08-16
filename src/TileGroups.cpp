@@ -18,6 +18,8 @@ TileGroups::TileGroups()
 TileGroups::~TileGroups()
 {
 	mSlider.change().disconnect(this, &TileGroups::mSlider_Changed);
+	Utility<EventHandler>::get().keyDown().disconnect(this, &TileGroups::onKeyDown);
+	Utility<EventHandler>::get().mouseWheel().disconnect(this, &TileGroups::mouseWheel);
 }
 
 
@@ -26,6 +28,9 @@ void TileGroups::_init()
 	Renderer& r = Utility<Renderer>::get();
 	text("Tile Groups");
 	mSlider.change().connect(this, &TileGroups::mSlider_Changed);
+
+	Utility<EventHandler>::get().keyDown().connect(this, &TileGroups::onKeyDown);
+	Utility<EventHandler>::get().mouseWheel().connect(this, &TileGroups::mouseWheel);
 }
 
 
@@ -39,7 +44,7 @@ void TileGroups::map(MapFile* map)
 	Renderer& r = Utility<Renderer>::get();
 
 	mMap = map;
-	size((mMap->tileGroupExtents().x() * TILE_SIZE) + 30, (mMap->tileGroupExtents().y() * TILE_SIZE) + 10 + TILE_SIZE);
+	size((mMap->tileGroupExtents().x() * TILE_SIZE) + 10, (mMap->tileGroupExtents().y() * TILE_SIZE) + 10 + TILE_SIZE + 7);
 	position(r.width() - width() - 5, r.height() - height() - 5);
 
 	mSlider.font(font());
@@ -77,6 +82,8 @@ void TileGroups::draw()
 
 	mMap->tileGroup(mTileGroupIndex)->draw(rect().x() + 5, rect().y() + titleBarHeight() + 5);
 
+	r.drawText(font(), mMap->tileGroupName(mTileGroupIndex), positionX() + 10, positionY() + titleBarHeight() + 10, 255, 255, 255);
+
 	mSlider.update();
 }
 
@@ -100,6 +107,41 @@ void TileGroups::mouseUp(EventHandler::MouseButton button, int x, int y)
 
 	if (!visible() || (button != EventHandler::BUTTON_LEFT)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
+}
+
+
+void TileGroups::mouseWheel(int x, int y)
+{
+	if (!visible()) { return; }
+
+	if (y < 0)
+	{
+		mSlider.changeThumbPosition(1.0);
+	}
+	else if (y > 0)
+	{
+		mSlider.changeThumbPosition(-1.0);
+	}
+}
+
+
+void TileGroups::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
+{
+	if (!visible()) { return; }
+
+	switch (key)
+	{
+	case EventHandler::KEY_LEFT:
+		mSlider.changeThumbPosition(-1.0);
+		break;
+
+	case EventHandler::KEY_RIGHT:
+		mSlider.changeThumbPosition(1.0);
+		break;
+
+	default:
+		break;
+	}
 }
 
 

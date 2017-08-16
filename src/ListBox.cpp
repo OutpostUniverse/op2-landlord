@@ -42,6 +42,7 @@ void ListBox::init()
 	mSlider.change().connect(this, &ListBox::slideChanged);
 }
 
+
 void ListBox::size(float w, float h)
 {
 	Control::size(w, h);
@@ -50,6 +51,15 @@ void ListBox::size(float w, float h)
 	mSlider.font(font());
 	mSlider.displayPosition(false);
 	mSlider.size(14, rect().height());
+	mDisplayLines = static_cast<int>(rect().height() / mLineHeight);
+	_checkSlider();
+}
+
+
+void ListBox::onFontChanged()
+{
+	mLineHeight = font().height() + 2;
+	mDisplayLines = static_cast<int>(rect().height() / mLineHeight);
 }
 
 
@@ -77,6 +87,7 @@ void ListBox::addItem(const string& item)
 {
 	mItems.push_back(item);
 	sort();
+	_checkSlider();
 }
 
 
@@ -108,6 +119,7 @@ void ListBox::removeItem(const std::string& item)
 	}
 
 	sort();
+	_checkSlider();
 }
 
 
@@ -134,6 +146,7 @@ void ListBox::dropAllItems()
 {
 	mItems.clear();
 	mCurrentSelection = 0;
+	_checkSlider();
 }
 
 
@@ -161,6 +174,30 @@ void ListBox::onMouseMove(int x, int y, int relX, int relY)
 }
 
 
+void ListBox::_checkSlider()
+{
+	mItemMin = 0;
+	mItemMax = mItems.size();
+
+	if ((mLineHeight * mItems.size()) > rect().height())
+	{
+		if (mDisplayLines < static_cast<int>(mItems.size()))
+		{
+			mSlider.length(mItems.size() - mDisplayLines);
+			mSlider.visible(true);
+			mCurrentOffset = mSlider.thumbPosition();
+			mItemMin = mCurrentOffset;
+			mItemMax = mCurrentOffset + mDisplayLines;
+			mItemWidth = rect().width() - mSlider.rect().width();
+		}
+	}
+	else
+	{
+		mSlider.visible(false);
+	}
+}
+
+
 void ListBox::update()
 {
 	// Ignore if menu is empty or invisible
@@ -170,46 +207,23 @@ void ListBox::update()
 
 	r.drawBoxFilled(rect(), 0, 0, 0);
 
-	int line_height = (font().height() + 2);
 	int itemY;
-	int itemWidth = rect().width();
-	int iItemsDisplayable;
-	int iMin = 0;
-	int iMax = mItems.size();
-
-	if ((line_height*mItems.size()) > rect().height())
-	{
-		iItemsDisplayable = static_cast<int>(rect().height() / line_height);
-		if (iItemsDisplayable < static_cast<int>(mItems.size()))
-		{
-			mSlider.length(mItems.size() - iItemsDisplayable);
-			mSlider.visible(true);
-			mCurrentOffset = mSlider.thumbPosition();
-			iMin = mCurrentOffset;
-			iMax = mCurrentOffset + iItemsDisplayable;
-			itemWidth = rect().width() - mSlider.rect().width();
-		}
-	}
-	else
-	{
-		mSlider.visible(false);
-	}
 
 	// draw boundaries of the widget
-	r.drawBox(rect().x(), rect().y(), itemWidth, rect().height(), 0, 0, 0, 100);
-	r.drawBoxFilled(rect().x(), rect().y(), itemWidth, rect().height(), 225, 225, 0, 85);
+	r.drawBox(rect().x(), rect().y(), mItemWidth, rect().height(), 0, 0, 0, 100);
+	r.drawBoxFilled(rect().x(), rect().y(), mItemWidth, rect().height(), 225, 225, 0, 85);
 
 	// Highlight currently selected file
-	if (iMin <= mCurrentSelection && mCurrentSelection < iMax)
+	if (mItemMin <= mCurrentSelection && mCurrentSelection < mItemMax)
 	{
-		itemY = rect().y() + ((mCurrentSelection - mCurrentOffset)  * line_height);
-		r.drawBoxFilled(rect().x(), itemY, itemWidth, line_height, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), 80);
+		itemY = rect().y() + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
+		r.drawBoxFilled(rect().x(), itemY, mItemWidth, mLineHeight, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), 80);
 	}
 
 	// display actuals values that are ment to be
-	for (int i = iMin; i < iMax; i++)
+	for (int i = mItemMin; i < mItemMax; i++)
 	{
-		itemY = rect().y() + ((i - iMin) * line_height);
+		itemY = rect().y() + ((i - mItemMin) * mLineHeight);
 		r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
 	}
 
@@ -237,8 +251,9 @@ void ListBox::onMouseWheel(int x, int y)
 
 void ListBox::slideChanged(double _position)
 {
-	int pos;
-	pos = static_cast<int>(_position);
+	_checkSlider();
+
+	int pos = static_cast<int>(_position);
 	if (static_cast<float>(pos) != _position)
 		mSlider.thumbPosition(static_cast<double>(pos));
 }

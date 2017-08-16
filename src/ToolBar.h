@@ -17,6 +17,7 @@ public:
 	{
 		TOOLBAR_SAVE,
 		TOOLBAR_MINIMAP_TOGGLE,
+		TOOLBAR_TILE_GROUPS_TOGGLE,
 		TOOLBAR_TILE_PALETTE_TOGGLE,
 		TOOLBAR_TOOL_PENCIL,
 		TOOLBAR_TOOL_FILL,
@@ -43,6 +44,7 @@ public:
 
 	bool show_minimap() const { return btnMiniMapToggle.toggled(); }
 	bool show_tilepalette() const { return btnTilePaletteToggle.toggled(); }
+	bool show_tilegroups() const { return btnTileGroupsToggle.toggled(); }
 
 	const Pattern& brush() const { return mBrush; }
 
@@ -73,6 +75,7 @@ private:
 
 	void btnMiniMapToggle_Clicked();
 	void btnTilePaletteToggle_Clicked();
+	void btnTileGroupsToggle_Clicked();
 
 	void btnExit_Clicked();
 
@@ -101,6 +104,8 @@ private:
 
 	Button			btnMiniMapToggle;
 	Button			btnTilePaletteToggle;
+	Button			btnTileGroupsToggle;
+
 	Button			btnExit;
 
 	ToolBarEvent	mToolbarEvent;

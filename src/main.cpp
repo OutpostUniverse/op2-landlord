@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 		}
 		cf.save();
 
-		Utility<Renderer>::instantiateDerived(new OGL_Renderer("OutpostHD"));
+		Utility<Renderer>::instantiateDerived(new OGL_Renderer("OP2-Landlord"));
 
 		Renderer& r = Utility<Renderer>::get();
 		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);

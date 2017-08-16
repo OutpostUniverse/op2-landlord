@@ -19,7 +19,6 @@ public:
 	~ListBox();
 
 	void init();
-	void font(Font& font) { mFont = &font; }
 
 	void sorted(bool _b) { mSorted = _b; }
 	bool sorted(bool) const { return mSorted; }
@@ -52,17 +51,23 @@ protected:
 	void onMouseWheel(int x, int y);
 	void slideChanged(double _position);
 
+	virtual void onFontChanged();
+
 private:
 	ListBox(const ListBox&) = delete;				/**< Not allowed */
 	ListBox& operator=(const ListBox&) = delete;	/**< Not allowed */
 
-	Font& font() { return *mFont; }
+	void _checkSlider();
 
 private:
 	int							mCurrentSelection = NO_SELECTION;	/**< Current selection index. */
 	int							mCurrentOffset = 0;					/**< Current selection index. */
+	int							mDisplayLines = 0;					/**< Number of lines able to be displayed. */
+	int							mLineHeight = 0;					/**< Height of an individual line. */
 
-	Font*						mFont = nullptr;	/**< Internal font to use for the menu. */
+	int							mItemMin = 0;
+	int							mItemMax = 0;
+	int							mItemWidth = 0;
 
 	StringList					mItems;				/**< List of items preserved in the order in which they're added. */
 

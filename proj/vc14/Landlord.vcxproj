@@ -105,6 +105,7 @@
     <ClInclude Include="..\..\src\Map\color_table.h" />
     <ClInclude Include="..\..\src\Map\MapFile.h" />
     <ClInclude Include="..\..\src\Map\TileGroup.h" />
+    <ClInclude Include="..\..\src\Map\tilegroup_ignore.h" />
     <ClInclude Include="..\..\src\Map\TileSet.h" />
     <ClInclude Include="..\..\src\Map\TileSetManager.h" />
     <ClInclude Include="..\..\src\MiniMap.h" />

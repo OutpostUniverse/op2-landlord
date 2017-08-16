@@ -89,7 +89,7 @@ void EditorState::initUi()
 
 	mTileGroups.font(mFont);
 	mTileGroups.titleFont(mBoldFont);
-	mTileGroups.visible(true);
+	mTileGroups.visible(mToolBar.show_tilegroups());
 
 	// Tile Palette
 	mTilePalette.font(mFont);
@@ -488,6 +488,10 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 
 	case ToolBar::TOOLBAR_TILE_PALETTE_TOGGLE:
 		mTilePalette.visible(mToolBar.show_tilepalette());
+		break;
+
+	case ToolBar::TOOLBAR_TILE_GROUPS_TOGGLE:
+		mTileGroups.visible(mToolBar.show_tilegroups());
 		break;
 
 	case ToolBar::TOOLBAR_TOOL_PENCIL:

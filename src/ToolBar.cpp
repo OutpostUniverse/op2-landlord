@@ -86,11 +86,18 @@ void ToolBar::initUi()
 	btnExit.click().connect(this, &ToolBar::btnExit_Clicked);
 
 
+	btnTileGroupsToggle.image("sys/group.png");
+	btnTileGroupsToggle.type(Button::BUTTON_TOGGLE);
+	btnTileGroupsToggle.toggle(false);
+	btnTileGroupsToggle.size(22, 28);
+	btnTileGroupsToggle.position(btnExit.positionX() - 42, 2);
+	btnTileGroupsToggle.click().connect(this, &ToolBar::btnTileGroupsToggle_Clicked);
+
 	btnTilePaletteToggle.image("sys/palette.png");
 	btnTilePaletteToggle.type(Button::BUTTON_TOGGLE);
 	btnTilePaletteToggle.toggle(false);
 	btnTilePaletteToggle.size(22, 28);
-	btnTilePaletteToggle.position(btnExit.positionX() - 41, 2);
+	btnTilePaletteToggle.position(btnTileGroupsToggle.positionX() - 24, 2);
 	btnTilePaletteToggle.click().connect(this, &ToolBar::btnTilePaletteToggle_Clicked);
 
 	btnMiniMapToggle.image("sys/map.png");
@@ -126,7 +133,9 @@ void ToolBar::onKeyDown(EventHandler::KeyCode code, EventHandler::KeyModifier mo
 
 void ToolBar::onMouseWheel(int x, int y)
 {
-	if (y == 1) { btnSpinnerUp_Clicked(); }
+	if (btnTileGroupsToggle.toggled()) { return; }
+
+	if (y > 0) { btnSpinnerUp_Clicked(); }
 	else { btnSpinnerDown_Clicked(); }
 }
 
@@ -135,7 +144,8 @@ void ToolBar::onWindowResized(int width, int height)
 {
 	btnExit.position(Utility<Renderer>::get().width() - 24, 2);
 
-	btnTilePaletteToggle.position(btnExit.positionX() - 41, 2);
+	btnTileGroupsToggle.position(btnExit.positionX() - 42, 2);
+	btnTilePaletteToggle.position(btnTileGroupsToggle.positionX() - 24, 2);
 	btnMiniMapToggle.position(btnTilePaletteToggle.positionX() - 24, 2);
 }
 
@@ -184,6 +194,7 @@ void ToolBar::update()
 
 	btnMiniMapToggle.update();
 	btnTilePaletteToggle.update();
+	btnTileGroupsToggle.update();
 
 	drawSeparator(btnExit, -32);
 	btnExit.update();
@@ -247,6 +258,13 @@ void ToolBar::btnTilePaletteToggle_Clicked()
 {
 	mToolbarEvent(TOOLBAR_TILE_PALETTE_TOGGLE);
 }
+
+
+void ToolBar::btnTileGroupsToggle_Clicked()
+{
+	mToolbarEvent(TOOLBAR_TILE_GROUPS_TOGGLE);
+}
+
 
 void ToolBar::btnSpinnerUp_Clicked()
 {
