@@ -1,33 +1,29 @@
-BLUE
-muddoz
-mudlavw
-mudmicw
-mudtubes
-mudwall1
-mudwall2
-mudwall3
-rocdoz
-roclavw
-rocmicw
-roctola3
-roctomud
-roctubes
-rocwall1
-rocwall2
-rocwall3
-roczlav
-sandoz
-sanlavw
-sanmicw
-santomud
-santoroc
-santube
-sanwall1
-sanwall2
-sanwall3
-mudtube2
-roctube2
-santube2
-LEFT_LAVA
-midd_lava
-RIGHT_LAVA
+	"BLUE",
+	"muddoz",
+	"mudlavw",
+	"mudmicw",
+	"mudtubes",
+	"mudwall1",
+	"mudwall2",
+	"mudwall3",
+	"rocdoz",
+	"roclavw",
+	"rocmicw",
+	"roctubes",
+	"rocwall1",
+	"rocwall2",
+	"rocwall3",
+	"roczlav",
+	"sandoz",
+	"sanlavw",
+	"sanmicw",
+	"santube",
+	"sanwall1",
+	"sanwall2",
+	"sanwall3",
+	"mudtube2",
+	"roctube2",
+	"santube2",
+	"LEFT_LAVA",
+	"midd_lava",
+	"RIGHT_LAVA"
