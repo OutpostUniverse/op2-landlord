@@ -1,5 +1,6 @@
 #include <NAS2D/NAS2D.h>
 #include <NAS2D/Renderer/RendererOpenGL.h>
+#include <NAS2D/Mixer/MixerNull.h>
 
 #include "EditorState.h"
 #include "StartState.h"
@@ -44,6 +45,10 @@ int main(int argc, char *argv[])
 			cf.graphicsHeight(650);
 		}
 		cf.save();
+
+		// All utilities must be initialized or exceptions are thrown when their Null
+		// variants aren't in place.
+		Utility<Mixer>::init<MixerNull>();
 
 		Renderer& r = Utility<Renderer>::init<RendererOpenGL>("OP2-Landlord");
 		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);

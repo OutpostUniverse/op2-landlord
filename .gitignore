@@ -17,3 +17,6 @@
 /proj/VS2019/packages
 /proj/VS2019/Debug
 /proj/VS2019/x64/Debug
+/data/sys
+*.png
+/proj/VS2019/x64/Release
