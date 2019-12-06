@@ -5,6 +5,7 @@
 
 #include "Map/cell_types.h"
 
+#include <algorithm>
 #include <stack>
 #include <sstream>
 
@@ -17,7 +18,7 @@ std::stack<Point_2d> FLOOD_STACK;					/**< Stack used for contiguous flood fill.
  * 
  * This version of the constructor is used to load an existing map file.
  */
-EditorState::EditorState(const string& mapPath):	mFont("fonts/opensans.ttf", 12),
+EditorState::EditorState(const std::string& mapPath):	mFont("fonts/opensans.ttf", 12),
 													mBoldFont("fonts/opensans-bold.ttf", 12),
 													mMapSavePath(mapPath)
 {}
@@ -240,8 +241,8 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 
 	mMouseCoords(x, y);
 
-	mTileHighlight(	clamp((x + mMap->cameraPosition().x()) / TILE_SIZE, 0, mMap->width() - 1),
-					clamp((y + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1));
+	mTileHighlight(	std::clamp((x + mMap->cameraPosition().x()) / TILE_SIZE, 0, mMap->width() - 1),
+					std::clamp((y + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1));
 
 	if(mLeftButtonDown)
 	{

@@ -2,6 +2,8 @@
 
 #include "Common.h"
 
+#include <algorithm>
+
 const int BUTTON_SPACE = 2;
 
 using namespace NAS2D;
@@ -268,14 +270,14 @@ void ToolBar::btnTileGroupsToggle_Clicked()
 
 void ToolBar::btnSpinnerUp_Clicked()
 {
-	int size = clamp(mBrush.width() + 1, 1, 8);
+	int size = std::clamp(mBrush.width() + 1, 1, 8);
 	mBrush.size(size, size);
 }
 
 
 void ToolBar::btnSpinnerDown_Clicked()
 {
-	int size = clamp(mBrush.width() - 1, 1, 8);
+	int size = std::clamp(mBrush.width() - 1, 1, 8);
 	mBrush.size(size, size);
 }
 

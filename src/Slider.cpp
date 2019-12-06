@@ -6,7 +6,7 @@
 #include "Slider.h"
 
 
-using namespace std;
+#include <algorithm>
 
 
 /**
@@ -119,7 +119,7 @@ double Slider::positionInternal()
  */
 void Slider::positionInternal(double _pos)
 {
-	mPosition = clamp(_pos, 0.0f, mLenght);
+	mPosition = std::clamp(_pos, 0.0, mLenght);
 }
 
 
@@ -242,7 +242,7 @@ void Slider::draw()
 	if (!visible()) { return; }
 
 	Renderer& r = Utility<Renderer>::get();
-	string textHover;
+	std::string textHover;
 	int _x = 0, _y = 0, _w = 0, _h = 0;
 	float _thumbPosition = 0.0f;
 

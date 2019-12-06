@@ -28,7 +28,7 @@ BaseTerrain BASE_TERRAIN = TERRAIN_MUD;
 void setMessage(const std::string& msg)
 {
 	MESSAGE = msg;
-	std::cout << msg << endl;
+	std::cout << msg << std::endl;
 }
 
 
@@ -276,7 +276,7 @@ void StartState::fillMapMenu()
  * 
  * \return	Returns a StringList.
  */
-StringList StartState::getFileList(const string& directory)
+StringList StartState::getFileList(const std::string& directory)
 {
 	StringList fileList = Utility<Filesystem>::get().directoryList(directory);
 	StringList returnList;
@@ -345,7 +345,7 @@ void StartState::button_LoadExisting_click()
 {
 	if (mMapFilesMenu.currentSelection() == NO_SELECTION) { return; }
 	
-	string mapPath = EDITOR_MAPS_PATH + mMapFilesMenu.selectionText();
+	std::string mapPath = EDITOR_MAPS_PATH + mMapFilesMenu.selectionText();
 
 	// In the event someone does something completely idiotic like deleting map files after the
 	// editor has scanned the maps directory (or some other error occurs where the map file is

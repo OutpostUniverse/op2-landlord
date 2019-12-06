@@ -1,5 +1,5 @@
 #include <NAS2D/NAS2D.h>
-#include <NAS2D/Renderer/OGL_Renderer.h>
+#include <NAS2D/Renderer/RendererOpenGL.h>
 
 #include "EditorState.h"
 #include "StartState.h"
@@ -15,10 +15,10 @@
 
 
 #ifdef WINDOWS
+#define WINDOWS_LEAN_AND_MEAN
 #include <Windows.h>
 #endif
 
-using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
 	try
 	{
 		Filesystem& f = Utility<Filesystem>::get();
-		f.init(argv[0], "data");
-		f.addToSearchPath("tsets.dat");
-		f.addToSearchPath("sys.dat");
+		f.init(argv[0], "OP2-Landlord", "Outpost Universe", "data");
+		f.mount("tsets.dat");
+		f.mount("sys.dat");
 
 		Configuration& cf = Utility<Configuration>::get();
 		cf.load("config.xml");
@@ -45,9 +45,7 @@ int main(int argc, char *argv[])
 		}
 		cf.save();
 
-		Utility<Renderer>::instantiateDerived(new OGL_Renderer("OP2-Landlord"));
-
-		Renderer& r = Utility<Renderer>::get();
+		Renderer& r = Utility<Renderer>::init<RendererOpenGL>("OP2-Landlord");
 		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);
 		r.addCursor("sys/fill.png", POINTER_FILL, 0, 0);
 		r.addCursor("sys/eraser.png", POINTER_ERASE, 0, 0);
@@ -66,7 +64,7 @@ int main(int argc, char *argv[])
 	}
 	catch(std::runtime_error& e)
 	{
-		stringstream errorMessage;
+		std::stringstream errorMessage;
 		errorMessage <<  e.what();
 	
 		#if defined(WINDOWS)

@@ -11,7 +11,6 @@
 #include "TextField.h"
 
 
-using namespace std;
 using namespace NAS2D;
 
 

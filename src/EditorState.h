@@ -12,7 +12,6 @@
 #include <string>
 #include <map>
 
-using namespace std;
 using namespace NAS2D;
 
 

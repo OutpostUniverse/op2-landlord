@@ -4,7 +4,6 @@
 
 #include <iostream>
 
-using namespace std;
 using namespace NAS2D;
 
 Button::Button():	mState(STATE_NORMAL),
@@ -34,7 +33,7 @@ void Button::image(const std::string path)
 {
 	if (!Utility<Filesystem>::get().exists(path))
 	{
-		std::cout << "Button::image(): specified image file doesn't exist." << endl;
+		std::cout << "Button::image(): specified image file doesn't exist." << std::endl;
 		return;
 	}
 
