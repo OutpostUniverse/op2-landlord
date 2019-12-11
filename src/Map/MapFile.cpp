@@ -7,6 +7,7 @@
 #include "../Stream/StreamReader.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include <NAS2D/NAS2D.h>
 
