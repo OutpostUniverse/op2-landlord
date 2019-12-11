@@ -603,6 +603,14 @@ int TileSetManager::Load(StreamReader* stream)
 	{
 		// Allocate space for the tile set info
 		mTileSetInfo = new TileSetInfo[numTileSets];
+		// Initialize values so cleanup won't cause problems if exceptions are raised
+		for (int i = 0; i < numTileSets; i++)
+		{
+			TileSetInfo& tileSet = mTileSetInfo[i];
+			tileSet.tileSetName = NULL; // NULL string pointer
+			tileSet.numTiles = 0;       // No loaded tiles in this tile set
+			tileSet.tileSet = NULL;     // NULL ITileSet pointer
+		}
 		// Load Tile Set file list
 		for (int i = 0; i < numTileSets; i++)
 		{
@@ -615,9 +623,6 @@ int TileSetManager::Load(StreamReader* stream)
 
 			// Initialize struct variables
 			tileSet->stringLength = stringLen;		// Store the string length
-			tileSet->tileSetName = NULL;		// NULL string pointer
-			tileSet->numTiles = 0;				// No loaded tiles in this tile set
-			tileSet->tileSet = NULL;			// NULL ITileSet pointer
 
 			if (stringLen > 0)
 			{
