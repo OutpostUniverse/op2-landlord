@@ -607,9 +607,9 @@ int TileSetManager::Load(StreamReader* stream)
 		for (int i = 0; i < numTileSets; i++)
 		{
 			TileSetInfo& tileSet = mTileSetInfo[i];
-			tileSet.tileSetName = nullptr; // NULL string pointer
-			tileSet.numTiles = 0;       // No loaded tiles in this tile set
-			tileSet.tileSet = nullptr;     // NULL ITileSet pointer
+			tileSet.tileSetName = nullptr;
+			tileSet.numTiles = 0;
+			tileSet.tileSet = nullptr;
 		}
 		// Load Tile Set file list
 		for (int i = 0; i < numTileSets; i++)
