@@ -615,28 +615,28 @@ int TileSetManager::Load(StreamReader* stream)
 		for (int i = 0; i < numTileSets; i++)
 		{
 			// Cache the tileSet address
-			TileSetInfo* tileSet = &mTileSetInfo[i];
+			TileSetInfo& tileSet = mTileSetInfo[i];
 
 			// Read the length of the string
 			int stringLen = 0;
 			stream->read(&stringLen, 4);
 
 			// Initialize struct variables
-			tileSet->stringLength = stringLen;		// Store the string length
+			tileSet.stringLength = stringLen;		// Store the string length
 
 			if (stringLen > 0)
 			{
-				tileSet->tileSetName = new char[stringLen + 1];
-				tileSet->tileSetName[stringLen] = 0;
+				tileSet.tileSetName = new char[stringLen + 1];
+				tileSet.tileSetName[stringLen] = 0;
 
-				stream->read(tileSet->tileSetName, stringLen);
+				stream->read(tileSet.tileSetName, stringLen);
 
-				mTileSetInfo[i].wideTileSetName = tileSet->tileSetName;
+				mTileSetInfo[i].wideTileSetName = tileSet.tileSetName;
 
-				tileSet->tileSet = new TileSet(tileSet->tileSetName);
+				tileSet.tileSet = new TileSet(tileSet.tileSetName);
 
 				// Read the number of tiles stored in this tile set
-				stream->read(&tileSet->numTiles, 4);
+				stream->read(&tileSet.numTiles, 4);
 			}
 		}
 
