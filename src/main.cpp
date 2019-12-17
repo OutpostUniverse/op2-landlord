@@ -13,6 +13,7 @@
 
 #include <map>
 #include <sstream>
+#include <cstdio>
 
 
 #ifdef WINDOWS
@@ -23,9 +24,13 @@
 
 int main(int argc, char *argv[])
 {
-	// redirect log entries on Release builds.
+	// redirect log entries
+	#ifdef WINDOWS
 	FILE *stream;
 	freopen_s(&stream, "log_editor.txt", "w", stdout);
+	#else
+	FILE *stream = freopen("log_editor.txt", "w", stdout);
+	#endif
 
 	fillCellTypes();
 	fillColorTables();
