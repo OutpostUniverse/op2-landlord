@@ -1,0 +1,24 @@
+version: 2
+
+jobs:
+  gcc:
+    docker:
+      - image: outpostuniverse/nas2d-circleci:1.1
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: make -k config=gcc
+  clang:
+    docker:
+      - image: outpostuniverse/nas2d-circleci:1.1
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - run: make -k config=clang
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - gcc
+      - clang
