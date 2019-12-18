@@ -15,14 +15,23 @@ CXXFLAGS := -std=c++17 -g -Wall -Wno-unknown-pragmas $(shell sdl2-config --cflag
 LDFLAGS := -static-libgcc -static-libstdc++ -Lnas2d-core/lib/
 LDLIBS := -lstdc++fs -lnas2d -lphysfs -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL -lGLEW
 
-# By default, compile and link both static library and dynamic link library
-all: op2landlord nas2d
+.PHONY: op2landlord nas2d clean-nas2d clean-all-nas2d
+
+all: op2landlord
+
+op2landlord.exe: | nas2d
+
+nas2d:
+	+make -C nas2d-core/ CXX="$(CXX)"
+clean-nas2d:
+	make -C nas2d-core/ CXX="$(CXX)" clean
+clean-all-nas2d:
+	make -C nas2d-core/ CXX="$(CXX)" clean-all
+
+clean: clean-nas2d
+clean-all: clean-all-nas2d
 
 $(eval $(call DefineCppProject,op2landlord,op2landlord.exe,src/))
-
-.PHONY: nas2d
-nas2d:
-	make -C nas2d-core/
 
 # Docker and CircleCI commands
 $(eval $(call DefineDockerImage,.circleci/,outpostuniverse/gcc-mingw-wine-googletest-circleci,1.2))
