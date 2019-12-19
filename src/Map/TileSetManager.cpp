@@ -20,10 +20,13 @@ TileSetManager::TileSetManager(const std::string& tilesetName)
  */
 TileSetManager::TileSetManager(int numTileSets, StreamReader *inStream) : numTileSets(numTileSets)
 {
-	if (Load(inStream) != 0)
+	try {
+		Load(inStream);
+	}
+	catch (const std::runtime_error& e)
 	{
 		FreeMemory();
-		throw std::runtime_error("Error loading TileSetManager data");
+		throw e;
 	}
 }
 
@@ -558,7 +561,7 @@ void TileSetManager::FreeMemory()
 /**
  * 
  */
-int TileSetManager::Save(StreamWriter* stream)
+void TileSetManager::Save(StreamWriter* stream)
 {
 	/*
 	int i;
@@ -590,14 +593,13 @@ int TileSetManager::Save(StreamWriter* stream)
 	// Write the terrain type info
 	stream->Write(sizeof(*terrain)*numTerrains, (int)terrain, &numBytesWritten);
 */
-	return 0;
 }
 
 
 /**
  * 
  */
-int TileSetManager::Load(StreamReader* stream)
+void TileSetManager::Load(StreamReader* stream)
 {
 	char scratch[64] = { '\0' }; // Used to read the "TILE SET" tag
 
@@ -669,14 +671,14 @@ int TileSetManager::Load(StreamReader* stream)
 	}
 	catch (const std::runtime_error& e)
 	{
-		std::cout << e.what() << std::endl;
-		return 1; // Failed to load file
+		auto errorMsg = std::string("Error loading TileSetManager data: ") + e.what();
+		std::cout << errorMsg << std::endl;
+		throw std::runtime_error(errorMsg);
 	}
 	catch (...)
 	{
-		std::cout << "Failed to load tileset data" << std::endl;
-		return 1; // Failed to load file
+		auto errorMsg = std::string("Error loading TileSetManager data");
+		std::cout << errorMsg << std::endl;
+		throw std::runtime_error(errorMsg);
 	}
-
-	return 0;
 }
