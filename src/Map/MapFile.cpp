@@ -28,14 +28,7 @@ MapFile::MapFile(const std::string& filename)
 
 	if(!CELL_TYPE_OVERLAY) { CELL_TYPE_OVERLAY = new Image("sys/celltypemask.png"); }
 
-	try
-	{
-		load(filename);
-	}
-	catch (...)
-	{
-		throw std::runtime_error("Error loading map data from stream.");
-	}
+	load(filename);
 }
 
 
