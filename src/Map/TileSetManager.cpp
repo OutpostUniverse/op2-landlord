@@ -23,6 +23,7 @@ TileSetManager::TileSetManager(int numTileSets, StreamReader *inStream) : numTil
 	if (Load(inStream) != 0)
 	{
 		FreeMemory();
+		throw std::runtime_error("Error loading TileSetManager data");
 	}
 }
 
