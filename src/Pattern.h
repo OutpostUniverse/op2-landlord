@@ -27,7 +27,7 @@ public:
 	void width(int w) { size(w, height()); }
 
 	int height() const { return mPatternGrid.size(); }
-	int height(int h) { size(width(), h); }
+	void height(int h) { size(width(), h); }
 
 	/**
 	 * Changes the size of the pattern.
