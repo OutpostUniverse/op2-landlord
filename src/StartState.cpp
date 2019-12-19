@@ -327,7 +327,7 @@ void StartState::button_CreateNew_click()
 	{
 		mReturnState = new EditorState(mapname, BASE_TERRAIN, 128, 128);
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		MESSAGE = e.what();
 		std::cout << e.what() << std::endl;
