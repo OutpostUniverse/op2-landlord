@@ -473,9 +473,12 @@ void MapFile::load(const std::string& filename)
 	catch (const std::string& errorMsg)
 	{
 		std::cout << errorMsg << std::endl;
+		throw std::runtime_error("Error loading map: " + errorMsg);
 	}
 	catch (...)
-	{}
+	{
+		throw std::runtime_error("Error loading map");
+	}
 }
 
 
