@@ -1,5 +1,6 @@
 #include "TileSetManager.h"
 #include "../Common.h"
+#include <iostream>
 
 const char TILESET_TAG[] = "TILE SET\x01A";
 
@@ -665,9 +666,15 @@ int TileSetManager::Load(StreamReader* stream)
 		// Read the terrain type info
 		stream->read(mTerrain, sizeof(*mTerrain) * mTerrainCount);
 	}
+	catch (const std::runtime_error& e)
+	{
+		std::cout << e.what() << std::endl;
+		return 1; // Failed to load file
+	}
 	catch (...)
 	{
-		return 1;	// Failed to load file
+		std::cout << "Failed to load tileset data" << std::endl;
+		return 1; // Failed to load file
 	}
 
 	return 0;
