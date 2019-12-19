@@ -470,10 +470,11 @@ void MapFile::load(const std::string& filename)
 			_readTileGroupName(stream_reader, *_tg);
 		}
 	}
-	catch (const std::string& errorMsg)
+	catch (const std::runtime_error& e)
 	{
+		auto errorMsg = std::string("Error loading map: ") + e.what();
 		std::cout << errorMsg << std::endl;
-		throw std::runtime_error("Error loading map: " + errorMsg);
+		throw std::runtime_error(errorMsg);
 	}
 	catch (...)
 	{
