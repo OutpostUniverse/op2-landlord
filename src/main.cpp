@@ -72,11 +72,8 @@ int main(int argc, char *argv[])
 	}
 	catch(std::runtime_error& e)
 	{
-		std::stringstream errorMessage;
-		errorMessage <<  e.what();
-	
 		#if defined(WINDOWS)
-		MessageBoxA(NULL, errorMessage.str().c_str(), "Application Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+		MessageBoxA(NULL, e.what(), "Application Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		#endif
 		
 	}
