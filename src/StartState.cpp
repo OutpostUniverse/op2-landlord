@@ -60,8 +60,6 @@ StartState::~StartState()
  */
 void StartState::initialize()
 {
-	Configuration& c = Utility<Configuration>::get();
-
 	mReturnState = this;
 
 	setMessage("");
@@ -83,8 +81,6 @@ void StartState::initialize()
 
 void StartState::initUi()
 {
-	Renderer& r = Utility<Renderer>::get();
-
 	txtMapDescription.font(mFont);
 	txtMapDescription.text(MAP_64_X_64);
 
@@ -300,8 +296,6 @@ StringList StartState::getFileList(const std::string& directory)
  */
 void StartState::button_CreateNew_click()
 {
-	int mapWidth = 0, mapHeight = 0;
-
 	txtMapPath.highlight(false);
 
 	if (txtMapPath.text().empty())
