@@ -1,7 +1,5 @@
 #include "StreamReader.h"
 
-const int	INT_4BYTE_SIZE = 4;
-
 /**
  * Reads a specified number of bytes into a buffer.
  * 

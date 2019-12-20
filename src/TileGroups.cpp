@@ -25,7 +25,6 @@ TileGroups::~TileGroups()
 
 void TileGroups::_init()
 {
-	Renderer& r = Utility<Renderer>::get();
 	text("Tile Groups");
 	mSlider.change().connect(this, &TileGroups::mSlider_Changed);
 

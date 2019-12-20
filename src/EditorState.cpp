@@ -128,8 +128,6 @@ State* EditorState::update()
 
 void EditorState::updateUI()
 {
-	Renderer& r = Utility<Renderer>::get();
-
 	mToolBar.update();
 
 	mTileGroups.update();
