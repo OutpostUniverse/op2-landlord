@@ -1,14 +1,21 @@
 #pragma once
 
-#include <NAS2D/NAS2D.h>
+#include <vector>
+
 
 class StreamWriter
 {
 public:
-	StreamWriter(NAS2D::File::RawByteStream& stream) : mStream(stream) {}
 	StreamWriter() {}
 	~StreamWriter() {}
 
+	int write(const void* buffer, size_t size);
+	void seek(int pos);
+
+	size_t size() { return mStream.size(); }
+	const unsigned char* data() { return mStream.data(); }
+
 private:
-	NAS2D::File::RawByteStream		mStream;
+	int mPosition = 0;
+	std::vector<unsigned char> mStream;
 };

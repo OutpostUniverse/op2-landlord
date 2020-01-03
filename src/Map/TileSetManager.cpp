@@ -1,5 +1,6 @@
 #include "TileSetManager.h"
 #include "../Common.h"
+#include <iostream>
 
 const char TILESET_TAG[] = "TILE SET\x01A";
 
@@ -19,9 +20,13 @@ TileSetManager::TileSetManager(const std::string& tilesetName)
  */
 TileSetManager::TileSetManager(int numTileSets, StreamReader *inStream) : numTileSets(numTileSets)
 {
-	if (Load(inStream) != 0)
+	try {
+		Load(inStream);
+	}
+	catch (const std::runtime_error& e)
 	{
 		FreeMemory();
+		throw e;
 	}
 }
 
@@ -556,7 +561,7 @@ void TileSetManager::FreeMemory()
 /**
  * 
  */
-int TileSetManager::Save(StreamWriter* stream)
+void TileSetManager::Save(StreamWriter* stream)
 {
 	/*
 	int i;
@@ -588,14 +593,13 @@ int TileSetManager::Save(StreamWriter* stream)
 	// Write the terrain type info
 	stream->Write(sizeof(*terrain)*numTerrains, (int)terrain, &numBytesWritten);
 */
-	return 0;
 }
 
 
 /**
  * 
  */
-int TileSetManager::Load(StreamReader* stream)
+void TileSetManager::Load(StreamReader* stream)
 {
 	char scratch[64] = { '\0' }; // Used to read the "TILE SET" tag
 
@@ -603,35 +607,40 @@ int TileSetManager::Load(StreamReader* stream)
 	{
 		// Allocate space for the tile set info
 		mTileSetInfo = new TileSetInfo[numTileSets];
+		// Initialize values so cleanup won't cause problems if exceptions are raised
+		for (int i = 0; i < numTileSets; i++)
+		{
+			TileSetInfo& tileSet = mTileSetInfo[i];
+			tileSet.tileSetName = nullptr;
+			tileSet.numTiles = 0;
+			tileSet.tileSet = nullptr;
+		}
 		// Load Tile Set file list
 		for (int i = 0; i < numTileSets; i++)
 		{
 			// Cache the tileSet address
-			TileSetInfo* tileSet = &mTileSetInfo[i];
+			TileSetInfo& tileSet = mTileSetInfo[i];
 
 			// Read the length of the string
 			int stringLen = 0;
 			stream->read(&stringLen, 4);
 
 			// Initialize struct variables
-			tileSet->stringLength = stringLen;		// Store the string length
-			tileSet->tileSetName = NULL;		// NULL string pointer
-			tileSet->numTiles = 0;				// No loaded tiles in this tile set
-			tileSet->tileSet = NULL;			// NULL ITileSet pointer
+			tileSet.stringLength = stringLen;		// Store the string length
 
 			if (stringLen > 0)
 			{
-				tileSet->tileSetName = new char[stringLen + 1];
-				tileSet->tileSetName[stringLen] = 0;
+				tileSet.tileSetName = new char[stringLen + 1];
+				tileSet.tileSetName[stringLen] = 0;
 
-				stream->read(tileSet->tileSetName, stringLen);
+				stream->read(tileSet.tileSetName, stringLen);
 
-				mTileSetInfo[i].wideTileSetName = tileSet->tileSetName;
+				mTileSetInfo[i].wideTileSetName = tileSet.tileSetName;
 
-				tileSet->tileSet = new TileSet(tileSet->tileSetName);
+				tileSet.tileSet = new TileSet(tileSet.tileSetName);
 
 				// Read the number of tiles stored in this tile set
-				stream->read(&tileSet->numTiles, 4);
+				stream->read(&tileSet.numTiles, 4);
 			}
 		}
 
@@ -660,10 +669,16 @@ int TileSetManager::Load(StreamReader* stream)
 		// Read the terrain type info
 		stream->read(mTerrain, sizeof(*mTerrain) * mTerrainCount);
 	}
+	catch (const std::runtime_error& e)
+	{
+		auto errorMsg = std::string("Error loading TileSetManager data: ") + e.what();
+		std::cout << errorMsg << std::endl;
+		throw std::runtime_error(errorMsg);
+	}
 	catch (...)
 	{
-		return 1;	// Failed to load file
+		auto errorMsg = std::string("Error loading TileSetManager data");
+		std::cout << errorMsg << std::endl;
+		throw std::runtime_error(errorMsg);
 	}
-
-	return 0;
 }

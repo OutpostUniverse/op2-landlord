@@ -1,0 +1,37 @@
+image: Visual Studio 2019 Preview
+configuration:
+  - Release
+platform:
+  - x86
+  - x64
+clone_script:
+- ps: >-
+    if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER) {
+      git clone -q --branch=$env:APPVEYOR_REPO_BRANCH https://github.com/$env:APPVEYOR_REPO_NAME.git $env:APPVEYOR_BUILD_FOLDER
+      cd $env:APPVEYOR_BUILD_FOLDER
+      git checkout -qf $env:APPVEYOR_REPO_COMMIT
+    } else {
+      git clone -q https://github.com/$env:APPVEYOR_REPO_NAME.git $env:APPVEYOR_BUILD_FOLDER
+      cd $env:APPVEYOR_BUILD_FOLDER
+      git fetch -q origin +refs/pull/$env:APPVEYOR_PULL_REQUEST_NUMBER/merge:
+      git checkout -qf FETCH_HEAD
+    }
+- cmd: git submodule update --init --recursive
+cache:
+  - C:\tools\vcpkg\installed\
+  - proj/VS2019/packages -> proj/VS2019/packages.config
+  - nas2d-core/proj/vs2019/packages -> nas2d-core/proj/vs2019/packages.config
+install:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - git submodule update --init --recursive
+  - nuget restore proj/VS2019
+  - nuget restore nas2d-core/proj/vs2019
+  - vcpkg integrate install
+  - vcpkg install physfs:x86-windows
+  - vcpkg install physfs:x64-windows
+  - vcpkg install glew:x86-windows
+  - vcpkg install glew:x64-windows
+  - vcpkg install gtest:x86-windows
+  - vcpkg install gtest:x64-windows
+build:
+  project: proj/VS2019/OP2-Landlord.sln

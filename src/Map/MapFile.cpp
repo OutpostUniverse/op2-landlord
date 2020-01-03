@@ -7,6 +7,7 @@
 #include "../Stream/StreamReader.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include <NAS2D/NAS2D.h>
 
@@ -27,14 +28,7 @@ MapFile::MapFile(const std::string& filename)
 
 	if(!CELL_TYPE_OVERLAY) { CELL_TYPE_OVERLAY = new Image("sys/celltypemask.png"); }
 
-	try
-	{
-		load(filename);
-	}
-	catch (...)
-	{
-		throw std::runtime_error("Error loading map data from stream.");
-	}
+	load(filename);
 }
 
 
@@ -476,12 +470,16 @@ void MapFile::load(const std::string& filename)
 			_readTileGroupName(stream_reader, *_tg);
 		}
 	}
-	catch (const std::string& errorMsg)
+	catch (const std::runtime_error& e)
 	{
+		auto errorMsg = std::string("Error loading map: ") + e.what();
 		std::cout << errorMsg << std::endl;
+		throw std::runtime_error(errorMsg);
 	}
 	catch (...)
-	{}
+	{
+		throw std::runtime_error("Error loading map");
+	}
 }
 
 

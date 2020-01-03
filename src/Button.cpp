@@ -8,8 +8,8 @@ using namespace NAS2D;
 
 Button::Button():	mState(STATE_NORMAL),
 					mType(BUTTON_NORMAL),
-					mMouseHover(false),
-					mImage(nullptr)
+					mImage(nullptr),
+					mMouseHover(false)
 {
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &Button::onMouseDown);
 	Utility<EventHandler>::get().mouseButtonUp().connect(this, &Button::onMouseUp);

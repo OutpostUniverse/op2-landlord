@@ -118,8 +118,8 @@ private:
 	#pragma pack(pop)
 
 private:
-	int Save(StreamWriter *stream);
-	int Load(StreamReader *stream);
+	void Save(StreamWriter *stream);
+	void Load(StreamReader *stream);
 	void FreeMemory();
 
 	void validateIndex(int index);

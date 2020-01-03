@@ -6,8 +6,6 @@
 
 #include "NAS2D/NAS2D.h"
 
-#include <SDL.h>
-
 
 using namespace NAS2D;
 
@@ -41,7 +39,6 @@ private:
 private:
 	Rectangle_2d	mViewRect;
 
-	SDL_Surface*	mSurface = nullptr;
 	Image*			mMiniMap = nullptr;
 
 	MapFile*		mMap = nullptr;

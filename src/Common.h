@@ -10,7 +10,6 @@ using namespace NAS2D;
 #include <memory>
 
 #include <SDL.h>
-
 // ===========================================================================
 // = ENUMERATIONS
 // ===========================================================================
@@ -48,7 +47,6 @@ const int NO_SELECTION		= -1;	/**< Indicates no selection. */
 // ===========================================================================
 void flipBool(bool& b);
 
-void DrawPixel(SDL_Surface* srf, int x, int y, Uint8 R, Uint8 G, Uint8 B, Uint8 A);
 void bevelBox(int x, int y, int w, int h, bool sunk = false, const Color& bgcolor = Color(180, 180, 180, 255));
 
 std::string TrimString(const std::string& src, const std::string& c = " \r\n");

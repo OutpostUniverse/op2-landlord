@@ -85,7 +85,6 @@ private:
 	// FLAGS
 	bool			mLeftButtonDown = false;	/**< Flag for left mouse button down. */
 	bool			mRightButtonDown = false;	/**< Flag for right mouse button down. */
-	bool			mPlacingCollision = false;	/**< Flag indicating whether or not to place or clear collision on mouse drags. */
 	bool			mMapChanged = false;		/**< Used to determine if the map changed. */
 
 	State*			mReturnState = this;		/**< Return state (nullptr terminates the program). */
