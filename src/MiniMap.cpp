@@ -95,30 +95,16 @@ void MiniMap::createMiniMap()
 {
 	if (!mMap) { throw std::runtime_error("MiniMap::createMiniMap(): mMap not set!"); }
 
-	Uint32 rmask, gmask, bmask, amask;
-
-	// Set up channel masks.
-	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) { rmask = 0xff000000; gmask = 0x00ff0000;	bmask = 0x0000ff00;	amask = 0x000000ff; }
-	else { rmask = 0x000000ff;	gmask = 0x0000ff00;	bmask = 0x00ff0000;	amask = 0xff000000; }
-
-	mSurface = SDL_CreateRGBSurface(0, mMap->width(), mMap->height(), 32, rmask, gmask, bmask, amask);
-	if (!mSurface) { return; }
-
-	Color _c;
+	std::vector<Color> buffer(mMap->width() * mMap->height());
+	std::size_t offset = 0;
 	for (int y = 0; y < mMap->height(); y++)
 	{
 		for (int x = 0; x < mMap->width(); x++)
 		{
-			_c = mMap->tile_color(x, y);
-
-			DrawPixel(mSurface, x, y, _c.red(), _c.green(), _c.blue(), _c.alpha());
+			buffer[offset++] = mMap->tile_color(x, y);
 		}
 	}
 
 	if (mMiniMap) { delete mMiniMap; }
-
-	mMiniMap = new Image(mSurface->pixels, mSurface->format->BytesPerPixel, mSurface->w, mSurface->h);
-
-	SDL_FreeSurface(mSurface);
-	mSurface = nullptr;
+	mMiniMap = new Image(buffer.data(), sizeof(Color), mMap->width(), mMap->height());
 }
