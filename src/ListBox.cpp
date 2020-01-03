@@ -6,9 +6,9 @@
 /**
  * C'tor
  */
-ListBox::ListBox():	mText(COLOR_WHITE),
-					mHighlightBg(COLOR_GREEN),
-					mHighlightText(COLOR_WHITE)
+ListBox::ListBox():	mText(Color::White),
+					mHighlightBg(Color::Green),
+					mHighlightText(Color::White)
 {
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &ListBox::onMouseDown);
 	Utility<EventHandler>::get().mouseMotion().connect(this, &ListBox::onMouseMove);

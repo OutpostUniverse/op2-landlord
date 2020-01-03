@@ -3,7 +3,7 @@
 #include <vector>
 #include <NAS2D/NAS2D.h>
 
-typedef std::vector<NAS2D::Color_4ub>	ColorTable;
+typedef std::vector<NAS2D::Color>	ColorTable;
 
 extern ColorTable well0000_color_table;
 extern ColorTable well0001_color_table;

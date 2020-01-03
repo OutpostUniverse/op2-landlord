@@ -25,8 +25,8 @@ public:
 
 	void sort() { std::sort(mItems.begin(), mItems.end()); }
 
-	void textColor(const Color_4ub& color)	{ mText = color; }
-	void selectColor(const Color_4ub& color)	{ mHighlightBg = color; }
+	void textColor(const Color& color)	{ mText = color; }
+	void selectColor(const Color& color)	{ mHighlightBg = color; }
 
 	void addItem(const std::string& item);
 	void removeItem(const std::string& item);
@@ -71,9 +71,9 @@ private:
 
 	StringList					mItems;				/**< List of items preserved in the order in which they're added. */
 
-	Color_4ub					mText;				/**< Text Color */
-	Color_4ub					mHighlightBg;		/**< Highlight Background color. */
-	Color_4ub					mHighlightText;		/**< Text Color for an item that is currently highlighted. */
+	Color					mText;				/**< Text Color */
+	Color					mHighlightBg;		/**< Highlight Background color. */
+	Color					mHighlightText;		/**< Text Color for an item that is currently highlighted. */
 
 	Point_2d					mMouseCoords;		/**< Mouse position. */
 

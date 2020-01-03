@@ -110,7 +110,7 @@ void EditorState::initUi()
 State* EditorState::update()
 {
 	Renderer& r = Utility<Renderer>::get();
-	r.clearScreen(COLOR_MAGENTA);
+	r.clearScreen(Color::Magenta);
 
 	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), mToolBar.show_collision_mask());
 
@@ -185,11 +185,11 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 
 	switch(key)
 	{
-		case EventHandler::KEY_ESCAPE:
+		case EventHandler::KeyCode::KEY_ESCAPE:
 			mReturnState = new StartState();
 			break;
 
-		case EventHandler::KEY_z:
+		case EventHandler::KeyCode::KEY_z:
 			if(Utility<EventHandler>::get().control(mod))
 			{
 			}
@@ -263,12 +263,12 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	Utility<EventHandler>::get().grabMouse();
 
 	// Left Mouse Button
-	if(button == EventHandler::BUTTON_LEFT)
+	if(button == EventHandler::MouseButton::BUTTON_LEFT)
 	{
 		mLeftButtonDown = true;
 		handleLeftButtonDown(x, y);
 	}
-	else if(button == EventHandler::BUTTON_RIGHT)
+	else if(button == EventHandler::MouseButton::BUTTON_RIGHT)
 	{
 		mRightButtonDown = true;
 		mSavedMouseCoords = mMouseCoords;
@@ -282,7 +282,7 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
  */
 void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 {
-	if(button == EventHandler::BUTTON_LEFT)
+	if(button == EventHandler::MouseButton::BUTTON_LEFT)
 	{
 		mLeftButtonDown = false;
 		//if(mEditState == STATE_BASE_TILE_INDEX || mEditState == STATE_BASE_DETAIL_TILE_INDEX || mEditState == STATE_DETAIL_TILE_INDEX || mEditState == STATE_FOREGROUND_TILE_INDEX)
@@ -294,7 +294,7 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 			}
 		//}
 	}
-	else if(button == EventHandler::BUTTON_RIGHT)
+	else if(button == EventHandler::MouseButton::BUTTON_RIGHT)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);

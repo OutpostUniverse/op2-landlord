@@ -14,7 +14,7 @@ public:
 	~TileSet();
 
 	int tileCount() const;
-	const NAS2D::Color_4ub& color(int index) const;
+	const NAS2D::Color& color(int index) const;
 
 	void draw(int index, int x, int y);
 

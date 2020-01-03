@@ -20,3 +20,5 @@
 /data/sys
 *.png
 /proj/VS2019/x64/Release
+/proj/VS2019/Release
+/*.lnk

@@ -149,7 +149,7 @@ int MapFile::index(int x, int y)
 /**
  * 
  */
-const Color_4ub& MapFile::tile_color(int x, int y)
+const Color& MapFile::tile_color(int x, int y)
 {
 	validateCoords(x, y);
 

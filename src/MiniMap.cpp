@@ -31,7 +31,7 @@ void MiniMap::adjustCamera(int x, int y)
 
 void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != EventHandler::BUTTON_LEFT) { return; }
+	if (b != EventHandler::MouseButton::BUTTON_LEFT) { return; }
 	
 	mLeftButtonDown = true;
 
@@ -48,7 +48,7 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 
 void MiniMap::mouseUp(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != EventHandler::BUTTON_LEFT) { return; }
+	if (b != EventHandler::MouseButton::BUTTON_LEFT) { return; }
 
 	mLeftButtonDown = false;
 	mMovingCamera = false;
@@ -104,7 +104,7 @@ void MiniMap::createMiniMap()
 	mSurface = SDL_CreateRGBSurface(0, mMap->width(), mMap->height(), 32, rmask, gmask, bmask, amask);
 	if (!mSurface) { return; }
 
-	Color_4ub _c;
+	Color _c;
 	for (int y = 0; y < mMap->height(); y++)
 	{
 		for (int x = 0; x < mMap->width(); x++)

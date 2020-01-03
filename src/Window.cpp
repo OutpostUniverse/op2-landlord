@@ -46,7 +46,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
 	
 	mouseDown(button, x, y);
 
-	if((button != EventHandler::BUTTON_LEFT)) { return; }
+	if((button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 
 	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), titleBarHeight()))
 	{
@@ -69,7 +69,7 @@ void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y)
 	
 	mouseUp(button, x, y);
 
-	if((button != EventHandler::BUTTON_LEFT)) { return; }
+	if((button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 }
 
 

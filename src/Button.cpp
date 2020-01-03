@@ -73,7 +73,7 @@ void Button::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
-	if(button == EventHandler::BUTTON_LEFT)
+	if(button == EventHandler::MouseButton::BUTTON_LEFT)
 	{
 		Point_2d click(x, y);
 
@@ -100,7 +100,7 @@ void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
-	if(button == EventHandler::BUTTON_LEFT)
+	if(button == EventHandler::MouseButton::BUTTON_LEFT)
 	{
 		Point_2d click(x, y);
 		

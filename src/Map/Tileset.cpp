@@ -36,7 +36,7 @@ int TileSet::tileCount() const
 /**
  * 
  */
-const NAS2D::Color_4ub& TileSet::color(int index) const
+const NAS2D::Color& TileSet::color(int index) const
 {
 	if (index < 0 || index >= mTileCount)
 	{
@@ -90,7 +90,7 @@ void TileSet::buildTileColorTable()
 		{
 			for (int x = 0; x < 32; x++)
 			{
-				Color_4ub& c = mTileSetImage.pixelColor(x, (i * 32) + y);
+				Color& c = mTileSetImage.pixelColor(x, (i * 32) + y);
 
 				r += c.red();
 				g += c.green();
@@ -102,7 +102,7 @@ void TileSet::buildTileColorTable()
 		g /= pixel_count;
 		b /= pixel_count;
 
-		_file << "\t" << name() << "_color_table.push_back(NAS2D::Color_4ub(" << r << ", " << g << ", " << b << ", 255));" << endl;
+		_file << "\t" << name() << "_color_table.push_back(NAS2D::Color(" << r << ", " << g << ", " << b << ", 255));" << endl;
 
 	}
 

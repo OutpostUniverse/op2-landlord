@@ -90,7 +90,7 @@ void TileGroups::draw()
 
 void TileGroups::mouseDown(EventHandler::MouseButton button, int x, int y)
 {
-	if (!visible() || (button != EventHandler::BUTTON_LEFT)) { return; }
+	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 
 	if (!(isPointInRect(_mouseCoords(), rect())))
 	{
@@ -105,7 +105,7 @@ void TileGroups::mouseUp(EventHandler::MouseButton button, int x, int y)
 {
 	mLeftButtonDown = false;
 
-	if (!visible() || (button != EventHandler::BUTTON_LEFT)) { return; }
+	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
 }
 
@@ -131,11 +131,11 @@ void TileGroups::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier 
 
 	switch (key)
 	{
-	case EventHandler::KEY_LEFT:
+	case EventHandler::KeyCode::KEY_LEFT:
 		mSlider.changeThumbPosition(-1.0);
 		break;
 
-	case EventHandler::KEY_RIGHT:
+	case EventHandler::KeyCode::KEY_RIGHT:
 		mSlider.changeThumbPosition(1.0);
 		break;
 

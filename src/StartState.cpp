@@ -457,7 +457,7 @@ void StartState::updateUi()
  */
 void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
 {
-	if (key == EventHandler::KEY_ESCAPE)
+	if (key == EventHandler::KeyCode::KEY_ESCAPE)
 	{
 		mReturnState = nullptr;
 	}
@@ -475,7 +475,7 @@ void StartState::onMouseMove(int x, int y, int relX, int relY)
 
 void StartState::onDoubleClick(EventHandler::MouseButton button, int x, int y)
 {
-	if (button != EventHandler::BUTTON_LEFT) { return; }
+	if (button != EventHandler::MouseButton::BUTTON_LEFT) { return; }
 
 	if (isPointInRect(mMouseCoords, mMapFilesMenu.rect()))
 	{

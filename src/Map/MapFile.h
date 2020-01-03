@@ -28,7 +28,7 @@ public:
 	TileGroup* tileGroup(int tg_index);
 	const std::string& tileGroupName(int tg_index);
 
-	const NAS2D::Color_4ub& tile_color(int x, int y);
+	const NAS2D::Color& tile_color(int x, int y);
 
 	int index(int x, int y);
 	void index(int x, int y, int index);
