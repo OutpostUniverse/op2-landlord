@@ -188,7 +188,7 @@ int MapFile::tset_index(int x, int y) const
  */
 void MapFile::updateCameraAnchorArea(int width, int height)
 {
-	mCameraAnchorArea(0, 0, mTileWidth * TILE_SIZE - width, mTileHeight * TILE_SIZE - height);
+	mCameraAnchorArea = {0, 0, mTileWidth * TILE_SIZE - width, mTileHeight * TILE_SIZE - height};
 	setCamera(mCameraPosition.x(), mCameraPosition.y());
 }
 
@@ -235,7 +235,7 @@ void MapFile::moveCamera(int x, int y)
  */
 void MapFile::setCamera(int x, int y)
 {
-	mCameraPosition(std::clamp(x, 0, mCameraAnchorArea.width()), std::clamp(y, 0, mCameraAnchorArea.height()));
+	mCameraPosition = {std::clamp(x, 0, mCameraAnchorArea.width()), std::clamp(y, 0, mCameraAnchorArea.height())};
 }
 
 

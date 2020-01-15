@@ -79,7 +79,7 @@ void MiniMap::draw()
 	r.drawBoxFilled(rect().x() + 5, rect().y() + 21, (float)mMiniMap->width(), (float)mMiniMap->height(), 255, 0, 255);
 	r.drawImage(*mMiniMap, rect().x() + 5, rect().y() + 21);
 
-	mViewRect(static_cast<int>(rect().x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE)), static_cast<int>(rect().y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE)), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE));
+	mViewRect = {static_cast<int>(rect().x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE)), static_cast<int>(rect().y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE)), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE)};
 	r.drawBox(mViewRect, 255, 255, 255);
 }
 

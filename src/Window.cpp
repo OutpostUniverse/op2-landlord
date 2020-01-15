@@ -75,7 +75,7 @@ void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y)
 
 void Window::onMouseMotion(int x, int y, int dX, int dY)
 {
-	mMouseCoords(x, y);
+	mMouseCoords = {x, y};
 
 	if (!visible()) { return; }
 

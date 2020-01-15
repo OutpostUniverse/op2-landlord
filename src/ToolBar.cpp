@@ -54,7 +54,7 @@ void ToolBar::initUi()
 	btnFillContiguous.position(btnFill.positionX() - 30, 40);
 	btnFillContiguous.visible(false);
 
-	mFloodFillExtendedArea(static_cast<int>(btnFillContiguous.positionX() - 4), static_cast<int>(btnFillContiguous.positionY() - 4), 104, static_cast<int>(btnFillContiguous.height() + 8));
+	mFloodFillExtendedArea = {static_cast<int>(btnFillContiguous.positionX() - 4), static_cast<int>(btnFillContiguous.positionY() - 4), 104, static_cast<int>(btnFillContiguous.height() + 8)};
 
 	btnErase.image("sys/erase.png");
 	btnErase.type(Button::BUTTON_TOGGLE);

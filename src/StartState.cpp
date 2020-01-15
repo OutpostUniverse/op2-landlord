@@ -64,7 +64,7 @@ void StartState::initialize()
 
 	setMessage("");
 
-	mLayoutRect(15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40));
+	mLayoutRect = {15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40)};
 
 	initUi();
 
@@ -207,7 +207,7 @@ void StartState::resizeLayout()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	mLayoutRect(15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40));
+	mLayoutRect = {15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40)};
 
 	// =========================================
 	// = LOAD MAP PANEL
@@ -463,7 +463,7 @@ void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier 
  */
 void StartState::onMouseMove(int x, int y, int relX, int relY)
 {
-	mMouseCoords(x, y);
+	mMouseCoords = {x, y};
 }
 
 
@@ -513,7 +513,7 @@ void StartState::btn64x64_Clicked()
 {
 	unsetSizeButtons();
 	mBtn64x64.toggle(true);
-	mMapSize(64, 64);
+	mMapSize = {64, 64};
 	txtMapDescription.text(MAP_64_X_64);
 }
 
@@ -522,7 +522,7 @@ void StartState::btn64x128_Clicked()
 {
 	unsetSizeButtons();
 	mBtn64x128.toggle(true);
-	mMapSize(64, 128);
+	mMapSize = {64, 128};
 	txtMapDescription.text(MAP_64_X_128);
 }
 
@@ -531,7 +531,7 @@ void StartState::btn64x256_Clicked()
 {
 	unsetSizeButtons();
 	mBtn64x256.toggle(true);
-	mMapSize(64, 256);
+	mMapSize = {64, 256};
 	txtMapDescription.text(MAP_64_X_256);
 }
 
@@ -540,7 +540,7 @@ void StartState::btn128x128_Clicked()
 {
 	unsetSizeButtons();
 	mBtn128x128.toggle(true);
-	mMapSize(128, 128);
+	mMapSize = {128, 128};
 	txtMapDescription.text(MAP_128_X_128);
 }
 
@@ -549,7 +549,7 @@ void StartState::btn128x64_Clicked()
 {
 	unsetSizeButtons();
 	mBtn128x64.toggle(true);
-	mMapSize(128, 64);
+	mMapSize = {128, 64};
 	txtMapDescription.text(MAP_128_X_64);
 }
 
@@ -558,7 +558,7 @@ void StartState::btn128x256_Clicked()
 {
 	unsetSizeButtons();
 	mBtn128x256.toggle(true);
-	mMapSize(128, 256);
+	mMapSize = {128, 256};
 	txtMapDescription.text(MAP_128_X_256);
 }
 
@@ -567,7 +567,7 @@ void StartState::btn256x256_Clicked()
 {
 	unsetSizeButtons();
 	mBtn256x256.toggle(true);
-	mMapSize(256, 256);
+	mMapSize = {256, 256};
 	txtMapDescription.text(MAP_256_X_256);
 }
 
@@ -576,7 +576,7 @@ void StartState::btn256x128_Clicked()
 {
 	unsetSizeButtons();
 	mBtn256x128.toggle(true);
-	mMapSize(256, 128);
+	mMapSize = {256, 128};
 	txtMapDescription.text(MAP_256_X_128);
 }
 
@@ -585,7 +585,7 @@ void StartState::btn512x256_Clicked()
 {
 	unsetSizeButtons();
 	mBtn512x256.toggle(true);
-	mMapSize(512, 256);
+	mMapSize = {512, 256};
 	txtMapDescription.text(MAP_512_X_256);
 }
 

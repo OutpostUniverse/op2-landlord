@@ -69,7 +69,7 @@ void EditorState::initialize()
 	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
 	Utility<EventHandler>::get().windowResized().connect(this, &EditorState::onWindowResized);
 
-	mSelectorRect(0, 0, TILE_SIZE, TILE_SIZE);
+	mSelectorRect = {0, 0, TILE_SIZE, TILE_SIZE};
 
 	initUi();
 
@@ -154,7 +154,7 @@ void EditorState::updateSelector()
 	int gridX = gridLocation(mMouseCoords.x(), mMap->cameraPosition().x(), r.width());
 	int gridY = gridLocation(mMouseCoords.y(), mMap->cameraPosition().y() + TILE_SIZE, r.height() - TILE_SIZE);
 
-	mSelectorRect(gridX * TILE_SIZE - rectOffsetX, gridY * TILE_SIZE - rectOffsetY, TILE_SIZE, TILE_SIZE);
+	mSelectorRect = {gridX * TILE_SIZE - rectOffsetX, gridY * TILE_SIZE - rectOffsetY, TILE_SIZE, TILE_SIZE};
 
 	// Draw Tile Selector
 	int offsetX = 0, offsetY = 0;
@@ -237,10 +237,12 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 		return;
 	}
 
-	mMouseCoords(x, y);
+	mMouseCoords = {x, y};
 
-	mTileHighlight(	std::clamp((x + mMap->cameraPosition().x()) / TILE_SIZE, 0, mMap->width() - 1),
-					std::clamp((y + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1));
+	mTileHighlight = {
+		std::clamp((x + mMap->cameraPosition().x()) / TILE_SIZE, 0, mMap->width() - 1),
+		std::clamp((y + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1)
+	};
 
 	if(mLeftButtonDown)
 	{

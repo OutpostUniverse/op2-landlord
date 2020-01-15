@@ -168,7 +168,7 @@ void ListBox::onMouseMove(int x, int y, int relX, int relY)
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }
 
-	mMouseCoords(x, y);
+	mMouseCoords = {x, y};
 }
 
 
