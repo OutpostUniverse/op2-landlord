@@ -47,12 +47,12 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
 
 std::string TrimString(const std::string& src, const std::string& c)
 {
-	int p2 = src.find_last_not_of(c);
+	auto p2 = src.find_last_not_of(c);
 
 	if(p2 == std::string::npos)
 		return std::string();
 
-	int p1 = src.find_first_not_of(c);
+	auto p1 = src.find_first_not_of(c);
 
 	if(p1 == std::string::npos)
 		p1 = 0;
