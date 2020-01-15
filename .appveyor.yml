@@ -18,20 +18,14 @@ clone_script:
     }
 - cmd: git submodule update --init --recursive
 cache:
-  - C:\tools\vcpkg\installed\
+  - C:\tools\vcpkg\installed\ -> nas2d-core/InstallVcpkgDeps.bat
   - proj/VS2019/packages -> proj/VS2019/packages.config
   - nas2d-core/proj/vs2019/packages -> nas2d-core/proj/vs2019/packages.config
 install:
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - git submodule update --init --recursive
+  - vcpkg integrate install
+  - call nas2d-core/InstallVcpkgDeps.bat
   - nuget restore proj/VS2019
   - nuget restore nas2d-core/proj/vs2019
-  - vcpkg integrate install
-  - vcpkg install physfs:x86-windows
-  - vcpkg install physfs:x64-windows
-  - vcpkg install glew:x86-windows
-  - vcpkg install glew:x64-windows
-  - vcpkg install gtest:x86-windows
-  - vcpkg install gtest:x64-windows
+  - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
   project: proj/VS2019/OP2-Landlord.sln
