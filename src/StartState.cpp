@@ -64,7 +64,7 @@ void StartState::initialize()
 
 	setMessage("");
 
-	mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40);
+	mLayoutRect(15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40));
 
 	initUi();
 
@@ -207,7 +207,7 @@ void StartState::resizeLayout()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	mLayoutRect(15, 15, Utility<Renderer>::get().width() - 30, Utility<Renderer>::get().height() - 40);
+	mLayoutRect(15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40));
 
 	// =========================================
 	// = LOAD MAP PANEL
