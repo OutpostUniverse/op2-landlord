@@ -25,6 +25,8 @@
 
 int main(int argc, char *argv[])
 {
+	// Save for later
+	std::streambuf* originalCoutBuffer = std::cout.rdbuf();
 	// Redirect output to log file
 	std::ofstream logFile("log_editor.txt");
 	std::cout.rdbuf(logFile.rdbuf());
@@ -81,6 +83,9 @@ int main(int argc, char *argv[])
 		MessageBoxA(NULL, "An unexpected error occured. Please yell at Lee about\nthis so he can fix it.\n\nAnd don't forget to include steps to reproduce and a\nlog! 'It crashed' will get you slapped.", "Unhandled Exception", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		#endif
 	}
+
+	// Reset to stdout again (prevents crashes on exit)
+	std::cout.rdbuf(originalCoutBuffer);
 
 	return 0;
 }
