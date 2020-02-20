@@ -19,13 +19,9 @@ clone_script:
 - cmd: git submodule update --init --recursive
 cache:
   - C:\tools\vcpkg\installed\ -> nas2d-core/InstallVcpkgDeps.bat
-  - proj/VS2019/packages -> proj/VS2019/packages.config
-  - nas2d-core/proj/vs2019/packages -> nas2d-core/proj/vs2019/packages.config
 install:
   - vcpkg integrate install
   - call nas2d-core/InstallVcpkgDeps.bat
-  - nuget restore proj/VS2019
-  - nuget restore nas2d-core/proj/vs2019
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
   project: proj/VS2019/OP2-Landlord.sln
