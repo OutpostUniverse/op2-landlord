@@ -91,7 +91,7 @@ void TileGroups::mouseDown(EventHandler::MouseButton button, int x, int y)
 {
 	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 
-	if (!(isPointInRect(_mouseCoords(), rect())))
+	if (!(rect().contains(_mouseCoords())))
 	{
 		return;
 	}

@@ -48,13 +48,15 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
 
 	if((button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 
-	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), titleBarHeight()))
+	const auto windowBounds = static_cast<NAS2D::Rectangle<int>>(rect());
+	const auto titleBarBounds = NAS2D::Rectangle<int>{windowBounds.x(), windowBounds.y(), windowBounds.width(), titleBarHeight()};
+	if (titleBarBounds.contains(NAS2D::Point<int>{x, y}))
 	{
 		mDragging = true;
 		return;
 	}
 
-	if (!(isPointInRect(mMouseCoords, rect())))
+	if (!(rect().contains(mMouseCoords)))
 	{
 		return;
 	}

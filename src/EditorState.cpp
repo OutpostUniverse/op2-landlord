@@ -314,10 +314,10 @@ void EditorState::handleLeftButtonDown(int x, int y)
 
 	// Hate the look of this but it effectively condenses the ignore checks.
 	if (y < 32 ||
-		(mToolBar.flood() && isPointInRect(pt, mToolBar.flood_tool_extended_area())) ||
-		isPointInRect(pt, mTilePalette.rect()) ||
-		isPointInRect(pt, mMiniMap.rect()) ||
-		isPointInRect(pt, mTilePalette.rect()))
+		(mToolBar.flood() && mToolBar.flood_tool_extended_area().contains(pt)) ||
+		mTilePalette.rect().contains(pt) ||
+		mMiniMap.rect().contains(pt) ||
+		mTilePalette.rect().contains(pt))
 		return;
 
 

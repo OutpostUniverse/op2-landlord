@@ -471,7 +471,7 @@ void StartState::onDoubleClick(EventHandler::MouseButton button, int x, int y)
 {
 	if (button != EventHandler::MouseButton::BUTTON_LEFT) { return; }
 
-	if (isPointInRect(mMouseCoords, mMapFilesMenu.rect()))
+	if (mMapFilesMenu.rect().contains(mMouseCoords))
 	{
 		button_LoadExisting_click();
 	}
