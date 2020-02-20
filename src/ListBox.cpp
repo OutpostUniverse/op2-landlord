@@ -153,9 +153,9 @@ void ListBox::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }
 
-	if (!isPointInRect(Point_2d(x, y), rect())) { return; }
+	if (!rect().contains(Point_2d(x, y))) { return; }
 
-	if (mSlider.visible() && isPointInRect(Point_2d(x, y), mSlider.rect()))
+	if (mSlider.visible() && mSlider.rect().contains(Point_2d(x, y)))
 		return;		// if the mouse is on the slider then the slider should handle that
 
 	int idx = ((y - (int)rect().y()) / (font().height() + 2)) % ((int)rect().height() / (font().height() + 2)) + mCurrentOffset;
@@ -234,7 +234,7 @@ void ListBox::update()
 
 void ListBox::onMouseWheel(int x, int y)
 {
-	if (!isPointInRect(mMouseCoords, rect())) { return; }
+	if (!rect().contains(mMouseCoords)) { return; }
 
 	if (y < 0)
 	{

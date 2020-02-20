@@ -78,7 +78,7 @@ void Button::onMouseDown(EventHandler::MouseButton button, int x, int y)
 		Point_2d click(x, y);
 
 
-		if(isPointInRect(click, rect()))
+		if(rect().contains(click))
 		{
 			if(mType == BUTTON_NORMAL)
 			{
@@ -110,7 +110,7 @@ void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
 
 			mPressed(false);
 
-			if (isPointInRect(click, rect()))
+			if (rect().contains(click))
 			{
 				mCallback();
 			}

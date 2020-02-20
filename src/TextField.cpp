@@ -307,7 +307,7 @@ void TextField::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	if(!fontSet())
 		return;
 
-	if(!isPointInRect(Point_2d(x, y), rect()))
+	if(!rect().contains(Point_2d(x, y)))
 	{
 		hasFocus(false);
 		return;

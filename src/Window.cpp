@@ -54,7 +54,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
 		return;
 	}
 
-	if (!(isPointInRect(mMouseCoords, rect())))
+	if (!(rect().contains(mMouseCoords)))
 	{
 		return;
 	}
