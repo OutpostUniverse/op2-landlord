@@ -27,8 +27,6 @@ TilePalette::~TilePalette()
 
 void TilePalette::_init()
 {
-	int yPosition = rect().y() + rect().height() - 23;
-
 	Renderer& r = Utility<Renderer>::get();
 	_rect() = {r.width() - PALETTE_DIMENSIONS.x() - 2, r.height() - PALETTE_DIMENSIONS.y() - 2, static_cast<float>(PALETTE_DIMENSIONS.x()), static_cast<float>(PALETTE_DIMENSIONS.y())};
 
@@ -41,8 +39,6 @@ void TilePalette::_init()
  */
 void TilePalette::draw()
 {
-	Renderer& r = Utility<Renderer>::get();
-
 }
 
 
