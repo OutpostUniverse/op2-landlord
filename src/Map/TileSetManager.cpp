@@ -10,8 +10,7 @@ const char TILESET_TAG[] = "TILE SET\x01A";
 TileSetManager::TileSetManager(const std::string& tilesetName)
 {
 	// Allocate memory for the tile sets and clear it out
-	mTileSetInfo = new TileSetInfo[numTileSets];
-	memset(mTileSetInfo, 0, sizeof(*mTileSetInfo) * numTileSets);
+	mTileSetInfo = new TileSetInfo[numTileSets]{};
 }
 
 
