@@ -121,7 +121,7 @@ void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
 
 void Button::onMouseMotion(int x, int y, int dX, int dY)
 {
-	if (isPointInRect(x, y, rect().x(), rect().y(), rect().width(), rect().height()))
+	if (rect().contains(Point{x, y}))
 	{
 		mMouseHover = true;
 		return;
