@@ -37,7 +37,9 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 
 	if (!mMiniMap) { return; }
 
-	if (isPointInRect(x, y, rect().x() + 4, rect().y() + 21, mMiniMap->width(), mMiniMap->height()))
+	const auto startPoint = static_cast<NAS2D::Point<int>>(NAS2D::Point<float>{rect().x() + 4, rect().y() + 21});
+	const auto miniMapBounds = NAS2D::Rectangle<int>{startPoint.x(), startPoint.y(), mMiniMap->width(), mMiniMap->height()};
+	if (miniMapBounds.contains(NAS2D::Point{x, y}))
 	{
 		mMovingCamera = true;
 		adjustCamera(x, y);
