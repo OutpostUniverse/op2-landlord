@@ -19,7 +19,6 @@ std::locale LOC;
 TextField::TextField():	mCursorPosition(0),
 						mCursorX(0),
 						mScrollOffset(0),
-						mMaxScrollOffset(0),
 						mMaxCharacters(0),
 						mBorderVisibility(FOCUS_ONLY),
 						mEditable(true),
