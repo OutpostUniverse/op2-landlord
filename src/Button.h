@@ -19,7 +19,7 @@ public:
 	};
 
 	typedef NAS2D::Signals::Signal<> ClickCallback;
-	typedef NAS2D::Signals::Signal1<bool> PressCallback;
+	typedef NAS2D::Signals::Signal<bool> PressCallback;
 
 public:
 	Button();

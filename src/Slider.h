@@ -21,7 +21,7 @@
 class Slider : public Control
 {
 public:
-	typedef NAS2D::Signals::Signal1<double> ValueChangedCallback; /*!< type for Callback on value changed. */
+	typedef NAS2D::Signals::Signal<double> ValueChangedCallback; /*!< type for Callback on value changed. */
 
 public:
 	Slider();
