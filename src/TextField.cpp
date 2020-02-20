@@ -9,15 +9,6 @@
 
 #include <locale>
 
-const int MIN_WIDTH		= 16;
-const int MIN_HEIGHT	= 16;
-
-const int MAX_WIDTH		= 512;
-const int MAX_HEIGHT	= 32;
-
-const int REPEAT_DELAY	= 500;
-const int REPEAT_WAIT	= 20;
-
 
 const int FIELD_PADDING = 4;
 
@@ -28,7 +19,6 @@ std::locale LOC;
 TextField::TextField():	mCursorPosition(0),
 						mCursorX(0),
 						mScrollOffset(0),
-						mMaxScrollOffset(0),
 						mMaxCharacters(0),
 						mBorderVisibility(FOCUS_ONLY),
 						mEditable(true),

@@ -305,8 +305,6 @@ void StartState::button_CreateNew_click()
 		return;
 	}
 
-	Configuration& c = Utility<Configuration>::get();
-
 	std::string mapname = txtMapPath.text();
 	// check for file extension
 	if (mapname.length() > 4)
