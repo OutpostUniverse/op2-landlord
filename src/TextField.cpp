@@ -9,15 +9,6 @@
 
 #include <locale>
 
-const int MIN_WIDTH		= 16;
-const int MIN_HEIGHT	= 16;
-
-const int MAX_WIDTH		= 512;
-const int MAX_HEIGHT	= 32;
-
-const int REPEAT_DELAY	= 500;
-const int REPEAT_WAIT	= 20;
-
 
 const int FIELD_PADDING = 4;
 
