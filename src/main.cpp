@@ -36,7 +36,8 @@ int main(int argc, char *argv[])
 
 	try
 	{
-		Filesystem& f = Utility<Filesystem>::init<Filesystem>(argv[0], "OP2-Landlord", "Outpost Universe", "data");
+		Filesystem& f = Utility<Filesystem>::init<Filesystem>(argv[0], "OP2-Landlord", "Outpost Universe");
+		f.mount("data");
 
 		Configuration& cf = Utility<Configuration>::get();
 		cf.load("config.xml");
