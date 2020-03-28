@@ -5,9 +5,8 @@
 include makefile-generic.mk
 
 
-# Set compiler to mingw (can still override from command line)
-#config := mingw
-config := clang
+# Set compiler toolchain (default, gcc, clang, mingw)
+config := default
 
 
 CPPFLAGS := -Inas2d-core/include/
