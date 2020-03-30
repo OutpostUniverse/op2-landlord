@@ -25,8 +25,8 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
 		r.drawLine(x, y, x + w, y, Color::White);
 		r.drawLine(x, y, x, y + h, Color::White);
 
-		r.drawLine(x - 1, y + h - 1, x + w, y + h - 1, Color::Grey);
-		r.drawLine(x + w - 1, y + 1, x + w - 1, y + h - 1, Color::Grey);
+		r.drawLine(x - 1, y + h - 1, x + w, y + h - 1, Color::Gray);
+		r.drawLine(x + w - 1, y + 1, x + w - 1, y + h - 1, Color::Gray);
 
 		r.drawLine(x - 0.5f, y + h, x + w, y + h, Color::Black);
 		r.drawLine(x + w, y, x + w, y + h, Color::Black);
@@ -36,8 +36,8 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
 		r.drawLine(x, y + h, x + w, y + h, Color::White);
 		r.drawLine(x + w, y, x + w, y + h, Color::White);
 		
-		r.drawLine(x + 1, y + 1, x + w, y + 1, Color::Grey);
-		r.drawLine(x + 1, y + 1, x + 1, y + h, Color::Grey);
+		r.drawLine(x + 1, y + 1, x + w, y + 1, Color::Gray);
+		r.drawLine(x + 1, y + 1, x + 1, y + h, Color::Gray);
 
 		r.drawLine(x, y, x + w, y, Color::Black);
 		r.drawLine(x, y, x, y + h + 0.5f, Color::Black);
