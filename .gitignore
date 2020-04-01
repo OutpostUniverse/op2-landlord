@@ -1,25 +1,14 @@
-*.dll
+# All platforms
+/data/
+log_editor.txt
+
+# Linux - Makefile
+/.build/
 *.exe
-/proj/vc14/Debug
-/proj/vc14/*.db
-/proj/vc14/Release
-/proj/vc14/*.opendb
-/data/editor.xml
-/data/maps
-/proj/vc14/.vs/Landlord/v14/*.suo
-.vs
-/data/tsets/tset_001.png
-/log_editor.txt
-/data/config.xml
-/data/tsets.dat
-/data/sys.dat
-/data/op2-landlord-data.zip
-/proj/VS2019/packages
-/proj/VS2019/Debug
-/proj/VS2019/x64/Debug
-/data/sys
-*.png
-/proj/VS2019/x64/Release
-/proj/VS2019/Release
-/*.lnk
-/.build
+
+# Windows - Visual Studio
+Release/
+Debug/
+x64/
+.vs/
+*.user
