@@ -119,7 +119,8 @@ State* EditorState::update()
 	updateSelector();
 	updateUI();
 
-	r.drawTextShadow(mBoldFont, string_format("World Tile: %i, %i", mTileHighlight.x(), mTileHighlight.y()), 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
+	const auto text = "World Tile: " + std::to_string(mTileHighlight.x()) + ", " + std::to_string(mTileHighlight.y());
+	r.drawTextShadow(mBoldFont, text, 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
 	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, 5.0f, r.height() - mBoldFont.height(), 1, 255, 255, 255, 0, 0, 0);
 
 	return mReturnState;
