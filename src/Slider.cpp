@@ -300,7 +300,7 @@ void Slider::draw()
 
 	if (fontSet() && mDisplayPosition && mMouseHoverSlide)
 	{
-		textHover = string_format("%i / %i", static_cast<int>(thumbPosition()), static_cast<int>(mLenght));
+		textHover = std::to_string(static_cast<int>(thumbPosition())) + " / " + std::to_string(static_cast<int>(mLenght));
 		_w = font().width(textHover) + 4;
 		_h = font().height() + 4;
 
