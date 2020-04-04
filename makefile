@@ -30,7 +30,7 @@ clean-all-nas2d:
 clean: clean-nas2d
 clean-all: clean-all-nas2d
 
-$(eval $(call DefineCppProject,op2landlord,op2landlord.exe,src/))
+$(eval $(call DefineCppProject,op2landlord,op2landlord.exe,OP2-Landlord/))
 
 # Docker and CircleCI commands
 $(eval $(call DefineDockerImage,.circleci/,outpostuniverse/gcc-mingw-wine-googletest-circleci,1.2))

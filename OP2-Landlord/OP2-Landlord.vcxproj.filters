@@ -27,156 +27,156 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Button.cpp">
+    <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Common.cpp">
+    <ClCompile Include="Common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Control.cpp">
+    <ClCompile Include="Control.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\EditorState.cpp">
+    <ClCompile Include="EditorState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ListBox.cpp">
+    <ClCompile Include="ListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\MiniMap.cpp">
+    <ClCompile Include="MiniMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Slider.cpp">
+    <ClCompile Include="Slider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\StartState.cpp">
+    <ClCompile Include="StartState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TextArea.cpp">
+    <ClCompile Include="TextArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TextField.cpp">
+    <ClCompile Include="TextField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TileGroups.cpp">
+    <ClCompile Include="TileGroups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\TilePalette.cpp">
+    <ClCompile Include="TilePalette.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\ToolBar.cpp">
+    <ClCompile Include="ToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\UIContainer.cpp">
+    <ClCompile Include="UIContainer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Window.cpp">
+    <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\cell_types.cpp">
+    <ClCompile Include="Map\cell_types.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\color_table.cpp">
+    <ClCompile Include="Map\color_table.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\MapFile.cpp">
+    <ClCompile Include="Map\MapFile.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\TileGroup.cpp">
+    <ClCompile Include="Map\TileGroup.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\TileSet.cpp">
+    <ClCompile Include="Map\TileSet.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Map\TileSetManager.cpp">
+    <ClCompile Include="Map\TileSetManager.cpp">
       <Filter>Source Files\Map</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Stream\StreamReader.cpp">
+    <ClCompile Include="Stream\StreamReader.cpp">
       <Filter>Source Files\Stream</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Button.h">
+    <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Common.h">
+    <ClInclude Include="Common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Control.h">
+    <ClInclude Include="Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Defaults.h">
+    <ClInclude Include="Defaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\EditorState.h">
+    <ClInclude Include="EditorState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ListBox.h">
+    <ClInclude Include="ListBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\MiniMap.h">
+    <ClInclude Include="MiniMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Pattern.h">
+    <ClInclude Include="Pattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Slider.h">
+    <ClInclude Include="Slider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Strings.h">
+    <ClInclude Include="Strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\StartState.h">
+    <ClInclude Include="StartState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TextArea.h">
+    <ClInclude Include="TextArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TextField.h">
+    <ClInclude Include="TextField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TileGroups.h">
+    <ClInclude Include="TileGroups.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\TilePalette.h">
+    <ClInclude Include="TilePalette.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\ToolBar.h">
+    <ClInclude Include="ToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\UIContainer.h">
+    <ClInclude Include="UIContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Window.h">
+    <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\cell_types.h">
+    <ClInclude Include="Map\cell_types.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\color_table.h">
+    <ClInclude Include="Map\color_table.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\MapFile.h">
+    <ClInclude Include="Map\MapFile.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\TileGroup.h">
+    <ClInclude Include="Map\TileGroup.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\TileSet.h">
+    <ClInclude Include="Map\TileSet.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\TileSetManager.h">
+    <ClInclude Include="Map\TileSetManager.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Map\tilegroup_ignore.h">
+    <ClInclude Include="Map\tilegroup_ignore.h">
       <Filter>Header Files\Map</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Stream\StreamReader.h">
+    <ClInclude Include="Stream\StreamReader.h">
       <Filter>Header Files\Stream</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Stream\StreamWriter.h">
+    <ClInclude Include="Stream\StreamWriter.h">
       <Filter>Header Files\Stream</Filter>
     </ClInclude>
   </ItemGroup>

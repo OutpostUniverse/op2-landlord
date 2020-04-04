@@ -70,19 +70,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\..\nas2d-core\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\nas2d-core\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\..\nas2d-core\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\nas2d-core\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>..\..\nas2d-core\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\nas2d-core\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>..\..\nas2d-core\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\nas2d-core\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -150,58 +150,58 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Button.cpp" />
-    <ClCompile Include="..\..\src\Common.cpp" />
-    <ClCompile Include="..\..\src\Control.cpp" />
-    <ClCompile Include="..\..\src\EditorState.cpp" />
-    <ClCompile Include="..\..\src\ListBox.cpp" />
-    <ClCompile Include="..\..\src\main.cpp" />
-    <ClCompile Include="..\..\src\Map\cell_types.cpp" />
-    <ClCompile Include="..\..\src\Map\color_table.cpp" />
-    <ClCompile Include="..\..\src\Map\MapFile.cpp" />
-    <ClCompile Include="..\..\src\Map\TileGroup.cpp" />
-    <ClCompile Include="..\..\src\Map\TileSet.cpp" />
-    <ClCompile Include="..\..\src\Map\TileSetManager.cpp" />
-    <ClCompile Include="..\..\src\MiniMap.cpp" />
-    <ClCompile Include="..\..\src\Slider.cpp" />
-    <ClCompile Include="..\..\src\StartState.cpp" />
-    <ClCompile Include="..\..\src\Stream\StreamReader.cpp" />
-    <ClCompile Include="..\..\src\TextArea.cpp" />
-    <ClCompile Include="..\..\src\TextField.cpp" />
-    <ClCompile Include="..\..\src\TileGroups.cpp" />
-    <ClCompile Include="..\..\src\TilePalette.cpp" />
-    <ClCompile Include="..\..\src\ToolBar.cpp" />
-    <ClCompile Include="..\..\src\UIContainer.cpp" />
-    <ClCompile Include="..\..\src\Window.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Control.cpp" />
+    <ClCompile Include="EditorState.cpp" />
+    <ClCompile Include="ListBox.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map\cell_types.cpp" />
+    <ClCompile Include="Map\color_table.cpp" />
+    <ClCompile Include="Map\MapFile.cpp" />
+    <ClCompile Include="Map\TileGroup.cpp" />
+    <ClCompile Include="Map\TileSet.cpp" />
+    <ClCompile Include="Map\TileSetManager.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
+    <ClCompile Include="Slider.cpp" />
+    <ClCompile Include="StartState.cpp" />
+    <ClCompile Include="Stream\StreamReader.cpp" />
+    <ClCompile Include="TextArea.cpp" />
+    <ClCompile Include="TextField.cpp" />
+    <ClCompile Include="TileGroups.cpp" />
+    <ClCompile Include="TilePalette.cpp" />
+    <ClCompile Include="ToolBar.cpp" />
+    <ClCompile Include="UIContainer.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Button.h" />
-    <ClInclude Include="..\..\src\Common.h" />
-    <ClInclude Include="..\..\src\Control.h" />
-    <ClInclude Include="..\..\src\Defaults.h" />
-    <ClInclude Include="..\..\src\EditorState.h" />
-    <ClInclude Include="..\..\src\ListBox.h" />
-    <ClInclude Include="..\..\src\Map\cell_types.h" />
-    <ClInclude Include="..\..\src\Map\color_table.h" />
-    <ClInclude Include="..\..\src\Map\MapFile.h" />
-    <ClInclude Include="..\..\src\Map\TileGroup.h" />
-    <ClInclude Include="..\..\src\Map\tilegroup_ignore.h" />
-    <ClInclude Include="..\..\src\Map\TileSet.h" />
-    <ClInclude Include="..\..\src\Map\TileSetManager.h" />
-    <ClInclude Include="..\..\src\MiniMap.h" />
-    <ClInclude Include="..\..\src\Pattern.h" />
-    <ClInclude Include="..\..\src\Slider.h" />
-    <ClInclude Include="..\..\src\StartState.h" />
-    <ClInclude Include="..\..\src\Stream\StreamReader.h" />
-    <ClInclude Include="..\..\src\Stream\StreamWriter.h" />
-    <ClInclude Include="..\..\src\Strings.h" />
-    <ClInclude Include="..\..\src\TextArea.h" />
-    <ClInclude Include="..\..\src\TextField.h" />
-    <ClInclude Include="..\..\src\TileGroups.h" />
-    <ClInclude Include="..\..\src\TilePalette.h" />
-    <ClInclude Include="..\..\src\ToolBar.h" />
-    <ClInclude Include="..\..\src\UIContainer.h" />
-    <ClInclude Include="..\..\src\Window.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Control.h" />
+    <ClInclude Include="Defaults.h" />
+    <ClInclude Include="EditorState.h" />
+    <ClInclude Include="ListBox.h" />
+    <ClInclude Include="Map\cell_types.h" />
+    <ClInclude Include="Map\color_table.h" />
+    <ClInclude Include="Map\MapFile.h" />
+    <ClInclude Include="Map\TileGroup.h" />
+    <ClInclude Include="Map\tilegroup_ignore.h" />
+    <ClInclude Include="Map\TileSet.h" />
+    <ClInclude Include="Map\TileSetManager.h" />
+    <ClInclude Include="MiniMap.h" />
+    <ClInclude Include="Pattern.h" />
+    <ClInclude Include="Slider.h" />
+    <ClInclude Include="StartState.h" />
+    <ClInclude Include="Stream\StreamReader.h" />
+    <ClInclude Include="Stream\StreamWriter.h" />
+    <ClInclude Include="Strings.h" />
+    <ClInclude Include="TextArea.h" />
+    <ClInclude Include="TextField.h" />
+    <ClInclude Include="TileGroups.h" />
+    <ClInclude Include="TilePalette.h" />
+    <ClInclude Include="ToolBar.h" />
+    <ClInclude Include="UIContainer.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
