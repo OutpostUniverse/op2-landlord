@@ -23,9 +23,9 @@ op2landlord.exe: | nas2d
 nas2d:
 	+make -C nas2d-core/ CXX="$(CXX)"
 clean-nas2d:
-	make -C nas2d-core/ CXX="$(CXX)" clean
+	+make -C nas2d-core/ CXX="$(CXX)" clean
 clean-all-nas2d:
-	make -C nas2d-core/ CXX="$(CXX)" clean-all
+	+make -C nas2d-core/ CXX="$(CXX)" clean-all
 
 clean: clean-nas2d
 clean-all: clean-all-nas2d
