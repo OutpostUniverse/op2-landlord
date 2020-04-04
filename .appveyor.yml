@@ -24,4 +24,4 @@ install:
   - call nas2d-core/InstallVcpkgDeps.bat
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
-  project: proj/VS2019/OP2-Landlord.sln
+  project: OP2-Landlord.sln
