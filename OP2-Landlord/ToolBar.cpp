@@ -186,7 +186,8 @@ void ToolBar::update()
 
 	r.drawBoxFilled(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 255, 255, 255);
 	r.drawBox(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 0, 0, 0);
-	r.drawText(mFont, std::to_string(static_cast<int>(mBrush.width())), btnSpinnerUp.rect().x() - 18 + (mFont.width(NAS2D::string_format("%i", static_cast<int>(mBrush.width()))) / 2), 12, 0, 0, 0);
+	const auto text = std::to_string(static_cast<int>(mBrush.width()));
+	r.drawText(mFont, text, btnSpinnerUp.rect().x() - 18 + (mFont.width(text) / 2), 12, 0, 0, 0);
 
 	btnSpinnerUp.update();
 	btnSpinnerDown.update();
