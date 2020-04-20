@@ -47,7 +47,7 @@ const int NO_SELECTION		= -1;	/**< Indicates no selection. */
 // ===========================================================================
 void flipBool(bool& b);
 
-void bevelBox(int x, int y, int w, int h, bool sunk = false, const Color& bgcolor = Color(180, 180, 180, 255));
+void bevelBox(int x, int y, int w, int h, bool sunk = false, const Color& bgcolor = Color{180, 180, 180});
 
 std::string TrimString(const std::string& src, const std::string& c = " \r\n");
 
