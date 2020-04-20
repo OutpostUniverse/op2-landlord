@@ -102,7 +102,7 @@ void TileSet::buildTileColorTable()
 		g /= pixel_count;
 		b /= pixel_count;
 
-		_file << "\t" << name() << "_color_table.push_back(NAS2D::Color(" << r << ", " << g << ", " << b << ", 255));" << endl;
+		_file << "\t" << name() << "_color_table.push_back(NAS2D::Color{" << r << ", " << g << ", " << b << ", 255});" << endl;
 
 	}
 
