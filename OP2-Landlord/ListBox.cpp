@@ -203,7 +203,7 @@ void ListBox::update()
 
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(rect(), 0, 0, 0);
+	r.drawBoxFilled(rect(), NAS2D::Color::Black);
 
 	int itemY;
 
@@ -225,7 +225,7 @@ void ListBox::update()
 		r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
 	}
 
-	r.drawBox(rect(), 0, 0, 0);
+	r.drawBox(rect(), NAS2D::Color::Black);
 
 	// draw the slider if needed
 	mSlider.update();
