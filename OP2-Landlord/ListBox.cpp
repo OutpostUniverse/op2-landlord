@@ -8,7 +8,7 @@
  */
 ListBox::ListBox() :
 	mText(Color::White),
-	mHighlightBg(Color::Green),
+	mHighlightBg(Color{0, 255, 0, 80}),
 	mHighlightText(Color::White)
 {
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &ListBox::onMouseDown);
