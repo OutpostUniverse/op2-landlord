@@ -215,10 +215,11 @@ void ListBox::update()
 	r.drawBoxFilled(boxBounds, Color{225, 225, 0, 85});
 
 	// Highlight currently selected file
+	boxBounds.height() = mLineHeight;
 	if (mItemMin <= mCurrentSelection && mCurrentSelection < mItemMax)
 	{
-		itemY = rect().y() + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
-		r.drawBoxFilled(rect().x(), itemY, mItemWidth, mLineHeight, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), mHighlightBg.alpha());
+		boxBounds.y() = rect().y() + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
+		r.drawBoxFilled(boxBounds, mHighlightBg);
 	}
 
 	// display actuals values that are ment to be
