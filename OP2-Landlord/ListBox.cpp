@@ -206,8 +206,6 @@ void ListBox::update()
 
 	r.drawBoxFilled(rect(), NAS2D::Color::Black);
 
-	int itemY;
-
 	// draw boundaries of the widget
 	auto boxBounds = rect();
 	boxBounds.width() = mItemWidth;
@@ -225,7 +223,7 @@ void ListBox::update()
 	// display actuals values that are ment to be
 	for (int i = mItemMin; i < mItemMax; i++)
 	{
-		itemY = rect().y() + ((i - mItemMin) * mLineHeight);
+		int itemY = rect().y() + ((i - mItemMin) * mLineHeight);
 		r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
 	}
 
