@@ -216,7 +216,7 @@ void ListBox::update()
 	if (mItemMin <= mCurrentSelection && mCurrentSelection < mItemMax)
 	{
 		itemY = rect().y() + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
-		r.drawBoxFilled(rect().x(), itemY, mItemWidth, mLineHeight, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), 80);
+		r.drawBoxFilled(rect().x(), itemY, mItemWidth, mLineHeight, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), mHighlightBg.alpha());
 	}
 
 	// display actuals values that are ment to be
