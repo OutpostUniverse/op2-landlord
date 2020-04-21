@@ -6,9 +6,10 @@
 /**
  * C'tor
  */
-ListBox::ListBox():	mText(Color::White),
-					mHighlightBg(Color::Green),
-					mHighlightText(Color::White)
+ListBox::ListBox() :
+	mText(Color::White),
+	mHighlightBg(Color{0, 255, 0, 80}),
+	mHighlightText(Color::White)
 {
 	Utility<EventHandler>::get().mouseButtonDown().connect(this, &ListBox::onMouseDown);
 	Utility<EventHandler>::get().mouseMotion().connect(this, &ListBox::onMouseMove);
@@ -203,29 +204,30 @@ void ListBox::update()
 
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(rect(), 0, 0, 0);
-
-	int itemY;
+	r.drawBoxFilled(rect(), NAS2D::Color::Black);
 
 	// draw boundaries of the widget
-	r.drawBox(rect().x(), rect().y(), mItemWidth, rect().height(), 0, 0, 0, 100);
-	r.drawBoxFilled(rect().x(), rect().y(), mItemWidth, rect().height(), 225, 225, 0, 85);
+	auto boxBounds = rect();
+	boxBounds.width() = mItemWidth;
+	r.drawBox(boxBounds, Color{0, 0, 0, 100});
+	r.drawBoxFilled(boxBounds, Color{225, 225, 0, 85});
 
 	// Highlight currently selected file
+	boxBounds.height() = mLineHeight;
 	if (mItemMin <= mCurrentSelection && mCurrentSelection < mItemMax)
 	{
-		itemY = rect().y() + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
-		r.drawBoxFilled(rect().x(), itemY, mItemWidth, mLineHeight, mHighlightBg.red(), mHighlightBg.green(), mHighlightBg.blue(), 80);
+		boxBounds.y() = rect().y() + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
+		r.drawBoxFilled(boxBounds, mHighlightBg);
 	}
 
 	// display actuals values that are ment to be
 	for (int i = mItemMin; i < mItemMax; i++)
 	{
-		itemY = rect().y() + ((i - mItemMin) * mLineHeight);
-		r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
+		const auto position = Point{rect().x(),rect().y() + ((i - mItemMin) * mLineHeight)};
+		r.drawTextShadow(font(), mItems[i], position, {1, 1}, mText, Color::Black);
 	}
 
-	r.drawBox(rect(), 0, 0, 0);
+	r.drawBox(rect(), NAS2D::Color::Black);
 
 	// draw the slider if needed
 	mSlider.update();

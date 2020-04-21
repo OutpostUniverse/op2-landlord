@@ -18,7 +18,7 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(x, y, w, h, bgcolor.red(), bgcolor.green(), bgcolor.blue());
+	r.drawBoxFilled(NAS2D::Rectangle<int>{x, y, w, h}, bgcolor);
 
 	if (!sunk)
 	{
