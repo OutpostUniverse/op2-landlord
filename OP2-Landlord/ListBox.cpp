@@ -223,8 +223,8 @@ void ListBox::update()
 	// display actuals values that are ment to be
 	for (int i = mItemMin; i < mItemMax; i++)
 	{
-		int itemY = rect().y() + ((i - mItemMin) * mLineHeight);
-		r.drawTextShadow(font(), mItems[i], rect().x(), itemY, 1, mText.red(), mText.green(), mText.blue(), 0, 0, 0);
+		const auto position = Point{rect().x(),rect().y() + ((i - mItemMin) * mLineHeight)};
+		r.drawTextShadow(font(), mItems[i], position, {1, 1}, mText, Color::Black);
 	}
 
 	r.drawBox(rect(), NAS2D::Color::Black);
