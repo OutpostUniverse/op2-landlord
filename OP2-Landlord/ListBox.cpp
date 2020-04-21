@@ -211,8 +211,8 @@ void ListBox::update()
 	// draw boundaries of the widget
 	auto boxBounds = rect();
 	boxBounds.width() = mItemWidth;
-	r.drawBox(boxBounds, 0, 0, 0, 100);
-	r.drawBoxFilled(boxBounds, 225, 225, 0, 85);
+	r.drawBox(boxBounds, Color{0, 0, 0, 100});
+	r.drawBoxFilled(boxBounds, Color{225, 225, 0, 85});
 
 	// Highlight currently selected file
 	if (mItemMin <= mCurrentSelection && mCurrentSelection < mItemMax)
