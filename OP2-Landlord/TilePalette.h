@@ -37,8 +37,8 @@ private:
 	void mouseMove(int x, int y, int relX, int relY);
 
 private:
-	Point_2d		mStartIndex;				/**< Index of the selected tile(s). */
-	Point_2d		mEndIndex;					/**< Index of the selected tile(s). */
+	Point<int>		mStartIndex;				/**< Index of the selected tile(s). */
+	Point<int>		mEndIndex;					/**< Index of the selected tile(s). */
 
 	bool			mLeftButtonDown = false;	/**< Flag indicating that the left mouse button is depressed. */
 	bool			mMouseOverTiles = false;	/**< Flag indicating that the mouse is actually over the tiles. */

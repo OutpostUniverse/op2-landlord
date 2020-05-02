@@ -118,9 +118,9 @@ int gridLocation(int point, int cameraPoint, int viewportDimension)
 
 
 /**
- * Convenience function to pass a Rectangle_2df to \c isPointInRect()
+ * Convenience function to pass a Rectangle<float> to \c isPointInRect()
  */
-bool pointInRect_f(int x, int y, const Rectangle_2df& rect)
+bool pointInRect_f(int x, int y, const Rectangle<float>& rect)
 {
 	return static_cast<NAS2D::Rectangle<int>>(rect).contains(NAS2D::Point<int>{x, y});
 }

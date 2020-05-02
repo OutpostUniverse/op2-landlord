@@ -57,5 +57,5 @@ int LogBase2(int num);
 void readTag(StreamReader* in, int tag);
 int gridLocation(int point, int cameraPoint, int viewportDimension);
 
-bool pointInRect_f(int x, int y, const NAS2D::Rectangle_2df& rect);
+bool pointInRect_f(int x, int y, const NAS2D::Rectangle<float>& rect);
 bool pointInRect_f(int x, int y, float rectX, float rectY, float rectW, float rectH);

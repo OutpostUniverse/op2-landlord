@@ -370,7 +370,7 @@ int MapFile::tileGroupCount() const
 /**
  * Gets the largest extents for all TileGroups.
  */
-const Point_2d& MapFile::tileGroupExtents() const
+const Point<int>& MapFile::tileGroupExtents() const
 {
 	return mLargestTileGroupExtents;
 }

@@ -49,7 +49,7 @@ private:
 	void changeTileTexture();
 	void pattern(int value = 0);
 	void patternFill();
-	void patternFill_Contig(const Point_2d& _pt, int seed_index);
+	void patternFill_Contig(const Point<int>& _pt, int seed_index);
 
 	void pattern_collision();
 	void handleLeftButtonDown(int x, int y);
@@ -69,12 +69,12 @@ private:
 	std::string		mMapSavePath;				/**< Filename to use for loading/saving. */
 
 	// PRIMITIVES
-	Point_2d		mMouseCoords;				/**<  */
-	Point_2d		mSavedMouseCoords;			/**<  */
-	Point_2d		mTileHighlight;				/**<  */
+	Point<int>		mMouseCoords;				/**<  */
+	Point<int>		mSavedMouseCoords;			/**<  */
+	Point<int>		mTileHighlight;				/**<  */
 
-	Rectangle_2d	mSelectorRect;				/**<  */
-	Rectangle_2d	mCellInspectRect;			/**<  */
+	Rectangle<int>	mSelectorRect;				/**<  */
+	Rectangle<int>	mCellInspectRect;			/**<  */
 
 	// UI ELEMENTS
 	TileGroups		mTileGroups;				/**<  */

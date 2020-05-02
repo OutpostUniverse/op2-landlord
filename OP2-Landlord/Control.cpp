@@ -62,18 +62,7 @@ bool Control::fontSet() const
  * 
  * \param pos	2D Coordinate to position the Control at.
  */
-void Control::position(const Point_2d& pos)
-{
-	position(static_cast<float>(pos.x()), static_cast<float>(pos.y()));
-}
-
-
-/**
- * Sets the position of the Control.
- * 
- * \param pos	2D Coordinate to position the Control at.
- */
-void Control::position(const Point_2df& pos)
+void Control::position(const Point<float>& pos)
 {
 	position(pos.x(), pos.y());
 }
@@ -199,9 +188,9 @@ Control::ResizeCallback& Control::resized()
 /**
  * Gets the rectangular area that the Control occupies.
  * 
- * \return	A const reference to a Rectangle_2d object.
+ * \return	A const reference to a Rectangle<int> object.
  */
-const Rectangle_2df& Control::rect() const
+const Rectangle<float>& Control::rect() const
 {
 	return mRect;
 }
@@ -329,7 +318,7 @@ Control::TextChangedCallback& Control::textChanged()
  * \note	This is an internal function and may not be
  *			called outside of the Control class.
  */
-Rectangle_2df& Control::_rect()
+Rectangle<float>& Control::_rect()
 {
 	return mRect;
 }

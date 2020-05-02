@@ -23,7 +23,7 @@ public:
 	int height();
 
 	int tileGroupCount() const;
-	const NAS2D::Point_2d& tileGroupExtents() const;
+	const NAS2D::Point<int>& tileGroupExtents() const;
 
 	TileGroup* tileGroup(int tg_index);
 	const std::string& tileGroupName(int tg_index);
@@ -41,7 +41,7 @@ public:
 
 	bool aroundTheWorld() const;
 
-	const NAS2D::Point_2d& cameraPosition() const { return mCameraPosition; }
+	const NAS2D::Point<int>& cameraPosition() const { return mCameraPosition; }
 	void updateCameraAnchorArea(int width, int height);
 	void moveCamera(int x, int y);
 	void setCamera(int x, int y);
@@ -97,10 +97,10 @@ private:
 	// Feature extention values -- these are never saved to the map file.
 	TileSetManager*		mTilesetManager = nullptr;		/**<  */
 
-	NAS2D::Point_2d		mLargestTileGroupExtents;		/**< Largest width and height in tiles of all the TileGroups. */
+	NAS2D::Point<int>		mLargestTileGroupExtents;		/**< Largest width and height in tiles of all the TileGroups. */
 
-	NAS2D::Point_2d		mCameraPosition;				/**< Current position of the camera. */
-	NAS2D::Rectangle_2d	mCameraAnchorArea;				/**< Area that the camera is allowed to move around in. */
+	NAS2D::Point<int>		mCameraPosition;				/**< Current position of the camera. */
+	NAS2D::Rectangle<int>	mCameraAnchorArea;				/**< Area that the camera is allowed to move around in. */
 
 	void _readTileGroupName(StreamReader& in, TileGroup& tilegroup);
 

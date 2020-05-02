@@ -48,7 +48,7 @@ public:
 
 	const Pattern& brush() const { return mBrush; }
 
-	const Rectangle_2d flood_tool_extended_area() const { return mFloodFillExtendedArea; }
+	const Rectangle<int> flood_tool_extended_area() const { return mFloodFillExtendedArea; }
 
 	int height();
 
@@ -87,7 +87,7 @@ private:
 	Pattern			mBrush;
 
 	// PRIMITIVES
-	Rectangle_2d	mFloodFillExtendedArea;
+	Rectangle<int>	mFloodFillExtendedArea;
 
 	// UI ELEMENTS
 	Button			btnSave;

@@ -107,6 +107,6 @@ private:
 	Button					mButton1;
 	Button					mButton2;
 
-	Rectangle_2df			mSlideBar;					/*!< Area on screen where the slide area is displayed. */
-	Rectangle_2df			mSlider;					/*!< Area on screen where the slider is displayed. */
+	Rectangle<float>			mSlideBar;					/*!< Area on screen where the slide area is displayed. */
+	Rectangle<float>			mSlider;					/*!< Area on screen where the slider is displayed. */
 };

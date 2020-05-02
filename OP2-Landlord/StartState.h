@@ -76,10 +76,10 @@ private:
 	Font			mFont;					/**< Internal Font to use. */
 	Font			mBoldFont;				/**< Internal Font to use. */
 
-	Point_2d		mMapSize;				/**< Rectangle used to position UI elements on screen. */
-	Point_2d		mMouseCoords;			/**< Mouse pointer coordinates. */
+	Point<int>		mMapSize;				/**< Rectangle used to position UI elements on screen. */
+	Point<int>		mMouseCoords;			/**< Mouse pointer coordinates. */
 
-	Rectangle_2d	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
+	Rectangle<int>	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
 
 	Button			mBtnCreateNew;			/**< Create New button. */
 	Button			mBtnLoadExisting;		/**< Load Existing button. */

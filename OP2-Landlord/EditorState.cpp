@@ -11,7 +11,7 @@
 
 using namespace NAS2D;
 
-std::stack<Point_2d> FLOOD_STACK;					/**< Stack used for contiguous flood fill. */
+std::stack<Point<int>> FLOOD_STACK;					/**< Stack used for contiguous flood fill. */
 
 /**
  * C'tor
@@ -311,7 +311,7 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
  */
 void EditorState::handleLeftButtonDown(int x, int y)
 {
-	Point_2d pt(x, y);
+	Point<int> pt(x, y);
 
 	// Hate the look of this but it effectively condenses the ignore checks.
 	if (y < 32 ||
@@ -378,7 +378,7 @@ void EditorState::patternFill()
 /**
  * Fills a contiguous area in a given layer with a pattern.
  */
-void EditorState::patternFill_Contig(const Point_2d& _pt, int seed_index)
+void EditorState::patternFill_Contig(const Point<int>& _pt, int seed_index)
 {
 	/*
 	const Pattern& _pCheck = mTilePalette.pattern();
@@ -397,7 +397,7 @@ void EditorState::patternFill_Contig(const Point_2d& _pt, int seed_index)
 	
 	while(!FLOOD_STACK.empty())
 	{
-		const Point_2d _pt_top = FLOOD_STACK.top();
+		const Point<int> _pt_top = FLOOD_STACK.top();
 		FLOOD_STACK.pop();
 
 		const Pattern& p = mTilePalette.pattern();
@@ -405,7 +405,7 @@ void EditorState::patternFill_Contig(const Point_2d& _pt, int seed_index)
 
 		for (int i = 0; i < 4; i++)
 		{
-			Point_2d coord(_pt_top.x() + dX[i], _pt_top.y() + dY[i]);
+			Point<int> coord(_pt_top.x() + dX[i], _pt_top.y() + dY[i]);
 			if (coord.x() >= 0 && coord.x() < mMap.width() && coord.y() >= 0 && coord.y() < mMap.height() && mMap.getCellByGridCoords(coord).index(layer) == seed_index)
 			{
 				FLOOD_STACK.push(coord);
@@ -426,7 +426,7 @@ void EditorState::pattern(int value)
 	if (value < 0) { _p = &mToolBar.brush(); }
 
 
-	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
+	Point<int>& _pt = mMap.getGridCoords(mMouseCoords);
 
 	for (int row = 0; row < _p->height(); row++)
 	{
@@ -457,7 +457,7 @@ void EditorState::pattern_collision()
 {
 	/*
 	const Pattern& _p = mToolBar.brush();
-	Point_2d& _pt = mMap.getGridCoords(mMouseCoords);
+	Point<int>& _pt = mMap.getGridCoords(mMouseCoords);
 
 	for (int row = 0; row < _p.height(); row++)
 	{
