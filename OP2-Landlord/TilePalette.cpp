@@ -2,14 +2,14 @@
 
 #include "Common.h"
 
-const auto		PALETTE_DIMENSIONS		= Point<int>(196, 300);
+const auto PALETTE_DIMENSIONS = Point<int>(196, 300);
 
-const auto		FIRST_TILE_COORDINATE	= Point<int>(2, 18);
-const auto		TILE_SLOT_PADDING		= Point<int>(0, 0);
+const auto FIRST_TILE_COORDINATE = Point<int>(2, 18);
+const auto TILE_SLOT_PADDING = Point<int>(0, 0);
 
-const auto		TILE_GRID_DIMENSIONS	= Point<int>(6, 8);
+const auto TILE_GRID_DIMENSIONS = Point<int>(6, 8);
 
-const int			NUM_TILES_PER_PAGE		= TILE_GRID_DIMENSIONS.x() * TILE_GRID_DIMENSIONS.y();
+const int NUM_TILES_PER_PAGE = TILE_GRID_DIMENSIONS.x() * TILE_GRID_DIMENSIONS.y();
 
 using namespace NAS2D;
 
