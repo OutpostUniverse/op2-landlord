@@ -79,7 +79,7 @@ private:
 	Point<int>		mMapSize;				/**< Rectangle used to position UI elements on screen. */
 	Point<int>		mMouseCoords;			/**< Mouse pointer coordinates. */
 
-	Rectangle_2d	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
+	Rectangle<int>	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
 
 	Button			mBtnCreateNew;			/**< Create New button. */
 	Button			mBtnLoadExisting;		/**< Load Existing button. */

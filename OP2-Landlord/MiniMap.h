@@ -37,7 +37,7 @@ private:
 	void adjustCamera(int x, int y);
 
 private:
-	Rectangle_2d	mViewRect;
+	Rectangle<int>	mViewRect;
 
 	Image*			mMiniMap = nullptr;
 

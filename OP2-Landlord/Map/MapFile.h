@@ -100,7 +100,7 @@ private:
 	NAS2D::Point<int>		mLargestTileGroupExtents;		/**< Largest width and height in tiles of all the TileGroups. */
 
 	NAS2D::Point<int>		mCameraPosition;				/**< Current position of the camera. */
-	NAS2D::Rectangle_2d	mCameraAnchorArea;				/**< Area that the camera is allowed to move around in. */
+	NAS2D::Rectangle<int>	mCameraAnchorArea;				/**< Area that the camera is allowed to move around in. */
 
 	void _readTileGroupName(StreamReader& in, TileGroup& tilegroup);
 

@@ -73,8 +73,8 @@ private:
 	Point<int>		mSavedMouseCoords;			/**<  */
 	Point<int>		mTileHighlight;				/**<  */
 
-	Rectangle_2d	mSelectorRect;				/**<  */
-	Rectangle_2d	mCellInspectRect;			/**<  */
+	Rectangle<int>	mSelectorRect;				/**<  */
+	Rectangle<int>	mCellInspectRect;			/**<  */
 
 	// UI ELEMENTS
 	TileGroups		mTileGroups;				/**<  */
