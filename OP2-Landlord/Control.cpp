@@ -201,7 +201,7 @@ Control::ResizeCallback& Control::resized()
  * 
  * \return	A const reference to a Rectangle_2d object.
  */
-const Rectangle_2df& Control::rect() const
+const Rectangle<float>& Control::rect() const
 {
 	return mRect;
 }
@@ -329,7 +329,7 @@ Control::TextChangedCallback& Control::textChanged()
  * \note	This is an internal function and may not be
  *			called outside of the Control class.
  */
-Rectangle_2df& Control::_rect()
+Rectangle<float>& Control::_rect()
 {
 	return mRect;
 }
