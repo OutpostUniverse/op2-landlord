@@ -2,12 +2,12 @@
 
 #include "Common.h"
 
-const Point_2d		PALETTE_DIMENSIONS		= Point_2d(196, 300);
+const Point<int>		PALETTE_DIMENSIONS		= Point<int>(196, 300);
 
-const Point_2d		FIRST_TILE_COORDINATE	= Point_2d(2, 18);
-const Point_2d		TILE_SLOT_PADDING		= Point_2d(0, 0);
+const Point<int>		FIRST_TILE_COORDINATE	= Point<int>(2, 18);
+const Point<int>		TILE_SLOT_PADDING		= Point<int>(0, 0);
 
-const Point_2d		TILE_GRID_DIMENSIONS	= Point_2d(6, 8);
+const Point<int>		TILE_GRID_DIMENSIONS	= Point<int>(6, 8);
 
 const int			NUM_TILES_PER_PAGE		= TILE_GRID_DIMENSIONS.x() * TILE_GRID_DIMENSIONS.y();
 

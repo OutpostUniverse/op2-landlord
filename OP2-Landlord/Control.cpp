@@ -62,7 +62,7 @@ bool Control::fontSet() const
  * 
  * \param pos	2D Coordinate to position the Control at.
  */
-void Control::position(const Point_2d& pos)
+void Control::position(const Point<int>& pos)
 {
 	position(static_cast<float>(pos.x()), static_cast<float>(pos.y()));
 }

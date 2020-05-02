@@ -31,7 +31,7 @@ public:
 
 	void font(Font& font);
 
-	void position(const Point_2d& pos);
+	void position(const Point<int>& pos);
 	void position(const Point<float>& pos);
 	void position(float x, float y);
 

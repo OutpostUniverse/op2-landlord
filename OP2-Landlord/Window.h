@@ -29,7 +29,7 @@ protected:
 	virtual void mouseUp(NAS2D::EventHandler::MouseButton button, int x, int y) {};
 	virtual void mouseMotion(int x, int y, int relX, int relY) {};
 
-	Point_2d& _mouseCoords() { return mMouseCoords; }	/**< Internal function for derived types. */
+	Point<int>& _mouseCoords() { return mMouseCoords; }	/**< Internal function for derived types. */
 
 private:
 	Window(const Window&) = delete;				/**< Not allowed */
@@ -38,7 +38,7 @@ private:
 private:
 	Font*		mBoldFont = nullptr;			/**< Font used for window title. */
 
-	Point_2d	mMouseCoords;					/**<  */
+	Point<int>	mMouseCoords;					/**<  */
 
 	bool		mDragging = false;				/**< Window is being dragged. */
 };

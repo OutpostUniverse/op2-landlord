@@ -75,7 +75,7 @@ private:
 	Color					mHighlightBg;		/**< Highlight Background color. */
 	Color					mHighlightText;		/**< Text Color for an item that is currently highlighted. */
 
-	Point_2d					mMouseCoords;		/**< Mouse position. */
+	Point<int>					mMouseCoords;		/**< Mouse position. */
 
 	SelectionChangedCallback	mSelectionChanged;	/**< Callback for selection changed callback. */
 	Slider						mSlider;			/**<  */
