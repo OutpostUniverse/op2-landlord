@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 			cf.graphicsWidth(1000);
 			cf.graphicsHeight(650);
 		}
-		cf.save();
+		cf.save("config.xml");
 
 		// All utilities must be initialized or exceptions are thrown when their Null
 		// variants aren't in place.
