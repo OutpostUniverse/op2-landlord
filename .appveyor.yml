@@ -18,10 +18,10 @@ clone_script:
     }
 - cmd: git submodule update --init --recursive
 cache:
-  - C:\tools\vcpkg\installed\ -> nas2d-core/InstallVcpkgDeps.bat
+  - C:\tools\vcpkg\installed\ -> nas2d-core\InstallVcpkgDeps.bat
 install:
   - vcpkg integrate install
-  - call nas2d-core/InstallVcpkgDeps.bat
+  - call nas2d-core\InstallVcpkgDeps.bat
   - set APPVEYOR_SAVE_CACHE_ON_ERROR=true
 build:
   project: OP2-Landlord.sln
