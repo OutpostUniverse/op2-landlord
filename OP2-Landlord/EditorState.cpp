@@ -114,12 +114,12 @@ State* EditorState::update()
 
 	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), mToolBar.show_collision_mask());
 
-	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x(), mTileHighlight.y())), 5, 50, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x, mTileHighlight.y)), 5, 50, 1, 255, 255, 255, 0, 0, 0);
 
 	updateSelector();
 	updateUI();
 
-	const auto text = "World Tile: " + std::to_string(mTileHighlight.x()) + ", " + std::to_string(mTileHighlight.y());
+	const auto text = "World Tile: " + std::to_string(mTileHighlight.x) + ", " + std::to_string(mTileHighlight.y);
 	r.drawTextShadow(mBoldFont, text, 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
 	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, 5.0f, r.height() - mBoldFont.height(), 1, 255, 255, 255, 0, 0, 0);
 
@@ -143,17 +143,17 @@ void EditorState::updateUI()
 void EditorState::updateSelector()
 {
 	// Don't draw selector if the UI is hidden.
-	if (mMouseCoords.y() < 32 || mRightButtonDown) { return; }
+	if (mMouseCoords.y < 32 || mRightButtonDown) { return; }
 
 	if (mTilePalette.responding_to_events() || mMiniMap.responding_to_events()) { return; }
 
 	Renderer& r = Utility<Renderer>::get();
 
-	int rectOffsetX = (mMap->cameraPosition().x() % TILE_SIZE);
-	int rectOffsetY = (mMap->cameraPosition().y() % TILE_SIZE) + TILE_SIZE; // offset for the toolbar
+	int rectOffsetX = (mMap->cameraPosition().x % TILE_SIZE);
+	int rectOffsetY = (mMap->cameraPosition().y % TILE_SIZE) + TILE_SIZE; // offset for the toolbar
 
-	int gridX = gridLocation(mMouseCoords.x(), mMap->cameraPosition().x(), r.width());
-	int gridY = gridLocation(mMouseCoords.y(), mMap->cameraPosition().y() + TILE_SIZE, r.height() - TILE_SIZE);
+	int gridX = gridLocation(mMouseCoords.x, mMap->cameraPosition().x, r.width());
+	int gridY = gridLocation(mMouseCoords.y, mMap->cameraPosition().y + TILE_SIZE, r.height() - TILE_SIZE);
 
 	mSelectorRect = {gridX * TILE_SIZE - rectOffsetX, gridY * TILE_SIZE - rectOffsetY, TILE_SIZE, TILE_SIZE};
 
@@ -241,8 +241,8 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 	mMouseCoords = {x, y};
 
 	mTileHighlight = {
-		std::clamp((x + mMap->cameraPosition().x()) / TILE_SIZE, 0, mMap->width() - 1),
-		std::clamp((y + mMap->cameraPosition().y() - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1)
+		std::clamp((x + mMap->cameraPosition().x) / TILE_SIZE, 0, mMap->width() - 1),
+		std::clamp((y + mMap->cameraPosition().y - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1)
 	};
 
 	if(mLeftButtonDown)
@@ -299,7 +299,7 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);
-		Utility<EventHandler>::get().warpMouse(mSavedMouseCoords.x(), mSavedMouseCoords.y()); // a bit hacky but does the job
+		Utility<EventHandler>::get().warpMouse(mSavedMouseCoords.x, mSavedMouseCoords.y); // a bit hacky but does the job
 	}
 
 	Utility<EventHandler>::get().releaseMouse();

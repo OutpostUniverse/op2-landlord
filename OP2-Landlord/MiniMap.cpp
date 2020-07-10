@@ -38,7 +38,7 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 	if (!mMiniMap) { return; }
 
 	const auto startPoint = static_cast<NAS2D::Point<int>>(NAS2D::Point<float>{rect().x() + 4, rect().y() + 21});
-	const auto miniMapBounds = NAS2D::Rectangle<int>{startPoint.x(), startPoint.y(), mMiniMap->width(), mMiniMap->height()};
+	const auto miniMapBounds = NAS2D::Rectangle<int>{startPoint.x, startPoint.y, mMiniMap->width(), mMiniMap->height()};
 	if (miniMapBounds.contains(NAS2D::Point{x, y}))
 	{
 		mMovingCamera = true;
@@ -81,7 +81,7 @@ void MiniMap::draw()
 	r.drawBoxFilled(rect().x() + 5, rect().y() + 21, (float)mMiniMap->width(), (float)mMiniMap->height(), 255, 0, 255);
 	r.drawImage(*mMiniMap, rect().x() + 5, rect().y() + 21);
 
-	mViewRect = {static_cast<int>(rect().x() + 5 + (mMap->cameraPosition().x() / TILE_SIZE)), static_cast<int>(rect().y() + 21 + (mMap->cameraPosition().y() / TILE_SIZE)), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE)};
+	mViewRect = {static_cast<int>(rect().x() + 5 + (mMap->cameraPosition().x / TILE_SIZE)), static_cast<int>(rect().y() + 21 + (mMap->cameraPosition().y / TILE_SIZE)), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE)};
 	r.drawBox(mViewRect, 255, 255, 255);
 }
 

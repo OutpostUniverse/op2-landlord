@@ -43,7 +43,7 @@ void TileGroups::map(MapFile* map)
 	Renderer& r = Utility<Renderer>::get();
 
 	mMap = map;
-	size((mMap->tileGroupExtents().x() * TILE_SIZE) + 10, (mMap->tileGroupExtents().y() * TILE_SIZE) + 10 + TILE_SIZE + 7);
+	size((mMap->tileGroupExtents().x * TILE_SIZE) + 10, (mMap->tileGroupExtents().y * TILE_SIZE) + 10 + TILE_SIZE + 7);
 	position(r.width() - width() - 5, r.height() - height() - 5);
 
 	mSlider.font(font());

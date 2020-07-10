@@ -64,7 +64,7 @@ bool Control::fontSet() const
  */
 void Control::position(const Point<float>& pos)
 {
-	position(pos.x(), pos.y());
+	position(pos.x, pos.y);
 }
 
 

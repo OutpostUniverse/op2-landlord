@@ -396,7 +396,7 @@ State* StartState::update()
 		r.drawText(mBoldFont, MESSAGE, 15, r.height() - 20, 255, 0, 0);
 	}
 
-	r.drawBoxFilled(NEW_MAP_PANEL_CENTER - mMapSize.x() / 2, (r.height() - 223) - mMapSize.y() / 2, mMapSize.x(), mMapSize.y(), 185, 185, 185);
+	r.drawBoxFilled(NEW_MAP_PANEL_CENTER - mMapSize.x / 2, (r.height() - 223) - mMapSize.y / 2, mMapSize.x, mMapSize.y, 185, 185, 185);
 
 	/// Doing it this way only so that the user can get feedback about what the app is doing.
 	/// \todo	This would benefit by spinning loading maps into its own thread.

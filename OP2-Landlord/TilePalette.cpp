@@ -9,7 +9,7 @@ const auto TILE_SLOT_PADDING = Point<int>{0, 0};
 
 const auto TILE_GRID_DIMENSIONS = Point<int>{6, 8};
 
-const int NUM_TILES_PER_PAGE = TILE_GRID_DIMENSIONS.x() * TILE_GRID_DIMENSIONS.y();
+const int NUM_TILES_PER_PAGE = TILE_GRID_DIMENSIONS.x * TILE_GRID_DIMENSIONS.y;
 
 using namespace NAS2D;
 
@@ -28,7 +28,7 @@ TilePalette::~TilePalette()
 void TilePalette::_init()
 {
 	Renderer& r = Utility<Renderer>::get();
-	_rect() = {r.width() - PALETTE_DIMENSIONS.x() - 2, r.height() - PALETTE_DIMENSIONS.y() - 2, static_cast<float>(PALETTE_DIMENSIONS.x()), static_cast<float>(PALETTE_DIMENSIONS.y())};
+	_rect() = {r.width() - PALETTE_DIMENSIONS.x - 2, r.height() - PALETTE_DIMENSIONS.y - 2, static_cast<float>(PALETTE_DIMENSIONS.x), static_cast<float>(PALETTE_DIMENSIONS.y)};
 
 	text("Tile Palette");
 }
