@@ -79,7 +79,7 @@ void TileGroups::draw()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	mMap->tileGroup(mTileGroupIndex)->draw(rect().x() + 5, rect().y() + titleBarHeight() + 5);
+	mMap->tileGroup(mTileGroupIndex)->draw(rect().x + 5, rect().y + titleBarHeight() + 5);
 
 	r.drawText(font(), mMap->tileGroupName(mTileGroupIndex), positionX() + 10, positionY() + titleBarHeight() + 10, 255, 255, 255);
 

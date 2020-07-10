@@ -147,26 +147,26 @@ void Button::draw()
 
 	if (mState == STATE_NORMAL)
 	{
-		bevelBox(rect().x(), rect().y(), rect().width(), rect().height(), false);
+		bevelBox(rect().x, rect().y, rect().width, rect().height, false);
 	}
 	else //(mState == STATE_PRESSED)
 	{
-		bevelBox(rect().x(), rect().y(), rect().width(), rect().height(), true);
+		bevelBox(rect().x, rect().y, rect().width, rect().height, true);
 	}
 
 
 	if (mImage)
 	{
-		int x = static_cast<int>(rect().x() + (rect().width() / 2) - ((mImage->width() / 2) + 1));
-		int y = static_cast<int>(rect().y() + (rect().height() / 2) - (mImage->height() / 2));
+		int x = static_cast<int>(rect().x + (rect().width / 2) - ((mImage->width() / 2) + 1));
+		int y = static_cast<int>(rect().y + (rect().height / 2) - (mImage->height() / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
 		r.drawImage(*mImage, x, y);
 	}
 	else if (fontSet() && !text().empty())
 	{
-		int x = static_cast<int>(rect().x() + (rect().width() / 2) - (font().width(text()) / 2));
-		int y = static_cast<int>(rect().y() + (rect().height() / 2) - (font().height() / 2));
+		int x = static_cast<int>(rect().x + (rect().width / 2) - (font().width(text()) / 2));
+		int y = static_cast<int>(rect().y + (rect().height / 2) - (font().height() / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
 		r.drawText(font(), text(), x, y, 0, 0, 0);

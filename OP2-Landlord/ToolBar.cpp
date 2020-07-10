@@ -176,7 +176,7 @@ void ToolBar::update()
 
 	if (btnFillContiguous.visible())
 	{
-		r.drawBoxFilled((float)mFloodFillExtendedArea.x() + 3, (float)mFloodFillExtendedArea.y() + 4, (float)mFloodFillExtendedArea.width(), (float)mFloodFillExtendedArea.height(), 0, 0, 0, 100);
+		r.drawBoxFilled((float)mFloodFillExtendedArea.x + 3, (float)mFloodFillExtendedArea.y + 4, (float)mFloodFillExtendedArea.width, (float)mFloodFillExtendedArea.height, 0, 0, 0, 100);
 		r.drawBoxFilled(mFloodFillExtendedArea, 180, 180, 180);
 		r.drawBox(mFloodFillExtendedArea, 0, 0, 0);
 		r.drawText(mFont, "Contiguous", btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4, 0, 0, 0);
@@ -184,10 +184,10 @@ void ToolBar::update()
 		if (btnFillContiguous.toggled()) r.drawImage(mToggle, btnFillContiguous.positionX() - 1, btnFillContiguous.positionY());
 	}
 
-	r.drawBoxFilled(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 255, 255, 255);
-	r.drawBox(btnSpinnerUp.rect().x() - 21, btnSpinnerUp.rect().y(), 20, 28, 0, 0, 0);
+	r.drawBoxFilled(btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28, 255, 255, 255);
+	r.drawBox(btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28, 0, 0, 0);
 	const auto text = std::to_string(static_cast<int>(mBrush.width()));
-	r.drawText(mFont, text, btnSpinnerUp.rect().x() - 18 + (mFont.width(text) / 2), 12, 0, 0, 0);
+	r.drawText(mFont, text, btnSpinnerUp.rect().x - 18 + (mFont.width(text) / 2), 12, 0, 0, 0);
 
 	btnSpinnerUp.update();
 	btnSpinnerDown.update();

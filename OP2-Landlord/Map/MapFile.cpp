@@ -235,7 +235,7 @@ void MapFile::moveCamera(int x, int y)
  */
 void MapFile::setCamera(int x, int y)
 {
-	mCameraPosition = {std::clamp(x, 0, mCameraAnchorArea.width()), std::clamp(y, 0, mCameraAnchorArea.height())};
+	mCameraPosition = {std::clamp(x, 0, mCameraAnchorArea.width), std::clamp(y, 0, mCameraAnchorArea.height)};
 }
 
 

@@ -46,7 +46,7 @@ void Slider::size(float w, float h)
 	Control::size(w, h);
 
 	// deduce the type of slider from the ratio.
-	if (rect().height() > rect().width()) { mSliderType = SLIDER_VERTICAL; }
+	if (rect().height > rect().width) { mSliderType = SLIDER_VERTICAL; }
 	else { mSliderType = SLIDER_HORIZONTAL; }
 
 	logic();
@@ -55,11 +55,11 @@ void Slider::size(float w, float h)
 
 void Slider::positionChanged(float dX, float dY)
 {
-	mSlideBar.x(mSlideBar.x() + dX);
-	mSlideBar.y(mSlideBar.y() + dY);
+	mSlideBar.x = mSlideBar.x + dX;
+	mSlideBar.y = mSlideBar.y + dY;
 
-	mSlider.x(mSlider.x() + dX);
-	mSlider.y(mSlider.y() + dY);
+	mSlider.x = mSlider.x + dX;
+	mSlider.y = mSlider.y + dY;
 
 	mButton1.position(mButton1.positionX() + dX, mButton1.positionY() + dY);
 	mButton2.position(mButton2.positionX() + dX, mButton2.positionY() + dY);
@@ -74,33 +74,33 @@ void Slider::logic()
 	// compute position of items
 	if (mSliderType == SLIDER_VERTICAL)
 	{
-		mButton1.position(rect().x(), rect().y());
-		mButton1.size(rect().width(), rect().width());
+		mButton1.position(rect().x, rect().y);
+		mButton1.size(rect().width, rect().width);
 		mButton1.image("sys/up.png");
 
-		mButton2.position(rect().x(), rect().y() + rect().height() - rect().width());
-		mButton2.size(rect().width(), rect().width());
+		mButton2.position(rect().x, rect().y + rect().height - rect().width);
+		mButton2.size(rect().width, rect().width);
 		mButton2.image("sys/down.png");
 
-		mSlideBar.x(rect().x());
-		mSlideBar.y(rect().y() + rect().width());
-		mSlideBar.width(rect().width());
-		mSlideBar.height(rect().height() - 2 * rect().width());
+		mSlideBar.x = rect().x;
+		mSlideBar.y = rect().y + rect().width;
+		mSlideBar.width = rect().width;
+		mSlideBar.height = rect().height - 2 * rect().width;
 	}
 	else
 	{
-		mButton1.position(rect().x(), rect().y());
-		mButton1.size(rect().height(), rect().height());
+		mButton1.position(rect().x, rect().y);
+		mButton1.size(rect().height, rect().height);
 		mButton1.image("sys/left.png");
 
-		mButton2.position(rect().x() + rect().width() - rect().height(), rect().y());
-		mButton2.size(rect().height(), rect().height());
+		mButton2.position(rect().x + rect().width - rect().height, rect().y);
+		mButton2.size(rect().height, rect().height);
 		mButton2.image("sys/right.png");
 
-		mSlideBar.x(rect().x() + rect().height());
-		mSlideBar.y(rect().y());
-		mSlideBar.width(rect().width() - 2 * rect().height());
-		mSlideBar.height(rect().height());
+		mSlideBar.x = rect().x + rect().height;
+		mSlideBar.y = rect().y;
+		mSlideBar.width = rect().width - 2 * rect().height;
+		mSlideBar.height = rect().height;
 	}
 }
 
@@ -177,12 +177,12 @@ void Slider::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	{
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			if (y < mSlider.y()) { changeThumbPosition(-3.0); }
+			if (y < mSlider.y) { changeThumbPosition(-3.0); }
 			else { changeThumbPosition(+3.0); }
 		}
 		else
 		{
-			if (x < mSlider.x()) { changeThumbPosition(-3.0); }
+			if (x < mSlider.x) { changeThumbPosition(-3.0); }
 			else { changeThumbPosition(+3.0); }
 		}
 	}
@@ -204,22 +204,22 @@ void Slider::onMouseMotion(int x, int y, int dX, int dY)
 
 	if (mSliderType == SLIDER_VERTICAL)
 	{
-		if (y < mSlideBar.y() || y >(mSlideBar.y() + mSlideBar.height()))
+		if (y < mSlideBar.y || y >(mSlideBar.y + mSlideBar.height))
 		{
 			return;
 		}
 
-		positionInternal(mLenght * ((y - mSlideBar.y()) / mSlideBar.height()));
+		positionInternal(mLenght * ((y - mSlideBar.y) / mSlideBar.height));
 		mCallback(thumbPosition());
 	}
 	else
 	{
-		if (x < mSlideBar.x() || x >(mSlideBar.x() + mSlideBar.width()))
+		if (x < mSlideBar.x || x >(mSlideBar.x + mSlideBar.width))
 		{
 			return;
 		}
 
-		positionInternal(mLenght * (x - mSlideBar.x()) / mSlideBar.width());
+		positionInternal(mLenght * (x - mSlideBar.x) / mSlideBar.width);
 		mCallback(thumbPosition());
 	}
 }
@@ -246,8 +246,8 @@ void Slider::draw()
 	int _x = 0, _y = 0, _w = 0, _h = 0;
 	float _thumbPosition = 0.0f;
 
-	r.drawBoxFilled(mSlideBar.x() - 0.5f, mSlideBar.y(), mSlideBar.width(), mSlideBar.height(), 100, 100, 100);
-	r.drawBox(mSlideBar.x() - 0.5f, mSlideBar.y(), mSlideBar.width(), mSlideBar.height(), 50, 50, 50);
+	r.drawBoxFilled(mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height, 100, 100, 100);
+	r.drawBox(mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height, 50, 50, 50);
 
 	mButton1.update();
 	mButton2.update();
@@ -266,36 +266,36 @@ void Slider::draw()
 	if (mSliderType == SLIDER_VERTICAL)
 	{
 		// Slider
-		mSlider.width(mSlideBar.width()); // height = slide bar height
-		mSlider.height(static_cast<int>(mSlideBar.height() / mLenght)); //relative width
-		if (mSlider.height() < mSlider.width()) // not too relative. Minimum = Height itself
+		mSlider.width = mSlideBar.width; // height = slide bar height
+		mSlider.height = static_cast<int>(mSlideBar.height / mLenght); //relative width
+		if (mSlider.height < mSlider.width) // not too relative. Minimum = Height itself
 		{
-			mSlider.height(mSlider.width());
+			mSlider.height = mSlider.width;
 		}
 
-		_thumbPosition = (mSlideBar.height() - mSlider.height())  * (mPosition / mLenght); //relative width
+		_thumbPosition = (mSlideBar.height - mSlider.height)  * (mPosition / mLenght); //relative width
 
-		mSlider.x(mSlideBar.x());
-		mSlider.y(mSlideBar.y() + _thumbPosition);
+		mSlider.x = mSlideBar.x;
+		mSlider.y = mSlideBar.y + _thumbPosition;
 	}
 	else
 	{
 		// Slider
-		mSlider.height(mSlideBar.height());	// height = slide bar height
-		mSlider.width(static_cast<int>(mSlideBar.width() / (mLenght + 1))); //relative width
+		mSlider.height = mSlideBar.height;	// height = slide bar height
+		mSlider.width = static_cast<int>(mSlideBar.width / (mLenght + 1)); //relative width
 		
-		if (mSlider.width() < mSlider.height())	// not too relative. Minimum = Heigt itself
+		if (mSlider.width < mSlider.height)	// not too relative. Minimum = Heigt itself
 		{
-			mSlider.width(mSlider.height());
+			mSlider.width = mSlider.height;
 		}
 
-		_thumbPosition = (mSlideBar.width() - mSlider.width())  * (mPosition / mLenght); //relative width
+		_thumbPosition = (mSlideBar.width - mSlider.width)  * (mPosition / mLenght); //relative width
 
-		mSlider.x(mSlideBar.x() + _thumbPosition);
-		mSlider.y(mSlideBar.y());
+		mSlider.x = mSlideBar.x + _thumbPosition;
+		mSlider.y = mSlideBar.y;
 	}
 
-	bevelBox(mSlider.x(), mSlider.y(), mSlider.width(), mSlider.height());
+	bevelBox(mSlider.x, mSlider.y, mSlider.width, mSlider.height);
 
 
 	if (fontSet() && mDisplayPosition && mMouseHoverSlide)
@@ -306,13 +306,13 @@ void Slider::draw()
 
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			_x = mSlideBar.x() + mSlideBar.width() + 2;
+			_x = mSlideBar.x + mSlideBar.width + 2;
 			_y = mMouseY - _h;
 		}
 		else
 		{
 			_x = mMouseX + 2;
-			_y = mSlideBar.y() - 2 - _h;
+			_y = mSlideBar.y - 2 - _h;
 		}
 
 		r.drawBox(_x - _w / 2, _y, _w, _h, 255, 255, 255, 180);

@@ -166,7 +166,7 @@ void EditorState::updateSelector()
 	{
 		for(int col = p.width(); col > 0; col--)
 		{
-			r.drawBox(mSelectorRect.x() - offsetX, mSelectorRect.y() - offsetY + TILE_SIZE, mSelectorRect.width(), mSelectorRect.height(), 255, 255, 255);
+			r.drawBox(mSelectorRect.x - offsetX, mSelectorRect.y - offsetY + TILE_SIZE, mSelectorRect.width, mSelectorRect.height, 255, 255, 255);
 			offsetX += 32;
 		}
 		offsetX = 0;
@@ -364,11 +364,11 @@ void EditorState::patternFill()
 	/*
 	const Pattern& p = mTilePalette.pattern();
 
-	for (int row = 0; row < mMap.height(); row++)
+	for (int row = 0; row < mMap.height; row++)
 	{
-		for (int col = 0; col < mMap.width(); col++)
+		for (int col = 0; col < mMap.width; col++)
 		{
-			mMap.getCellByGridCoords(col, row).index(layer, p.value(col % p.width(), row % p.height()));
+			mMap.getCellByGridCoords(col, row).index(layer, p.value(col % p.width, row % p.height));
 		}
 	}
 	*/
@@ -382,7 +382,7 @@ void EditorState::patternFill_Contig(const Point<int>& _pt, int seed_index)
 {
 	/*
 	const Pattern& _pCheck = mTilePalette.pattern();
-	if (seed_index == _pCheck.value(_pt.x() % _pCheck.width(), _pt.y() % _pCheck.height()))
+	if (seed_index == _pCheck.value(_pt.x % _pCheck.width, _pt.y % _pCheck.height))
 		return;
 
 	while (!FLOOD_STACK.empty())
@@ -401,12 +401,12 @@ void EditorState::patternFill_Contig(const Point<int>& _pt, int seed_index)
 		FLOOD_STACK.pop();
 
 		const Pattern& p = mTilePalette.pattern();
-		mMap.getCellByGridCoords(_pt_top).index(layer, p.value(_pt_top.x() % p.width(), _pt_top.y() % p.height()));
+		mMap.getCellByGridCoords(_pt_top).index(layer, p.value(_pt_top.x % p.width, _pt_top.y % p.height));
 
 		for (int i = 0; i < 4; i++)
 		{
-			Point<int> coord(_pt_top.x() + dX[i], _pt_top.y() + dY[i]);
-			if (coord.x() >= 0 && coord.x() < mMap.width() && coord.y() >= 0 && coord.y() < mMap.height() && mMap.getCellByGridCoords(coord).index(layer) == seed_index)
+			Point<int> coord(_pt_top.x + dX[i], _pt_top.y + dY[i]);
+			if (coord.x >= 0 && coord.x < mMap.width && coord.y >= 0 && coord.y < mMap.height && mMap.getCellByGridCoords(coord).index(layer) == seed_index)
 			{
 				FLOOD_STACK.push(coord);
 			}
@@ -433,8 +433,8 @@ void EditorState::pattern(int value)
 		for (int col = 0; col < _p->width(); col++)
 		{
 			int index = _p->value(col, row);
-			int x = _pt.x() - ((_p->width() - 1) - col);
-			int y = _pt.y() - ((_p->height() - 1) - row);
+			int x = _pt.x - ((_p->width() - 1) - col);
+			int y = _pt.y - ((_p->height() - 1) - row);
 
 			if (x >= 0 && y >= 0)
 			{
@@ -459,12 +459,12 @@ void EditorState::pattern_collision()
 	const Pattern& _p = mToolBar.brush();
 	Point<int>& _pt = mMap.getGridCoords(mMouseCoords);
 
-	for (int row = 0; row < _p.height(); row++)
+	for (int row = 0; row < _p.height; row++)
 	{
-		for (int col = 0; col < _p.width(); col++)
+		for (int col = 0; col < _p.width; col++)
 		{
-			int x = _pt.x() - ((_p.width() - 1) - col);
-			int y = _pt.y() - ((_p.height() - 1) - row);
+			int x = _pt.x - ((_p.width - 1) - col);
+			int y = _pt.y - ((_p.height - 1) - row);
 
 			if (x >= 0 && y >= 0)
 			{

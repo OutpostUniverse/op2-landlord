@@ -45,7 +45,7 @@ Control* UIContainer::addControl(const std::string& name, Control* c, float x, f
 	}
 
 	mControlList[toLowercase(name)] = c;
-	c->position(rect().x() + x, rect().y() + y);
+	c->position(rect().x + x, rect().y + y);
 
 	/// todo\	Add validation to contain controls within a UIContainer.
 

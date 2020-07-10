@@ -76,10 +76,10 @@ void Control::position(const Point<float>& pos)
  */
 void Control::position(float x, float y)
 {
-	float dx = x - mRect.x(), dy = y - mRect.y();
+	float dx = x - mRect.x, dy = y - mRect.y;
 
-	mRect.x(x);
-	mRect.y(y);
+	mRect.x = x;
+	mRect.y = y;
 
 	positionChanged(dx, dy);
 }
@@ -90,7 +90,7 @@ void Control::position(float x, float y)
  */
 float Control::positionX()
 {
-	return mRect.x();
+	return mRect.x;
 }
 
 
@@ -99,7 +99,7 @@ float Control::positionX()
  */
 float Control::positionY()
 {
-	return mRect.y();
+	return mRect.y;
 }
 
 
@@ -117,7 +117,7 @@ Control::PositionChangedCallback& Control::moved()
  */
 float Control::width() const
 {
-	return mRect.width();
+	return mRect.width;
 }
 
 
@@ -126,7 +126,7 @@ float Control::width() const
  */
 float Control::height() const
 {
-	return mRect.height();
+	return mRect.height;
 }
 
 
@@ -161,7 +161,7 @@ void Control::size(float _s)
  */
 void Control::width(float w)
 {
-	mRect.width(w);
+	mRect.width = w;
 	onSizeChanged();
 }
 
@@ -174,7 +174,7 @@ void Control::width(float w)
  */
 void Control::height(float h)
 {
-	mRect.height(h);
+	mRect.height = h;
 	onSizeChanged();
 }
 
