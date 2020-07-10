@@ -131,5 +131,5 @@ bool pointInRect_f(int x, int y, const Rectangle<float>& rect)
  */
 bool pointInRect_f(int x, int y, float rectX, float rectY, float rectW, float rectH)
 {
-	return pointInRect_f(x, y, NAS2D::Rectangle{rectX, rectY, rectW, rectH});
+	return pointInRect_f(x, y, {rectX, rectY, rectW, rectH});
 }
