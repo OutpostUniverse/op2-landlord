@@ -311,7 +311,7 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
  */
 void EditorState::handleLeftButtonDown(int x, int y)
 {
-	Point<int> pt(x, y);
+	Point<int> pt{x, y};
 
 	// Hate the look of this but it effectively condenses the ignore checks.
 	if (y < 32 ||
