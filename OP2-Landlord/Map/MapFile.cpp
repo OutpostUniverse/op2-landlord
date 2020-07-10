@@ -189,7 +189,7 @@ int MapFile::tset_index(int x, int y) const
 void MapFile::updateCameraAnchorArea(int width, int height)
 {
 	mCameraAnchorArea = {0, 0, mTileWidth * TILE_SIZE - width, mTileHeight * TILE_SIZE - height};
-	setCamera(mCameraPosition.x(), mCameraPosition.y());
+	setCamera(mCameraPosition.x, mCameraPosition.y);
 }
 
 
@@ -226,7 +226,7 @@ const std::string& MapFile::tileGroupName(int tg_index)
  */
 void MapFile::moveCamera(int x, int y)
 {
-	setCamera(mCameraPosition.x() + x, mCameraPosition.y() + y);
+	setCamera(mCameraPosition.x + x, mCameraPosition.y + y);
 }
 
 
@@ -244,11 +244,11 @@ void MapFile::setCamera(int x, int y)
  */
 void MapFile::draw(int x, int y, int width, int height, bool draw_overlay)
 {
-	int offsetX = mCameraPosition.x() / 32;
-	int offsetY = mCameraPosition.y() / 32;
+	int offsetX = mCameraPosition.x / 32;
+	int offsetY = mCameraPosition.y / 32;
 
-	int drawOffsetX = mCameraPosition.x() % 32;
-	int drawOffsetY = mCameraPosition.y() % 32;
+	int drawOffsetX = mCameraPosition.x % 32;
+	int drawOffsetY = mCameraPosition.y % 32;
 
 	int columns = (width / 32) + 2;
 	int rows = (height / 32) + 2;
@@ -399,8 +399,8 @@ void MapFile::_readTileGroupName(StreamReader& in, TileGroup& tilegroup)
 		}
 	}
 
-	if (tilegroup.width() > mLargestTileGroupExtents.x()) { mLargestTileGroupExtents.x(tilegroup.width()); }
-	if (tilegroup.height() > mLargestTileGroupExtents.y()) { mLargestTileGroupExtents.y(tilegroup.height()); }
+	if (tilegroup.width() > mLargestTileGroupExtents.x) { mLargestTileGroupExtents.x = tilegroup.width(); }
+	if (tilegroup.height() > mLargestTileGroupExtents.y) { mLargestTileGroupExtents.y = tilegroup.height(); }
 
 	mTileGroups.push_back(TileGroupDescriptor(tilegroup_name, &tilegroup));
 
