@@ -18,7 +18,7 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(NAS2D::Rectangle<int>{x, y, w, h}, bgcolor);
+	r.drawBoxFilled(NAS2D::Rectangle{x, y, w, h}, bgcolor);
 
 	if (!sunk)
 	{
@@ -131,5 +131,5 @@ bool pointInRect_f(int x, int y, const Rectangle<float>& rect)
  */
 bool pointInRect_f(int x, int y, float rectX, float rectY, float rectW, float rectH)
 {
-	return pointInRect_f(x, y, NAS2D::Rectangle<float>{rectX, rectY, rectW, rectH});
+	return pointInRect_f(x, y, NAS2D::Rectangle{rectX, rectY, rectW, rectH});
 }
