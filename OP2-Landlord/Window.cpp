@@ -49,7 +49,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
 	if((button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
 
 	const auto windowBounds = rect().to<int>();
-	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.x(), windowBounds.y(), windowBounds.width(), titleBarHeight()};
+	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.x, windowBounds.y, windowBounds.width, titleBarHeight()};
 	if (titleBarBounds.contains({x, y}))
 	{
 		mDragging = true;
@@ -98,12 +98,12 @@ void Window::update()
 	Renderer& r = Utility<Renderer>::get();
 
 	r.drawBoxFilled(rect(), 180, 180, 180);
-	r.drawBoxFilled(rect().x(), rect().y(), rect().width(), TITLE_BAR_HEIGHT, 75, 95, 130);
+	r.drawBoxFilled(rect().x, rect().y, rect().width, TITLE_BAR_HEIGHT, 75, 95, 130);
 	r.drawBox(rect(), 0, 0, 0);
 
 	if (mBoldFont)
 	{
-		r.drawText(*mBoldFont, text(), rect().x() + (rect().width() / 2) - (mBoldFont->width(text()) / 2), rect().y() + 2, 255, 255, 255);
+		r.drawText(*mBoldFont, text(), rect().x + (rect().width / 2) - (mBoldFont->width(text()) / 2), rect().y + 2, 255, 255, 255);
 	}
 
 	draw();

@@ -212,19 +212,19 @@ void StartState::resizeLayout()
 	// =========================================
 	// = LOAD MAP PANEL
 	// =========================================
-	mBtnLoadExisting.position(mLayoutRect.x() + 10, mLayoutRect.y() + mLayoutRect.height() - 35);
-	mBtnRefreshLists.position(mLayoutRect.x() + (mLayoutRect.width() / 3) - mBtnRefreshLists.rect().width() - 10, mLayoutRect.y() + mLayoutRect.height() - 35);
+	mBtnLoadExisting.position(mLayoutRect.x + 10, mLayoutRect.y + mLayoutRect.height - 35);
+	mBtnRefreshLists.position(mLayoutRect.x + (mLayoutRect.width / 3) - mBtnRefreshLists.rect().width - 10, mLayoutRect.y + mLayoutRect.height - 35);
 
-	mMapFilesMenu.position(mLayoutRect.x() + 10, mLayoutRect.y() + 10);
-	mMapFilesMenu.size(mLayoutRect.width() / 3 - 20, mLayoutRect.height() - 30 - mBtnLoadExisting.height());
+	mMapFilesMenu.position(mLayoutRect.x + 10, mLayoutRect.y + 10);
+	mMapFilesMenu.size(mLayoutRect.width / 3 - 20, mLayoutRect.height - 30 - mBtnLoadExisting.height());
 
 
 	// =========================================
 	// = NEW MAP PANEL
 	// =========================================
 
-	int _left_x = mLayoutRect.x() + (mLayoutRect.width() / 3) + 10;
-	NEW_MAP_PANEL_CENTER = mLayoutRect.x() + (mLayoutRect.width() / 3) + ((mLayoutRect.width() - (mLayoutRect.width() / 3)) / 2);
+	int _left_x = mLayoutRect.x + (mLayoutRect.width / 3) + 10;
+	NEW_MAP_PANEL_CENTER = mLayoutRect.x + (mLayoutRect.width / 3) + ((mLayoutRect.width - (mLayoutRect.width / 3)) / 2);
 
 	mBtn64x64.position(_left_x, 25);
 	mBtn64x128.position(NEW_MAP_PANEL_CENTER - 60, 25);
@@ -238,12 +238,12 @@ void StartState::resizeLayout()
 	mBtn256x128.position(NEW_MAP_PANEL_CENTER - 60, 85);
 	mBtn512x256.position(r.width() - 125, 85);
 
-	mBtnCreateNew.position(mLayoutRect.x() + mLayoutRect.width() - 95, mLayoutRect.y() + mLayoutRect.height() - 35);
+	mBtnCreateNew.position(mLayoutRect.x + mLayoutRect.width - 95, mLayoutRect.y + mLayoutRect.height - 35);
 
-	txtMapPath.width(mLayoutRect.width() - (mLayoutRect.width() / 3) - 20);
-	txtMapPath.position(mLayoutRect.x() + mLayoutRect.width() / 3 + 10, mBtnCreateNew.positionY() - 30);
+	txtMapPath.width(mLayoutRect.width - (mLayoutRect.width / 3) - 20);
+	txtMapPath.position(mLayoutRect.x + mLayoutRect.width / 3 + 10, mBtnCreateNew.positionY() - 30);
 
-	txtMapDescription.size(mLayoutRect.width() - (mLayoutRect.width() / 3) - 20, 25);
+	txtMapDescription.size(mLayoutRect.width - (mLayoutRect.width / 3) - 20, 25);
 	txtMapDescription.position(mBtn64x64.positionX(), 115);
 
 	mBtnMud.position(_left_x, txtMapDescription.positionY() + txtMapDescription.height() + 10);
@@ -350,7 +350,7 @@ void StartState::button_LoadExisting_click()
 
 	/// Doing it this way only so that the user can get feedback about what the app is doing.
 	/// \todo	This would benefit by spinning loading maps into its own thread.
-	Utility<Renderer>::get().drawText(mBoldFont, "LOADING MAP. PLEASE WAIT...", mLayoutRect.x(), 5, 255, 255, 0);
+	Utility<Renderer>::get().drawText(mBoldFont, "LOADING MAP. PLEASE WAIT...", mLayoutRect.x, 5, 255, 255, 0);
 	Utility<Renderer>::get().update();
 
 	try
@@ -381,7 +381,7 @@ State* StartState::update()
 	r.clearScreen(25, 25, 25);
 
 	r.drawBox(mLayoutRect, 255, 255, 255);
-	r.drawLine(mLayoutRect.x() + mLayoutRect.width() / 3, mLayoutRect.y(), mLayoutRect.x() + mLayoutRect.width() / 3, mLayoutRect.y() + mLayoutRect.height());
+	r.drawLine(mLayoutRect.x + mLayoutRect.width / 3, mLayoutRect.y, mLayoutRect.x + mLayoutRect.width / 3, mLayoutRect.y + mLayoutRect.height);
 
 	updateUi();
 
@@ -402,7 +402,7 @@ State* StartState::update()
 	/// \todo	This would benefit by spinning loading maps into its own thread.
 	if (mScanningMaps)
 	{
-		r.drawText(mBoldFont, "SCANNING MAPS. PLEASE WAIT...", mLayoutRect.x(), 0, 255, 255, 0);
+		r.drawText(mBoldFont, "SCANNING MAPS. PLEASE WAIT...", mLayoutRect.x, 0, 255, 255, 0);
 		r.update();
 		fillMapMenu();
 		mScanningMaps = false;

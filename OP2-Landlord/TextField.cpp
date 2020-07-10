@@ -79,7 +79,7 @@ void TextField::onFontChanged()
 
 int TextField::textAreaWidth() const
 {
-	return static_cast<int>(rect().width()) - FIELD_PADDING * 2;
+	return static_cast<int>(rect().width) - FIELD_PADDING * 2;
 }
 
 
@@ -146,8 +146,8 @@ void TextField::drawCursor()
 		{
 			// updateCursor() should be called only on events relating to the cursor so this is temporary.
 			updateCursor();
-			Utility<Renderer>::get().drawLine(static_cast<float>(mCursorX + 1), rect().y() + FIELD_PADDING + 1, static_cast<float>(mCursorX + 1), rect().y() + rect().height() - FIELD_PADDING, 0, 0, 0);
-			Utility<Renderer>::get().drawLine(static_cast<float>(mCursorX), rect().y() + FIELD_PADDING, static_cast<float>(mCursorX), rect().y() + rect().height() - FIELD_PADDING - 1, 255, 255, 255);
+			Utility<Renderer>::get().drawLine(static_cast<float>(mCursorX + 1), rect().y + FIELD_PADDING + 1, static_cast<float>(mCursorX + 1), rect().y + rect().height - FIELD_PADDING, 0, 0, 0);
+			Utility<Renderer>::get().drawLine(static_cast<float>(mCursorX), rect().y + FIELD_PADDING, static_cast<float>(mCursorX), rect().y + rect().height - FIELD_PADDING - 1, 255, 255, 255);
 		}
 		
 		if(mCursorTimer.accumulator() > CURSOR_BLINK_DELAY)
@@ -164,7 +164,7 @@ void TextField::drawCursor()
  */
 void TextField::drawTextHighlight()
 {
-	Utility<Renderer>::get().drawBoxFilled(rect().x() + FIELD_PADDING, rect().y(), static_cast<float>(font().width(text())), rect().height(), 0, 0, 150, 100);
+	Utility<Renderer>::get().drawBoxFilled(rect().x + FIELD_PADDING, rect().y, static_cast<float>(font().width(text())), rect().height, 0, 0, 150, 100);
 }
 
 
@@ -187,7 +187,7 @@ void TextField::updateCursor()
 		mScrollOffset = 0;
 	}
 
-	mCursorX = static_cast<int>(rect().x() + FIELD_PADDING + cursorX - mScrollOffset);
+	mCursorX = static_cast<int>(rect().x + FIELD_PADDING + cursorX - mScrollOffset);
 }
 
 
@@ -305,7 +305,7 @@ void TextField::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	else
 		hasFocus(true);
 
-	int relativePosition = static_cast<int>(x - rect().x());
+	int relativePosition = static_cast<int>(x - rect().x);
 
 	// If the click occured past the width of the text, we can immediatly
 	// set the position to the end and move on.
