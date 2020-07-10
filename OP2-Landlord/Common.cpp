@@ -122,7 +122,7 @@ int gridLocation(int point, int cameraPoint, int viewportDimension)
  */
 bool pointInRect_f(int x, int y, const Rectangle<float>& rect)
 {
-	return static_cast<NAS2D::Rectangle<int>>(rect).contains(NAS2D::Point{x, y});
+	return rect.to<int>().contains(NAS2D::Point{x, y});
 }
 
 
