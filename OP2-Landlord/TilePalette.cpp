@@ -2,14 +2,9 @@
 
 #include "Common.h"
 
-const auto PALETTE_DIMENSIONS = Point<int>{196, 300};
 
-const auto FIRST_TILE_COORDINATE = Point<int>{2, 18};
-const auto TILE_SLOT_PADDING = Point<int>{0, 0};
+const auto PALETTE_DIMENSIONS = Vector{196, 300};
 
-const auto TILE_GRID_DIMENSIONS = Point<int>{6, 8};
-
-const int NUM_TILES_PER_PAGE = TILE_GRID_DIMENSIONS.x * TILE_GRID_DIMENSIONS.y;
 
 using namespace NAS2D;
 
@@ -27,8 +22,9 @@ TilePalette::~TilePalette()
 
 void TilePalette::_init()
 {
-	Renderer& r = Utility<Renderer>::get();
-	_rect() = {r.width() - PALETTE_DIMENSIONS.x - 2, r.height() - PALETTE_DIMENSIONS.y - 2, static_cast<float>(PALETTE_DIMENSIONS.x), static_cast<float>(PALETTE_DIMENSIONS.y)};
+	const auto size = Utility<Renderer>::get().size();
+	const auto startPoint = NAS2D::Point{-2, -2} + size - PALETTE_DIMENSIONS;
+	_rect() = NAS2D::Rectangle<int>::Create(startPoint, PALETTE_DIMENSIONS);
 
 	text("Tile Palette");
 }
