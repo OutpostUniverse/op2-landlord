@@ -3,7 +3,7 @@
 #include "Common.h"
 
 
-const auto PALETTE_DIMENSIONS = Point<int>{196, 300};
+const auto PALETTE_DIMENSIONS = Vector{196, 300};
 
 
 using namespace NAS2D;
