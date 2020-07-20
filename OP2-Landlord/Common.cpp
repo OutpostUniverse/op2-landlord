@@ -22,25 +22,25 @@ void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
 
 	if (!sunk)
 	{
-		r.drawLine(x, y, x + w, y, Color::White);
-		r.drawLine(x, y, x, y + h, Color::White);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x + w, y}, Color::White);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x, y + h}, Color::White);
 
-		r.drawLine(x - 1, y + h - 1, x + w, y + h - 1, Color::Gray);
-		r.drawLine(x + w - 1, y + 1, x + w - 1, y + h - 1, Color::Gray);
+		r.drawLine(NAS2D::Point{x - 1, y + h - 1}, NAS2D::Point{x + w, y + h - 1}, Color::Gray);
+		r.drawLine(NAS2D::Point{x + w - 1, y + 1}, NAS2D::Point{x + w - 1, y + h - 1}, Color::Gray);
 
-		r.drawLine(x - 0.5f, y + h, x + w, y + h, Color::Black);
-		r.drawLine(x + w, y, x + w, y + h, Color::Black);
+		r.drawLine(NAS2D::Point{x - 0.5f, static_cast<float>(y + h)}, NAS2D::Point{x + w, y + h}, Color::Black);
+		r.drawLine(NAS2D::Point{x + w, y}, NAS2D::Point{x + w, y + h}, Color::Black);
 	}
 	else
 	{
-		r.drawLine(x, y + h, x + w, y + h, Color::White);
-		r.drawLine(x + w, y, x + w, y + h, Color::White);
+		r.drawLine(NAS2D::Point{x, y + h}, NAS2D::Point{x + w, y + h}, Color::White);
+		r.drawLine(NAS2D::Point{x + w, y}, NAS2D::Point{x + w, y + h}, Color::White);
 		
-		r.drawLine(x + 1, y + 1, x + w, y + 1, Color::Gray);
-		r.drawLine(x + 1, y + 1, x + 1, y + h, Color::Gray);
+		r.drawLine(NAS2D::Point{x + 1, y + 1}, NAS2D::Point{x + w, y + 1}, Color::Gray);
+		r.drawLine(NAS2D::Point{x + 1, y + 1}, NAS2D::Point{x + 1, y + h}, Color::Gray);
 
-		r.drawLine(x, y, x + w, y, Color::Black);
-		r.drawLine(x, y, x, y + h + 0.5f, Color::Black);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x + w, y}, Color::Black);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{static_cast<float>(x), y + h + 0.5f}, Color::Black);
 	}
 }
 

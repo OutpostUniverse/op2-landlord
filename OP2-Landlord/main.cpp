@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		r.addCursor("sys/fill.png", POINTER_FILL, 0, 0);
 		r.addCursor("sys/eraser.png", POINTER_ERASE, 0, 0);
 		r.showSystemPointer(true);
-		r.minimum_size(1000, 650);
+		r.minimumSize({1000, 650});
 		r.resizeable(true);
 
 		StateManager stateManager;

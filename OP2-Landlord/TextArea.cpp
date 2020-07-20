@@ -103,8 +103,8 @@ void TextArea::draw()
 	Renderer& r = Utility<Renderer>::get();
 
 	if(highlight())
-		r.drawBox(rect(), 255, 255, 255);
+		r.drawBox(rect());
 
 	for (size_t i = 0; i < mFormattedList.size() && i < mNumLines; ++i)
-		r.drawText(font(), mFormattedList[i], positionX(), positionY() + (font().height() * i), 255, 255, 255);
+		r.drawText(font(), mFormattedList[i], {positionX(), positionY() + (font().height() * i)});
 }

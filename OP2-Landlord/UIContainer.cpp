@@ -99,7 +99,7 @@ void UIContainer::update()
 		return;
 	
 	if(mDebug)
-		Utility<Renderer>::get().drawBox(rect(), 200, 200, 200);
+		Utility<Renderer>::get().drawBox(rect(), NAS2D::Color{200, 200, 200});
 
 	for(ControlList::iterator it = mControlList.begin(); it != mControlList.end(); ++it)
 	{
