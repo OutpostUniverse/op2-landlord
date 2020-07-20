@@ -350,7 +350,7 @@ void StartState::button_LoadExisting_click()
 
 	/// Doing it this way only so that the user can get feedback about what the app is doing.
 	/// \todo	This would benefit by spinning loading maps into its own thread.
-	Utility<Renderer>::get().drawText(mBoldFont, "LOADING MAP. PLEASE WAIT...", mLayoutRect.x, 5, 255, 255, 0);
+	Utility<Renderer>::get().drawText(mBoldFont, "LOADING MAP. PLEASE WAIT...", NAS2D::Point{mLayoutRect.x, 5}, NAS2D::Color{255, 255, 0});
 	Utility<Renderer>::get().update();
 
 	try
@@ -378,10 +378,10 @@ void StartState::button_RefreshLists_click()
 State* StartState::update()
 {
 	Renderer& r = Utility<Renderer>::get();
-	r.clearScreen(25, 25, 25);
+	r.clearScreen(NAS2D::Color{25, 25, 25});
 
-	r.drawBox(mLayoutRect, 255, 255, 255);
-	r.drawLine(mLayoutRect.x + mLayoutRect.width / 3, mLayoutRect.y, mLayoutRect.x + mLayoutRect.width / 3, mLayoutRect.y + mLayoutRect.height);
+	r.drawBox(mLayoutRect);
+	r.drawLine(NAS2D::Point{mLayoutRect.x + mLayoutRect.width / 3, mLayoutRect.y}, NAS2D::Point{mLayoutRect.x + mLayoutRect.width / 3, mLayoutRect.y + mLayoutRect.height});
 
 	updateUi();
 
@@ -393,16 +393,16 @@ State* StartState::update()
 
 	if (!MESSAGE.empty() && MSG_FLASH)
 	{
-		r.drawText(mBoldFont, MESSAGE, 15, r.height() - 20, 255, 0, 0);
+		r.drawText(mBoldFont, MESSAGE, NAS2D::Point{15, r.height() - 20}, NAS2D::Color::Red);
 	}
 
-	r.drawBoxFilled(NEW_MAP_PANEL_CENTER - mMapSize.x / 2, (r.height() - 223) - mMapSize.y / 2, mMapSize.x, mMapSize.y, 185, 185, 185);
+	r.drawBoxFilled(NAS2D::Rectangle{NEW_MAP_PANEL_CENTER - mMapSize.x / 2, (r.height() - 223) - mMapSize.y / 2, mMapSize.x, mMapSize.y}, NAS2D::Color{185, 185, 185});
 
 	/// Doing it this way only so that the user can get feedback about what the app is doing.
 	/// \todo	This would benefit by spinning loading maps into its own thread.
 	if (mScanningMaps)
 	{
-		r.drawText(mBoldFont, "SCANNING MAPS. PLEASE WAIT...", mLayoutRect.x, 0, 255, 255, 0);
+		r.drawText(mBoldFont, "SCANNING MAPS. PLEASE WAIT...", NAS2D::Point{mLayoutRect.x, 0}, NAS2D::Color{255, 255, 0});
 		r.update();
 		fillMapMenu();
 		mScanningMaps = false;

@@ -161,7 +161,7 @@ void Button::draw()
 		int y = static_cast<int>(rect().y + (rect().height / 2) - (mImage->height() / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
-		r.drawImage(*mImage, x, y);
+		r.drawImage(*mImage, NAS2D::Point{x, y});
 	}
 	else if (fontSet() && !text().empty())
 	{
@@ -169,8 +169,8 @@ void Button::draw()
 		int y = static_cast<int>(rect().y + (rect().height / 2) - (font().height() / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
-		r.drawText(font(), text(), x, y, 0, 0, 0);
+		r.drawText(font(), text(), NAS2D::Point{x, y}, NAS2D::Color::Black);
 	}
 
-	if (!enabled()) { r.drawBoxFilled(rect(), 125, 125, 125, 100); }
+	if (!enabled()) { r.drawBoxFilled(rect(), NAS2D::Color{125, 125, 125, 100}); }
 }

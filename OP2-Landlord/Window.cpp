@@ -97,13 +97,13 @@ void Window::update()
 
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(rect(), 180, 180, 180);
-	r.drawBoxFilled(rect().x, rect().y, rect().width, TITLE_BAR_HEIGHT, 75, 95, 130);
-	r.drawBox(rect(), 0, 0, 0);
+	r.drawBoxFilled(rect(), NAS2D::Color{180, 180, 180});
+	r.drawBoxFilled({rect().x, rect().y, rect().width, TITLE_BAR_HEIGHT}, NAS2D::Color{75, 95, 130});
+	r.drawBox(rect(), NAS2D::Color::Black);
 
 	if (mBoldFont)
 	{
-		r.drawText(*mBoldFont, text(), rect().x + (rect().width / 2) - (mBoldFont->width(text()) / 2), rect().y + 2, 255, 255, 255);
+		r.drawText(*mBoldFont, text(), {rect().x + (rect().width / 2) - (mBoldFont->width(text()) / 2), rect().y + 2});
 	}
 
 	draw();

@@ -156,8 +156,8 @@ void drawSeparator(Button& btn, int margin)
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawLine(btn.positionX() + btn.width() + margin, btn.positionY(), btn.positionX() + btn.width() + margin, btn.positionY() + btn.height(), 130, 130, 130);
-	r.drawLine(btn.positionX() + btn.width() + margin + 1, btn.positionY(), btn.positionX() + btn.width() + margin + 1, btn.positionY() + btn.height(), 200, 200, 200);
+	r.drawLine({btn.positionX() + btn.width() + margin, btn.positionY()}, {btn.positionX() + btn.width() + margin, btn.positionY() + btn.height()}, NAS2D::Color{130, 130, 130});
+	r.drawLine({btn.positionX() + btn.width() + margin + 1, btn.positionY()}, {btn.positionX() + btn.width() + margin + 1, btn.positionY() + btn.height()}, NAS2D::Color{200, 200, 200});
 }
 
 
@@ -176,18 +176,18 @@ void ToolBar::update()
 
 	if (btnFillContiguous.visible())
 	{
-		r.drawBoxFilled((float)mFloodFillExtendedArea.x + 3, (float)mFloodFillExtendedArea.y + 4, (float)mFloodFillExtendedArea.width, (float)mFloodFillExtendedArea.height, 0, 0, 0, 100);
-		r.drawBoxFilled(mFloodFillExtendedArea, 180, 180, 180);
-		r.drawBox(mFloodFillExtendedArea, 0, 0, 0);
-		r.drawText(mFont, "Contiguous", btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4, 0, 0, 0);
+		r.drawBoxFilled(NAS2D::Rectangle{mFloodFillExtendedArea.x + 3, mFloodFillExtendedArea.y + 4, mFloodFillExtendedArea.width, mFloodFillExtendedArea.height}, NAS2D::Color{0, 0, 0, 100});
+		r.drawBoxFilled(mFloodFillExtendedArea, NAS2D::Color{180, 180, 180});
+		r.drawBox(mFloodFillExtendedArea, NAS2D::Color::Black);
+		r.drawText(mFont, "Contiguous", {btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4}, NAS2D::Color::Black);
 		btnFillContiguous.update();
-		if (btnFillContiguous.toggled()) r.drawImage(mToggle, btnFillContiguous.positionX() - 1, btnFillContiguous.positionY());
+		if (btnFillContiguous.toggled()) r.drawImage(mToggle, {btnFillContiguous.positionX() - 1, btnFillContiguous.positionY()});
 	}
 
-	r.drawBoxFilled(btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28, 255, 255, 255);
-	r.drawBox(btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28, 0, 0, 0);
+	r.drawBoxFilled({btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28});
+	r.drawBox({btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28}, NAS2D::Color::Black);
 	const auto text = std::to_string(static_cast<int>(mBrush.width()));
-	r.drawText(mFont, text, btnSpinnerUp.rect().x - 18 + (mFont.width(text) / 2), 12, 0, 0, 0);
+	r.drawText(mFont, text, {btnSpinnerUp.rect().x - 18 + (mFont.width(text) / 2), 12}, NAS2D::Color::Black);
 
 	btnSpinnerUp.update();
 	btnSpinnerDown.update();

@@ -114,14 +114,14 @@ State* EditorState::update()
 
 	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), mToolBar.show_collision_mask());
 
-	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x, mTileHighlight.y)), 5, 50, 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x, mTileHighlight.y)), {5, 50}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
 
 	updateSelector();
 	updateUI();
 
 	const auto text = "World Tile: " + std::to_string(mTileHighlight.x) + ", " + std::to_string(mTileHighlight.y);
-	r.drawTextShadow(mBoldFont, text, 5, r.height() - 30, 1, 255, 255, 255, 0, 0, 0);
-	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, 5.0f, r.height() - mBoldFont.height(), 1, 255, 255, 255, 0, 0, 0);
+	r.drawTextShadow(mBoldFont, text, NAS2D::Point{5, r.height() - 30}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
+	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, NAS2D::Point{5, r.height() - mBoldFont.height()}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
 
 	return mReturnState;
 }
@@ -166,7 +166,7 @@ void EditorState::updateSelector()
 	{
 		for(int col = p.width(); col > 0; col--)
 		{
-			r.drawBox(mSelectorRect.x - offsetX, mSelectorRect.y - offsetY + TILE_SIZE, mSelectorRect.width, mSelectorRect.height, 255, 255, 255);
+			r.drawBox(NAS2D::Rectangle{mSelectorRect.x - offsetX, mSelectorRect.y - offsetY + TILE_SIZE, mSelectorRect.width, mSelectorRect.height});
 			offsetX += 32;
 		}
 		offsetX = 0;

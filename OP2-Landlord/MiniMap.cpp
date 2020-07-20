@@ -73,16 +73,16 @@ void MiniMap::draw()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(rect(), 180, 180, 180);
-	r.drawBoxFilled((float)rect().x, (float)rect().y, (float)rect().width, 16, 75, 95, 130);
-	r.drawBox(rect(), 0, 0, 0);
+	r.drawBoxFilled(rect(), NAS2D::Color{180, 180, 180});
+	r.drawBoxFilled({rect().x, rect().y, rect().width, 16}, NAS2D::Color{75, 95, 130});
+	r.drawBox(rect(), NAS2D::Color::Black);
 
 
-	r.drawBoxFilled(rect().x + 5, rect().y + 21, (float)mMiniMap->width(), (float)mMiniMap->height(), 255, 0, 255);
-	r.drawImage(*mMiniMap, rect().x + 5, rect().y + 21);
+	r.drawBoxFilled({rect().x + 5, rect().y + 21, static_cast<float>(mMiniMap->width()), static_cast<float>(mMiniMap->height())}, NAS2D::Color{255, 0, 255});
+	r.drawImage(*mMiniMap, {rect().x + 5, rect().y + 21});
 
 	mViewRect = {static_cast<int>(rect().x + 5 + (mMap->cameraPosition().x / TILE_SIZE)), static_cast<int>(rect().y + 21 + (mMap->cameraPosition().y / TILE_SIZE)), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE)};
-	r.drawBox(mViewRect, 255, 255, 255);
+	r.drawBox(mViewRect);
 }
 
 

@@ -58,7 +58,7 @@ void TileSet::draw(int index, int x, int y)
 		return;
 	}
 
-	Utility<Renderer>::get().drawSubImage(mTileSetImage, static_cast<float>(x), static_cast<float>(y), 0, static_cast<float>(index * 32), 32, 32);
+	Utility<Renderer>::get().drawSubImage(mTileSetImage, NAS2D::Point{x, y}, NAS2D::Rectangle{0, index * 32, 32, 32});
 }
 
 

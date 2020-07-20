@@ -246,8 +246,8 @@ void Slider::draw()
 	int _x = 0, _y = 0, _w = 0, _h = 0;
 	float _thumbPosition = 0.0f;
 
-	r.drawBoxFilled(mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height, 100, 100, 100);
-	r.drawBox(mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height, 50, 50, 50);
+	r.drawBoxFilled({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{100, 100, 100});
+	r.drawBox({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{50, 50, 50});
 
 	mButton1.update();
 	mButton2.update();
@@ -315,9 +315,9 @@ void Slider::draw()
 			_y = mSlideBar.y - 2 - _h;
 		}
 
-		r.drawBox(_x - _w / 2, _y, _w, _h, 255, 255, 255, 180);
-		r.drawBoxFilled(_x + 1 - _w / 2, _y + 1, _w - 2, _h - 2, 0, 0, 0, 180);
-		r.drawText(font(), textHover, _x + 2 - _w / 2, _y + 2, 220, 220, 220);
+		r.drawBox(NAS2D::Rectangle{_x - _w / 2, _y, _w, _h}, NAS2D::Color{255, 255, 255, 180});
+		r.drawBoxFilled(NAS2D::Rectangle{_x + 1 - _w / 2, _y + 1, _w - 2, _h - 2}, NAS2D::Color{0, 0, 0, 180});
+		r.drawText(font(), textHover, NAS2D::Point{_x + 2 - _w / 2, _y + 2}, NAS2D::Color{220, 220, 220});
 	}
 }
 

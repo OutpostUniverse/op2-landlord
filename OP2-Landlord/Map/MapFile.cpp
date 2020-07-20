@@ -279,7 +279,7 @@ void MapFile::draw(int x, int y, int width, int height, bool draw_overlay)
 
 			if (draw_overlay)
 			{
-				r.drawSubImage(*CELL_TYPE_OVERLAY, rasterX, rasterY, 0, static_cast<int>(cellType(col + offsetX, row + offsetY)) * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				r.drawSubImage(*CELL_TYPE_OVERLAY, NAS2D::Point{rasterX, rasterY}, NAS2D::Rectangle{0, cellType(col + offsetX, row + offsetY) * TILE_SIZE, TILE_SIZE, TILE_SIZE});
 			}
 		}
 	}

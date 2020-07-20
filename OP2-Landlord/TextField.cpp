@@ -108,29 +108,29 @@ void TextField::draw()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	r.drawBoxFilled(rect(), 255, 255, 255);
+	r.drawBoxFilled(rect());
 
 	if (hasFocus())
 	{
-		r.drawBox(rect(), 0, 180, 255);
+		r.drawBox(rect(), NAS2D::Color{0, 180, 255});
 	}
 	else
 	{
-		r.drawBox(rect(), 0, 0, 0);
+		r.drawBox(rect(), NAS2D::Color::Black);
 	}
 
 
 
 	if (highlight())
 	{
-		r.drawBox(rect(), 255, 255, 0);
+		r.drawBox(rect(), NAS2D::Color{255, 255, 0});
 	}
 
 	drawCursor();
 
 	if (fontSet())
 	{
-		r.drawText(font(), text(), positionX() + FIELD_PADDING, positionY() + FIELD_PADDING, 0, 0, 0);
+		r.drawText(font(), text(), {positionX() + FIELD_PADDING, positionY() + FIELD_PADDING}, NAS2D::Color::Black);
 	}
 }
 
@@ -146,8 +146,8 @@ void TextField::drawCursor()
 		{
 			// updateCursor() should be called only on events relating to the cursor so this is temporary.
 			updateCursor();
-			Utility<Renderer>::get().drawLine(static_cast<float>(mCursorX + 1), rect().y + FIELD_PADDING + 1, static_cast<float>(mCursorX + 1), rect().y + rect().height - FIELD_PADDING, 0, 0, 0);
-			Utility<Renderer>::get().drawLine(static_cast<float>(mCursorX), rect().y + FIELD_PADDING, static_cast<float>(mCursorX), rect().y + rect().height - FIELD_PADDING - 1, 255, 255, 255);
+			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX + 1, static_cast<int>(rect().y) + FIELD_PADDING + 1}, NAS2D::Point{mCursorX + 1, static_cast<int>(rect().y + rect().height) - FIELD_PADDING}, NAS2D::Color::Black);
+			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX, static_cast<int>(rect().y) + FIELD_PADDING}, NAS2D::Point{mCursorX, static_cast<int>(rect().y + rect().height) - FIELD_PADDING - 1});
 		}
 		
 		if(mCursorTimer.accumulator() > CURSOR_BLINK_DELAY)
@@ -164,7 +164,7 @@ void TextField::drawCursor()
  */
 void TextField::drawTextHighlight()
 {
-	Utility<Renderer>::get().drawBoxFilled(rect().x + FIELD_PADDING, rect().y, static_cast<float>(font().width(text())), rect().height, 0, 0, 150, 100);
+	Utility<Renderer>::get().drawBoxFilled({rect().x + FIELD_PADDING, rect().y, static_cast<float>(font().width(text())), rect().height}, NAS2D::Color{0, 0, 150, 100});
 }
 
 
