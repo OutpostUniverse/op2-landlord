@@ -157,8 +157,8 @@ void Button::draw()
 
 	if (mImage)
 	{
-		int x = static_cast<int>(rect().x + (rect().width / 2) - ((mImage->width() / 2) + 1));
-		int y = static_cast<int>(rect().y + (rect().height / 2) - (mImage->height() / 2));
+		int x = static_cast<int>(rect().x + (rect().width / 2) - ((mImage->size().x / 2) + 1));
+		int y = static_cast<int>(rect().y + (rect().height / 2) - (mImage->size().y / 2));
 
 		if (mState == STATE_PRESSED) { ++x; ++y; }
 		r.drawImage(*mImage, NAS2D::Point{x, y});

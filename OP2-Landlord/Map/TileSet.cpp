@@ -7,7 +7,7 @@ using namespace NAS2D;
  */
 TileSet::TileSet(const std::string& filename):	mTileSetName(filename),
 												mTileSetImage(filename + ".png"),
-												mTileCount(mTileSetImage.height() / 32),
+												mTileCount(mTileSetImage.size().y / 32),
 												mColorTable(selectColorTable(filename))
 {
 	if (mTileCount == 0)

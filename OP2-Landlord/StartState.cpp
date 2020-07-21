@@ -64,7 +64,7 @@ void StartState::initialize()
 
 	setMessage("");
 
-	mLayoutRect = {15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40)};
+	mLayoutRect = {15, 15, static_cast<int>(Utility<Renderer>::get().size().x - 30), static_cast<int>(Utility<Renderer>::get().size().y - 40)};
 
 	initUi();
 
@@ -207,7 +207,7 @@ void StartState::resizeLayout()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	mLayoutRect = {15, 15, static_cast<int>(Utility<Renderer>::get().width() - 30), static_cast<int>(Utility<Renderer>::get().height() - 40)};
+	mLayoutRect = {15, 15, static_cast<int>(Utility<Renderer>::get().size().x - 30), static_cast<int>(Utility<Renderer>::get().size().y - 40)};
 
 	// =========================================
 	// = LOAD MAP PANEL
@@ -228,15 +228,15 @@ void StartState::resizeLayout()
 
 	mBtn64x64.position(_left_x, 25);
 	mBtn64x128.position(NEW_MAP_PANEL_CENTER - 60, 25);
-	mBtn64x256.position(r.width() - 125, 25);
+	mBtn64x256.position(r.size().x - 125, 25);
 
 	mBtn128x128.position(_left_x, 55);
 	mBtn128x64.position(NEW_MAP_PANEL_CENTER - 60, 55);
-	mBtn128x256.position(r.width() - 125, 55);
+	mBtn128x256.position(r.size().x - 125, 55);
 
 	mBtn256x256.position(_left_x, 85);
 	mBtn256x128.position(NEW_MAP_PANEL_CENTER - 60, 85);
-	mBtn512x256.position(r.width() - 125, 85);
+	mBtn512x256.position(r.size().x - 125, 85);
 
 	mBtnCreateNew.position(mLayoutRect.x + mLayoutRect.width - 95, mLayoutRect.y + mLayoutRect.height - 35);
 
@@ -248,7 +248,7 @@ void StartState::resizeLayout()
 
 	mBtnMud.position(_left_x, txtMapDescription.positionY() + txtMapDescription.height() + 10);
 	mBtnRock.position(NEW_MAP_PANEL_CENTER - mBtnRock.width() / 2, txtMapDescription.positionY() + txtMapDescription.height() + 10);
-	mBtnSand.position(r.width() - mBtnSand.width() - 25, txtMapDescription.positionY() + txtMapDescription.height() + 10);
+	mBtnSand.position(r.size().x - mBtnSand.width() - 25, txtMapDescription.positionY() + txtMapDescription.height() + 10);
 }
 
 
@@ -393,10 +393,10 @@ State* StartState::update()
 
 	if (!MESSAGE.empty() && MSG_FLASH)
 	{
-		r.drawText(mBoldFont, MESSAGE, NAS2D::Point{15, r.height() - 20}, NAS2D::Color::Red);
+		r.drawText(mBoldFont, MESSAGE, NAS2D::Point{15, r.size().y - 20}, NAS2D::Color::Red);
 	}
 
-	r.drawBoxFilled(NAS2D::Rectangle{NEW_MAP_PANEL_CENTER - mMapSize.x / 2, (r.height() - 223) - mMapSize.y / 2, mMapSize.x, mMapSize.y}, NAS2D::Color{185, 185, 185});
+	r.drawBoxFilled(NAS2D::Rectangle{NEW_MAP_PANEL_CENTER - mMapSize.x / 2, (r.size().y - 223) - mMapSize.y / 2, mMapSize.x, mMapSize.y}, NAS2D::Color{185, 185, 185});
 
 	/// Doing it this way only so that the user can get feedback about what the app is doing.
 	/// \todo	This would benefit by spinning loading maps into its own thread.
