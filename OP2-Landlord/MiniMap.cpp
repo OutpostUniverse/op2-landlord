@@ -25,7 +25,7 @@ void MiniMap::_init()
 void MiniMap::adjustCamera(int x, int y)
 {
 	Renderer& r = Utility<Renderer>::get();
-	mMap->setCamera((TILE_SIZE * (x - (int)rect().x + 4)) - ((int)r.width() / 2),(TILE_SIZE * (y - (int)rect().y - 21)) - ((int)r.height() / 2));
+	mMap->setCamera((TILE_SIZE * (x - (int)rect().x + 4)) - ((int)r.size().x / 2),(TILE_SIZE * (y - (int)rect().y - 21)) - ((int)r.size().y / 2));
 }
 
 
@@ -38,7 +38,7 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 	if (!mMiniMap) { return; }
 
 	const auto startPoint = NAS2D::Point{rect().x + 4, rect().y + 21}.to<int>();
-	const auto miniMapBounds = NAS2D::Rectangle{startPoint.x, startPoint.y, mMiniMap->width(), mMiniMap->height()};
+	const auto miniMapBounds = NAS2D::Rectangle{startPoint.x, startPoint.y, mMiniMap->size().x, mMiniMap->size().y};
 	if (miniMapBounds.contains({x, y}))
 	{
 		mMovingCamera = true;
@@ -78,10 +78,10 @@ void MiniMap::draw()
 	r.drawBox(rect(), NAS2D::Color::Black);
 
 
-	r.drawBoxFilled({rect().x + 5, rect().y + 21, static_cast<float>(mMiniMap->width()), static_cast<float>(mMiniMap->height())}, NAS2D::Color{255, 0, 255});
+	r.drawBoxFilled({rect().x + 5, rect().y + 21, static_cast<float>(mMiniMap->size().x), static_cast<float>(mMiniMap->size().y)}, NAS2D::Color{255, 0, 255});
 	r.drawImage(*mMiniMap, {rect().x + 5, rect().y + 21});
 
-	mViewRect = {static_cast<int>(rect().x + 5 + (mMap->cameraPosition().x / TILE_SIZE)), static_cast<int>(rect().y + 21 + (mMap->cameraPosition().y / TILE_SIZE)), static_cast<int>(r.width() / TILE_SIZE), static_cast<int>(r.height() / TILE_SIZE)};
+	mViewRect = {static_cast<int>(rect().x + 5 + (mMap->cameraPosition().x / TILE_SIZE)), static_cast<int>(rect().y + 21 + (mMap->cameraPosition().y / TILE_SIZE)), static_cast<int>(r.size().x / TILE_SIZE), static_cast<int>(r.size().y / TILE_SIZE)};
 	r.drawBox(mViewRect);
 }
 
@@ -89,7 +89,7 @@ void MiniMap::draw()
 void MiniMap::update_minimap()
 {
 	createMiniMap();
-	size(mMiniMap->width() + 10, mMiniMap->height() + 26);
+	size(mMiniMap->size().x + 10, mMiniMap->size().y + 26);
 }
 
 

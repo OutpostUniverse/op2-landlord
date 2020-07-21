@@ -84,7 +84,7 @@ void ToolBar::initUi()
 	// WINDOW VISIBILITY
 	btnExit.image("sys/exit.png");
 	btnExit.size(22, 28);
-	btnExit.position(Utility<Renderer>::get().width() - 24, 2);
+	btnExit.position(Utility<Renderer>::get().size().x - 24, 2);
 	btnExit.click().connect(this, &ToolBar::btnExit_Clicked);
 
 
@@ -144,7 +144,7 @@ void ToolBar::onMouseWheel(int x, int y)
 
 void ToolBar::onWindowResized(int width, int height)
 {
-	btnExit.position(Utility<Renderer>::get().width() - 24, 2);
+	btnExit.position(Utility<Renderer>::get().size().x - 24, 2);
 
 	btnTileGroupsToggle.position(btnExit.positionX() - 42, 2);
 	btnTilePaletteToggle.position(btnTileGroupsToggle.positionX() - 24, 2);
@@ -164,7 +164,7 @@ void drawSeparator(Button& btn, int margin)
 void ToolBar::update()
 {
 	Renderer& r = Utility<Renderer>::get();
-	bevelBox(0, 0, static_cast<int>(r.width()), static_cast<int>(height()));
+	bevelBox(0, 0, static_cast<int>(r.size().x), static_cast<int>(height()));
 
 	btnSave.update();
 

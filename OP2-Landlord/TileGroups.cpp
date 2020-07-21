@@ -44,7 +44,7 @@ void TileGroups::map(MapFile* map)
 
 	mMap = map;
 	size((mMap->tileGroupExtents().x * TILE_SIZE) + 10, (mMap->tileGroupExtents().y * TILE_SIZE) + 10 + TILE_SIZE + 7);
-	position(r.width() - width() - 5, r.height() - height() - 5);
+	position(r.size().x - width() - 5, r.size().y - height() - 5);
 
 	mSlider.font(font());
 	mSlider.position(positionX() + 5, positionY() + height() - 20);

@@ -76,7 +76,7 @@ void EditorState::initialize()
 	Renderer& r = Utility<Renderer>::get();
 
 	mMap = new MapFile(mMapSavePath);
-	mMap->updateCameraAnchorArea(r.width(), r.height() - mToolBar.height());
+	mMap->updateCameraAnchorArea(r.size().x, r.size().y - mToolBar.height());
 
 	mTileGroups.map(mMap);
 	mMiniMap.map(mMap);
@@ -112,7 +112,7 @@ State* EditorState::update()
 	Renderer& r = Utility<Renderer>::get();
 	r.clearScreen(Color::Magenta);
 
-	mMap->draw(0, 32, r.width(), r.height() - mToolBar.height(), mToolBar.show_collision_mask());
+	mMap->draw(0, 32, r.size().x, r.size().y - mToolBar.height(), mToolBar.show_collision_mask());
 
 	r.drawTextShadow(mBoldFont, "Cell Type: " + getCellTypeString((CellType)mMap->cellType(mTileHighlight.x, mTileHighlight.y)), {5, 50}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
 
@@ -120,8 +120,8 @@ State* EditorState::update()
 	updateUI();
 
 	const auto text = "World Tile: " + std::to_string(mTileHighlight.x) + ", " + std::to_string(mTileHighlight.y);
-	r.drawTextShadow(mBoldFont, text, NAS2D::Point{5, r.height() - 30}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
-	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, NAS2D::Point{5, r.height() - mBoldFont.height()}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
+	r.drawTextShadow(mBoldFont, text, NAS2D::Point{5, r.size().y - 30}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
+	r.drawTextShadow(mBoldFont, "Map File: " + mMapSavePath, NAS2D::Point{5, r.size().y - mBoldFont.height()}, {1, 1}, NAS2D::Color::White, NAS2D::Color::Black);
 
 	return mReturnState;
 }
@@ -152,8 +152,8 @@ void EditorState::updateSelector()
 	int rectOffsetX = (mMap->cameraPosition().x % TILE_SIZE);
 	int rectOffsetY = (mMap->cameraPosition().y % TILE_SIZE) + TILE_SIZE; // offset for the toolbar
 
-	int gridX = gridLocation(mMouseCoords.x, mMap->cameraPosition().x, r.width());
-	int gridY = gridLocation(mMouseCoords.y, mMap->cameraPosition().y + TILE_SIZE, r.height() - TILE_SIZE);
+	int gridX = gridLocation(mMouseCoords.x, mMap->cameraPosition().x, r.size().x);
+	int gridY = gridLocation(mMouseCoords.y, mMap->cameraPosition().y + TILE_SIZE, r.size().y - TILE_SIZE);
 
 	mSelectorRect = {gridX * TILE_SIZE - rectOffsetX, gridY * TILE_SIZE - rectOffsetY, TILE_SIZE, TILE_SIZE};
 
