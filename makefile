@@ -14,11 +14,15 @@ CXXFLAGS := -std=c++17 -g -Wall -Wno-unknown-pragmas $(shell sdl2-config --cflag
 LDFLAGS := -static-libgcc -static-libstdc++ -Lnas2d-core/lib/
 LDLIBS := -lstdc++fs -lnas2d -lphysfs -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL -lGLEW
 
+NAS2DLIB := nas2d-core/lib/libnas2d.a
+
 .PHONY: op2landlord nas2d clean-nas2d clean-all-nas2d
 
 all: op2landlord
 
-op2landlord.exe: | nas2d
+op2landlord.exe: | $(NAS2DLIB)
+
+$(NAS2DLIB): | nas2d
 
 nas2d:
 	+make -C nas2d-core/ CXX="$(CXX)"
