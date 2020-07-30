@@ -107,6 +107,6 @@ void MiniMap::createMiniMap()
 		}
 	}
 
-	if (mMiniMap) { delete mMiniMap; }
+	delete mMiniMap;
 	mMiniMap = new Image(buffer.data(), sizeof(Color), mMap->width(), mMap->height());
 }
