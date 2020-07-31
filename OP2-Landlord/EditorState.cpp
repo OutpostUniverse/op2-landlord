@@ -18,9 +18,8 @@ std::stack<Point<int>> FLOOD_STACK;					/**< Stack used for contiguous flood fil
  * 
  * This version of the constructor is used to load an existing map file.
  */
-EditorState::EditorState(const std::string& mapPath):	mFont("fonts/opensans.ttf", 12),
-													mBoldFont("fonts/opensans-bold.ttf", 12),
-													mMapSavePath(mapPath)
+EditorState::EditorState(const std::string& mapPath) :
+	mMapSavePath(mapPath)
 {}
 
 
