@@ -60,27 +60,27 @@ private:
 	void toolbar_event(ToolBar::ToolBarAction _act);
 
 private:
-	Timer			mTimer;						/**<  */
-	Font			mFont;						/**<  */
-	Font			mBoldFont;					/**<  */
+	Timer			mTimer;
+	Font			mFont{"fonts/opensans.ttf", 12};
+	Font			mBoldFont{"fonts/opensans-bold.ttf", 12};
 
 	MapFile*		mMap = nullptr;				/**< Map object. */
 
 	std::string		mMapSavePath;				/**< Filename to use for loading/saving. */
 
 	// PRIMITIVES
-	Point<int>		mMouseCoords;				/**<  */
-	Point<int>		mSavedMouseCoords;			/**<  */
-	Point<int>		mTileHighlight;				/**<  */
+	Point<int>		mMouseCoords;
+	Point<int>		mSavedMouseCoords;
+	Point<int>		mTileHighlight;
 
-	Rectangle<int>	mSelectorRect;				/**<  */
-	Rectangle<int>	mCellInspectRect;			/**<  */
+	Rectangle<int>	mSelectorRect;
+	Rectangle<int>	mCellInspectRect;
 
 	// UI ELEMENTS
-	TileGroups		mTileGroups;				/**<  */
-	TilePalette		mTilePalette;				/**<  */
-	ToolBar			mToolBar;					/**<  */
-	MiniMap			mMiniMap;					/**<  */
+	TileGroups		mTileGroups;
+	TilePalette		mTilePalette;
+	ToolBar			mToolBar;
+	MiniMap			mMiniMap;
 
 	// FLAGS
 	bool			mLeftButtonDown = false;	/**< Flag for left mouse button down. */
