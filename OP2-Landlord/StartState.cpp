@@ -35,9 +35,8 @@ void setMessage(const std::string& msg)
 /**
  * C'tpr
  */
-StartState::StartState():	mFont("fonts/opensans.ttf", 12),
-							mBoldFont("fonts/opensans-bold.ttf", 12),
-							mMapSize{64, 64}
+StartState::StartState() :
+	mMapSize{64, 64}
 {}
 
 

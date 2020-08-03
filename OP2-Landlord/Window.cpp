@@ -25,7 +25,7 @@ Window::~Window()
 }
 
 
-void Window::titleFont(Font& font)
+void Window::titleFont(const Font& font)
 {
 	mBoldFont = &font;
 }

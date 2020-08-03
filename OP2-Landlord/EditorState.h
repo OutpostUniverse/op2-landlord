@@ -2,6 +2,7 @@
 
 #include "NAS2D/NAS2D.h"
 
+#include "Fonts.h"
 #include "MiniMap.h"
 #include "TileGroups.h"
 #include "TilePalette.h"
@@ -61,8 +62,8 @@ private:
 
 private:
 	Timer			mTimer;
-	Font			mFont{"fonts/opensans.ttf", 12};
-	Font			mBoldFont{"fonts/opensans-bold.ttf", 12};
+	const Font& mFont = fontCache.load("fonts/opensans.ttf", 12);
+	const Font& mBoldFont = fontCache.load("fonts/opensans-bold.ttf", 12);
 
 	MapFile*		mMap = nullptr;				/**< Map object. */
 
