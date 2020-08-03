@@ -29,7 +29,7 @@ public:
 	Control();
 	virtual ~Control();
 
-	void font(Font& font);
+	void font(const Font& font);
 
 	void position(const Point<float>& pos);
 	void position(float x, float y);
@@ -98,7 +98,7 @@ protected:
 	virtual void onTextChanged() { mTextChanged(this); };
 	virtual void onFontChanged() {};
 
-	Font& font();
+	const Font& font();
 	bool fontSet() const;
 
 	Rectangle<float>& _rect();
@@ -115,7 +115,7 @@ private:
 
 	virtual void draw() {};
 
-	Font*			mFont;			/**< Pointer to a Font object. Control DOES NOT own the pointer. */
+	const Font*			mFont;			/**< Pointer to a Font object. Control DOES NOT own the pointer. */
 
 	std::string		mText;			/**< Internal text string. */
 

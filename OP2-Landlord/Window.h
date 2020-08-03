@@ -13,7 +13,7 @@ public:
 
 	virtual bool responding_to_events() const { return dragging(); }
 
-	void titleFont(Font& font);
+	void titleFont(const Font& font);
 	int titleBarHeight() const;
 
 	virtual void update();
@@ -36,7 +36,7 @@ private:
 	Window& operator=(const Window&) = delete;	/**< Not allowed */
 
 private:
-	Font*		mBoldFont = nullptr;			/**< Font used for window title. */
+	const Font*		mBoldFont = nullptr;			/**< Font used for window title. */
 
 	Point<int>	mMouseCoords;					/**<  */
 

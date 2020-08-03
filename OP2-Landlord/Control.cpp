@@ -29,7 +29,7 @@ Control::~Control()
  *			by Control. The Font passed to Control should not be allowed to go
  *			out of scope until the Control is destroyed.
  */
-void Control::font(Font& font)
+void Control::font(const Font& font)
 {
 	mFont = &font;
 
@@ -41,7 +41,7 @@ void Control::font(Font& font)
  * Internal function to provide access to the Font object
  * to derived objects.
  */
-Font& Control::font()
+const Font& Control::font()
 {
 	return *mFont;
 }

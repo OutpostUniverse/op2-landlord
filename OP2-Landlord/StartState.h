@@ -73,8 +73,8 @@ private:
 private:
 	Timer			mTimer;					/**< used to flash messages. */
 
-	Font			mFont;					/**< Internal Font to use. */
-	Font			mBoldFont;				/**< Internal Font to use. */
+	const Font mFont;					/**< Internal Font to use. */
+	const Font mBoldFont;				/**< Internal Font to use. */
 
 	Point<int>		mMapSize;				/**< Rectangle used to position UI elements on screen. */
 	Point<int>		mMouseCoords;			/**< Mouse pointer coordinates. */

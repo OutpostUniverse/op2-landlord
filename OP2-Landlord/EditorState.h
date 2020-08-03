@@ -61,8 +61,8 @@ private:
 
 private:
 	Timer			mTimer;
-	Font			mFont{"fonts/opensans.ttf", 12};
-	Font			mBoldFont{"fonts/opensans-bold.ttf", 12};
+	const Font mFont{"fonts/opensans.ttf", 12};
+	const Font mBoldFont{"fonts/opensans-bold.ttf", 12};
 
 	MapFile*		mMap = nullptr;				/**< Map object. */
 

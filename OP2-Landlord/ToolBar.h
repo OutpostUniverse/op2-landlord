@@ -80,7 +80,7 @@ private:
 	void btnExit_Clicked();
 
 private:
-	Font			mFont;
+	const Font mFont;
 
 	Image			mToggle;
 
