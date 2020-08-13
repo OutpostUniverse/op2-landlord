@@ -42,10 +42,11 @@ int main(int argc, char *argv[])
 
 		Configuration& cf = Utility<Configuration>::get();
 		cf.load("config.xml");
-		if (cf.graphicsWidth() < 1000 || cf.graphicsHeight() < 650)
+		auto& graphics = cf["graphics"];
+		if (graphics.get<int>("screenwidth") < 1000 || graphics.get<int>("screenheight") < 650)
 		{
-			cf.graphicsWidth(1000);
-			cf.graphicsHeight(650);
+			graphics.set("screenwidth", 1000);
+			graphics.set("screenheight", 650);
 		}
 		cf.save("config.xml");
 
