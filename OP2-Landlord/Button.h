@@ -18,8 +18,8 @@ public:
 		BUTTON_TOGGLE
 	};
 
-	typedef NAS2D::Signals::Signal<> ClickCallback;
-	typedef NAS2D::Signals::Signal<bool> PressCallback;
+	typedef NAS2D::Signal<> ClickCallback;
+	typedef NAS2D::Signal<bool> PressCallback;
 
 public:
 	Button();

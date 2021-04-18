@@ -12,7 +12,7 @@
 class ListBox: public UIContainer
 {
 public:
-	typedef NAS2D::Signals::Signal<> SelectionChangedCallback;
+	typedef NAS2D::Signal<> SelectionChangedCallback;
 
 public:
 	ListBox();

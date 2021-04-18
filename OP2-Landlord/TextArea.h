@@ -12,7 +12,7 @@ class TextArea : public Control
 {
 public:
 
-	typedef NAS2D::Signals::Signal<> ClickCallback;
+	typedef NAS2D::Signal<> ClickCallback;
 
 	TextArea();
 	virtual ~TextArea();
