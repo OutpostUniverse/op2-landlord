@@ -4,4 +4,4 @@
 #include <NAS2D/Resources/ResourceCache.h>
 
 
-inline ResourceCache<NAS2D::Font, std::string, unsigned int> fontCache;
+inline NAS2D::ResourceCache<NAS2D::Font, std::string, unsigned int> fontCache;
