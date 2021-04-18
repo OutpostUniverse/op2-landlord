@@ -46,7 +46,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
 	
 	mouseDown(button, x, y);
 
-	if((button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
+	if((button != EventHandler::MouseButton::Left)) { return; }
 
 	const auto windowBounds = rect().to<int>();
 	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.x, windowBounds.y, windowBounds.width, titleBarHeight()};
@@ -71,7 +71,7 @@ void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y)
 	
 	mouseUp(button, x, y);
 
-	if((button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
+	if((button != EventHandler::MouseButton::Left)) { return; }
 }
 
 

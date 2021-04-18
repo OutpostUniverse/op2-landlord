@@ -31,7 +31,7 @@ void MiniMap::adjustCamera(int x, int y)
 
 void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != EventHandler::MouseButton::BUTTON_LEFT) { return; }
+	if (b != EventHandler::MouseButton::Left) { return; }
 	
 	mLeftButtonDown = true;
 
@@ -50,7 +50,7 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 
 void MiniMap::mouseUp(EventHandler::MouseButton b, int x, int y)
 {
-	if (b != EventHandler::MouseButton::BUTTON_LEFT) { return; }
+	if (b != EventHandler::MouseButton::Left) { return; }
 
 	mLeftButtonDown = false;
 	mMovingCamera = false;

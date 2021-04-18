@@ -40,7 +40,7 @@ void TilePalette::draw()
 
 void TilePalette::mouseDown(EventHandler::MouseButton button, int x, int y)
 {
-	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
+	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
 
 	if (!(rect().contains(_mouseCoords())))
 	{
@@ -55,7 +55,7 @@ void TilePalette::mouseUp(EventHandler::MouseButton button, int x, int y)
 {
 	mLeftButtonDown = false;
 
-	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
+	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
 }
 

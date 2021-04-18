@@ -25,7 +25,7 @@ public:
 		TOOLBAR_QUIT
 	};
 
-	typedef NAS2D::Signals::Signal<ToolBarAction> ToolBarEvent;
+	typedef NAS2D::Signal<ToolBarAction> ToolBarEvent;
 
 public:
 	ToolBar();

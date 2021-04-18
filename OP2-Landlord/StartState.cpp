@@ -466,7 +466,7 @@ void StartState::onMouseMove(int x, int y, int relX, int relY)
 
 void StartState::onDoubleClick(EventHandler::MouseButton button, int x, int y)
 {
-	if (button != EventHandler::MouseButton::BUTTON_LEFT) { return; }
+	if (button != EventHandler::MouseButton::Left) { return; }
 
 	if (mMapFilesMenu.rect().contains(mMouseCoords))
 	{
