@@ -263,12 +263,12 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	Utility<EventHandler>::get().grabMouse();
 
 	// Left Mouse Button
-	if(button == EventHandler::MouseButton::BUTTON_LEFT)
+	if(button == EventHandler::MouseButton::Left)
 	{
 		mLeftButtonDown = true;
 		handleLeftButtonDown(x, y);
 	}
-	else if(button == EventHandler::MouseButton::BUTTON_RIGHT)
+	else if(button == EventHandler::MouseButton::Right)
 	{
 		mRightButtonDown = true;
 		mSavedMouseCoords = mMouseCoords;
@@ -282,7 +282,7 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
  */
 void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 {
-	if(button == EventHandler::MouseButton::BUTTON_LEFT)
+	if(button == EventHandler::MouseButton::Left)
 	{
 		mLeftButtonDown = false;
 		//if(mEditState == STATE_BASE_TILE_INDEX || mEditState == STATE_BASE_DETAIL_TILE_INDEX || mEditState == STATE_DETAIL_TILE_INDEX || mEditState == STATE_FOREGROUND_TILE_INDEX)
@@ -294,7 +294,7 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
 			}
 		//}
 	}
-	else if(button == EventHandler::MouseButton::BUTTON_RIGHT)
+	else if(button == EventHandler::MouseButton::Right)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);

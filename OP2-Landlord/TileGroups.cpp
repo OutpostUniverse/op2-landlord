@@ -89,7 +89,7 @@ void TileGroups::draw()
 
 void TileGroups::mouseDown(EventHandler::MouseButton button, int x, int y)
 {
-	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
+	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
 
 	if (!(rect().contains(_mouseCoords())))
 	{
@@ -104,7 +104,7 @@ void TileGroups::mouseUp(EventHandler::MouseButton button, int x, int y)
 {
 	mLeftButtonDown = false;
 
-	if (!visible() || (button != EventHandler::MouseButton::BUTTON_LEFT)) { return; }
+	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
 }
 

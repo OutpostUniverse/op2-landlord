@@ -148,7 +148,7 @@ void Slider::button2_Pressed(bool pressed)
 void Slider::onMouseDown(EventHandler::MouseButton button, int x, int y)
 {
 	if (!enabled() || !visible() || !hasFocus()) { return; }
-	if (button != EventHandler::MouseButton::BUTTON_LEFT) { return; }
+	if (button != EventHandler::MouseButton::Left) { return; }
 
 	if (pointInRect_f(x, y, mSlider))
 	{
@@ -166,7 +166,7 @@ void Slider::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	mThumbPressed = false;
 	mMouseHoverSlide = false;
 
-	if (button != EventHandler::MouseButton::BUTTON_LEFT) { return; }
+	if (button != EventHandler::MouseButton::Left) { return; }
 	if (!enabled() || !visible() || !hasFocus()) { return; }
 
 	if (pointInRect_f(x, y, mSlider))
