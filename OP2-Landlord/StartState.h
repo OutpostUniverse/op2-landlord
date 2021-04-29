@@ -35,7 +35,7 @@ protected:
 	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onMouseMove(int x, int y, int relX, int relY);
 	void onDoubleClick(EventHandler::MouseButton button, int x, int y);
-	void onWindowResize(int width, int height);
+	void onWindowResize(NAS2D::Vector<int> newSize);
 
 	void onQuit();
 
