@@ -219,10 +219,10 @@ void EditorState::onQuit()
 /**
  * Window resized event handler.
  */
-void EditorState::onWindowResized(int x, int y)
+void EditorState::onWindowResized(NAS2D::Vector<int> newSize)
 {
 	// Need to account for the toolbar height for map drawing calculations to be correct.
-	mMap->updateCameraAnchorArea(x, y - mToolBar.height());
+	mMap->updateCameraAnchorArea(newSize.x, newSize.y - mToolBar.height());
 }
 
 

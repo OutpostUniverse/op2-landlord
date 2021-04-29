@@ -475,7 +475,7 @@ void StartState::onDoubleClick(EventHandler::MouseButton button, int x, int y)
 }
 
 
-void StartState::onWindowResize(int width, int height)
+void StartState::onWindowResize(NAS2D::Vector<int> newSize)
 {
 	resizeLayout();
 }

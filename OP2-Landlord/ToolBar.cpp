@@ -142,7 +142,7 @@ void ToolBar::onMouseWheel(int x, int y)
 }
 
 
-void ToolBar::onWindowResized(int width, int height)
+void ToolBar::onWindowResized(NAS2D::Vector<int> newSize)
 {
 	btnExit.position(Utility<Renderer>::get().size().x - 24, 2);
 

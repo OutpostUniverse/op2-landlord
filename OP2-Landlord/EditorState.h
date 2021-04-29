@@ -34,7 +34,7 @@ protected:
 	void onMouseMove(int x, int y, int relX, int relY);
 	void onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
 	void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
-	void onWindowResized(int x, int y);
+	void onWindowResized(NAS2D::Vector<int> newSize);
 	void onQuit();
 
 private:
