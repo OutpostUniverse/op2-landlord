@@ -15,7 +15,6 @@ public:
 	void seek(int pos);
 
 private:
-	int								mPosition = 0;
-
-	std::string		mStream;
+	int mPosition = 0;
+	std::string mStream;
 };
