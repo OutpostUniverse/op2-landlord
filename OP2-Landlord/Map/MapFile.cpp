@@ -418,8 +418,7 @@ void MapFile::load(const std::string& filename)
 
 	try
 	{
-		auto file = Utility<Filesystem>::get().open(filename);
-		StreamReader stream_reader(file.bytes());
+		StreamReader stream_reader(Utility<Filesystem>::get().read(filename));
 
 		stream_reader.read(&mMapHeadInfo, sizeof(mMapHeadInfo));
 
