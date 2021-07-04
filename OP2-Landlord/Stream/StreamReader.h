@@ -1,11 +1,13 @@
 #pragma once
 
-#include <NAS2D/NAS2D.h>
+#include <string>
+#include <utility>
+
 
 class StreamReader
 {
 public:
-	StreamReader(NAS2D::File::RawByteStream& stream) : mStream(stream) {}
+	StreamReader(std::string stream) : mStream(std::move(stream)) {}
 	StreamReader() {}
 	~StreamReader() {}
 
@@ -15,5 +17,5 @@ public:
 private:
 	int								mPosition = 0;
 
-	NAS2D::File::RawByteStream		mStream;
+	std::string		mStream;
 };
