@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  gcc:
+  build-linux-gcc:
     docker:
       - image: outpostuniverse/nas2d-circleci:1.1
     steps:
@@ -13,4 +13,4 @@ workflows:
   version: 2
   build:
     jobs:
-      - gcc
+      - build-linux-gcc
