@@ -40,8 +40,21 @@ int main(int argc, char *argv[])
 		f.mount("data");
 		f.mountReadWrite(f.prefPath());
 
-		Configuration& cf = Utility<Configuration>::get();
+		Configuration& cf = Utility<Configuration>::init(
+			std::map<std::string, Dictionary>{
+				{
+					"graphics",
+					{{
+						{"screenwidth", 1000},
+						{"screenheight", 650},
+						{"fullscreen", false},
+						{"vsync", true},
+					}}
+				}
+			}
+		);
 		cf.load("config.xml");
+
 		auto& graphics = cf["graphics"];
 		if (graphics.get<int>("screenwidth") < 1000 || graphics.get<int>("screenheight") < 650)
 		{
