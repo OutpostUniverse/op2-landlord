@@ -77,7 +77,6 @@ int main(int argc, char *argv[])
 		#if defined(WINDOWS)
 		MessageBoxA(NULL, e.what(), "Application Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		#endif
-		
 	}
 
 	// Reset to stdout again (prevents crashes on exit)
