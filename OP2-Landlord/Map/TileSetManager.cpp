@@ -674,10 +674,4 @@ void TileSetManager::Load(StreamReader* stream)
 		std::cout << errorMsg << std::endl;
 		throw std::runtime_error(errorMsg);
 	}
-	catch (...)
-	{
-		auto errorMsg = std::string("Error loading TileSetManager data");
-		std::cout << errorMsg << std::endl;
-		throw std::runtime_error(errorMsg);
-	}
 }

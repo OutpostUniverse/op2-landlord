@@ -40,8 +40,21 @@ int main(int argc, char *argv[])
 		f.mount("data");
 		f.mountReadWrite(f.prefPath());
 
-		Configuration& cf = Utility<Configuration>::get();
+		Configuration& cf = Utility<Configuration>::init(
+			std::map<std::string, Dictionary>{
+				{
+					"graphics",
+					{{
+						{"screenwidth", 1000},
+						{"screenheight", 650},
+						{"fullscreen", false},
+						{"vsync", true},
+					}}
+				}
+			}
+		);
 		cf.load("config.xml");
+
 		auto& graphics = cf["graphics"];
 		if (graphics.get<int>("screenwidth") < 1000 || graphics.get<int>("screenheight") < 650)
 		{
@@ -76,14 +89,6 @@ int main(int argc, char *argv[])
 		std::cout << "Error: " << e.what() << std::endl;
 		#if defined(WINDOWS)
 		MessageBoxA(NULL, e.what(), "Application Error", MB_OK | MB_ICONERROR | MB_TASKMODAL);
-		#endif
-		
-	}
-	catch(...)
-	{
-		std::cout << "An unexpected error occured. Please report error, including steps to reproduce." << std::endl;
-		#if defined(WINDOWS)
-		MessageBoxA(NULL, "An unexpected error occured. Please yell at Lee about\nthis so he can fix it.\n\nAnd don't forget to include steps to reproduce and a\nlog! 'It crashed' will get you slapped.", "Unhandled Exception", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 		#endif
 	}
 

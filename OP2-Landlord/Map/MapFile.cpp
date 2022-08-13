@@ -418,7 +418,7 @@ void MapFile::load(const std::string& filename)
 
 	try
 	{
-		StreamReader stream_reader(Utility<Filesystem>::get().read(filename));
+		StreamReader stream_reader(Utility<Filesystem>::get().readFile(filename));
 
 		stream_reader.read(&mMapHeadInfo, sizeof(mMapHeadInfo));
 
@@ -473,10 +473,6 @@ void MapFile::load(const std::string& filename)
 		auto errorMsg = std::string("Error loading map: ") + e.what();
 		std::cout << errorMsg << std::endl;
 		throw std::runtime_error(errorMsg);
-	}
-	catch (...)
-	{
-		throw std::runtime_error("Error loading map");
 	}
 }
 
