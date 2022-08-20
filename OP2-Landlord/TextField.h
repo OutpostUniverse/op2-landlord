@@ -53,7 +53,7 @@ public:
 	void update();
 
 protected:
-	virtual void onMouseDown(EventHandler::MouseButton button, int x, int y);
+	virtual void onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position);
 	virtual void onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat);
 	void onTextInput(const std::string&);
 

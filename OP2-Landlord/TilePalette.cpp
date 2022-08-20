@@ -38,7 +38,7 @@ void TilePalette::draw()
 }
 
 
-void TilePalette::mouseDown(EventHandler::MouseButton button, int x, int y)
+void TilePalette::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
 
@@ -51,7 +51,7 @@ void TilePalette::mouseDown(EventHandler::MouseButton button, int x, int y)
 }
 
 
-void TilePalette::mouseUp(EventHandler::MouseButton button, int x, int y)
+void TilePalette::mouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	mLeftButtonDown = false;
 

@@ -458,13 +458,13 @@ void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier 
 /**
  * Mouse Motion handler.
  */
-void StartState::onMouseMove(int x, int y, int relX, int relY)
+void StartState::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change)
 {
-	mMouseCoords = {x, y};
+	mMouseCoords = position;
 }
 
 
-void StartState::onDoubleClick(EventHandler::MouseButton button, int x, int y)
+void StartState::onDoubleClick(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if (button != EventHandler::MouseButton::Left) { return; }
 

@@ -29,7 +29,7 @@ void MiniMap::adjustCamera(int x, int y)
 }
 
 
-void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
+void MiniMap::mouseDown(EventHandler::MouseButton b, NAS2D::Point<int> position)
 {
 	if (b != EventHandler::MouseButton::Left) { return; }
 	
@@ -39,16 +39,16 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, int x, int y)
 
 	const auto startPoint = NAS2D::Point{rect().x + 4, rect().y + 21}.to<int>();
 	const auto miniMapBounds = NAS2D::Rectangle{startPoint.x, startPoint.y, mMiniMap->size().x, mMiniMap->size().y};
-	if (miniMapBounds.contains(NAS2D::Point{x, y}))
+	if (miniMapBounds.contains(position))
 	{
 		mMovingCamera = true;
-		adjustCamera(x, y);
+		adjustCamera(position.x, position.y);
 	}
 
 }
 
 
-void MiniMap::mouseUp(EventHandler::MouseButton b, int x, int y)
+void MiniMap::mouseUp(EventHandler::MouseButton b, NAS2D::Point<int> position)
 {
 	if (b != EventHandler::MouseButton::Left) { return; }
 
@@ -57,13 +57,13 @@ void MiniMap::mouseUp(EventHandler::MouseButton b, int x, int y)
 }
 
 
-void MiniMap::mouseMotion(int x, int y, int relX, int relY)
+void MiniMap::mouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change)
 {
 	if (dragging()) { return; }
 
 	if(mMovingCamera)
 	{
-		adjustCamera(x, y);
+		adjustCamera(position.x, position.y);
 		return;
 	}
 }

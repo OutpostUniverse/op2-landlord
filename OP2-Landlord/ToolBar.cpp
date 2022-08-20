@@ -133,11 +133,11 @@ void ToolBar::onKeyDown(EventHandler::KeyCode code, EventHandler::KeyModifier mo
 {}
 
 
-void ToolBar::onMouseWheel(int x, int y)
+void ToolBar::onMouseWheel(NAS2D::Vector<int> change)
 {
 	if (btnTileGroupsToggle.toggled()) { return; }
 
-	if (y > 0) { btnSpinnerUp_Clicked(); }
+	if (change.y > 0) { btnSpinnerUp_Clicked(); }
 	else { btnSpinnerDown_Clicked(); }
 }
 

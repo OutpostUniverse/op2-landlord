@@ -58,7 +58,7 @@ private:
 	void hookEvents();
 
 	void onKeyDown(NAS2D::EventHandler::KeyCode code, NAS2D::EventHandler::KeyModifier mod, bool repeat);
-	void onMouseWheel(int x, int y);
+	void onMouseWheel(NAS2D::Vector<int> change);
 	void onWindowResized(NAS2D::Vector<int> newSize);
 
 private:

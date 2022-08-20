@@ -229,25 +229,25 @@ void EditorState::onWindowResized(NAS2D::Vector<int> newSize)
 /**
  *
  */
-void EditorState::onMouseMove(int x, int y, int relX, int relY)
+void EditorState::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change)
 {
 	if(mRightButtonDown)
 	{
-		mMap->moveCamera(-relX, -relY);
+		mMap->moveCamera(-change.x, -change.y);
 		return;
 	}
 
-	mMouseCoords = {x, y};
+	mMouseCoords = position;
 
 	mTileHighlight = {
-		std::clamp((x + mMap->cameraPosition().x) / TILE_SIZE, 0, mMap->width() - 1),
-		std::clamp((y + mMap->cameraPosition().y - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1)
+		std::clamp((position.x + mMap->cameraPosition().x) / TILE_SIZE, 0, mMap->width() - 1),
+		std::clamp((position.y + mMap->cameraPosition().y - TILE_SIZE) / TILE_SIZE, 0, mMap->height() - 1)
 	};
 
 	if(mLeftButtonDown)
 	{
 		// Avoid modifying tiles if we're in the 'toolbar area'
-		if (y < 32 || mToolBar.flood() || mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
+		if (position.y < 32 || mToolBar.flood() || mTilePalette.responding_to_events() || mMiniMap.responding_to_events())
 			return;
 
 		changeTileTexture();
@@ -258,7 +258,7 @@ void EditorState::onMouseMove(int x, int y, int relX, int relY)
 /**
  * Handles MouseDown events.
  */
-void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
+void EditorState::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	Utility<EventHandler>::get().grabMouse();
 
@@ -266,7 +266,7 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
 	if(button == EventHandler::MouseButton::Left)
 	{
 		mLeftButtonDown = true;
-		handleLeftButtonDown(x, y);
+		handleLeftButtonDown(position.x, position.y);
 	}
 	else if(button == EventHandler::MouseButton::Right)
 	{
@@ -280,7 +280,7 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, int x, int y)
 /**
  * Handles MouseUp events
  */
-void EditorState::onMouseUp(EventHandler::MouseButton button, int x, int y)
+void EditorState::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if(button == EventHandler::MouseButton::Left)
 	{

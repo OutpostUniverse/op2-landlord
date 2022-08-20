@@ -46,9 +46,9 @@ public:
 	SelectionChangedCallback& selectionChanged() { return mSelectionChanged; }
 
 protected:
-	virtual void onMouseDown(EventHandler::MouseButton button, int x, int y) final;
-	virtual void onMouseMove(int x, int y, int relX, int relY) final;
-	void onMouseWheel(int x, int y);
+	virtual void onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
+	void onMouseWheel(NAS2D::Vector<int> change);
 	void slideChanged(double _position);
 
 	virtual void onFontChanged();
