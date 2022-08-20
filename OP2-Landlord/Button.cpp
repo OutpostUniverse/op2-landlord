@@ -68,17 +68,14 @@ bool Button::toggled() const
 }
 
 
-void Button::onMouseDown(EventHandler::MouseButton button, int x, int y)
+void Button::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
 	if(button == EventHandler::MouseButton::Left)
 	{
-		Point click{x, y};
-
-
-		if(rect().contains(click))
+		if(rect().contains(position))
 		{
 			if(mType == BUTTON_NORMAL)
 			{
@@ -95,22 +92,20 @@ void Button::onMouseDown(EventHandler::MouseButton button, int x, int y)
 }
 
 
-void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
+void Button::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
 	if(button == EventHandler::MouseButton::Left)
 	{
-		Point click{x, y};
-		
 		if(mType == BUTTON_NORMAL)
 		{
 			mState = STATE_NORMAL;
 
 			mPressed(false);
 
-			if (rect().contains(click))
+			if (rect().contains(position))
 			{
 				mCallback();
 			}
@@ -119,9 +114,9 @@ void Button::onMouseUp(EventHandler::MouseButton button, int x, int y)
 }
 
 
-void Button::onMouseMotion(int x, int y, int dX, int dY)
+void Button::onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change)
 {
-	if (rect().contains(Point{x, y}))
+	if (rect().contains(position))
 	{
 		mMouseHover = true;
 		return;

@@ -19,15 +19,15 @@ public:
 	virtual void update();
 
 protected:
-	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y) final;
-	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y) final;
-	virtual void onMouseMotion(int x, int y, int dX, int dY) final;
+	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 
 	virtual void draw() = 0;	/**< Derived types must override this. */
 
-	virtual void mouseDown(NAS2D::EventHandler::MouseButton button, int x, int y) {};
-	virtual void mouseUp(NAS2D::EventHandler::MouseButton button, int x, int y) {};
-	virtual void mouseMotion(int x, int y, int relX, int relY) {};
+	virtual void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
+	virtual void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
+	virtual void mouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) {};
 
 	Point<int>& _mouseCoords() { return mMouseCoords; }	/**< Internal function for derived types. */
 

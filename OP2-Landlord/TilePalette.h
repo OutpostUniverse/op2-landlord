@@ -32,9 +32,9 @@ private:
 
 	void _init();
 
-	void mouseDown(NAS2D::EventHandler::MouseButton button, int x, int y);
-	void mouseUp(NAS2D::EventHandler::MouseButton button, int x, int y);
-	void mouseMove(int x, int y, int relX, int relY);
+	void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
+	void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
+	void mouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);
 
 private:
 	Point<int>		mStartIndex;				/**< Index of the selected tile(s). */

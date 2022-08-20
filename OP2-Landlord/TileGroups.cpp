@@ -87,7 +87,7 @@ void TileGroups::draw()
 }
 
 
-void TileGroups::mouseDown(EventHandler::MouseButton button, int x, int y)
+void TileGroups::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
 
@@ -100,7 +100,7 @@ void TileGroups::mouseDown(EventHandler::MouseButton button, int x, int y)
 }
 
 
-void TileGroups::mouseUp(EventHandler::MouseButton button, int x, int y)
+void TileGroups::mouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	mLeftButtonDown = false;
 
@@ -109,15 +109,15 @@ void TileGroups::mouseUp(EventHandler::MouseButton button, int x, int y)
 }
 
 
-void TileGroups::mouseWheel(int x, int y)
+void TileGroups::mouseWheel(NAS2D::Vector<int> change)
 {
 	if (!visible()) { return; }
 
-	if (y < 0)
+	if (change.y < 0)
 	{
 		mSlider.changeThumbPosition(1.0);
 	}
-	else if (y > 0)
+	else if (change.y > 0)
 	{
 		mSlider.changeThumbPosition(-1.0);
 	}

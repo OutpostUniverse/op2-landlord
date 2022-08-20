@@ -145,12 +145,12 @@ void Slider::button2_Pressed(bool pressed)
 /**
  *
  */
-void Slider::onMouseDown(EventHandler::MouseButton button, int x, int y)
+void Slider::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if (!enabled() || !visible() || !hasFocus()) { return; }
 	if (button != EventHandler::MouseButton::Left) { return; }
 
-	if (pointInRect_f(x, y, mSlider))
+	if (pointInRect_f(position.x, position.y, mSlider))
 	{
 		mThumbPressed = true;
 		mMouseHoverSlide = true;
@@ -161,7 +161,7 @@ void Slider::onMouseDown(EventHandler::MouseButton button, int x, int y)
 /**
  *
  */
-void Slider::onMouseUp(EventHandler::MouseButton button, int x, int y)
+void Slider::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	mThumbPressed = false;
 	mMouseHoverSlide = false;
@@ -169,20 +169,20 @@ void Slider::onMouseUp(EventHandler::MouseButton button, int x, int y)
 	if (button != EventHandler::MouseButton::Left) { return; }
 	if (!enabled() || !visible() || !hasFocus()) { return; }
 
-	if (pointInRect_f(x, y, mSlider))
+	if (pointInRect_f(position.x, position.y, mSlider))
 	{
 		// nothing
 	}
-	else if (pointInRect_f(x, y, mSlideBar))
+	else if (pointInRect_f(position.x, position.y, mSlideBar))
 	{
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			if (y < mSlider.y) { changeThumbPosition(-3.0); }
+			if (position.y < mSlider.y) { changeThumbPosition(-3.0); }
 			else { changeThumbPosition(+3.0); }
 		}
 		else
 		{
-			if (x < mSlider.x) { changeThumbPosition(-3.0); }
+			if (position.x < mSlider.x) { changeThumbPosition(-3.0); }
 			else { changeThumbPosition(+3.0); }
 		}
 	}
@@ -192,34 +192,34 @@ void Slider::onMouseUp(EventHandler::MouseButton button, int x, int y)
 /**
  *
  */
-void Slider::onMouseMotion(int x, int y, int dX, int dY)
+void Slider::onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change)
 {
 	if (!enabled() || !visible() || !hasFocus()) { return; }
 	if (!mThumbPressed) { return; }
 
-	if (!pointInRect_f(x, y, rect()) && !mMouseHoverSlide) { return; }
+	if (!pointInRect_f(position.x, position.y, rect()) && !mMouseHoverSlide) { return; }
 
-	mMouseX = x;
-	mMouseY = y;
+	mMouseX = position.x;
+	mMouseY = position.y;
 
 	if (mSliderType == SLIDER_VERTICAL)
 	{
-		if (y < mSlideBar.y || y >(mSlideBar.y + mSlideBar.height))
+		if (position.y < mSlideBar.y || position.y >(mSlideBar.y + mSlideBar.height))
 		{
 			return;
 		}
 
-		positionInternal(mLenght * ((y - mSlideBar.y) / mSlideBar.height));
+		positionInternal(mLenght * ((position.y - mSlideBar.y) / mSlideBar.height));
 		mCallback(thumbPosition());
 	}
 	else
 	{
-		if (x < mSlideBar.x || x >(mSlideBar.x + mSlideBar.width))
+		if (position.x < mSlideBar.x || position.x >(mSlideBar.x + mSlideBar.width))
 		{
 			return;
 		}
 
-		positionInternal(mLenght * (x - mSlideBar.x) / mSlideBar.width);
+		positionInternal(mLenght * (position.x - mSlideBar.x) / mSlideBar.width);
 		mCallback(thumbPosition());
 	}
 }

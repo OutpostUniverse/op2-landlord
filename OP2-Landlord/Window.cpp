@@ -40,17 +40,17 @@ int Window::titleBarHeight() const
 /**
  * Mouse Button Down event handler.
  */
-void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
+void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	if (!visible()) { return; }
 	
-	mouseDown(button, x, y);
+	mouseDown(button, position);
 
 	if((button != EventHandler::MouseButton::Left)) { return; }
 
 	const auto windowBounds = rect().to<int>();
 	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.x, windowBounds.y, windowBounds.width, titleBarHeight()};
-	if (titleBarBounds.contains({x, y}))
+	if (titleBarBounds.contains(position))
 	{
 		mDragging = true;
 		return;
@@ -63,29 +63,29 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, int x, int y)
 }
 
 
-void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, int x, int y)
+void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	mDragging = false;
 
 	if (!visible()) { return; }
 	
-	mouseUp(button, x, y);
+	mouseUp(button, position);
 
 	if((button != EventHandler::MouseButton::Left)) { return; }
 }
 
 
-void Window::onMouseMotion(int x, int y, int dX, int dY)
+void Window::onMouseMotion(NAS2D::Point<int> mousePosition, NAS2D::Vector<int> change)
 {
-	mMouseCoords = {x, y};
+	mMouseCoords = mousePosition;
 
 	if (!visible()) { return; }
 
-	mouseMotion(x, y, dX, dY);
+	mouseMotion(mousePosition, change);
 
 	if (mDragging)
 	{
-		position(positionX() + dX, positionY() + dY);
+		position(positionX() + change.x, positionY() + change.y);
 		return;
 	}
 }

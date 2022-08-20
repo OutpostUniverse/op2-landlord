@@ -149,27 +149,27 @@ void ListBox::dropAllItems()
 }
 
 
-void ListBox::onMouseDown(EventHandler::MouseButton button, int x, int y)
+void ListBox::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }
 
-	if (!rect().contains(Point{x, y})) { return; }
+	if (!rect().contains(position)) { return; }
 
-	if (mSlider.visible() && mSlider.rect().contains(Point{x, y}))
+	if (mSlider.visible() && mSlider.rect().contains(position))
 		return;		// if the mouse is on the slider then the slider should handle that
 
-	int idx = ((y - (int)rect().y) / (font().height() + 2)) % ((int)rect().height / (font().height() + 2)) + mCurrentOffset;
+	int idx = ((position.y - (int)rect().y) / (font().height() + 2)) % ((int)rect().height / (font().height() + 2)) + mCurrentOffset;
 	currentSelection(idx);
 }
 
 
-void ListBox::onMouseMove(int x, int y, int relX, int relY)
+void ListBox::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change)
 {
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }
 
-	mMouseCoords = {x, y};
+	mMouseCoords = position;
 }
 
 
@@ -234,15 +234,15 @@ void ListBox::update()
 }
 
 
-void ListBox::onMouseWheel(int x, int y)
+void ListBox::onMouseWheel(NAS2D::Vector<int> change)
 {
 	if (!rect().contains(mMouseCoords)) { return; }
 
-	if (y < 0)
+	if (change.y < 0)
 	{
 		mSlider.changeThumbPosition(1.0);
 	}
-	else if (y > 0)
+	else if (change.y > 0)
 	{
 		mSlider.changeThumbPosition(-1.0);
 	}
