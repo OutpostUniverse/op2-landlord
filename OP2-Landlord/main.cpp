@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
 	try
 	{
-		Filesystem& f = Utility<Filesystem>::init<Filesystem>(argv[0], "OP2-Landlord", "Outpost Universe");
+		Filesystem& f = Utility<Filesystem>::init<Filesystem>("OP2-Landlord", "Outpost Universe");
 		f.mount("data");
 		f.mountReadWrite(f.prefPath());
 
