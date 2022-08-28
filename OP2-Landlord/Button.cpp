@@ -11,18 +11,18 @@ Button::Button():	mState(STATE_NORMAL),
 					mImage(nullptr),
 					mMouseHover(false)
 {
-	Utility<EventHandler>::get().mouseButtonDown().connect(this, &Button::onMouseDown);
-	Utility<EventHandler>::get().mouseButtonUp().connect(this, &Button::onMouseUp);
-	Utility<EventHandler>::get().mouseMotion().connect(this, &Button::onMouseMotion);
+	Utility<EventHandler>::get().mouseButtonDown().connect({this, &Button::onMouseDown});
+	Utility<EventHandler>::get().mouseButtonUp().connect({this, &Button::onMouseUp});
+	Utility<EventHandler>::get().mouseMotion().connect({this, &Button::onMouseMotion});
 	hasFocus(true);
 }
 
 
 Button::~Button()
 {
-	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &Button::onMouseDown);
-	Utility<EventHandler>::get().mouseButtonUp().disconnect(this, &Button::onMouseUp);
-	Utility<EventHandler>::get().mouseMotion().disconnect(this, &Button::onMouseMotion);
+	Utility<EventHandler>::get().mouseButtonDown().disconnect({this, &Button::onMouseDown});
+	Utility<EventHandler>::get().mouseButtonUp().disconnect({this, &Button::onMouseUp});
+	Utility<EventHandler>::get().mouseMotion().disconnect({this, &Button::onMouseMotion});
 
 	if (mImage)
 		delete mImage;

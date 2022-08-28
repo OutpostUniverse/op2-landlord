@@ -43,11 +43,11 @@ StartState::StartState() :
 StartState::~StartState()
 {
 	EventHandler& e = Utility<EventHandler>::get();
-	e.keyDown().disconnect(this, &StartState::onKeyDown);
-	e.mouseMotion().disconnect(this, &StartState::onMouseMove);
-	e.mouseDoubleClick().disconnect(this, &StartState::onDoubleClick);
-	e.windowResized().disconnect(this, &StartState::onWindowResize);
-	e.quit().disconnect(this, &StartState::onQuit);
+	e.keyDown().disconnect({this, &StartState::onKeyDown});
+	e.mouseMotion().disconnect({this, &StartState::onMouseMove});
+	e.mouseDoubleClick().disconnect({this, &StartState::onDoubleClick});
+	e.windowResized().disconnect({this, &StartState::onWindowResize});
+	e.quit().disconnect({this, &StartState::onQuit});
 }
 
 
@@ -70,11 +70,11 @@ void StartState::initialize()
 	// Hook up event handlers
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.keyDown().connect(this, &StartState::onKeyDown);
-	e.mouseMotion().connect(this, &StartState::onMouseMove);
-	e.mouseDoubleClick().connect(this, &StartState::onDoubleClick);
-	e.windowResized().connect(this, &StartState::onWindowResize);
-	e.quit().connect(this, &StartState::onQuit);
+	e.keyDown().connect({this, &StartState::onKeyDown});
+	e.mouseMotion().connect({this, &StartState::onMouseMove});
+	e.mouseDoubleClick().connect({this, &StartState::onDoubleClick});
+	e.windowResized().connect({this, &StartState::onWindowResize});
+	e.quit().connect({this, &StartState::onQuit});
 }
 
 
@@ -89,13 +89,13 @@ void StartState::initUi()
 	mBtnLoadExisting.font(mBoldFont);
 	mBtnLoadExisting.size(85, 25);
 	mBtnLoadExisting.text("Load Map");
-	mBtnLoadExisting.click().connect(this, &StartState::button_LoadExisting_click);
+	mBtnLoadExisting.click().connect({this, &StartState::button_LoadExisting_click});
 	mBtnLoadExisting.enabled(false);
 
 	mBtnRefreshLists.font(mBoldFont);
 	mBtnRefreshLists.size(100, 25);
 	mBtnRefreshLists.text("Refresh List");
-	mBtnRefreshLists.click().connect(this, &StartState::button_RefreshLists_click);
+	mBtnRefreshLists.click().connect({this, &StartState::button_RefreshLists_click});
 
 	mMapFilesMenu.font(mBoldFont);
 
@@ -109,21 +109,21 @@ void StartState::initUi()
 	mBtn64x64.type(Button::BUTTON_TOGGLE);
 	mBtn64x64.size(100, 20);
 	mBtn64x64.toggle(true);
-	mBtn64x64.click().connect(this, &StartState::btn64x64_Clicked);
+	mBtn64x64.click().connect({this, &StartState::btn64x64_Clicked});
 
 	mBtn64x128.font(mBoldFont);
 	mBtn64x128.text("64x128");
 	mBtn64x128.type(Button::BUTTON_TOGGLE);
 	mBtn64x128.size(100, 20);
 	mBtn64x128.toggle(false);
-	mBtn64x128.click().connect(this, &StartState::btn64x128_Clicked);
+	mBtn64x128.click().connect({this, &StartState::btn64x128_Clicked});
 
 	mBtn64x256.font(mBoldFont);
 	mBtn64x256.text("64x256");
 	mBtn64x256.type(Button::BUTTON_TOGGLE);
 	mBtn64x256.size(100, 20);
 	mBtn64x256.toggle(false);
-	mBtn64x256.click().connect(this, &StartState::btn64x256_Clicked);
+	mBtn64x256.click().connect({this, &StartState::btn64x256_Clicked});
 
 
 	// Second Row
@@ -132,21 +132,21 @@ void StartState::initUi()
 	mBtn128x128.type(Button::BUTTON_TOGGLE);
 	mBtn128x128.size(100, 20);
 	mBtn128x128.toggle(false);
-	mBtn128x128.click().connect(this, &StartState::btn128x128_Clicked);
+	mBtn128x128.click().connect({this, &StartState::btn128x128_Clicked});
 
 	mBtn128x64.font(mBoldFont);
 	mBtn128x64.text("128x64");
 	mBtn128x64.type(Button::BUTTON_TOGGLE);
 	mBtn128x64.size(100, 20);
 	mBtn128x64.toggle(false);
-	mBtn128x64.click().connect(this, &StartState::btn128x64_Clicked);
+	mBtn128x64.click().connect({this, &StartState::btn128x64_Clicked});
 
 	mBtn128x256.font(mBoldFont);
 	mBtn128x256.text("128x256");
 	mBtn128x256.type(Button::BUTTON_TOGGLE);
 	mBtn128x256.size(100, 20);
 	mBtn128x256.toggle(false);
-	mBtn128x256.click().connect(this, &StartState::btn128x256_Clicked);
+	mBtn128x256.click().connect({this, &StartState::btn128x256_Clicked});
 
 	/// Third Row
 	mBtn256x256.font(mBoldFont);
@@ -154,45 +154,45 @@ void StartState::initUi()
 	mBtn256x256.type(Button::BUTTON_TOGGLE);
 	mBtn256x256.size(100, 20);
 	mBtn256x256.toggle(false);
-	mBtn256x256.click().connect(this, &StartState::btn256x256_Clicked);
+	mBtn256x256.click().connect({this, &StartState::btn256x256_Clicked});
 
 	mBtn256x128.font(mBoldFont);
 	mBtn256x128.text("256x128");
 	mBtn256x128.type(Button::BUTTON_TOGGLE);
 	mBtn256x128.size(100, 20);
 	mBtn256x128.toggle(false);
-	mBtn256x128.click().connect(this, &StartState::btn256x128_Clicked);
+	mBtn256x128.click().connect({this, &StartState::btn256x128_Clicked});
 
 	mBtn512x256.font(mBoldFont);
 	mBtn512x256.text("512x256");
 	mBtn512x256.type(Button::BUTTON_TOGGLE);
 	mBtn512x256.size(100, 20);
 	mBtn512x256.toggle(false);
-	mBtn512x256.click().connect(this, &StartState::btn512x256_Clicked);
+	mBtn512x256.click().connect({this, &StartState::btn512x256_Clicked});
 
 	mBtnCreateNew.font(mBoldFont);
 	mBtnCreateNew.size(85, 25);
 	mBtnCreateNew.text("Create New");
-	mBtnCreateNew.click().connect(this, &StartState::button_CreateNew_click);
+	mBtnCreateNew.click().connect({this, &StartState::button_CreateNew_click});
 
 	// TERRAIN TYPES
 	mBtnMud.image("sys/mud.png");
 	mBtnMud.size(135);
 	mBtnMud.type(Button::BUTTON_TOGGLE);
 	mBtnMud.toggle(true);
-	mBtnMud.click().connect(this, &StartState::btnMud_Clicked);
+	mBtnMud.click().connect({this, &StartState::btnMud_Clicked});
 
 	mBtnRock.image("sys/rock.png");
 	mBtnRock.size(135);
 	mBtnRock.type(Button::BUTTON_TOGGLE);
 	mBtnRock.toggle(false);
-	mBtnRock.click().connect(this, &StartState::btnRock_Clicked);
+	mBtnRock.click().connect({this, &StartState::btnRock_Clicked});
 
 	mBtnSand.image("sys/sand.png");
 	mBtnSand.size(135);
 	mBtnSand.type(Button::BUTTON_TOGGLE);
 	mBtnSand.toggle(false);
-	mBtnSand.click().connect(this, &StartState::btnSand_Clicked);
+	mBtnSand.click().connect({this, &StartState::btnSand_Clicked});
 
 	txtMapPath.font(mBoldFont);
 	txtMapPath.text("");

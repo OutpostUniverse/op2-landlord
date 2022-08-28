@@ -25,9 +25,9 @@ TextField::TextField():	mCursorPosition(0),
 						mShowCursor(false),
 						mNumbersOnly(false)
 {
-	Utility<EventHandler>::get().mouseButtonDown().connect(this, &TextField::onMouseDown);
-	Utility<EventHandler>::get().keyDown().connect(this, &TextField::onKeyDown);
-	Utility<EventHandler>::get().textInput().connect(this, &TextField::onTextInput);
+	Utility<EventHandler>::get().mouseButtonDown().connect({this, &TextField::onMouseDown});
+	Utility<EventHandler>::get().keyDown().connect({this, &TextField::onKeyDown});
+	Utility<EventHandler>::get().textInput().connect({this, &TextField::onTextInput});
 	hasFocus(false);
 	Utility<EventHandler>::get().textInputMode(true);
 }
@@ -35,9 +35,9 @@ TextField::TextField():	mCursorPosition(0),
 
 TextField::~TextField()
 {
-	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &TextField::onMouseDown);
-	Utility<EventHandler>::get().keyDown().disconnect(this, &TextField::onKeyDown);
-	Utility<EventHandler>::get().textInput().disconnect(this, &TextField::onTextInput);
+	Utility<EventHandler>::get().mouseButtonDown().disconnect({this, &TextField::onMouseDown});
+	Utility<EventHandler>::get().keyDown().disconnect({this, &TextField::onKeyDown});
+	Utility<EventHandler>::get().textInput().disconnect({this, &TextField::onTextInput});
 }
 
 void TextField::resetCursorPosition()

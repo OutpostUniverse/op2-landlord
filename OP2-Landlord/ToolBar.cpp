@@ -18,9 +18,9 @@ ToolBar::~ToolBar()
 {
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.keyDown().disconnect(this, &ToolBar::onKeyDown);
-	e.mouseWheel().disconnect(this, &ToolBar::onMouseWheel);
-	e.windowResized().disconnect(this, &ToolBar::onWindowResized);
+	e.keyDown().disconnect({this, &ToolBar::onKeyDown});
+	e.mouseWheel().disconnect({this, &ToolBar::onMouseWheel});
+	e.windowResized().disconnect({this, &ToolBar::onWindowResized});
 
 	mToolbarEvent.clear();
 }
@@ -32,7 +32,7 @@ void ToolBar::initUi()
 	btnSave.image("sys/save.png");
 	btnSave.size(22, 28);
 	btnSave.position(2, 2);
-	btnSave.click().connect(this, &ToolBar::btnSave_Clicked);
+	btnSave.click().connect({this, &ToolBar::btnSave_Clicked});
 
 	// EDIT TOOLS
 	btnPencil.image("sys/pencil.png");
@@ -40,13 +40,13 @@ void ToolBar::initUi()
 	btnPencil.toggle(true);
 	btnPencil.size(22, 28);
 	btnPencil.position(btnSave.positionX() + btnSave.width() + 18 + BUTTON_SPACE, 2);
-	btnPencil.click().connect(this, &ToolBar::btnPencil_Clicked);
+	btnPencil.click().connect({this, &ToolBar::btnPencil_Clicked});
 
 	btnFill.image("sys/paintcan.png");
 	btnFill.type(Button::BUTTON_TOGGLE);
 	btnFill.size(22, 28);
 	btnFill.position(btnPencil.positionX() + btnPencil.width() + BUTTON_SPACE, 2);
-	btnFill.click().connect(this, &ToolBar::btnFill_Clicked);
+	btnFill.click().connect({this, &ToolBar::btnFill_Clicked});
 
 	btnFillContiguous.type(Button::BUTTON_TOGGLE);
 	btnFillContiguous.toggle(true);
@@ -60,18 +60,18 @@ void ToolBar::initUi()
 	btnErase.type(Button::BUTTON_TOGGLE);
 	btnErase.size(22, 28);
 	btnErase.position(btnFill.positionX() + btnFill.width() + BUTTON_SPACE, 2);
-	btnErase.click().connect(this, &ToolBar::btnErase_Clicked);
+	btnErase.click().connect({this, &ToolBar::btnErase_Clicked});
 
 	// Spinner buttons
 	btnSpinnerUp.image("sys/up.png");
 	btnSpinnerUp.size(22, 14);
 	btnSpinnerUp.position(btnErase.positionX() + btnErase.width() + BUTTON_SPACE + 21, 2);
-	btnSpinnerUp.click().connect(this, &ToolBar::btnSpinnerUp_Clicked);
+	btnSpinnerUp.click().connect({this, &ToolBar::btnSpinnerUp_Clicked});
 
 	btnSpinnerDown.image("sys/down.png");
 	btnSpinnerDown.size(22, 13);
 	btnSpinnerDown.position(btnErase.positionX() + btnErase.width() + BUTTON_SPACE + 21, 17);
-	btnSpinnerDown.click().connect(this, &ToolBar::btnSpinnerDown_Clicked);
+	btnSpinnerDown.click().connect({this, &ToolBar::btnSpinnerDown_Clicked});
 
 
 	// LAYER EDIT
@@ -85,7 +85,7 @@ void ToolBar::initUi()
 	btnExit.image("sys/exit.png");
 	btnExit.size(22, 28);
 	btnExit.position(Utility<Renderer>::get().size().x - 24, 2);
-	btnExit.click().connect(this, &ToolBar::btnExit_Clicked);
+	btnExit.click().connect({this, &ToolBar::btnExit_Clicked});
 
 
 	btnTileGroupsToggle.image("sys/group.png");
@@ -93,21 +93,21 @@ void ToolBar::initUi()
 	btnTileGroupsToggle.toggle(false);
 	btnTileGroupsToggle.size(22, 28);
 	btnTileGroupsToggle.position(btnExit.positionX() - 42, 2);
-	btnTileGroupsToggle.click().connect(this, &ToolBar::btnTileGroupsToggle_Clicked);
+	btnTileGroupsToggle.click().connect({this, &ToolBar::btnTileGroupsToggle_Clicked});
 
 	btnTilePaletteToggle.image("sys/palette.png");
 	btnTilePaletteToggle.type(Button::BUTTON_TOGGLE);
 	btnTilePaletteToggle.toggle(false);
 	btnTilePaletteToggle.size(22, 28);
 	btnTilePaletteToggle.position(btnTileGroupsToggle.positionX() - 24, 2);
-	btnTilePaletteToggle.click().connect(this, &ToolBar::btnTilePaletteToggle_Clicked);
+	btnTilePaletteToggle.click().connect({this, &ToolBar::btnTilePaletteToggle_Clicked});
 
 	btnMiniMapToggle.image("sys/map.png");
 	btnMiniMapToggle.type(Button::BUTTON_TOGGLE);
 	btnMiniMapToggle.toggle(false);
 	btnMiniMapToggle.size(22, 28);
 	btnMiniMapToggle.position(btnTilePaletteToggle.positionX() - 24, 2);
-	btnMiniMapToggle.click().connect(this, &ToolBar::btnMiniMapToggle_Clicked);
+	btnMiniMapToggle.click().connect({this, &ToolBar::btnMiniMapToggle_Clicked});
 
 	hookEvents();
 }
@@ -123,9 +123,9 @@ void ToolBar::hookEvents()
 {
 	EventHandler& e = Utility<EventHandler>::get();
 
-	e.keyDown().connect(this, &ToolBar::onKeyDown);
-	e.mouseWheel().connect(this, &ToolBar::onMouseWheel);
-	e.windowResized().connect(this, &ToolBar::onWindowResized);
+	e.keyDown().connect({this, &ToolBar::onKeyDown});
+	e.mouseWheel().connect({this, &ToolBar::onMouseWheel});
+	e.windowResized().connect({this, &ToolBar::onWindowResized});
 }
 
 

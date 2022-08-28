@@ -17,19 +17,19 @@ TileGroups::TileGroups()
  */
 TileGroups::~TileGroups()
 {
-	mSlider.change().disconnect(this, &TileGroups::mSlider_Changed);
-	Utility<EventHandler>::get().keyDown().disconnect(this, &TileGroups::onKeyDown);
-	Utility<EventHandler>::get().mouseWheel().disconnect(this, &TileGroups::mouseWheel);
+	mSlider.change().disconnect({this, &TileGroups::mSlider_Changed});
+	Utility<EventHandler>::get().keyDown().disconnect({this, &TileGroups::onKeyDown});
+	Utility<EventHandler>::get().mouseWheel().disconnect({this, &TileGroups::mouseWheel});
 }
 
 
 void TileGroups::_init()
 {
 	text("Tile Groups");
-	mSlider.change().connect(this, &TileGroups::mSlider_Changed);
+	mSlider.change().connect({this, &TileGroups::mSlider_Changed});
 
-	Utility<EventHandler>::get().keyDown().connect(this, &TileGroups::onKeyDown);
-	Utility<EventHandler>::get().mouseWheel().connect(this, &TileGroups::mouseWheel);
+	Utility<EventHandler>::get().keyDown().connect({this, &TileGroups::onKeyDown});
+	Utility<EventHandler>::get().mouseWheel().connect({this, &TileGroups::mouseWheel});
 }
 
 
