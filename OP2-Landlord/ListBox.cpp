@@ -11,9 +11,9 @@ ListBox::ListBox() :
 	mHighlightBg(Color{0, 255, 0, 80}),
 	mHighlightText(Color::White)
 {
-	Utility<EventHandler>::get().mouseButtonDown().connect(this, &ListBox::onMouseDown);
-	Utility<EventHandler>::get().mouseMotion().connect(this, &ListBox::onMouseMove);
-	Utility<EventHandler>::get().mouseWheel().connect(this, &ListBox::onMouseWheel);
+	Utility<EventHandler>::get().mouseButtonDown().connect({this, &ListBox::onMouseDown});
+	Utility<EventHandler>::get().mouseMotion().connect({this, &ListBox::onMouseMove});
+	Utility<EventHandler>::get().mouseWheel().connect({this, &ListBox::onMouseWheel});
 	
 	init();
 }
@@ -24,11 +24,11 @@ ListBox::ListBox() :
  */
 ListBox::~ListBox()
 {
-	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &ListBox::onMouseDown);
-	Utility<EventHandler>::get().mouseMotion().disconnect(this, &ListBox::onMouseMove);
-	Utility<EventHandler>::get().mouseWheel().disconnect(this, &ListBox::onMouseWheel);
+	Utility<EventHandler>::get().mouseButtonDown().disconnect({this, &ListBox::onMouseDown});
+	Utility<EventHandler>::get().mouseMotion().disconnect({this, &ListBox::onMouseMove});
+	Utility<EventHandler>::get().mouseWheel().disconnect({this, &ListBox::onMouseWheel});
 
-	mSlider.change().disconnect(this, &ListBox::slideChanged);
+	mSlider.change().disconnect({this, &ListBox::slideChanged});
 }
 
 /**
@@ -38,7 +38,7 @@ void ListBox::init()
 {
 	mSlider.length(0);
 	mSlider.thumbPosition(0);
-	mSlider.change().connect(this, &ListBox::slideChanged);
+	mSlider.change().connect({this, &ListBox::slideChanged});
 }
 
 

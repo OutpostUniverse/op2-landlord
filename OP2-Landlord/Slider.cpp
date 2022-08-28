@@ -14,13 +14,13 @@
  */
 Slider::Slider() : Control()
 {
-	Utility<EventHandler>::get().mouseButtonDown().connect(this, &Slider::onMouseDown);
-	Utility<EventHandler>::get().mouseButtonUp().connect(this, &Slider::onMouseUp);
-	Utility<EventHandler>::get().mouseMotion().connect(this, &Slider::onMouseMotion);
+	Utility<EventHandler>::get().mouseButtonDown().connect({this, &Slider::onMouseDown});
+	Utility<EventHandler>::get().mouseButtonUp().connect({this, &Slider::onMouseUp});
+	Utility<EventHandler>::get().mouseMotion().connect({this, &Slider::onMouseMotion});
 	hasFocus(true);
 
-	mButton1.press().connect(this, &Slider::button1_Pressed);
-	mButton2.press().connect(this, &Slider::button2_Pressed);
+	mButton1.press().connect({this, &Slider::button1_Pressed});
+	mButton2.press().connect({this, &Slider::button2_Pressed});
 }
 
 
@@ -29,12 +29,12 @@ Slider::Slider() : Control()
  */
 Slider::~Slider()
 {
-	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &Slider::onMouseDown);
-	Utility<EventHandler>::get().mouseButtonUp().disconnect(this, &Slider::onMouseUp);
-	Utility<EventHandler>::get().mouseMotion().disconnect(this, &Slider::onMouseMotion);
+	Utility<EventHandler>::get().mouseButtonDown().disconnect({this, &Slider::onMouseDown});
+	Utility<EventHandler>::get().mouseButtonUp().disconnect({this, &Slider::onMouseUp});
+	Utility<EventHandler>::get().mouseMotion().disconnect({this, &Slider::onMouseMotion});
 
-	mButton1.press().disconnect(this, &Slider::button1_Pressed);
-	mButton2.press().disconnect(this, &Slider::button2_Pressed);
+	mButton1.press().disconnect({this, &Slider::button1_Pressed});
+	mButton2.press().disconnect({this, &Slider::button2_Pressed});
 }
 
 

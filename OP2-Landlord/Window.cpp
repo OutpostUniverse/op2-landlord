@@ -10,18 +10,18 @@ const int TITLE_BAR_HEIGHT = 20;
 Window::Window()
 {
 	EventHandler& e = Utility<EventHandler>::get();
-	e.mouseButtonDown().connect(this, &Window::onMouseDown);
-	e.mouseButtonUp().connect(this, &Window::onMouseUp);
-	e.mouseMotion().connect(this, &Window::onMouseMotion);
+	e.mouseButtonDown().connect({this, &Window::onMouseDown});
+	e.mouseButtonUp().connect({this, &Window::onMouseUp});
+	e.mouseMotion().connect({this, &Window::onMouseMotion});
 }
 
 
 Window::~Window()
 {
 	EventHandler& e = Utility<EventHandler>::get();
-	e.mouseButtonDown().disconnect(this, &Window::onMouseDown);
-	e.mouseButtonUp().disconnect(this, &Window::onMouseUp);
-	e.mouseMotion().disconnect(this, &Window::onMouseMotion);
+	e.mouseButtonDown().disconnect({this, &Window::onMouseDown});
+	e.mouseButtonUp().disconnect({this, &Window::onMouseUp});
+	e.mouseMotion().disconnect({this, &Window::onMouseMotion});
 }
 
 

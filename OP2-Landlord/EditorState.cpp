@@ -44,13 +44,13 @@ EditorState::EditorState(const std::string& mapPath, BaseTerrain base, int width
  */
 EditorState::~EditorState()
 {
-	Utility<EventHandler>::get().keyUp().disconnect(this, &EditorState::onKeyUp);
-	Utility<EventHandler>::get().keyDown().disconnect(this, &EditorState::onKeyDown);
-	Utility<EventHandler>::get().mouseMotion().disconnect(this, &EditorState::onMouseMove);
-	Utility<EventHandler>::get().mouseButtonUp().disconnect(this, &EditorState::onMouseUp);
-	Utility<EventHandler>::get().mouseButtonDown().disconnect(this, &EditorState::onMouseDown);
-	Utility<EventHandler>::get().quit().disconnect(this, &EditorState::onQuit);
-	Utility<EventHandler>::get().windowResized().disconnect(this, &EditorState::onWindowResized);
+	Utility<EventHandler>::get().keyUp().disconnect({this, &EditorState::onKeyUp});
+	Utility<EventHandler>::get().keyDown().disconnect({this, &EditorState::onKeyDown});
+	Utility<EventHandler>::get().mouseMotion().disconnect({this, &EditorState::onMouseMove});
+	Utility<EventHandler>::get().mouseButtonUp().disconnect({this, &EditorState::onMouseUp});
+	Utility<EventHandler>::get().mouseButtonDown().disconnect({this, &EditorState::onMouseDown});
+	Utility<EventHandler>::get().quit().disconnect({this, &EditorState::onQuit});
+	Utility<EventHandler>::get().windowResized().disconnect({this, &EditorState::onWindowResized});
 }
 
 
@@ -60,13 +60,13 @@ EditorState::~EditorState()
 void EditorState::initialize()
 {
 	// Hook up event handlers
-	Utility<EventHandler>::get().keyUp().connect(this, &EditorState::onKeyUp);
-	Utility<EventHandler>::get().keyDown().connect(this, &EditorState::onKeyDown);
-	Utility<EventHandler>::get().mouseMotion().connect(this, &EditorState::onMouseMove);
-	Utility<EventHandler>::get().mouseButtonUp().connect(this, &EditorState::onMouseUp);
-	Utility<EventHandler>::get().mouseButtonDown().connect(this, &EditorState::onMouseDown);
-	Utility<EventHandler>::get().quit().connect(this, &EditorState::onQuit);
-	Utility<EventHandler>::get().windowResized().connect(this, &EditorState::onWindowResized);
+	Utility<EventHandler>::get().keyUp().connect({this, &EditorState::onKeyUp});
+	Utility<EventHandler>::get().keyDown().connect({this, &EditorState::onKeyDown});
+	Utility<EventHandler>::get().mouseMotion().connect({this, &EditorState::onMouseMove});
+	Utility<EventHandler>::get().mouseButtonUp().connect({this, &EditorState::onMouseUp});
+	Utility<EventHandler>::get().mouseButtonDown().connect({this, &EditorState::onMouseDown});
+	Utility<EventHandler>::get().quit().connect({this, &EditorState::onQuit});
+	Utility<EventHandler>::get().windowResized().connect({this, &EditorState::onWindowResized});
 
 	mSelectorRect = {0, 0, TILE_SIZE, TILE_SIZE};
 
@@ -85,7 +85,7 @@ void EditorState::initialize()
 void EditorState::initUi()
 {
 	// ToolBar
-	mToolBar.toolbar_event().connect(this, &EditorState::toolbar_event);
+	mToolBar.toolbar_event().connect({this, &EditorState::toolbar_event});
 
 	mTileGroups.font(mFont);
 	mTileGroups.titleFont(mBoldFont);
