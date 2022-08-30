@@ -23,6 +23,9 @@
 #endif
 
 
+using namespace NAS2D;
+
+
 int main(int argc, char *argv[])
 {
 	// Save for later
