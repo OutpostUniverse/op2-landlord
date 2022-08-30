@@ -27,7 +27,7 @@ Window::~Window()
 
 void Window::titleFont(const Font& font)
 {
-	mBoldFont = &font;
+	mTitleFont = &font;
 }
 
 
@@ -101,9 +101,9 @@ void Window::update()
 	r.drawBoxFilled({rect().x, rect().y, rect().width, TITLE_BAR_HEIGHT}, NAS2D::Color{75, 95, 130});
 	r.drawBox(rect(), NAS2D::Color::Black);
 
-	if (mBoldFont)
+	if (mTitleFont)
 	{
-		r.drawText(*mBoldFont, text(), {rect().x + (rect().width / 2) - (mBoldFont->width(text()) / 2), rect().y + 2});
+		r.drawText(*mTitleFont, text(), {rect().x + (rect().width / 2) - (mTitleFont->width(text()) / 2), rect().y + 2});
 	}
 
 	draw();

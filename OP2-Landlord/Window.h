@@ -36,7 +36,7 @@ private:
 	Window& operator=(const Window&) = delete;	/**< Not allowed */
 
 private:
-	const Font*		mBoldFont = nullptr;			/**< Font used for window title. */
+	const Font*		mTitleFont = nullptr;			/**< Font used for window title. */
 
 	Point<int>	mMouseCoords;					/**<  */
 
