@@ -14,7 +14,7 @@
 #include <map>
 
 
-class EditorState: public State
+class EditorState : public NAS2D::State
 {
 public:
 	EditorState(const std::string& mapPath);
