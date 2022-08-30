@@ -69,7 +69,7 @@ private:
 	int							mItemMax = 0;
 	int							mItemWidth = 0;
 
-	StringList					mItems;				/**< List of items preserved in the order in which they're added. */
+	NAS2D::StringList					mItems;				/**< List of items preserved in the order in which they're added. */
 
 	NAS2D::Color					mText;				/**< Text Color */
 	NAS2D::Color					mHighlightBg;		/**< Highlight Background color. */
