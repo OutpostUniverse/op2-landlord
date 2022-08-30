@@ -10,7 +10,6 @@
 #include "Map/MapFile.h"
 #include "Map/TileGroup.h"
 
-using namespace NAS2D;
 
 /**
  * \class TileGroups

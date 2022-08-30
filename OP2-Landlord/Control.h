@@ -2,8 +2,6 @@
 
 #include "NAS2D/NAS2D.h"
 
-using namespace NAS2D;
-
 
 /**
  * \class Control
@@ -29,9 +27,9 @@ public:
 	Control();
 	virtual ~Control();
 
-	void font(const Font& font);
+	void font(const NAS2D::Font& font);
 
-	void position(const Point<float>& pos);
+	void position(const NAS2D::Point<float>& pos);
 	void position(float x, float y);
 
 	float positionX();
@@ -51,7 +49,7 @@ public:
 	virtual void hide() { visible(false); }
 	virtual void show() { visible(true); }
 
-	const Rectangle<float>& rect() const;
+	const NAS2D::Rectangle<float>& rect() const;
 
 	virtual void hasFocus(bool focus);
 	bool hasFocus() const;
@@ -98,10 +96,10 @@ protected:
 	virtual void onTextChanged() { mTextChanged(this); };
 	virtual void onFontChanged() {};
 
-	const Font& font();
+	const NAS2D::Font& font();
 	bool fontSet() const;
 
-	Rectangle<float>& _rect();
+	NAS2D::Rectangle<float>& _rect();
 	std::string& _text();
 
 protected:
@@ -115,11 +113,11 @@ private:
 
 	virtual void draw() {};
 
-	const Font*			mFont;			/**< Pointer to a Font object. Control DOES NOT own the pointer. */
+	const NAS2D::Font*			mFont;			/**< Pointer to a Font object. Control DOES NOT own the pointer. */
 
 	std::string		mText;			/**< Internal text string. */
 
-	Rectangle<float>	mRect;			/**< Area of the Control. */
+	NAS2D::Rectangle<float>	mRect;			/**< Area of the Control. */
 
 	bool			mEnabled;		/**< Flag indicating whether or not the Control is enabled. */
 	bool			mHasFocus;		/**< Flag indicating that the Control has input focus. */

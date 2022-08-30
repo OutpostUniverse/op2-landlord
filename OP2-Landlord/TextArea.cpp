@@ -2,6 +2,10 @@
 
 #include <vector>
 
+
+using namespace NAS2D;
+
+
 TextArea::TextArea() : mNumLines(0)
 {}
 

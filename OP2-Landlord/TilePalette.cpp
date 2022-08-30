@@ -3,10 +3,11 @@
 #include "Common.h"
 
 
+using namespace NAS2D;
+
+
 const auto PALETTE_DIMENSIONS = Vector{196, 300};
 
-
-using namespace NAS2D;
 
 /**
  * C'Tor

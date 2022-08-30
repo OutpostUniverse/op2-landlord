@@ -14,33 +14,33 @@ void flipBool(bool& b)
 /**
  * Draws a beveled box.
  */
-void bevelBox(int x, int y, int w, int h, bool sunk, const Color& bgcolor)
+void bevelBox(int x, int y, int w, int h, bool sunk, const NAS2D::Color& bgcolor)
 {
-	Renderer& r = Utility<Renderer>::get();
+	auto& r = NAS2D::Utility<NAS2D::Renderer>::get();
 
 	r.drawBoxFilled(NAS2D::Rectangle{x, y, w, h}, bgcolor);
 
 	if (!sunk)
 	{
-		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x + w, y}, Color::White);
-		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x, y + h}, Color::White);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x + w, y}, NAS2D::Color::White);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x, y + h}, NAS2D::Color::White);
 
-		r.drawLine(NAS2D::Point{x - 1, y + h - 1}, NAS2D::Point{x + w, y + h - 1}, Color::Gray);
-		r.drawLine(NAS2D::Point{x + w - 1, y + 1}, NAS2D::Point{x + w - 1, y + h - 1}, Color::Gray);
+		r.drawLine(NAS2D::Point{x - 1, y + h - 1}, NAS2D::Point{x + w, y + h - 1}, NAS2D::Color::Gray);
+		r.drawLine(NAS2D::Point{x + w - 1, y + 1}, NAS2D::Point{x + w - 1, y + h - 1}, NAS2D::Color::Gray);
 
-		r.drawLine(NAS2D::Point{x - 0.5f, static_cast<float>(y + h)}, NAS2D::Point{x + w, y + h}, Color::Black);
-		r.drawLine(NAS2D::Point{x + w, y}, NAS2D::Point{x + w, y + h}, Color::Black);
+		r.drawLine(NAS2D::Point{x - 0.5f, static_cast<float>(y + h)}, NAS2D::Point{x + w, y + h}, NAS2D::Color::Black);
+		r.drawLine(NAS2D::Point{x + w, y}, NAS2D::Point{x + w, y + h}, NAS2D::Color::Black);
 	}
 	else
 	{
-		r.drawLine(NAS2D::Point{x, y + h}, NAS2D::Point{x + w, y + h}, Color::White);
-		r.drawLine(NAS2D::Point{x + w, y}, NAS2D::Point{x + w, y + h}, Color::White);
+		r.drawLine(NAS2D::Point{x, y + h}, NAS2D::Point{x + w, y + h}, NAS2D::Color::White);
+		r.drawLine(NAS2D::Point{x + w, y}, NAS2D::Point{x + w, y + h}, NAS2D::Color::White);
 		
-		r.drawLine(NAS2D::Point{x + 1, y + 1}, NAS2D::Point{x + w, y + 1}, Color::Gray);
-		r.drawLine(NAS2D::Point{x + 1, y + 1}, NAS2D::Point{x + 1, y + h}, Color::Gray);
+		r.drawLine(NAS2D::Point{x + 1, y + 1}, NAS2D::Point{x + w, y + 1}, NAS2D::Color::Gray);
+		r.drawLine(NAS2D::Point{x + 1, y + 1}, NAS2D::Point{x + 1, y + h}, NAS2D::Color::Gray);
 
-		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x + w, y}, Color::Black);
-		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{static_cast<float>(x), y + h + 0.5f}, Color::Black);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{x + w, y}, NAS2D::Color::Black);
+		r.drawLine(NAS2D::Point{x, y}, NAS2D::Point{static_cast<float>(x), y + h + 0.5f}, NAS2D::Color::Black);
 	}
 }
 
@@ -120,7 +120,7 @@ int gridLocation(int point, int cameraPoint, int viewportDimension)
 /**
  * Convenience function to pass a Rectangle<float> to \c isPointInRect()
  */
-bool pointInRect_f(int x, int y, const Rectangle<float>& rect)
+bool pointInRect_f(int x, int y, const NAS2D::Rectangle<float>& rect)
 {
 	return rect.to<int>().contains(NAS2D::Point{x, y});
 }

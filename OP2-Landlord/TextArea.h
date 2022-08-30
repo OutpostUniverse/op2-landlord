@@ -6,7 +6,6 @@
 
 #include <string>
 
-using namespace NAS2D;
 
 class TextArea : public Control
 {

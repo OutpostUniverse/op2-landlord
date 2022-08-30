@@ -7,8 +7,6 @@
 
 #include "Pattern.h"
 
-using namespace NAS2D;
-
 
 class ToolBar
 {
@@ -48,7 +46,7 @@ public:
 
 	const Pattern& brush() const { return mBrush; }
 
-	const Rectangle<int> flood_tool_extended_area() const { return mFloodFillExtendedArea; }
+	const NAS2D::Rectangle<int> flood_tool_extended_area() const { return mFloodFillExtendedArea; }
 
 	int height();
 
@@ -80,14 +78,14 @@ private:
 	void btnExit_Clicked();
 
 private:
-	const Font mFont;
+	const NAS2D::Font mFont;
 
-	Image			mToggle;
+	NAS2D::Image			mToggle;
 
 	Pattern			mBrush;
 
 	// PRIMITIVES
-	Rectangle<int>	mFloodFillExtendedArea;
+	NAS2D::Rectangle<int>	mFloodFillExtendedArea;
 
 	// UI ELEMENTS
 	Button			btnSave;

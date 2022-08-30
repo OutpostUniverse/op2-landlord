@@ -9,11 +9,11 @@ public:
 	Window();
 	virtual ~Window();
 
-	bool dragging() const { return mDragging; }
+	bool dragging() const { return mIsWindowDragging; }
 
 	virtual bool responding_to_events() const { return dragging(); }
 
-	void titleFont(const Font& font);
+	void titleFont(const NAS2D::Font& font);
 	int titleBarHeight() const;
 
 	virtual void update();
@@ -23,22 +23,20 @@ protected:
 	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
 	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 
-	virtual void draw() = 0;	/**< Derived types must override this. */
+	virtual void draw() = 0;
 
 	virtual void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
 	virtual void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
 	virtual void mouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) {};
 
-	Point<int>& _mouseCoords() { return mMouseCoords; }	/**< Internal function for derived types. */
+	NAS2D::Point<int>& _mouseCoords() { return mMouseCoords; }
 
 private:
-	Window(const Window&) = delete;				/**< Not allowed */
-	Window& operator=(const Window&) = delete;	/**< Not allowed */
+	Window(const Window&) = delete;
+	Window& operator=(const Window&) = delete;
 
 private:
-	const Font*		mBoldFont = nullptr;			/**< Font used for window title. */
-
-	Point<int>	mMouseCoords;					/**<  */
-
-	bool		mDragging = false;				/**< Window is being dragged. */
+	const NAS2D::Font* mTitleFont = nullptr;
+	NAS2D::Point<int> mMouseCoords;
+	bool mIsWindowDragging = false;
 };
