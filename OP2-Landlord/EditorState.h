@@ -50,7 +50,7 @@ private:
 	void changeTileTexture();
 	void pattern(int value = 0);
 	void patternFill();
-	void patternFill_Contig(const Point<int>& _pt, int seed_index);
+	void patternFill_Contig(const NAS2D::Point<int>& _pt, int seed_index);
 
 	void pattern_collision();
 	void handleLeftButtonDown(int x, int y);
@@ -61,21 +61,21 @@ private:
 	void toolbar_event(ToolBar::ToolBarAction _act);
 
 private:
-	Timer			mTimer;
-	const Font& mFont = fontCache.load("fonts/opensans.ttf", 12);
-	const Font& mBoldFont = fontCache.load("fonts/opensans-bold.ttf", 12);
+	NAS2D::Timer			mTimer;
+	const NAS2D::Font& mFont = fontCache.load("fonts/opensans.ttf", 12);
+	const NAS2D::Font& mBoldFont = fontCache.load("fonts/opensans-bold.ttf", 12);
 
 	MapFile*		mMap = nullptr;				/**< Map object. */
 
 	std::string		mMapSavePath;				/**< Filename to use for loading/saving. */
 
 	// PRIMITIVES
-	Point<int>		mMouseCoords;
-	Point<int>		mSavedMouseCoords;
-	Point<int>		mTileHighlight;
+	NAS2D::Point<int>		mMouseCoords;
+	NAS2D::Point<int>		mSavedMouseCoords;
+	NAS2D::Point<int>		mTileHighlight;
 
-	Rectangle<int>	mSelectorRect;
-	Rectangle<int>	mCellInspectRect;
+	NAS2D::Rectangle<int>	mSelectorRect;
+	NAS2D::Rectangle<int>	mCellInspectRect;
 
 	// UI ELEMENTS
 	TileGroups		mTileGroups;
@@ -88,5 +88,5 @@ private:
 	bool			mRightButtonDown = false;	/**< Flag for right mouse button down. */
 	bool			mMapChanged = false;		/**< Used to determine if the map changed. */
 
-	State*			mReturnState = this;		/**< Return state (nullptr terminates the program). */
+	NAS2D::State*			mReturnState = this;		/**< Return state (nullptr terminates the program). */
 };
