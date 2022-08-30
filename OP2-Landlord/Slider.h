@@ -46,8 +46,8 @@ public:
 	ValueChangedCallback& change() { return mCallback; } 	/*!< Give the callback to enable another control or a window to dis/connect to this event call. */
 
 protected:
-	virtual void onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button down. */
-	virtual void onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button up. */
+	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button down. */
+	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button up. */
 	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change); 	/*!< Event raised on mouse move. */
 
 private:
@@ -77,7 +77,7 @@ private:
 	void button2_Pressed(bool pressed);
 
 private:
-	Timer					mTimer;
+	NAS2D::Timer					mTimer;
 
 	ValueChangedCallback	mCallback;					/*!< Callback executed when the value is changed. */
 
@@ -107,6 +107,6 @@ private:
 	Button					mButton1;
 	Button					mButton2;
 
-	Rectangle<float>			mSlideBar;					/*!< Area on screen where the slide area is displayed. */
-	Rectangle<float>			mSlider;					/*!< Area on screen where the slider is displayed. */
+	NAS2D::Rectangle<float>			mSlideBar;					/*!< Area on screen where the slide area is displayed. */
+	NAS2D::Rectangle<float>			mSlider;					/*!< Area on screen where the slider is displayed. */
 };
