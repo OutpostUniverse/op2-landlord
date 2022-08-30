@@ -16,7 +16,7 @@
  * \class StartState
  * \brief Implements a startup state for the CoM Map Editor.
  */
-class StartState: public State
+class StartState : public NAS2D::State
 {
 public:
 
@@ -27,7 +27,7 @@ protected:
 
 	void initialize();
 
-	State* update();
+	NAS2D::State* update();
 
 	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);
@@ -37,7 +37,7 @@ protected:
 	void onQuit();
 
 private:
-	StringList getFileList(const std::string& directory);
+	NAS2D::StringList getFileList(const std::string& directory);
 		
 	void fillMapMenu();
 	
