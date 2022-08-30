@@ -23,22 +23,22 @@ protected:
 	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
 	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 
-	virtual void draw() = 0;	/**< Derived types must override this. */
+	virtual void draw() = 0;
 
 	virtual void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
 	virtual void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
 	virtual void mouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) {};
 
-	Point<int>& _mouseCoords() { return mMouseCoords; }	/**< Internal function for derived types. */
+	Point<int>& _mouseCoords() { return mMouseCoords; }
 
 private:
-	Window(const Window&) = delete;				/**< Not allowed */
-	Window& operator=(const Window&) = delete;	/**< Not allowed */
+	Window(const Window&) = delete;
+	Window& operator=(const Window&) = delete;
 
 private:
-	const Font*		mTitleFont = nullptr;			/**< Font used for window title. */
+	const Font*		mTitleFont = nullptr;
 
-	Point<int>	mMouseCoords;					/**<  */
+	Point<int>	mMouseCoords;
 
-	bool		mIsWindowDragging = false;				/**< Window is being dragged. */
+	bool		mIsWindowDragging = false;
 };
