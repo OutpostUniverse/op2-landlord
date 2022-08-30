@@ -10,7 +10,6 @@
 #include "NAS2D/NAS2D.h"
 #include "Control.h"
 
-using namespace NAS2D;
 
 /**
  * \class TextField
@@ -53,8 +52,8 @@ public:
 	void update();
 
 protected:
-	virtual void onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position);
-	virtual void onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat);
+	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
+	virtual void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onTextInput(const std::string&);
 
 private:
@@ -70,7 +69,7 @@ private:
 	void draw();
 
 private:
-	Timer				mCursorTimer;		/**< Timer for the cursor blink. */
+	NAS2D::Timer				mCursorTimer;		/**< Timer for the cursor blink. */
 
 	int 				mCursorPosition;	/**< Position of the Insertion Cursor. */
 	int 				mCursorX;			/**< Pixel position of the Cursor. */

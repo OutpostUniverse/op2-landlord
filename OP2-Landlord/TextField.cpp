@@ -10,6 +10,9 @@
 #include <locale>
 
 
+using namespace NAS2D;
+
+
 const int FIELD_PADDING = 4;
 
 const int CURSOR_BLINK_DELAY = 250;
