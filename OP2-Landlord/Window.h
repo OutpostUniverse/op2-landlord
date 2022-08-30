@@ -9,7 +9,7 @@ public:
 	Window();
 	virtual ~Window();
 
-	bool dragging() const { return mDragging; }
+	bool dragging() const { return mIsWindowDragging; }
 
 	virtual bool responding_to_events() const { return dragging(); }
 
@@ -40,5 +40,5 @@ private:
 
 	Point<int>	mMouseCoords;					/**<  */
 
-	bool		mDragging = false;				/**< Window is being dragged. */
+	bool		mIsWindowDragging = false;				/**< Window is being dragged. */
 };

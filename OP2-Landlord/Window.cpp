@@ -52,7 +52,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<i
 	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.x, windowBounds.y, windowBounds.width, titleBarHeight()};
 	if (titleBarBounds.contains(position))
 	{
-		mDragging = true;
+		mIsWindowDragging = true;
 		return;
 	}
 
@@ -65,7 +65,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<i
 
 void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position)
 {
-	mDragging = false;
+	mIsWindowDragging = false;
 
 	if (!visible()) { return; }
 	
@@ -83,7 +83,7 @@ void Window::onMouseMotion(NAS2D::Point<int> mousePosition, NAS2D::Vector<int> c
 
 	mouseMotion(mousePosition, change);
 
-	if (mDragging)
+	if (mIsWindowDragging)
 	{
 		position(positionX() + change.x, positionY() + change.y);
 		return;
