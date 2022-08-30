@@ -7,9 +7,6 @@
 #include "NAS2D/NAS2D.h"
 
 
-using namespace NAS2D;
-
-
 class MiniMap : public Window
 {
 public:
@@ -37,9 +34,9 @@ private:
 	void adjustCamera(int x, int y);
 
 private:
-	Rectangle<int>	mViewRect;
+	NAS2D::Rectangle<int>	mViewRect;
 
-	Image*			mMiniMap = nullptr;
+	NAS2D::Image*			mMiniMap = nullptr;
 
 	MapFile*		mMap = nullptr;
 
