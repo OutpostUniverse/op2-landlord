@@ -6,7 +6,6 @@
 #include "Pattern.h"
 #include "Window.h"
 
-using namespace NAS2D;
 
 /**
  * \class TilePalette
@@ -37,8 +36,8 @@ private:
 	void mouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);
 
 private:
-	Point<int>		mStartIndex;				/**< Index of the selected tile(s). */
-	Point<int>		mEndIndex;					/**< Index of the selected tile(s). */
+	NAS2D::Point<int>		mStartIndex;				/**< Index of the selected tile(s). */
+	NAS2D::Point<int>		mEndIndex;					/**< Index of the selected tile(s). */
 
 	bool			mLeftButtonDown = false;	/**< Flag indicating that the left mouse button is depressed. */
 	bool			mMouseOverTiles = false;	/**< Flag indicating that the mouse is actually over the tiles. */
