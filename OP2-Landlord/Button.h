@@ -7,7 +7,6 @@
 
 #include <string>
 
-using namespace NAS2D;
 
 class Button: public Control
 {
@@ -59,7 +58,7 @@ private:
 	ClickCallback	mCallback;			/**< Signal when the Button is activated. */
 	PressCallback	mPressed;			/**< Signal when the Button is pressed (as in click and hold). */
 
-	Image*			mImage;
+	NAS2D::Image*			mImage;
 
 	bool			mMouseHover;		/**< Mouse is within the bounds of the Button. */
 };
