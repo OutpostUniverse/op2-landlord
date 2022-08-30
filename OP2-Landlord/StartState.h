@@ -12,9 +12,6 @@
 #include "TextField.h"
 
 
-using namespace NAS2D;
-
-
 /**
  * \class StartState
  * \brief Implements a startup state for the CoM Map Editor.
@@ -34,7 +31,7 @@ protected:
 
 	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
 	void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);
-	void onDoubleClick(EventHandler::MouseButton button, NAS2D::Point<int> position);
+	void onDoubleClick(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
 	void onWindowResize(NAS2D::Vector<int> newSize);
 
 	void onQuit();
@@ -72,15 +69,15 @@ private:
 	void btnSand_Clicked();
 
 private:
-	Timer			mTimer;					/**< used to flash messages. */
+	NAS2D::Timer			mTimer;					/**< used to flash messages. */
 
-	const Font& mFont = fontCache.load("fonts/opensans.ttf", 12); /**< Internal Font to use. */
-	const Font& mBoldFont = fontCache.load("fonts/opensans-bold.ttf", 12); /**< Internal Font to use. */
+	const NAS2D::Font& mFont = fontCache.load("fonts/opensans.ttf", 12); /**< Internal Font to use. */
+	const NAS2D::Font& mBoldFont = fontCache.load("fonts/opensans-bold.ttf", 12); /**< Internal Font to use. */
 
-	Point<int>		mMapSize;				/**< Rectangle used to position UI elements on screen. */
-	Point<int>		mMouseCoords;			/**< Mouse pointer coordinates. */
+	NAS2D::Point<int>		mMapSize;				/**< Rectangle used to position UI elements on screen. */
+	NAS2D::Point<int>		mMouseCoords;			/**< Mouse pointer coordinates. */
 
-	Rectangle<int>	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
+	NAS2D::Rectangle<int>	mLayoutRect;			/**< Rectangle used to position UI elements on screen. */
 
 	Button			mBtnCreateNew;			/**< Create New button. */
 	Button			mBtnLoadExisting;		/**< Load Existing button. */
@@ -111,5 +108,5 @@ private:
 
 	bool			mScanningMaps = true;	/**<  */
 
-	State*			mReturnState = this;	/**< State to return during updates. */
+	NAS2D::State*			mReturnState = this;	/**< State to return during updates. */
 };
