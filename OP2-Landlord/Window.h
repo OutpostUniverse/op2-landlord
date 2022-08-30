@@ -36,9 +36,7 @@ private:
 	Window& operator=(const Window&) = delete;
 
 private:
-	const Font*		mTitleFont = nullptr;
-
-	Point<int>	mMouseCoords;
-
-	bool		mIsWindowDragging = false;
+	const Font* mTitleFont = nullptr;
+	Point<int> mMouseCoords;
+	bool mIsWindowDragging = false;
 };
