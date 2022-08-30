@@ -25,8 +25,8 @@ public:
 
 	void sort() { std::sort(mItems.begin(), mItems.end()); }
 
-	void textColor(const Color& color)	{ mText = color; }
-	void selectColor(const Color& color)	{ mHighlightBg = color; }
+	void textColor(const NAS2D::Color& color)	{ mText = color; }
+	void selectColor(const NAS2D::Color& color)	{ mHighlightBg = color; }
 
 	void addItem(const std::string& item);
 	void removeItem(const std::string& item);
@@ -46,7 +46,7 @@ public:
 	SelectionChangedCallback& selectionChanged() { return mSelectionChanged; }
 
 protected:
-	virtual void onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
 	virtual void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 	void onMouseWheel(NAS2D::Vector<int> change);
 	void slideChanged(double _position);
@@ -71,11 +71,11 @@ private:
 
 	StringList					mItems;				/**< List of items preserved in the order in which they're added. */
 
-	Color					mText;				/**< Text Color */
-	Color					mHighlightBg;		/**< Highlight Background color. */
-	Color					mHighlightText;		/**< Text Color for an item that is currently highlighted. */
+	NAS2D::Color					mText;				/**< Text Color */
+	NAS2D::Color					mHighlightBg;		/**< Highlight Background color. */
+	NAS2D::Color					mHighlightText;		/**< Text Color for an item that is currently highlighted. */
 
-	Point<int>					mMouseCoords;		/**< Mouse position. */
+	NAS2D::Point<int>					mMouseCoords;		/**< Mouse position. */
 
 	SelectionChangedCallback	mSelectionChanged;	/**< Callback for selection changed callback. */
 	Slider						mSlider;			/**<  */
