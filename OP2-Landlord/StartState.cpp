@@ -384,7 +384,7 @@ State* StartState::update()
 
 	updateUi();
 
-	if (mTimer.accumulator() > 200)
+	if (mTimer.elapsedTicks() > 200)
 	{
 		MSG_FLASH = !MSG_FLASH;
 		mTimer.reset();

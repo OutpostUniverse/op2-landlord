@@ -153,7 +153,7 @@ void TextField::drawCursor()
 			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX, static_cast<int>(rect().y) + FIELD_PADDING}, NAS2D::Point{mCursorX, static_cast<int>(rect().y + rect().height) - FIELD_PADDING - 1});
 		}
 		
-		if(mCursorTimer.accumulator() > CURSOR_BLINK_DELAY)
+		if(mCursorTimer.elapsedTicks() > CURSOR_BLINK_DELAY)
 		{
 			mCursorTimer.reset();
 			mShowCursor = !mShowCursor;

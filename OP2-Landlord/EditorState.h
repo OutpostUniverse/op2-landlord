@@ -59,7 +59,6 @@ private:
 	void toolbar_event(ToolBar::ToolBarAction _act);
 
 private:
-	NAS2D::Timer			mTimer;
 	const NAS2D::Font& mFont = fontCache.load("fonts/opensans.ttf", 12);
 	const NAS2D::Font& mBoldFont = fontCache.load("fonts/opensans-bold.ttf", 12);
 
