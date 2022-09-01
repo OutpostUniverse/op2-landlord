@@ -49,7 +49,7 @@ void TileGroups::map(MapFile* map)
 	mSlider.font(font());
 	mSlider.position(positionX() + 5, positionY() + height() - 20);
 	mSlider.size(width() - 10, 15);
-	mSlider.length((double)mMap->tileGroupCount() - 1);
+	mSlider.length(mMap->tileGroupCount() - 1);
 	mSlider.displayPosition(true);
 }
 
