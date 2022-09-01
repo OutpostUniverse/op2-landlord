@@ -295,7 +295,8 @@ void Slider::draw()
 		mSlider.y = mSlideBar.y;
 	}
 
-	bevelBox(mSlider.x, mSlider.y, mSlider.width, mSlider.height);
+	const auto intRect = mSlider.to<int>();
+	bevelBox(intRect.x, intRect.y, intRect.width, intRect.height);
 
 
 	if (fontSet() && mDisplayPosition && mMouseHoverSlide)
