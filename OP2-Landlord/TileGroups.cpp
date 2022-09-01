@@ -49,12 +49,12 @@ void TileGroups::map(MapFile* map)
 	mSlider.font(font());
 	mSlider.position(positionX() + 5, positionY() + height() - 20);
 	mSlider.size(width() - 10, 15);
-	mSlider.length((double)mMap->tileGroupCount() - 1);
+	mSlider.length(mMap->tileGroupCount() - 1);
 	mSlider.displayPosition(true);
 }
 
 
-void TileGroups::mSlider_Changed(double pos)
+void TileGroups::mSlider_Changed(float pos)
 {
 	mTileGroupIndex = static_cast<int>(pos);
 }
@@ -79,7 +79,8 @@ void TileGroups::draw()
 {
 	Renderer& r = Utility<Renderer>::get();
 
-	mMap->tileGroup(mTileGroupIndex)->draw(rect().x + 5, rect().y + titleBarHeight() + 5);
+	const auto point = rect().startPoint().to<int>() + Vector{5, 5 + titleBarHeight()};
+	mMap->tileGroup(mTileGroupIndex)->draw(point.x, point.y);
 
 	r.drawText(font(), mMap->tileGroupName(mTileGroupIndex), {positionX() + 10, positionY() + titleBarHeight() + 10});
 

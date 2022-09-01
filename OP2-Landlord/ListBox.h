@@ -49,7 +49,7 @@ protected:
 	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
 	virtual void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 	void onMouseWheel(NAS2D::Vector<int> change);
-	void slideChanged(double _position);
+	void slideChanged(float _position);
 
 	virtual void onFontChanged();
 

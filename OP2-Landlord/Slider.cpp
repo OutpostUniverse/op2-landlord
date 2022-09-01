@@ -109,7 +109,7 @@ void Slider::logic()
 /*!
  * Get internal slider position.
  */
-double Slider::positionInternal()
+float Slider::positionInternal()
 {
 	return mPosition;
 }
@@ -118,9 +118,9 @@ double Slider::positionInternal()
 /**
  *  \brief set internal slider position
  */
-void Slider::positionInternal(double _pos)
+void Slider::positionInternal(float _pos)
 {
-	mPosition = std::clamp(_pos, 0.0, mLenght);
+	mPosition = std::clamp(_pos, 0.0f, mLength);
 }
 
 
@@ -210,7 +210,7 @@ void Slider::onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change
 			return;
 		}
 
-		positionInternal(mLenght * ((position.y - mSlideBar.y) / mSlideBar.height));
+		positionInternal(mLength * ((position.y - mSlideBar.y) / mSlideBar.height));
 		mCallback(thumbPosition());
 	}
 	else
@@ -220,7 +220,7 @@ void Slider::onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change
 			return;
 		}
 
-		positionInternal(mLenght * (position.x - mSlideBar.x) / mSlideBar.width);
+		positionInternal(mLength * (position.x - mSlideBar.x) / mSlideBar.width);
 		mCallback(thumbPosition());
 	}
 }
@@ -245,7 +245,6 @@ void Slider::draw()
 	Renderer& r = Utility<Renderer>::get();
 	std::string textHover;
 	int _x = 0, _y = 0, _w = 0, _h = 0;
-	float _thumbPosition = 0.0f;
 
 	r.drawBoxFilled({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{100, 100, 100});
 	r.drawBox({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{50, 50, 50});
@@ -268,52 +267,53 @@ void Slider::draw()
 	{
 		// Slider
 		mSlider.width = mSlideBar.width; // height = slide bar height
-		mSlider.height = static_cast<int>(mSlideBar.height / mLenght); //relative width
+		mSlider.height = static_cast<int>(mSlideBar.height / mLength); //relative width
 		if (mSlider.height < mSlider.width) // not too relative. Minimum = Height itself
 		{
 			mSlider.height = mSlider.width;
 		}
 
-		_thumbPosition = (mSlideBar.height - mSlider.height)  * (mPosition / mLenght); //relative width
+		const auto thumbPosition = ((mSlideBar.height - mSlider.height) * mPosition) / mLength; //relative width
 
 		mSlider.x = mSlideBar.x;
-		mSlider.y = mSlideBar.y + _thumbPosition;
+		mSlider.y = mSlideBar.y + thumbPosition;
 	}
 	else
 	{
 		// Slider
 		mSlider.height = mSlideBar.height;	// height = slide bar height
-		mSlider.width = static_cast<int>(mSlideBar.width / (mLenght + 1)); //relative width
+		mSlider.width = static_cast<int>(mSlideBar.width / (mLength + 1)); //relative width
 		
 		if (mSlider.width < mSlider.height)	// not too relative. Minimum = Heigt itself
 		{
 			mSlider.width = mSlider.height;
 		}
 
-		_thumbPosition = (mSlideBar.width - mSlider.width)  * (mPosition / mLenght); //relative width
+		const auto thumbPosition = ((mSlideBar.width - mSlider.width) * mPosition) / mLength; //relative width
 
-		mSlider.x = mSlideBar.x + _thumbPosition;
+		mSlider.x = mSlideBar.x + thumbPosition;
 		mSlider.y = mSlideBar.y;
 	}
 
-	bevelBox(mSlider.x, mSlider.y, mSlider.width, mSlider.height);
+	const auto intRect = mSlider.to<int>();
+	bevelBox(intRect.x, intRect.y, intRect.width, intRect.height);
 
 
 	if (fontSet() && mDisplayPosition && mMouseHoverSlide)
 	{
-		textHover = std::to_string(static_cast<int>(thumbPosition())) + " / " + std::to_string(static_cast<int>(mLenght));
+		textHover = std::to_string(static_cast<int>(thumbPosition())) + " / " + std::to_string(static_cast<int>(mLength));
 		_w = font().width(textHover) + 4;
 		_h = font().height() + 4;
 
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			_x = mSlideBar.x + mSlideBar.width + 2;
+			_x = static_cast<int>(mSlideBar.x + mSlideBar.width + 2);
 			_y = mMouseY - _h;
 		}
 		else
 		{
 			_x = mMouseX + 2;
-			_y = mSlideBar.y - 2 - _h;
+			_y = static_cast<int>(mSlideBar.y) - 2 - _h;
 		}
 
 		r.drawBox(NAS2D::Rectangle{_x - _w / 2, _y, _w, _h}, NAS2D::Color{255, 255, 255, 180});
@@ -326,9 +326,9 @@ void Slider::draw()
 /**
  * Set the current value
  */
-void Slider::thumbPosition(double value)
+void Slider::thumbPosition(float value)
 {
-	if (mBackward) { value = mLenght - value; }
+	if (mBackward) { value = mLength - value; }
 
 	positionInternal(value);
 
@@ -339,10 +339,10 @@ void Slider::thumbPosition(double value)
 /**
 * Gets the current value of position
 */
-double Slider::thumbPosition()
+float Slider::thumbPosition()
 {
-	double value = mPosition;
-	if (mBackward) { value = mLenght - value; }
+	float value = mPosition;
+	if (mBackward) { value = mLength - value; }
 
 	return value;
 }
@@ -354,7 +354,7 @@ double Slider::thumbPosition()
  * \param	change	Amount to change in percent to change the
  *					slider's position. Must be between 0.0 1.0.
  */
-void Slider::changeThumbPosition(double change)
+void Slider::changeThumbPosition(float change)
 {
 	positionInternal(mPosition + change);
 	mCallback(thumbPosition());
@@ -364,16 +364,16 @@ void Slider::changeThumbPosition(double change)
 /**
  * Returns the max value position can get
  */
-double Slider::length()
+float Slider::length()
 {
-	return mLenght;
+	return mLength;
 }
 
 
 /**
  * Set the max value position can get
  */
-void Slider::length(double _lenght)
+void Slider::length(float newLength)
 {
-	mLenght = _lenght;
+	mLength = newLength;
 }

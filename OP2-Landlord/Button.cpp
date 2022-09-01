@@ -140,32 +140,32 @@ void Button::draw()
 
 	Renderer& r = Utility<Renderer>::get();
 
+	const auto& intRect = rect().to<int>();
+
 	if (mState == STATE_NORMAL)
 	{
-		bevelBox(rect().x, rect().y, rect().width, rect().height, false);
+		bevelBox(intRect.x, intRect.y, intRect.width, intRect.height, false);
 	}
 	else //(mState == STATE_PRESSED)
 	{
-		bevelBox(rect().x, rect().y, rect().width, rect().height, true);
+		bevelBox(intRect.x, intRect.y, intRect.width, intRect.height, true);
 	}
 
 
 	if (mImage)
 	{
-		int x = static_cast<int>(rect().x + (rect().width / 2) - ((mImage->size().x / 2) + 1));
-		int y = static_cast<int>(rect().y + (rect().height / 2) - (mImage->size().y / 2));
+		auto point = intRect.startPoint() + (intRect.size() - mImage->size()) / 2 - Vector{1, 0};
 
-		if (mState == STATE_PRESSED) { ++x; ++y; }
-		r.drawImage(*mImage, NAS2D::Point{x, y});
+		if (mState == STATE_PRESSED) { point += Vector{1, 1}; }
+		r.drawImage(*mImage, point);
 	}
 	else if (fontSet() && !text().empty())
 	{
-		int x = static_cast<int>(rect().x + (rect().width / 2) - (font().width(text()) / 2));
-		int y = static_cast<int>(rect().y + (rect().height / 2) - (font().height() / 2));
+		auto point = intRect.startPoint() + (intRect.size() - font().size(text())) / 2;
 
-		if (mState == STATE_PRESSED) { ++x; ++y; }
-		r.drawText(font(), text(), NAS2D::Point{x, y}, NAS2D::Color::Black);
+		if (mState == STATE_PRESSED) { point += Vector{1, 1}; }
+		r.drawText(font(), text(), point, NAS2D::Color::Black);
 	}
 
-	if (!enabled()) { r.drawBoxFilled(rect(), NAS2D::Color{125, 125, 125, 100}); }
+	if (!enabled()) { r.drawBoxFilled(intRect, NAS2D::Color{125, 125, 125, 100}); }
 }
