@@ -245,7 +245,6 @@ void Slider::draw()
 	Renderer& r = Utility<Renderer>::get();
 	std::string textHover;
 	int _x = 0, _y = 0, _w = 0, _h = 0;
-	float _thumbPosition = 0.0f;
 
 	r.drawBoxFilled({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{100, 100, 100});
 	r.drawBox({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{50, 50, 50});
@@ -274,10 +273,10 @@ void Slider::draw()
 			mSlider.height = mSlider.width;
 		}
 
-		_thumbPosition = (mSlideBar.height - mSlider.height)  * (mPosition / mLenght); //relative width
+		const auto thumbPosition = ((mSlideBar.height - mSlider.height) * mPosition) / mLenght; //relative width
 
 		mSlider.x = mSlideBar.x;
-		mSlider.y = mSlideBar.y + _thumbPosition;
+		mSlider.y = mSlideBar.y + thumbPosition;
 	}
 	else
 	{
@@ -290,9 +289,9 @@ void Slider::draw()
 			mSlider.width = mSlider.height;
 		}
 
-		_thumbPosition = (mSlideBar.width - mSlider.width)  * (mPosition / mLenght); //relative width
+		const auto thumbPosition = ((mSlideBar.width - mSlider.width) * mPosition) / mLenght; //relative width
 
-		mSlider.x = mSlideBar.x + _thumbPosition;
+		mSlider.x = mSlideBar.x + thumbPosition;
 		mSlider.y = mSlideBar.y;
 	}
 
