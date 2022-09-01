@@ -372,7 +372,7 @@ double Slider::length()
 /**
  * Set the max value position can get
  */
-void Slider::length(double _lenght)
+void Slider::length(double newLength)
 {
-	mLength = _lenght;
+	mLength = newLength;
 }
