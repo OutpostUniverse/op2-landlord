@@ -54,7 +54,7 @@ void TileGroups::map(MapFile* map)
 }
 
 
-void TileGroups::mSlider_Changed(double pos)
+void TileGroups::mSlider_Changed(float pos)
 {
 	mTileGroupIndex = static_cast<int>(pos);
 }

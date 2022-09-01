@@ -21,21 +21,21 @@
 class Slider : public Control
 {
 public:
-	typedef NAS2D::Signal<double> ValueChangedCallback; /*!< type for Callback on value changed. */
+	typedef NAS2D::Signal<float> ValueChangedCallback; /*!< type for Callback on value changed. */
 
 public:
 	Slider();
 	virtual ~Slider();
 
-	void thumbPosition(double value);		/*!< Set the current position. */
-	double thumbPosition();					/*!< Get the current position. */
-	void changeThumbPosition(double change);/*!< Adds the change amount to the current position. */
+	void thumbPosition(float value);		/*!< Set the current position. */
+	float thumbPosition();					/*!< Get the current position. */
+	void changeThumbPosition(float change);/*!< Adds the change amount to the current position. */
 
 	bool displayPosition() { return mDisplayPosition; }			/*!< Get the position display flag. */
 	void displayPosition(bool _d) { mDisplayPosition = _d; }	/*!< Set the position display flag. */
 
-	double length(); 			/*!< Get the max value for the slide area. */
-	void length(double _lengh);	/*!< Set the max value for the slide area. */
+	float length(); 			/*!< Get the max value for the slide area. */
+	void length(float _lengh);	/*!< Set the max value for the slide area. */
 
 	bool backward() { return mBackward; }	 	/*!< Get the backward flag. */
 	void backward(bool _b) { mBackward = _b; } 	/*!< Set the backward flag. */
@@ -65,8 +65,8 @@ private:
 	Slider(const Slider&) = delete;				/**< Not allowed */
 	Slider& operator=(const Slider&) = delete;	/**< Not allowed */
 
-	double positionInternal();
-	void positionInternal(double _pos);
+	float positionInternal();
+	void positionInternal(float _pos);
 
 	virtual void positionChanged(float dX, float dY);
 
@@ -96,8 +96,8 @@ private:
 	bool					mButton2Held = false;		/**< Flag indicating that a button is being held down. */
 
 	// Slider values
-	double					mPosition = 0;				/*!< Current value that represent the position of the slider. */
-	double					mLength = 0;				/*!< Maximum value for the position of the slider. */
+	float					mPosition = 0;				/*!< Current value that represent the position of the slider. */
+	float					mLength = 0;				/*!< Maximum value for the position of the slider. */
 
 	bool					mBackward = false;			/*!< Does the value returned in backward mode . */
 

@@ -109,7 +109,7 @@ void Slider::logic()
 /*!
  * Get internal slider position.
  */
-double Slider::positionInternal()
+float Slider::positionInternal()
 {
 	return mPosition;
 }
@@ -118,9 +118,9 @@ double Slider::positionInternal()
 /**
  *  \brief set internal slider position
  */
-void Slider::positionInternal(double _pos)
+void Slider::positionInternal(float _pos)
 {
-	mPosition = std::clamp(_pos, 0.0, mLength);
+	mPosition = std::clamp(_pos, 0.0f, mLength);
 }
 
 
@@ -326,7 +326,7 @@ void Slider::draw()
 /**
  * Set the current value
  */
-void Slider::thumbPosition(double value)
+void Slider::thumbPosition(float value)
 {
 	if (mBackward) { value = mLength - value; }
 
@@ -339,9 +339,9 @@ void Slider::thumbPosition(double value)
 /**
 * Gets the current value of position
 */
-double Slider::thumbPosition()
+float Slider::thumbPosition()
 {
-	double value = mPosition;
+	float value = mPosition;
 	if (mBackward) { value = mLength - value; }
 
 	return value;
@@ -354,7 +354,7 @@ double Slider::thumbPosition()
  * \param	change	Amount to change in percent to change the
  *					slider's position. Must be between 0.0 1.0.
  */
-void Slider::changeThumbPosition(double change)
+void Slider::changeThumbPosition(float change)
 {
 	positionInternal(mPosition + change);
 	mCallback(thumbPosition());
@@ -364,7 +364,7 @@ void Slider::changeThumbPosition(double change)
 /**
  * Returns the max value position can get
  */
-double Slider::length()
+float Slider::length()
 {
 	return mLength;
 }
@@ -373,7 +373,7 @@ double Slider::length()
 /**
  * Set the max value position can get
  */
-void Slider::length(double newLength)
+void Slider::length(float newLength)
 {
 	mLength = newLength;
 }

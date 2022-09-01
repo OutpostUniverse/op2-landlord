@@ -38,7 +38,7 @@ private:
 
 	virtual void positionChanged(float dX, float dY);
 
-	void mSlider_Changed(double);
+	void mSlider_Changed(float);
 
 private:
 	int			mTileGroupIndex = 0;		/**<  */

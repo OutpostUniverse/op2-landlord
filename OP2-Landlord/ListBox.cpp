@@ -252,11 +252,11 @@ void ListBox::onMouseWheel(NAS2D::Vector<int> change)
 }
 
 
-void ListBox::slideChanged(double _position)
+void ListBox::slideChanged(float _position)
 {
 	_checkSlider();
 
 	int pos = static_cast<int>(_position);
 	if (static_cast<float>(pos) != _position)
-		mSlider.thumbPosition(static_cast<double>(pos));
+		mSlider.thumbPosition(static_cast<float>(pos));
 }
