@@ -154,19 +154,17 @@ void Button::draw()
 
 	if (mImage)
 	{
-		int x = intRect.x + (intRect.width / 2) - ((mImage->size().x / 2) + 1);
-		int y = intRect.y + (intRect.height / 2) - (mImage->size().y / 2);
+		auto point = intRect.startPoint() + (intRect.size() - mImage->size()) / 2 - Vector{1, 0};
 
-		if (mState == STATE_PRESSED) { ++x; ++y; }
-		r.drawImage(*mImage, NAS2D::Point{x, y});
+		if (mState == STATE_PRESSED) { point += Vector{1, 1}; }
+		r.drawImage(*mImage, point);
 	}
 	else if (fontSet() && !text().empty())
 	{
-		int x = intRect.x + (intRect.width / 2) - (font().width(text()) / 2);
-		int y = intRect.y + (intRect.height / 2) - (font().height() / 2);
+		auto point = intRect.startPoint() + (intRect.size() - font().size(text())) / 2;
 
-		if (mState == STATE_PRESSED) { ++x; ++y; }
-		r.drawText(font(), text(), NAS2D::Point{x, y}, NAS2D::Color::Black);
+		if (mState == STATE_PRESSED) { point += Vector{1, 1}; }
+		r.drawText(font(), text(), point, NAS2D::Color::Black);
 	}
 
 	if (!enabled()) { r.drawBoxFilled(intRect, NAS2D::Color{125, 125, 125, 100}); }
