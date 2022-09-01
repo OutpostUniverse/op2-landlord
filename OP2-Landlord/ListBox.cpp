@@ -187,10 +187,10 @@ void ListBox::_checkSlider()
 		{
 			mSlider.length(mItems.size() - mDisplayLines);
 			mSlider.visible(true);
-			mCurrentOffset = mSlider.thumbPosition();
+			mCurrentOffset = static_cast<int>(mSlider.thumbPosition());
 			mItemMin = mCurrentOffset;
 			mItemMax = mCurrentOffset + mDisplayLines;
-			mItemWidth = rect().width - mSlider.rect().width;
+			mItemWidth = static_cast<int>(rect().width - mSlider.rect().width);
 		}
 	}
 	else
