@@ -97,7 +97,7 @@ private:
 
 	// Slider values
 	double					mPosition = 0;				/*!< Current value that represent the position of the slider. */
-	double					mLenght = 0;				/*!< Maximum value for the position of the slider. */
+	double					mLength = 0;				/*!< Maximum value for the position of the slider. */
 
 	bool					mBackward = false;			/*!< Does the value returned in backward mode . */
 
