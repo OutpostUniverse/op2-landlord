@@ -10,7 +10,7 @@ config := default
 
 
 CPPFLAGS := -Inas2d-core/
-CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas
+CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas -Wfloat-conversion
 CXXFLAGS := -std=c++20 -g $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
 LDFLAGS := -static-libgcc -static-libstdc++ -Lnas2d-core/lib/
 LDLIBS := -lstdc++fs -lnas2d -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL -lGLEW
