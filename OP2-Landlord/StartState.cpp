@@ -273,16 +273,17 @@ void StartState::fillMapMenu()
  */
 StringList StartState::getFileList(const std::string& directory)
 {
-	StringList fileList = Utility<Filesystem>::get().directoryList(directory);
+	auto fileList = Utility<Filesystem>::get().directoryList(directory);
 	StringList returnList;
 
 	Filesystem& f = Utility<Filesystem>::get();
 
-	for (size_t i = 0; i < fileList.size(); i++)
+	for (const auto& file : fileList)
 	{
-		if (!f.isDirectory(directory + fileList[i]))
+		const auto fileString = file.string();
+		if (!f.isDirectory(directory + fileString))
 		{
-			returnList.push_back(fileList[i]);
+			returnList.push_back(fileString);
 		}
 	}
 
