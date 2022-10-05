@@ -278,11 +278,11 @@ StringList StartState::getFileList(const std::string& directory)
 
 	Filesystem& f = Utility<Filesystem>::get();
 
-	for (size_t i = 0; i < fileList.size(); i++)
+	for (const auto& file : fileList)
 	{
-		if (!f.isDirectory(directory + fileList[i]))
+		if (!f.isDirectory(directory + file))
 		{
-			returnList.push_back(fileList[i]);
+			returnList.push_back(file);
 		}
 	}
 
