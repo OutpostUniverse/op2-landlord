@@ -280,9 +280,10 @@ StringList StartState::getFileList(const std::string& directory)
 
 	for (const auto& file : fileList)
 	{
-		if (!f.isDirectory(directory + file))
+		const auto fileString = file.string();
+		if (!f.isDirectory(directory + fileString))
 		{
-			returnList.push_back(file);
+			returnList.push_back(fileString);
 		}
 	}
 
