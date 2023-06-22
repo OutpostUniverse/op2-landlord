@@ -36,6 +36,8 @@ public:
 	SDL_Window* window() { return mWindow; }
 	SDL_Renderer* renderer() { return mRenderer; }
 
+	const NAS2D::Vector<int>& size() { return mWindowSize; }
+
 private:
 	void init();
 

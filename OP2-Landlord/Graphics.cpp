@@ -33,6 +33,7 @@ void Graphics::clear()
 
 void Graphics::present()
 {
+    SDL_GetWindowSize(mWindow, &mWindowSize.x, &mWindowSize.y);
     SDL_RenderPresent(mRenderer);
 }
 

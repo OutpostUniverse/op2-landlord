@@ -10,6 +10,7 @@
 
 #include "Graphics.h"
 
+
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_sdlrenderer2.h"
@@ -17,13 +18,11 @@
 
 namespace
 {
-
     bool Exit = false;
 
     std::shared_ptr<Graphics> graphics;
 
     constexpr auto ClearColor = NAS2D::Color{ 30, 30, 30, 255 };
-
 };
 
 
@@ -59,57 +58,49 @@ void pumpEvents()
 }
 
 
-void GameLoop()
+void guiEndFrame()
 {
-    bool show_demo_window = false;
-    bool show_another_window = false;
+    ImGui::Render();
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
+}
 
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGuiIO& io = ImGui::GetIO();
+void guiNewFrame()
+{
+    ImGui_ImplSDLRenderer2_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
+}
+
+
+void mainLoop()
+{
+    std::string pathToOutpost2{};
 
     while (!Exit)
     {
-
         pumpEvents();
 
         graphics->clear();
 
+        guiNewFrame();
 
-        ImGui_ImplSDLRenderer2_NewFrame();
-        ImGui_ImplSDL2_NewFrame();
-        ImGui::NewFrame();
+        ImGui::SetNextWindowSize({ 500, 500 });
+        const ImVec2 position{
+            static_cast<float>(graphics->size().x / 2 - 250),
+            static_cast<float>(graphics->size().y / 2 - 250)
+        };
+        
+        ImGui::SetNextWindowPos(position);
 
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::Begin("Initial Setup", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings);
 
+        ImGui::Text("Select the Outpost 2 folder");
 
-        static float f = 0.0f;
-        static int counter = 0;
-
-        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-        ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-        ImGui::Checkbox("Another Window", &show_another_window);
-
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-        if (ImGui::Button("Button"))
-        {
-            counter++;
-        }
-
-        ImGui::SameLine();
-        ImGui::Text("counter = %d", counter);
-
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         ImGui::End();
 
-
-
-        ImGui::Render();
-        ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
-
+        guiEndFrame();
 
         graphics->present();
     }
@@ -120,15 +111,14 @@ void initGui()
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-    // Setup Dear ImGui style
+    std::ignore = io.Fonts->AddFontFromFileTTF("data/fonts/opensans.ttf", 24);
+ 
+
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
 
-    // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForSDLRenderer(graphics->window(), graphics->renderer());
     ImGui_ImplSDLRenderer2_Init(graphics->renderer());
 }
@@ -148,7 +138,7 @@ int main(int argc, char* argv[])
 
         initGui();
 
-        GameLoop();
+        mainLoop();
 
         SDL_Quit();
     }
