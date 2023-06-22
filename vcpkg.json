@@ -5,7 +5,7 @@
 		{
 		  "name": "imgui",
 		  "default-features": false,
-		  "features": [ "sdl2-binding", "sdl2-renderer-binding" ]
+		  "features": [ "freetype", "sdl2-binding", "sdl2-renderer-binding" ]
 		},
 		"sdl2",
 		"sdl2-image"

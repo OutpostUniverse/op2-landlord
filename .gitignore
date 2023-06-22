@@ -14,3 +14,4 @@ x64/
 *.user
 /vcpkg_installed
 /*.ini
+/OP2-Landlord/*.ini
