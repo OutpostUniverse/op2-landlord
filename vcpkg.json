@@ -2,7 +2,11 @@
 	"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
 	"name": "nas2d",
 	"dependencies": [
-		"imgui",
+		{
+		  "name": "imgui",
+		  "default-features": false,
+		  "features": [ "sdl2-binding", "sdl2-renderer-binding" ]
+		},
 		"sdl2",
 		"sdl2-image"
 	]
