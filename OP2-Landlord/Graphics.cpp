@@ -65,6 +65,11 @@ Graphics::Texture Graphics::loadTexture(const std::string& filename)
 
 void Graphics::init()
 {
+    if (SDL_Init(SDL_INIT_VIDEO))
+    {
+        throw std::runtime_error(std::string("Unable to initialize SDL: ") + SDL_GetError());
+    }
+
     mWindow = SDL_CreateWindow(
         "OP2-Landlord",
         SDL_WINDOWPOS_CENTERED,
