@@ -1,8 +1,7 @@
 #pragma once
 
-#include <NAS2D/Dictionary.h>
+#include <map>
 #include <string>
-
 
 struct EditorConfig
 {
@@ -16,5 +15,5 @@ struct EditorConfig
 	char Op2FilePath[1000]{ '\0' };
 	std::string UserSavePath;
 
-	NAS2D::Dictionary Options;
+	std::map<std::string, std::string> Options;
 };
