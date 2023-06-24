@@ -1,8 +1,5 @@
 #include "EditorConfig.h"
 
-#include <NAS2D/Dictionary.h>
-
-
 #include <fstream>
 #include <nlohmann/json.hpp>
 
@@ -19,7 +16,7 @@ namespace
 		return std::error_code{ errno, std::generic_category() }.message();
 	}
 
-	void loadConfig(const std::string filePath)
+	void loadConfigFromFile(const std::string filePath)
 	{
 		if (!std::filesystem::exists(filePath))
 		{
@@ -43,13 +40,29 @@ namespace
 		}
 	}
 
+
+	void saveConfigToFile(const std::string& filePath)
+	{
+		std::ofstream file;
+		if (!std::filesystem::exists(filePath))
+		{
+			file = std::ofstream{ filePath, std::ios::out | std::ios::binary };
+			if (!file)
+			{
+				throw std::runtime_error("Error opening file for writing: " + filePath + " : " + errorDescription());
+			}
+		}
+
+
+	}
+
 }
 
 
 EditorConfig::EditorConfig(const std::string& savePath) : 
 	UserSavePath{ savePath }
 {
-	loadConfig(UserSavePath + "editor.json");
+	loadConfigFromFile(UserSavePath + "editor.json");
 }
 
 
@@ -61,4 +74,5 @@ EditorConfig::~EditorConfig()
 
 void EditorConfig::saveConfig()
 {
+	saveConfigToFile(UserSavePath + "editor.json");
 }
