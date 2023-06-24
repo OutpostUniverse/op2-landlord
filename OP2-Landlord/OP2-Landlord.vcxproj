@@ -148,6 +148,7 @@
     <ClCompile Include="..\nas2d-core\NAS2D\StringUtils.cpp" />
     <ClCompile Include="EditorConfig.cpp" />
     <ClCompile Include="Events.cpp" />
+    <ClCompile Include="FileIo.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="EditorConfig.h" />
     <ClInclude Include="Events.h" />
+    <ClInclude Include="FileIo.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
