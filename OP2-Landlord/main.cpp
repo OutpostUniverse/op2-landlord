@@ -27,6 +27,11 @@ namespace
 
     constexpr auto ClearColor = NAS2D::Color{ 30, 30, 30, 255 };
 
+    constexpr auto EmptyDir{ "Empty Directory" };
+    constexpr auto EmptyDirMsg{ "No directory for Outpost 2 has been selected" };
+    constexpr auto MissingAssets{ "Missing Assets" };
+    constexpr auto MissingAssetsMsg{ "'Outpost2.exe' or 'art.vol' not found in specified directory." };
+
     EditorConfig Config(getUserPrefPath("OP2-Landlord", "OutpostUniverse"));
 
     bool InitialSetupRequired = false;
@@ -81,14 +86,15 @@ void doInitialSetup()
     {
         const auto exepath = std::string(Config.Op2FilePath) + fileIo.pathSeparator() + "Outpost2.exe";
         const auto artpath = std::string(Config.Op2FilePath) + fileIo.pathSeparator() + "art.vol";
-        if (!std::filesystem::exists(exepath) || !std::filesystem::exists(artpath))
+        const std::string path(trimWhitespace(Config.Op2FilePath));
+
+        if (path.empty())
         {
-            SDL_ShowSimpleMessageBox(
-                SDL_MESSAGEBOX_ERROR,
-                "Missing Assets",
-                "'Outpost2.exe' or 'art.vol' not found in specified directory.",
-                graphics.window()
-            );
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, EmptyDir, EmptyDirMsg, graphics.window());
+        }
+        else if (!std::filesystem::exists(exepath) || !std::filesystem::exists(artpath))
+        {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, MissingAssets, MissingAssetsMsg, graphics.window());
         }
         else
         {
@@ -98,6 +104,7 @@ void doInitialSetup()
 
     ImGui::End();
 }
+
 
 void mainLoop()
 {
