@@ -39,6 +39,9 @@
     <ClCompile Include="..\nas2d-core\NAS2D\StringUtils.cpp">
       <Filter>NAS2D</Filter>
     </ClCompile>
+    <ClCompile Include="FileIo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

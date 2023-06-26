@@ -1,8 +1,7 @@
 #pragma once
 
-
+#include <map>
 #include <string>
-
 
 struct EditorConfig
 {
@@ -15,4 +14,6 @@ struct EditorConfig
 
 	char Op2FilePath[1000]{ '\0' };
 	std::string UserSavePath;
+
+	std::map<std::string, std::string> Options;
 };
