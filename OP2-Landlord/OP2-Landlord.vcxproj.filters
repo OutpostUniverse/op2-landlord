@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="NAS2D">
-      <UniqueIdentifier>{8bcebfb4-55d6-4497-80f5-3abdeb33d195}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,12 +29,6 @@
     </ClCompile>
     <ClCompile Include="EditorConfig.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\nas2d-core\NAS2D\Dictionary.cpp">
-      <Filter>NAS2D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\nas2d-core\NAS2D\StringUtils.cpp">
-      <Filter>NAS2D</Filter>
     </ClCompile>
     <ClCompile Include="FileIo.cpp">
       <Filter>Source Files</Filter>

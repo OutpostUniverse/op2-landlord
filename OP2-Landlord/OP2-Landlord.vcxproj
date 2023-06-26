@@ -144,8 +144,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\nas2d-core\NAS2D\Dictionary.cpp" />
-    <ClCompile Include="..\nas2d-core\NAS2D\StringUtils.cpp" />
     <ClCompile Include="EditorConfig.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="FileIo.cpp" />
