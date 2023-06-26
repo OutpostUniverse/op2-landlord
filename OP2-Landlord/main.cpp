@@ -25,7 +25,7 @@ namespace
     Graphics graphics({ 800, 600 });
     FileIo fileIo(*graphics.window());
 
-    constexpr auto ClearColor = NAS2D::Color{ 30, 30, 30, 255 };
+    constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
 
     constexpr auto EmptyDir{ "Empty Directory" };
     constexpr auto EmptyDirMsg{ "No directory for Outpost 2 has been selected" };

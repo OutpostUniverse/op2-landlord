@@ -2,12 +2,9 @@
 
 
 #include <SDL2/SDL.h>
+#include <string>
 
-#include "NAS2D/Math/Rectangle.h"
-#include "NAS2D/Math/Point.h"
-#include "NAS2D/Math/Vector.h"
-
-#include "NAS2D/Renderer/Color.h"
+#include "imgui.h"
 
 
 class Graphics
@@ -19,14 +16,14 @@ public:
 		SDL_Texture* texture{ nullptr };
 		SDL_Rect area{};
 
-		NAS2D::Vector<int> dimensions{};
+		ImVec2 dimensions{};
 	};
 
 public:
 	Graphics() = delete;
-	Graphics(NAS2D::Vector<int> windowSize);
+	Graphics(ImVec2 windowSize);
 
-	void drawColor(const NAS2D::Color drawColor);
+	void drawColor(const ImColor& drawColor);
 
 	void clear();
 	void present();
@@ -36,13 +33,13 @@ public:
 	SDL_Window* window() { return mWindow; }
 	SDL_Renderer* renderer() { return mRenderer; }
 
-	const NAS2D::Vector<int>& size() { return mWindowSize; }
+	const ImVec2& size() { return mWindowSize; }
 
 private:
 	void init();
 
 
-	NAS2D::Vector<int> mWindowSize{};
+	ImVec2 mWindowSize{};
 
 	SDL_Window* mWindow = nullptr;
 	SDL_Renderer* mRenderer = nullptr;
