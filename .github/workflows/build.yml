@@ -50,7 +50,7 @@ jobs:
 
     - name: Install vcpkg dependencies
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nas2d-core\InstallVcpkgDeps.bat
+      run: vcpkg install --debug --recurse --triplet ${{ matrix.platform }}-windows  glew sdl2 sdl2-image sdl2-ttf sdl2-mixer gtest
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
