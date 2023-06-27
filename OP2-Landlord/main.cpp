@@ -53,6 +53,8 @@ void guiNewFrame()
 
 void doInitialSetup()
 {
+    static char op2Path[1000] = { '\0' };
+
     ImGui::SetNextWindowSize({ 550, 170 });
     const ImVec2 position{
         static_cast<float>(graphics.size().x / 2 - 300),
@@ -68,13 +70,13 @@ void doInitialSetup()
     ImGui::Text("Location of Outpost 2");
 
     ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x * 0.90f);
-    ImGui::InputText("##op2_path", Config.Op2FilePath, 500, ImGuiInputTextFlags_AutoSelectAll);
+    ImGui::InputText("##op2_path", op2Path, 500, ImGuiInputTextFlags_AutoSelectAll);
     ImGui::SameLine();
     if (ImGui::Button("...", { ImGui::GetContentRegionAvail().x, 0 }))
     {
         if (fileIo.pickFolder())
         {
-            std::ignore = strcpy_s(Config.Op2FilePath, fileIo.folderPath().c_str());
+            std::ignore = strcpy_s(op2Path, fileIo.folderPath().c_str());
         }
     }
 
@@ -82,9 +84,9 @@ void doInitialSetup()
 
     if (ImGui::Button("Continue", { ImGui::GetContentRegionAvail().x, 0 }))
     {
-        const auto exepath = std::string(Config.Op2FilePath) + fileIo.pathSeparator() + "Outpost2.exe";
-        const auto artpath = std::string(Config.Op2FilePath) + fileIo.pathSeparator() + "art.vol";
-        const std::string path(trimWhitespace(Config.Op2FilePath));
+        const auto exepath = std::string(op2Path) + fileIo.pathSeparator() + "Outpost2.exe";
+        const auto artpath = std::string(op2Path) + fileIo.pathSeparator() + "art.vol";
+        const std::string path(trimWhitespace(op2Path));
 
         if (path.empty())
         {
@@ -104,6 +106,7 @@ void doInitialSetup()
         }
         else
         {
+            Config["Op2FilePath"] = op2Path;
             InitialSetupRequired = false;
         }
     }
@@ -148,7 +151,7 @@ void initGui()
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.IniFilename = nullptr;
-    ImGui::LoadIniSettingsFromDisk(Config.UserSavePath.c_str());
+    ImGui::LoadIniSettingsFromDisk(Config["UserSavePath"].c_str());
 
     std::ignore = io.Fonts->AddFontFromFileTTF("data/fonts/opensans.ttf", 24);
 
@@ -161,7 +164,7 @@ void initGui()
 
 void checkConfig()
 {
-    InitialSetupRequired = !Config.Options.contains("op2_path");
+    InitialSetupRequired = !Config.contains("Op2FilePath");
 }
 
 
@@ -178,7 +181,7 @@ int main(int argc, char* argv[])
         
         mainLoop();
 
-        ImGui::SaveIniSettingsToDisk(std::string{ Config.UserSavePath + "gui.ini" }.c_str());
+        ImGui::SaveIniSettingsToDisk(std::string{ Config["UserSavePath"] + "gui.ini" }.c_str());
         SDL_Quit();
     }
     catch (std::exception e)

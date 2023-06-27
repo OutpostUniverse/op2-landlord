@@ -16,7 +16,7 @@ namespace
 		return std::error_code{ errno, std::generic_category() }.message();
 	}
 
-	void loadConfigFromFile(const std::string filePath)
+	std::map<std::string, std::string> loadConfigFromFile(const std::string filePath)
 	{
 		if (!std::filesystem::exists(filePath))
 		{
@@ -26,43 +26,53 @@ namespace
 				throw std::runtime_error("Error opening file for writing: " + filePath + " : " + errorDescription());
 			}
 
-			return;
+			return {};
 		}
 
 		try
 		{
-			std::ifstream file(filePath);
-			json data = json::parse(file);
+			std::ifstream file{ filePath };
+			json optionsJson = json::parse(file);
+			std::map<std::string, std::string> options;
+
+			for (auto& [key, value] : optionsJson.items())
+			{
+				options.emplace(key, value);
+			}
+
+			return options;
 		}
 		catch (const std::exception& e)
 		{
 			std::cout << e.what() << std::endl;
 		}
+
+		return {};
 	}
 
 
-	void saveConfigToFile(const std::string& filePath)
+	void saveConfigToFile(const std::string& filePath, const std::map<std::string, std::string>& options)
 	{
-		std::ofstream file;
-		if (!std::filesystem::exists(filePath))
+		std::ofstream file{ filePath, std::ios::out | std::ios::binary };
+
+		if (!file)
 		{
-			file = std::ofstream{ filePath, std::ios::out | std::ios::binary };
-			if (!file)
-			{
-				throw std::runtime_error("Error opening file for writing: " + filePath + " : " + errorDescription());
-			}
+			throw std::runtime_error("Error opening file for writing: " + filePath + " : " + errorDescription());
 		}
 
+		json jsonMap(options);
 
+		file << jsonMap;
+		file.close();
 	}
 
 }
 
 
-EditorConfig::EditorConfig(const std::string& savePath) : 
-	UserSavePath{ savePath }
+EditorConfig::EditorConfig(const std::string& savePath)
 {
-	loadConfigFromFile(UserSavePath + "editor.json");
+	Options = loadConfigFromFile(savePath + "editor.json");
+	Options.emplace("UserSavePath", savePath);
 }
 
 
@@ -74,5 +84,17 @@ EditorConfig::~EditorConfig()
 
 void EditorConfig::saveConfig()
 {
-	saveConfigToFile(UserSavePath + "editor.json");
+	saveConfigToFile(Options.at("UserSavePath") + "editor.json", Options);
+}
+
+
+std::string& EditorConfig::operator[](const std::string& key)
+{
+	return Options[key];
+}
+
+
+bool EditorConfig::contains(const std::string& key) const
+{
+	return Options.contains(key);
 }
