@@ -13,7 +13,11 @@ struct EditorConfig
 	void saveConfig();
 
 	char Op2FilePath[1000]{ '\0' };
-	std::string UserSavePath;
 
+	std::string& operator[](const std::string& key);
+
+	bool contains(const std::string& key) const;
+
+private:
 	std::map<std::string, std::string> Options;
 };

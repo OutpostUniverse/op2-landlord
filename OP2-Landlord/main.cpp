@@ -148,7 +148,7 @@ void initGui()
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.IniFilename = nullptr;
-    ImGui::LoadIniSettingsFromDisk(Config.UserSavePath.c_str());
+    ImGui::LoadIniSettingsFromDisk(Config["UserSavePath"].c_str());
 
     std::ignore = io.Fonts->AddFontFromFileTTF("data/fonts/opensans.ttf", 24);
 
@@ -161,7 +161,7 @@ void initGui()
 
 void checkConfig()
 {
-    InitialSetupRequired = !Config.Options.contains("op2_path");
+    InitialSetupRequired = !Config.contains("op2_path");
 }
 
 
@@ -178,7 +178,7 @@ int main(int argc, char* argv[])
         
         mainLoop();
 
-        ImGui::SaveIniSettingsToDisk(std::string{ Config.UserSavePath + "gui.ini" }.c_str());
+        ImGui::SaveIniSettingsToDisk(std::string{ Config["UserSavePath"] + "gui.ini" }.c_str());
         SDL_Quit();
     }
     catch (std::exception e)
