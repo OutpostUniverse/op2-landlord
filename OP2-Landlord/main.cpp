@@ -29,8 +29,7 @@ namespace
     constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
 
     EditorConfig Config(getUserPrefPath("OP2-Landlord", "OutpostUniverse"));
-
-    std::unique_ptr<StringTable> MessageStrings;
+    StringTable MessageStrings;
 
     bool InitialSetupRequired = false;
 };
@@ -92,16 +91,16 @@ void doInitialSetup()
         {
             SDL_ShowSimpleMessageBox(
                 SDL_MESSAGEBOX_ERROR,
-                (*MessageStrings)[StringTable::StringName::EmptyDir].c_str(),
-                (*MessageStrings)[StringTable::StringName::EmptyDirMsg].c_str(),
+                MessageStrings[StringTable::StringName::EmptyDir].c_str(),
+                MessageStrings[StringTable::StringName::EmptyDirMsg].c_str(),
                 graphics.window());
         }
         else if (!std::filesystem::exists(exepath) || !std::filesystem::exists(artpath))
         {
             SDL_ShowSimpleMessageBox(
                 SDL_MESSAGEBOX_ERROR,
-                (*MessageStrings)[StringTable::StringName::MissingAssets].c_str(),
-                (*MessageStrings)[StringTable::StringName::MissingAssetsMsg].c_str(),
+                MessageStrings[StringTable::StringName::MissingAssets].c_str(),
+                MessageStrings[StringTable::StringName::MissingAssetsMsg].c_str(),
                 graphics.window());
         }
         else
@@ -170,10 +169,9 @@ void checkConfig()
 
 int main(int argc, char* argv[])
 {
-    MessageStrings = std::make_unique<StringTable>("data/en.json");
-
     try
     {
+        MessageStrings.load("data/en.json");
         graphics.drawColor(ClearColor);
         initGui();
 
