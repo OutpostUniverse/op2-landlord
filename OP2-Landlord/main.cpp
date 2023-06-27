@@ -17,6 +17,7 @@
 #include "Events.h"
 #include "FileIo.h"
 #include "Graphics.h"
+#include "StringTable.h"
 #include "Utility.h"
 
 
@@ -27,12 +28,9 @@ namespace
 
     constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
 
-    constexpr auto EmptyDir{ "Empty Directory" };
-    constexpr auto EmptyDirMsg{ "No directory for Outpost 2 has been selected" };
-    constexpr auto MissingAssets{ "Missing Assets" };
-    constexpr auto MissingAssetsMsg{ "'Outpost2.exe' or 'art.vol' not found in specified directory." };
-
     EditorConfig Config(getUserPrefPath("OP2-Landlord", "OutpostUniverse"));
+
+    std::unique_ptr<StringTable> MessageStrings;
 
     bool InitialSetupRequired = false;
 };
@@ -90,11 +88,19 @@ void doInitialSetup()
 
         if (path.empty())
         {
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, EmptyDir, EmptyDirMsg, graphics.window());
+            SDL_ShowSimpleMessageBox(
+                SDL_MESSAGEBOX_ERROR,
+                (*MessageStrings)[StringTable::StringName::EmptyDir].c_str(),
+                (*MessageStrings)[StringTable::StringName::EmptyDirMsg].c_str(),
+                graphics.window());
         }
         else if (!std::filesystem::exists(exepath) || !std::filesystem::exists(artpath))
         {
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, MissingAssets, MissingAssetsMsg, graphics.window());
+            SDL_ShowSimpleMessageBox(
+                SDL_MESSAGEBOX_ERROR,
+                (*MessageStrings)[StringTable::StringName::MissingAssets].c_str(),
+                (*MessageStrings)[StringTable::StringName::MissingAssetsMsg].c_str(),
+                graphics.window());
         }
         else
         {
@@ -161,6 +167,8 @@ void checkConfig()
 
 int main(int argc, char* argv[])
 {
+    MessageStrings = std::make_unique<StringTable>("data/en.json");
+
     try
     {
         graphics.drawColor(ClearColor);
