@@ -30,7 +30,7 @@ namespace
 
     Gui::AppState ApplicationState{ Gui::AppState::InitialSetup };
 
-    using StateGuiFunction = std::function<bool(void)>;
+    using StateGuiFunction = std::function<Gui::AppState(void)>;
     std::map<Gui::AppState, StateGuiFunction> StateFunctionTable;
 };
 
@@ -44,13 +44,11 @@ void mainLoop(Graphics& graphics, Gui& gui)
         pumpEvents();
 
         graphics.clear();
-
         gui.newFrame();
         
-        StateFunctionTable.at(ApplicationState)();
+        ApplicationState = StateFunctionTable.at(ApplicationState)();
 
         gui.endFrame();
-
         graphics.present();
     }
 }

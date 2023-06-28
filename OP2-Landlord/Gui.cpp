@@ -60,7 +60,7 @@ void Gui::endFrame()
 /**
  * \return Returns true if this state should be called again
  */
-bool Gui::initialSetup()
+Gui::AppState Gui::initialSetup()
 {
     static char op2Path[1000] = { '\0' };
 
@@ -91,7 +91,7 @@ bool Gui::initialSetup()
 
     ImGui::Dummy({ 0, 20 });
 
-    bool retValue = true;
+    AppState nextState = AppState::InitialSetup;
 
     if (ImGui::Button("Continue", { ImGui::GetContentRegionAvail().x, 0 }))
     {
@@ -118,17 +118,17 @@ bool Gui::initialSetup()
         else
         {
             mConfig["Op2FilePath"] = op2Path;
-            retValue = false;
+            nextState = AppState::CreateOrLoadMap;
         }
     }
 
     ImGui::End();
 
-    return retValue;
+    return nextState;
 }
 
 
-bool Gui::createOrLoadMap()
+Gui::AppState Gui::createOrLoadMap()
 {
-    return false;
+    return AppState::CreateOrLoadMap;
 }

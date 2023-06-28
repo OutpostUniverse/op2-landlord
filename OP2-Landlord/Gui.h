@@ -30,8 +30,8 @@ public:
 	void newFrame();
 	void endFrame();
 
-	bool initialSetup();
-	bool createOrLoadMap();
+	AppState initialSetup();
+	AppState createOrLoadMap();
 
 private:
 	const StringTable& mStringTable;
