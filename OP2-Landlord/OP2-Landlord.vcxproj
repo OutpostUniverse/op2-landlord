@@ -148,6 +148,7 @@
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="FileIo.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Gui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StringTable.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Events.h" />
     <ClInclude Include="FileIo.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Gui.h" />
     <ClInclude Include="StringTable.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
