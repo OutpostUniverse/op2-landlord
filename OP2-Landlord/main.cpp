@@ -2,7 +2,9 @@
 #include <SDL2/SDL.h>
 
 #include <filesystem>
+#include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 
 #if defined(_WIN32)
@@ -25,7 +27,11 @@
 namespace
 {
     constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
-    bool InitialSetupRequired = false;
+
+    Gui::AppState ApplicationState{ Gui::AppState::InitialSetup };
+
+    using StateGuiFunction = std::function<Gui::AppState(void)>;
+    std::map<Gui::AppState, StateGuiFunction> StateFunctionTable;
 };
 
 
@@ -38,20 +44,11 @@ void mainLoop(Graphics& graphics, Gui& gui)
         pumpEvents();
 
         graphics.clear();
-
         gui.newFrame();
         
-        if(InitialSetupRequired)
-        {
-            InitialSetupRequired = gui.initialSetup();
-        }
-        else
-        {
-
-        }
+        ApplicationState = StateFunctionTable.at(ApplicationState)();
 
         gui.endFrame();
-
         graphics.present();
     }
 }
@@ -59,7 +56,14 @@ void mainLoop(Graphics& graphics, Gui& gui)
 
 void checkConfig(EditorConfig& config)
 {
-    InitialSetupRequired = !config.contains("Op2FilePath");
+    ApplicationState = config.contains("Op2FilePath") ? Gui::AppState::CreateOrLoadMap : Gui::AppState::InitialSetup;
+}
+
+
+void buildStateGuiFunctionTable(Gui& gui)
+{
+    StateFunctionTable.emplace(Gui::AppState::InitialSetup, [&gui]() { return gui.initialSetup(); });
+    StateFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, [&gui]() { return gui.createOrLoadMap(); });
 }
 
 
@@ -73,9 +77,9 @@ int main(int argc, char* argv[])
         graphics.drawColor(ClearColor);
 
         EditorConfig config(getUserPrefPath("OP2-Landlord", "OutpostUniverse"));
-
         Gui gui(strings, config, graphics, config["UserSavePath"] + "gui.ini");
 
+        buildStateGuiFunctionTable(gui);
         checkConfig(config);
         
         mainLoop(graphics, gui);

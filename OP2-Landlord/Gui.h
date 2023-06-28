@@ -15,6 +15,13 @@ struct SDL_Renderer;
 class Gui
 {
 public:
+	enum class AppState
+	{
+		InitialSetup,
+		CreateOrLoadMap
+	};
+
+public:
 	Gui() = delete;
 	Gui(StringTable& table, EditorConfig& config, Graphics& graphics, const std::string& settingsPath);
 
@@ -23,7 +30,8 @@ public:
 	void newFrame();
 	void endFrame();
 
-	bool initialSetup();
+	AppState initialSetup();
+	AppState createOrLoadMap();
 
 private:
 	const StringTable& mStringTable;
