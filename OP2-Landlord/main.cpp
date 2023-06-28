@@ -24,8 +24,16 @@
 
 namespace
 {
+
+    enum class AppState
+    {
+        InitialSetup,
+        CreateOrLoadMap
+    };
+
     constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
-    bool InitialSetupRequired = false;
+
+    AppState ApplicationState{ AppState::InitialSetup };
 };
 
 
@@ -41,9 +49,12 @@ void mainLoop(Graphics& graphics, Gui& gui)
 
         gui.newFrame();
         
-        if(InitialSetupRequired)
+        if(ApplicationState == AppState::InitialSetup)
         {
-            InitialSetupRequired = gui.initialSetup();
+            if (!gui.initialSetup())
+            {
+                ApplicationState = AppState::CreateOrLoadMap;
+            }
         }
         else
         {
@@ -59,7 +70,7 @@ void mainLoop(Graphics& graphics, Gui& gui)
 
 void checkConfig(EditorConfig& config)
 {
-    InitialSetupRequired = !config.contains("Op2FilePath");
+    ApplicationState = config.contains("Op2FilePath") ? AppState::CreateOrLoadMap : AppState::InitialSetup;
 }
 
 
