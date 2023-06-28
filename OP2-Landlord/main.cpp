@@ -26,18 +26,12 @@
 
 namespace
 {
-    enum class AppState
-    {
-        InitialSetup,
-        CreateOrLoadMap
-    };
-
     constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
 
-    AppState ApplicationState{ AppState::InitialSetup };
+    Gui::AppState ApplicationState{ Gui::AppState::InitialSetup };
 
     using StateGuiFunction = std::function<bool(void)>;
-    std::map<AppState, StateGuiFunction> StateFunctionTable;
+    std::map<Gui::AppState, StateGuiFunction> StateFunctionTable;
 };
 
 
@@ -64,14 +58,14 @@ void mainLoop(Graphics& graphics, Gui& gui)
 
 void checkConfig(EditorConfig& config)
 {
-    ApplicationState = config.contains("Op2FilePath") ? AppState::CreateOrLoadMap : AppState::InitialSetup;
+    ApplicationState = config.contains("Op2FilePath") ? Gui::AppState::CreateOrLoadMap : Gui::AppState::InitialSetup;
 }
 
 
 void buildStateGuiFunctionTable(Gui& gui)
 {
-    StateFunctionTable.emplace(AppState::InitialSetup, [&gui]() { return gui.initialSetup(); });
-    StateFunctionTable.emplace(AppState::CreateOrLoadMap, [&gui]() { return gui.createOrLoadMap(); });
+    StateFunctionTable.emplace(Gui::AppState::InitialSetup, [&gui]() { return gui.initialSetup(); });
+    StateFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, [&gui]() { return gui.createOrLoadMap(); });
 }
 
 
