@@ -2,7 +2,9 @@
 #include <SDL2/SDL.h>
 
 #include <filesystem>
+#include <functional>
 #include <iostream>
+#include <map>
 #include <memory>
 
 #if defined(_WIN32)
@@ -24,7 +26,6 @@
 
 namespace
 {
-
     enum class AppState
     {
         InitialSetup,
@@ -34,6 +35,9 @@ namespace
     constexpr auto ClearColor = ImColor{ 0.117f, 0.117f, 0.117f, 1.0f };
 
     AppState ApplicationState{ AppState::InitialSetup };
+
+    using StateGuiFunction = std::function<bool(void)>;
+    std::map<AppState, StateGuiFunction> StateFunctionTable;
 };
 
 
@@ -49,17 +53,7 @@ void mainLoop(Graphics& graphics, Gui& gui)
 
         gui.newFrame();
         
-        if(ApplicationState == AppState::InitialSetup)
-        {
-            if (!gui.initialSetup())
-            {
-                ApplicationState = AppState::CreateOrLoadMap;
-            }
-        }
-        else
-        {
-
-        }
+        StateFunctionTable.at(ApplicationState)();
 
         gui.endFrame();
 
@@ -74,6 +68,13 @@ void checkConfig(EditorConfig& config)
 }
 
 
+void buildStateGuiFunctionTable(Gui& gui)
+{
+    StateFunctionTable.emplace(AppState::InitialSetup, [&gui]() { return gui.initialSetup(); });
+    StateFunctionTable.emplace(AppState::CreateOrLoadMap, [&gui]() { return gui.createOrLoadMap(); });
+}
+
+
 int main(int argc, char* argv[])
 {
     try
@@ -84,9 +85,9 @@ int main(int argc, char* argv[])
         graphics.drawColor(ClearColor);
 
         EditorConfig config(getUserPrefPath("OP2-Landlord", "OutpostUniverse"));
-
         Gui gui(strings, config, graphics, config["UserSavePath"] + "gui.ini");
 
+        buildStateGuiFunctionTable(gui);
         checkConfig(config);
         
         mainLoop(graphics, gui);
