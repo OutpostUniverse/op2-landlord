@@ -67,15 +67,14 @@ int main(int argc, char* argv[])
 {
     try
     {
-        StringTable MessageStrings;        
-        MessageStrings.load("data/en.json");
+        StringTable strings{ "data/en.json" };
         
         Graphics graphics({ 800, 600 });
         graphics.drawColor(ClearColor);
 
         EditorConfig config(getUserPrefPath("OP2-Landlord", "OutpostUniverse"));
 
-        Gui gui(MessageStrings, config, graphics, config["UserSavePath"] + "gui.ini");
+        Gui gui(strings, config, graphics, config["UserSavePath"] + "gui.ini");
 
         checkConfig(config);
         
