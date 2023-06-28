@@ -24,6 +24,7 @@ public:
 	void endFrame();
 
 	bool initialSetup();
+	bool createOrLoadMap();
 
 private:
 	const StringTable& mStringTable;

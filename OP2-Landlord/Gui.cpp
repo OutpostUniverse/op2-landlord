@@ -57,6 +57,9 @@ void Gui::endFrame()
 }
 
 
+/**
+ * \return Returns true if this state should be called again
+ */
 bool Gui::initialSetup()
 {
     static char op2Path[1000] = { '\0' };
@@ -122,4 +125,10 @@ bool Gui::initialSetup()
     ImGui::End();
 
     return retValue;
+}
+
+
+bool Gui::createOrLoadMap()
+{
+    return false;
 }
