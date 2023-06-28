@@ -17,6 +17,7 @@
 #include "Events.h"
 #include "FileIo.h"
 #include "Graphics.h"
+#include "Gui.h"
 #include "StringTable.h"
 #include "Utility.h"
 
@@ -33,21 +34,6 @@ namespace
 
     bool InitialSetupRequired = false;
 };
-
-
-void guiEndFrame()
-{
-    ImGui::Render();
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData());
-}
-
-
-void guiNewFrame()
-{
-    ImGui_ImplSDLRenderer2_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-}
 
 
 void doInitialSetup()
@@ -114,7 +100,7 @@ void doInitialSetup()
 }
 
 
-void mainLoop()
+void mainLoop(Gui& gui)
 {
     std::string pathToOutpost2{};
 
@@ -124,7 +110,7 @@ void mainLoop()
 
         graphics.clear();
 
-        guiNewFrame();
+        gui.newFrame();
         
         if(InitialSetupRequired)
         {
@@ -135,29 +121,10 @@ void mainLoop()
 
         }
 
-        guiEndFrame();
+        gui.endFrame();
 
         graphics.present();
     }
-}
-
-
-void initGui()
-{
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.IniFilename = nullptr;
-    ImGui::LoadIniSettingsFromDisk(Config["UserSavePath"].c_str());
-
-    std::ignore = io.Fonts->AddFontFromFileTTF("data/fonts/opensans.ttf", 24);
-
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplSDL2_InitForSDLRenderer(graphics.window(), graphics.renderer());
-    ImGui_ImplSDLRenderer2_Init(graphics.renderer());
 }
 
 
@@ -173,13 +140,13 @@ int main(int argc, char* argv[])
     {
         MessageStrings.load("data/en.json");
         graphics.drawColor(ClearColor);
-        initGui();
+
+        Gui gui(Config["UserSavePath"] + "gui.ini", graphics.window(), graphics.renderer());
 
         checkConfig();
         
-        mainLoop();
+        mainLoop(gui);
 
-        ImGui::SaveIniSettingsToDisk(std::string{ Config["UserSavePath"] + "gui.ini" }.c_str());
         SDL_Quit();
     }
     catch (std::exception e)
