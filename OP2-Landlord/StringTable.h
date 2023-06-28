@@ -16,9 +16,8 @@ public:
 	};
 
 public:
-	StringTable() = default;
-	
-	void load(const std::string& filepath);
+	StringTable() = delete;
+	StringTable(const std::string& filepath);
 
 	const std::string& operator[](const StringName name) const;
 };

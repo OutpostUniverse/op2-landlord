@@ -42,7 +42,7 @@ namespace
 }
 
 
-void StringTable::load(const std::string& filepath)
+StringTable::StringTable(const std::string& filepath)
 {
 	loadStringTable(filepath);
 }
