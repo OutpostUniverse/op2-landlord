@@ -53,8 +53,8 @@ FileIo::FileIo(SDL_Window& window) :
     CoTaskMemFree(path);
 #endif
 
-    std::wstring separatorWchar(1, std::filesystem::path::preferred_separator);
-    mPathSeparator = std::string(separatorWchar.begin(), separatorWchar.end());
+    const std::wstring separatorWchar(1, std::filesystem::path::preferred_separator);
+    mPathSeparator = StringFromWString(separatorWchar);
 }
 
 
