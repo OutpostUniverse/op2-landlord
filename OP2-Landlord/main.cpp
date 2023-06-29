@@ -32,6 +32,9 @@ namespace
 
     using StateGuiFunction = std::function<Gui::AppState(void)>;
     std::map<Gui::AppState, StateGuiFunction> StateFunctionTable;
+
+    using StateTransitionFunction = std::function<void(Gui&)>;
+    std::map<Gui::AppState, StateTransitionFunction> StateTransitionFunctionTable;
 };
 
 
@@ -46,7 +49,20 @@ void mainLoop(Graphics& graphics, Gui& gui)
         graphics.clear();
         gui.newFrame();
         
+        const auto previousState = ApplicationState;
         ApplicationState = StateFunctionTable.at(ApplicationState)();
+
+        if (previousState != ApplicationState)
+        {
+            try
+            {
+                StateTransitionFunctionTable.at(ApplicationState)(gui);
+            }
+            catch (std::out_of_range)
+            {
+                std::cout << "[Warning] No transition handler for ApplicationState '" << static_cast<int>(ApplicationState) << "'" << std::endl;
+            }
+        }
 
         gui.endFrame();
         graphics.present();
@@ -60,10 +76,17 @@ void checkConfig(EditorConfig& config)
 }
 
 
+void loadOrCreateTransition(Gui& gui)
+{
+}
+
+
 void buildStateGuiFunctionTable(Gui& gui)
 {
     StateFunctionTable.emplace(Gui::AppState::InitialSetup, [&gui]() { return gui.initialSetup(); });
     StateFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, [&gui]() { return gui.createOrLoadMap(); });
+
+    StateTransitionFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, loadOrCreateTransition);
 }
 
 
@@ -81,6 +104,11 @@ int main(int argc, char* argv[])
 
         buildStateGuiFunctionTable(gui);
         checkConfig(config);
+
+        if (ApplicationState != Gui::AppState::InitialSetup)
+        {
+            loadOrCreateTransition(gui);
+        }
         
         mainLoop(graphics, gui);
 
