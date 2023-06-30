@@ -72,6 +72,24 @@ void mainLoop(EditorConfig& config, Graphics& graphics, Gui& gui)
             }
         }
 
+        if (!TileSets.empty())
+        {
+            const auto& tset = TileSets.back();
+         
+            int offset = 250;
+            for (const auto& tset : TileSets)
+            {
+                const SDL_Rect destRect{
+                    offset, 100,
+                    static_cast<int>(tset.dimensions.x),
+                    static_cast<int>(tset.dimensions.y)
+                };
+
+                SDL_RenderCopy(graphics.renderer(), tset.texture, nullptr, &destRect);
+                offset += 40;
+            }
+        }
+
         gui.endFrame();
         graphics.present();
     }
