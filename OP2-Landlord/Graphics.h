@@ -28,7 +28,8 @@ public:
 	void clear();
 	void present();
 
-	Texture loadTexture(const std::string& filename);
+	Texture loadTexture(const std::string& filename) const;
+	Texture loadTexture(const void* buffer, const size_t bufferSize) const;
 
 	SDL_Window* window() { return mWindow; }
 	SDL_Renderer* renderer() { return mRenderer; }

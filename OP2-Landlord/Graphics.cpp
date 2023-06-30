@@ -41,7 +41,7 @@ void Graphics::present()
 }
 
 
-Graphics::Texture Graphics::loadTexture(const std::string& filename)
+Graphics::Texture Graphics::loadTexture(const std::string& filename) const
 {
     SDL_Surface* temp = IMG_Load(filename.c_str());
     if (!temp)
@@ -57,6 +57,36 @@ Graphics::Texture Graphics::loadTexture(const std::string& filename)
     {
         std::cout << "loadTexture(): Unable to load '" + filename + "': " + SDL_GetError() << std::endl;
         throw std::runtime_error("loadTexture(): Unable to load '" + filename + "': " + SDL_GetError());
+    }
+
+    int width = 0, height = 0;
+    SDL_QueryTexture(out, nullptr, nullptr, &width, &height);
+
+    return Texture{ out, SDL_Rect{ 0, 0, width, height }, { static_cast<float>(width), static_cast<float>(height) } };
+}
+
+
+Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferSize) const
+{
+    auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(bufferSize));
+    SDL_Surface* temp = IMG_LoadBMP_RW(rwops);
+    SDL_RWclose(rwops);
+
+    if (!temp)
+    {
+        const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
+        std::cout << msg << std::endl;
+        throw std::runtime_error(msg + SDL_GetError());
+    }
+
+    SDL_Texture* out = SDL_CreateTextureFromSurface(mRenderer, temp);
+    SDL_FreeSurface(temp);
+
+    if (!out)
+    {
+        const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
+        std::cout << msg << std::endl;
+        throw std::runtime_error(msg + SDL_GetError());
     }
 
     int width = 0, height = 0;
