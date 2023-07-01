@@ -114,9 +114,7 @@ Graphics::Texture bmpToTexture(Graphics& graphics, EditorConfig& config, BitmapF
 
     bmp.WriteIndexed(writer);
 
-    Graphics::Texture tileset = graphics.loadTexture(buffer, bufferSize);
-
-    return tileset;
+    return graphics.loadTexturePacked(buffer, bufferSize);
 }
 
 
