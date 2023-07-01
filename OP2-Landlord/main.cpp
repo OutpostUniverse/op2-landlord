@@ -102,7 +102,7 @@ void checkConfig(EditorConfig& config)
 }
 
 
-Graphics::Texture bmpToSurface(Graphics& graphics, EditorConfig& config, BitmapFile& bmp)
+Graphics::Texture bmpToTexture(Graphics& graphics, EditorConfig& config, BitmapFile& bmp)
 {
     std::size_t pixelOffset = sizeof(BmpHeader) + sizeof(ImageHeader) + bmp.palette.size() * sizeof(Color);
     std::size_t bufferSize = pixelOffset + ImageHeader::CalculatePitch(bmp.imageHeader.bitCount, bmp.imageHeader.width) * std::abs(bmp.imageHeader.height);
@@ -143,7 +143,7 @@ void loadOrCreateTransition(EditorConfig& config, Graphics& graphics, Gui& gui)
         try
         {
             auto bitmap = Tileset::ReadTileset(*artVol.OpenStream(tsetIndex));
-            TileSets.push_back(bmpToSurface(graphics, config, bitmap));          
+            TileSets.push_back(bmpToTexture(graphics, config, bitmap));          
         }
         catch(std::runtime_error e)
         {
