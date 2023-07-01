@@ -86,6 +86,7 @@ Gui::AppState Gui::initialSetup()
         if (mFileIo.pickFolder())
         {
             std::ignore = strcpy_s(op2Path, mFileIo.folderPath().c_str());
+            mFileIo.setDefaultFolder(mFileIo.folderPath());
         }
     }
 
@@ -130,7 +131,7 @@ Gui::AppState Gui::initialSetup()
 
 Gui::AppState Gui::createOrLoadMap()
 {
-    ImGui::SetNextWindowSize({ 550, 170 });
+    ImGui::SetNextWindowSize({ 550, 200 });
     const ImVec2 position{
         static_cast<float>(mGraphics.size().x / 2 - 300),
         static_cast<float>(mGraphics.size().y / 2 - 85)
@@ -142,18 +143,41 @@ Gui::AppState Gui::createOrLoadMap()
 
     ImGui::Begin("Start", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-    ImGui::Button("Load Map", { ImGui::GetContentRegionAvail().x, 0 });
-    ImGui::Button("New Map", { ImGui::GetContentRegionAvail().x, 0 });
+    AppState nextState = AppState::CreateOrLoadMap;
+
+    if (ImGui::Button("Load Map from Disk", { ImGui::GetContentRegionAvail().x, 0 }))
+    { 
+        mFileIo.setFilter(0);
+        if (mFileIo.pickOpenFile())
+        {
+            nextState = AppState::LoadMap;
+        }
+    }
+
+    if (ImGui::Button("Load Map from Archive", { ImGui::GetContentRegionAvail().x, 0 }))
+    {
+        mFileIo.setFilter(1);
+        if (mFileIo.pickOpenFile())
+        {
+            
+        }
+    }
+
+    if (ImGui::Button("New Map", { ImGui::GetContentRegionAvail().x, 0 }))
+    {
+        nextState = AppState::NewMap;
+    }
+
     ImGui::Dummy({ 0, 5 });
     ImGui::Separator();
     ImGui::Dummy({ 0, 5 });
     
     if (ImGui::Button("Quit", { ImGui::GetContentRegionAvail().x, 0 }))
     {
-        return AppState::Quit;
+        nextState = AppState::Quit;
     }
 
     ImGui::End();
 
-    return AppState::CreateOrLoadMap;
+    return nextState;
 }
