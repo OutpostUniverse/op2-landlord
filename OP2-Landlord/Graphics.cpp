@@ -96,6 +96,12 @@ Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferS
 }
 
 
+Graphics::Texture Graphics::loadTexturePacked(const void* buffer, const size_t buffersize) const
+{
+    return Texture();
+}
+
+
 void Graphics::init()
 {
     if (SDL_Init(SDL_INIT_VIDEO))
