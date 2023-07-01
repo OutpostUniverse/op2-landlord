@@ -3,7 +3,39 @@
 
 #include <SDL2/SDL_image.h>
 
+#include <functional>
 #include <iostream>
+#include <sstream>
+
+
+namespace
+{
+
+    struct SurfaceDeleter
+    {
+        void operator()(SDL_Surface* srf)
+        {
+            SDL_FreeSurface(srf);
+        }
+    };
+
+    using SdlSurface = std::unique_ptr <SDL_Surface, SurfaceDeleter> ;
+
+    SdlSurface createSurfaceFromBuffer(const void* buffer, const size_t buffersize)
+    {
+        auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(buffersize));
+        SDL_Surface* surface = IMG_LoadBMP_RW(rwops);
+        SDL_RWclose(rwops);
+
+        if (!surface)
+        {
+            const std::string msg{ "createSurfaceFromBuffer(): Unable to load from memory buffer: " + std::string(SDL_GetError()) };
+            throw std::runtime_error(msg);
+        }
+
+        return SdlSurface{ surface };
+    }
+};
 
 
 Graphics::Graphics(ImVec2 windowSize) :
@@ -41,7 +73,7 @@ void Graphics::present()
 }
 
 
-Graphics::Texture Graphics::loadTexture(const std::string& filename)
+Graphics::Texture Graphics::loadTexture(const std::string& filename) const
 {
     SDL_Surface* temp = IMG_Load(filename.c_str());
     if (!temp)
@@ -57,6 +89,64 @@ Graphics::Texture Graphics::loadTexture(const std::string& filename)
     {
         std::cout << "loadTexture(): Unable to load '" + filename + "': " + SDL_GetError() << std::endl;
         throw std::runtime_error("loadTexture(): Unable to load '" + filename + "': " + SDL_GetError());
+    }
+
+    int width = 0, height = 0;
+    SDL_QueryTexture(out, nullptr, nullptr, &width, &height);
+
+    return Texture{ out, SDL_Rect{ 0, 0, width, height }, { static_cast<float>(width), static_cast<float>(height) } };
+}
+
+
+Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t buffersize) const
+{
+    auto out = SDL_CreateTextureFromSurface(mRenderer, createSurfaceFromBuffer(buffer, buffersize).get());
+
+    if (!out)
+    {
+        const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
+        throw std::runtime_error(msg);
+    }
+
+    int width = 0, height = 0;
+    SDL_QueryTexture(out, nullptr, nullptr, &width, &height);
+
+    return Texture{ out, SDL_Rect{ 0, 0, width, height }, { static_cast<float>(width), static_cast<float>(height) } };
+}
+
+
+Graphics::Texture Graphics::loadTexturePacked(const void* buffer, const size_t buffersize) const
+{  
+    SdlSurface src{ SDL_ConvertSurfaceFormat(createSurfaceFromBuffer(buffer, buffersize).get(), SDL_PIXELFORMAT_RGB888, 0) };
+
+    SdlSurface destinationSurface(SDL_CreateRGBSurface(
+        src.get()->flags,
+        1024, 1024,
+        src->format->BitsPerPixel,
+        src->format->Rmask,
+        src->format->Gmask,
+        src->format->Bmask,
+        src->format->Amask));
+
+    if (!destinationSurface.get())
+    {
+        throw std::runtime_error("loadTexturePacked(): Unable to create new surface: " + std::string(SDL_GetError()));
+    }
+
+    SDL_Rect sourceRect{ 0, 0, 32, 32 };
+    SDL_Rect destRect{ 0, 0, 32, 32 };
+    for (size_t i = 0; i < src->h / 32; ++i)
+    {
+        destRect = { (static_cast<int>(i) % 32) * 32, (static_cast<int>(i) / 32) * 32, 32, 32 };
+        SDL_BlitSurface(src.get(), &sourceRect, destinationSurface.get(), &destRect);
+        sourceRect.y += 32;
+    }
+
+    auto out = SDL_CreateTextureFromSurface(mRenderer, destinationSurface.get());
+    if (!out)
+    {
+        const std::string msg{ std::string("loadTexturePacked(): Unable to load from memory buffer: ") + SDL_GetError() };
+        throw std::runtime_error(msg);
     }
 
     int width = 0, height = 0;

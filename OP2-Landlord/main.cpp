@@ -8,6 +8,7 @@
 #include <memory>
 
 #if defined(_WIN32)
+#define NOMINMAX
 #include <windows.h>
 #endif
 
@@ -23,6 +24,11 @@
 #include "StringTable.h"
 #include "Utility.h"
 
+#include "OP2Utility.h"
+
+
+using namespace OP2Utility;
+
 
 namespace
 {
@@ -33,12 +39,14 @@ namespace
     using StateGuiFunction = std::function<Gui::AppState(void)>;
     std::map<Gui::AppState, StateGuiFunction> StateFunctionTable;
 
-    using StateTransitionFunction = std::function<void(Gui&)>;
+    using StateTransitionFunction = std::function<void(EditorConfig&, Graphics&, Gui&)>;
     std::map<Gui::AppState, StateTransitionFunction> StateTransitionFunctionTable;
+
+    std::vector<Graphics::Texture> TileSets;
 };
 
 
-void mainLoop(Graphics& graphics, Gui& gui)
+void mainLoop(EditorConfig& config, Graphics& graphics, Gui& gui)
 {
     std::string pathToOutpost2{};
 
@@ -56,11 +64,29 @@ void mainLoop(Graphics& graphics, Gui& gui)
         {
             try
             {
-                StateTransitionFunctionTable.at(ApplicationState)(gui);
+                StateTransitionFunctionTable.at(ApplicationState)(config, graphics, gui);
             }
             catch (std::out_of_range)
             {
                 std::cout << "[Warning] No transition handler for ApplicationState '" << static_cast<int>(ApplicationState) << "'" << std::endl;
+            }
+        }
+
+        if (!TileSets.empty())
+        {
+            const auto& tset = TileSets.back();
+         
+            int offset = 250;
+            for (const auto& tset : TileSets)
+            {
+                const SDL_Rect destRect{
+                    offset, 100,
+                    static_cast<int>(tset.dimensions.x),
+                    static_cast<int>(tset.dimensions.y)
+                };
+
+                SDL_RenderCopy(graphics.renderer(), tset.texture, nullptr, &destRect);
+                offset += 40;
             }
         }
 
@@ -76,8 +102,52 @@ void checkConfig(EditorConfig& config)
 }
 
 
-void loadOrCreateTransition(Gui& gui)
+Graphics::Texture bmpToTexture(Graphics& graphics, EditorConfig& config, BitmapFile& bmp)
 {
+    std::size_t pixelOffset = sizeof(BmpHeader) + sizeof(ImageHeader) + bmp.palette.size() * sizeof(Color);
+    std::size_t bufferSize = pixelOffset + ImageHeader::CalculatePitch(bmp.imageHeader.bitCount, bmp.imageHeader.width) * std::abs(bmp.imageHeader.height);
+
+    auto buffer = new uint8_t[bufferSize];
+    memset(buffer, 0, bufferSize);
+
+    Stream::MemoryWriter writer(buffer, bufferSize);
+
+    bmp.WriteIndexed(writer);
+
+    return graphics.loadTexturePacked(buffer, bufferSize);
+}
+
+
+void loadOrCreateTransition(EditorConfig& config, Graphics& graphics, Gui& gui)
+{
+    Archive::VolFile artVol(config["Op2FilePath"] + "/" + "art.vol");
+    const auto indexCount = artVol.GetCount();
+
+    std::vector<size_t> tilesetIndicies;
+    for (size_t i = 0; i < indexCount; ++i)
+    {
+        const auto artName{ StringUtility::ConvertToUpper(artVol.GetName(i)) };
+
+        if (artName.find("WELL") != std::string::npos)
+        {
+            tilesetIndicies.push_back(i);
+        }
+    }
+
+    for (size_t i = 0; i < tilesetIndicies.size(); ++i)
+    {
+        const auto tsetIndex = tilesetIndicies[i];
+
+        try
+        {
+            auto bitmap = Tileset::ReadTileset(*artVol.OpenStream(tsetIndex));
+            TileSets.push_back(bmpToTexture(graphics, config, bitmap));          
+        }
+        catch(std::runtime_error e)
+        {
+            std::cout << "[Warning] Unable to load tilset '" << artVol.GetName(tsetIndex) << "' : " << e.what() << std::endl;
+        }
+    }
 }
 
 
@@ -107,10 +177,10 @@ int main(int argc, char* argv[])
 
         if (ApplicationState != Gui::AppState::InitialSetup)
         {
-            loadOrCreateTransition(gui);
+            loadOrCreateTransition(config, graphics, gui);
         }
         
-        mainLoop(graphics, gui);
+        mainLoop(config, graphics, gui);
 
         SDL_Quit();
     }
