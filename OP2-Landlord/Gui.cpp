@@ -147,7 +147,11 @@ Gui::AppState Gui::createOrLoadMap()
     ImGui::Dummy({ 0, 5 });
     ImGui::Separator();
     ImGui::Dummy({ 0, 5 });
-    ImGui::Button("Quit", { ImGui::GetContentRegionAvail().x, 0 });
+    
+    if (ImGui::Button("Quit", { ImGui::GetContentRegionAvail().x, 0 }))
+    {
+        return AppState::Quit;
+    }
 
     ImGui::End();
 

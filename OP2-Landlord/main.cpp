@@ -60,6 +60,11 @@ void mainLoop(EditorConfig& config, Graphics& graphics, Gui& gui)
         const auto previousState = ApplicationState;
         ApplicationState = StateFunctionTable.at(ApplicationState)();
 
+        if (ApplicationState == Gui::AppState::Quit)
+        {
+            return;
+        }
+
         if (previousState != ApplicationState)
         {
             try
