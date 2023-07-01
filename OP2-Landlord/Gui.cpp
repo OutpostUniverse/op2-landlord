@@ -130,5 +130,26 @@ Gui::AppState Gui::initialSetup()
 
 Gui::AppState Gui::createOrLoadMap()
 {
+    ImGui::SetNextWindowSize({ 550, 170 });
+    const ImVec2 position{
+        static_cast<float>(mGraphics.size().x / 2 - 300),
+        static_cast<float>(mGraphics.size().y / 2 - 85)
+    };
+
+    ImGui::SetNextWindowPos(position);
+
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImGui::Begin("Start", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
+    ImGui::Button("Load Map", { ImGui::GetContentRegionAvail().x, 0 });
+    ImGui::Button("New Map", { ImGui::GetContentRegionAvail().x, 0 });
+    ImGui::Dummy({ 0, 5 });
+    ImGui::Separator();
+    ImGui::Dummy({ 0, 5 });
+    ImGui::Button("Quit", { ImGui::GetContentRegionAvail().x, 0 });
+
+    ImGui::End();
+
     return AppState::CreateOrLoadMap;
 }
