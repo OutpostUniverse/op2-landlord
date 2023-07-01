@@ -94,7 +94,6 @@ Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferS
     if (!out)
     {
         const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
-        //std::cout << msg << std::endl;
         throw std::runtime_error(msg);
     }
 
