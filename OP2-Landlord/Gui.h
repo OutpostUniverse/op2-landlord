@@ -36,6 +36,8 @@ public:
 	AppState initialSetup();
 	AppState createOrLoadMap();
 
+	AppState dummy() const { return AppState::CreateOrLoadMap; }
+
 private:
 	const StringTable& mStringTable;
 	const std::string mIniSavePath;
