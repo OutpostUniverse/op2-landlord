@@ -75,8 +75,8 @@ Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferS
     if (!temp)
     {
         const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
-        std::cout << msg << std::endl;
-        throw std::runtime_error(msg + SDL_GetError());
+        //std::cout << msg << std::endl;
+        throw std::runtime_error(msg);
     }
 
     SDL_Texture* out = SDL_CreateTextureFromSurface(mRenderer, temp);
@@ -85,8 +85,8 @@ Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferS
     if (!out)
     {
         const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
-        std::cout << msg << std::endl;
-        throw std::runtime_error(msg + SDL_GetError());
+        //std::cout << msg << std::endl;
+        throw std::runtime_error(msg);
     }
 
     int width = 0, height = 0;
