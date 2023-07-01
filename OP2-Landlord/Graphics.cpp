@@ -3,12 +3,15 @@
 
 #include <SDL2/SDL_image.h>
 
+#include <functional>
 #include <iostream>
 
 
 namespace
 {
-    SDL_Surface* createSurfaceFromBuffer(const void* buffer, const size_t bufferSize)
+    using SdlSurface = std::unique_ptr < SDL_Surface, std::function<void(SDL_Surface*)>> ;
+
+    SdlSurface createSurfaceFromBuffer(const void* buffer, const size_t bufferSize)
     {
         auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(bufferSize));
         SDL_Surface* surface = IMG_LoadBMP_RW(rwops);
@@ -20,7 +23,7 @@ namespace
             throw std::runtime_error(msg);
         }
 
-        return surface;
+        return SdlSurface{ surface, [](SDL_Surface* srf) { SDL_FreeSurface(srf); } };
     }
 };
 
@@ -87,9 +90,7 @@ Graphics::Texture Graphics::loadTexture(const std::string& filename) const
 
 Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferSize) const
 {
-    auto surface = createSurfaceFromBuffer(buffer, bufferSize);
-    auto out = SDL_CreateTextureFromSurface(mRenderer, surface);
-    SDL_FreeSurface(surface);
+    auto out = SDL_CreateTextureFromSurface(mRenderer, createSurfaceFromBuffer(buffer, bufferSize).get());
 
     if (!out)
     {
