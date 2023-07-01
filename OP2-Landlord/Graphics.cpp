@@ -6,6 +6,25 @@
 #include <iostream>
 
 
+namespace
+{
+    SDL_Surface* createSurfaceFromBuffer(const void* buffer, const size_t bufferSize)
+    {
+        auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(bufferSize));
+        SDL_Surface* surface = IMG_LoadBMP_RW(rwops);
+        SDL_RWclose(rwops);
+
+        if (!surface)
+        {
+            const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
+            throw std::runtime_error(msg);
+        }
+
+        return surface;
+    }
+};
+
+
 Graphics::Graphics(ImVec2 windowSize) :
 	mWindowSize{windowSize}
 {
@@ -68,19 +87,9 @@ Graphics::Texture Graphics::loadTexture(const std::string& filename) const
 
 Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferSize) const
 {
-    auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(bufferSize));
-    SDL_Surface* temp = IMG_LoadBMP_RW(rwops);
-    SDL_RWclose(rwops);
-
-    if (!temp)
-    {
-        const std::string msg{ std::string("loadTexture(): Unable to load from memory buffer: ") + SDL_GetError() };
-        //std::cout << msg << std::endl;
-        throw std::runtime_error(msg);
-    }
-
-    SDL_Texture* out = SDL_CreateTextureFromSurface(mRenderer, temp);
-    SDL_FreeSurface(temp);
+    auto surface = createSurfaceFromBuffer(buffer, bufferSize);
+    auto out = SDL_CreateTextureFromSurface(mRenderer, surface);
+    SDL_FreeSurface(surface);
 
     if (!out)
     {
