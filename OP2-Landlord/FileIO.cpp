@@ -20,9 +20,9 @@ namespace
 #if defined(_WIN32)
     COMDLG_FILTERSPEC FileTypeFilter[] =
     {
-        { L"Outpost 2 Map", L"*.map"}
+        { L"Outpost 2 Map", L"*.map"},
+        { L"Outpost 2 VOL Archive", L"*.vol"}
     };
-
 
     const std::string StringFromWString(const std::wstring& str)
     {
@@ -61,6 +61,18 @@ FileIo::FileIo(SDL_Window& window) :
 bool FileIo::filePicked() const
 {
     return !mFileName.empty();
+}
+
+
+void FileIo::setDefaultFolder(const std::string& folderPath)
+{
+    mSavePath = folderPath;
+}
+
+
+void FileIo::setFilter(const size_t index)
+{
+    mFilterIndex = index;
 }
 
 
@@ -139,7 +151,7 @@ bool FileIo::showFileDialog(FileOperation operation, bool pickFolder)
 
     fileDialog->SetOptions(dwFlags | FOS_FORCEFILESYSTEM | (pickFolder ? FOS_PICKFOLDERS : 0x00));
     fileDialog->SetFileTypes(ARRAYSIZE(FileTypeFilter), FileTypeFilter);
-    fileDialog->SetFileTypeIndex(1);
+    fileDialog->SetFileTypeIndex(mFilterIndex + 1);
     fileDialog->SetDefaultExtension(L"map");
 
     if (operation == FileOperation::Save && !mFileName.empty())

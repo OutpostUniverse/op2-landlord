@@ -22,6 +22,10 @@ public:
 	const std::string& folderPath() const { return mFolderPath; }
 	const std::string& pathSeparator() const { return mPathSeparator; }
 
+	void setDefaultFolder(const std::string& folderPath);
+
+	void setFilter(const size_t index);
+
 	bool pickSaveFile();
 	bool pickOpenFile();
 
@@ -42,4 +46,5 @@ private:
 	std::string mFileName;
 	std::string mFolderPath;
 	std::string mPathSeparator;
+	size_t mFilterIndex = 0;
 };
