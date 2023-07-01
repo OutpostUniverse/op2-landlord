@@ -119,9 +119,10 @@ Graphics::Texture Graphics::loadTexturePacked(const void* buffer, const size_t b
 {  
     SdlSurface src{ SDL_ConvertSurfaceFormat(createSurfaceFromBuffer(buffer, buffersize).get(), SDL_PIXELFORMAT_RGB888, 0) };
 
+    const int textureSize = src->h / 32 > 256 ? 1024 : 512;
     SdlSurface destinationSurface(SDL_CreateRGBSurface(
         src.get()->flags,
-        1024, 1024,
+        textureSize, textureSize / 2,
         src->format->BitsPerPixel,
         src->format->Rmask,
         src->format->Gmask,
