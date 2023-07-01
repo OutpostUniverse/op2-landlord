@@ -17,8 +17,11 @@ class Gui
 public:
 	enum class AppState
 	{
+		CreateOrLoadMap,
 		InitialSetup,
-		CreateOrLoadMap
+		LoadMap,
+		NewMap,
+		Quit
 	};
 
 public:
