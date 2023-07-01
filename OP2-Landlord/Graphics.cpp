@@ -11,9 +11,9 @@ namespace
 {
     using SdlSurface = std::unique_ptr < SDL_Surface, std::function<void(SDL_Surface*)>> ;
 
-    SdlSurface createSurfaceFromBuffer(const void* buffer, const size_t bufferSize)
+    SdlSurface createSurfaceFromBuffer(const void* buffer, const size_t buffersize)
     {
-        auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(bufferSize));
+        auto rwops = SDL_RWFromConstMem(buffer, static_cast<int>(buffersize));
         SDL_Surface* surface = IMG_LoadBMP_RW(rwops);
         SDL_RWclose(rwops);
 
@@ -88,9 +88,9 @@ Graphics::Texture Graphics::loadTexture(const std::string& filename) const
 }
 
 
-Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t bufferSize) const
+Graphics::Texture Graphics::loadTexture(const void* buffer, const size_t buffersize) const
 {
-    auto out = SDL_CreateTextureFromSurface(mRenderer, createSurfaceFromBuffer(buffer, bufferSize).get());
+    auto out = SDL_CreateTextureFromSurface(mRenderer, createSurfaceFromBuffer(buffer, buffersize).get());
 
     if (!out)
     {
