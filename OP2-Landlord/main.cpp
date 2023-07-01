@@ -42,6 +42,8 @@ namespace
     using StateTransitionFunction = std::function<void(EditorConfig&, Graphics&, Gui&)>;
     std::map<Gui::AppState, StateTransitionFunction> StateTransitionFunctionTable;
 
+    void dummyTransition(EditorConfig&, Graphics&, Gui&) {}
+
     std::vector<Graphics::Texture> TileSets;
 };
 
@@ -142,8 +144,10 @@ void buildStateGuiFunctionTable(Gui& gui)
 {
     StateFunctionTable.emplace(Gui::AppState::InitialSetup, [&gui]() { return gui.initialSetup(); });
     StateFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, [&gui]() { return gui.createOrLoadMap(); });
+    StateFunctionTable.emplace(Gui::AppState::NewMap, [&gui]() { return gui.dummy(); });
 
     StateTransitionFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, loadOrCreateTransition);
+    StateTransitionFunctionTable.emplace(Gui::AppState::CreateOrLoadMap, dummyTransition);
 }
 
 
