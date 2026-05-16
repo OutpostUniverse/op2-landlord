@@ -1,6 +1,6 @@
 [submodule "OP2Utility"]
 	path = OP2Utility
-	url = git@github.com:OutpostUniverse/OP2Utility.git
+	url = https://github.com/OutpostUniverse/OP2Utility.git
 [submodule "json"]
 	path = json
-	url = git@github.com:nlohmann/json.git
+	url = https://github.com/nlohmann/json.git
