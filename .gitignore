@@ -15,3 +15,6 @@ x64/
 /vcpkg_installed
 /*.ini
 /OP2-Landlord/*.ini
+
+# Old submodules
+nas2d-core/
