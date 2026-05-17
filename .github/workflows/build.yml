@@ -20,32 +20,47 @@ jobs:
     runs-on: windows-latest
     env:
       PLATFORM: ${{ matrix.platform }}
+      VcpkgManifestInstall: false
 
     steps:
     - uses: actions/checkout@v6
 
-    - name: Checkout NAS2D
-      run: git submodule update --init nas2d-core/
+    - name: Checkout submodules
+      run: git submodule update --init
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v3
 
+    - name: Integrate vcpkg
+      run: |
+        vcpkg --version
+        vcpkg integrate install
+
     - name: Restore vcpkg dependency cache
-      uses: actions/cache@v5
-      id: cache
+      uses: actions/cache/restore@v5
+      id: cacheRestoreVcpkg
       with:
-        path: C:\vcpkg\installed\
-        key: ${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('nas2d-core\InstallVcpkgDeps.bat') }}
+        path: vcpkg_installed\
+        key: vcpkgCache-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
 
     - name: Install vcpkg dependencies
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nas2d-core\InstallVcpkgDeps.bat
+      if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
+      env:
+        VcpkgManifestInstall: true
+      run: |
+        msbuild /target:OP2-Landlord:VcpkgInstallManifestDependencies
+
+    - name: Save vcpkg dependency cache
+      uses: actions/cache/save@v5
+      if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
+      with:
+        path: vcpkg_installed\
+        key: ${{ steps.cacheRestoreVcpkg.outputs.cache-primary-key }}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
-        vcpkg integrate install
         msbuild /maxCpuCount /property:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
         # msbuild /maxCpuCount /warnAsError /property:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}

@@ -1,6 +1,6 @@
 {
 	"$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-	"name": "nas2d",
+	"name": "op2-landlord",
 	"dependencies": [
 		{
 		  "name": "imgui",
@@ -8,6 +8,8 @@
 		  "features": [ "freetype", "sdl2-binding", "sdl2-renderer-binding" ]
 		},
 		"sdl2",
-		"sdl2-image"
-	]
+		"sdl2-image",
+		"nlohmann-json"
+	],
+	"builtin-baseline": "1286cac8751e13bb289061b7e3b89eb4c3f613a2"
 }
