@@ -34,12 +34,13 @@ jobs:
       uses: actions/cache@v5
       id: cache
       with:
-        path: C:\vcpkg\installed\
-        key: ${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('nas2d-core\InstallVcpkgDeps.bat') }}
+        path: vcpkg_installed\
+        key: ${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
 
     - name: Install vcpkg dependencies
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nas2d-core\InstallVcpkgDeps.bat
+      run: |
+        msbuild /target:VcpkgInstallManifestDependencies
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
