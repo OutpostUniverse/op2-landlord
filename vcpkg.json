@@ -9,5 +9,6 @@
 		},
 		"sdl2",
 		"sdl2-image"
-	]
+	],
+	"builtin-baseline": "1286cac8751e13bb289061b7e3b89eb4c3f613a2"
 }
