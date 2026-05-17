@@ -24,7 +24,7 @@ namespace
     };
 
 
-    const std::string StringFromWString(const std::wstring& str)
+    const std::string stringFromWString(const std::wstring& str)
     {
         const auto length = WideCharToMultiByte(CP_UTF8, 0, &str.at(0), (int)str.size(), nullptr, 0, nullptr, nullptr);
 
@@ -42,7 +42,7 @@ namespace
     std::string peferredSeparatorString()
     {
         const std::wstring separatorWchar(1, std::filesystem::path::preferred_separator);
-        return StringFromWString(separatorWchar);
+        return stringFromWString(separatorWchar);
     }
 #else
     std::string peferredSeparatorString()
@@ -173,7 +173,7 @@ bool FileIo::showFileDialog(FileOperation operation, bool pickFolder)
             throw std::runtime_error("Unable to get file name");
         }
 
-        const auto pathStr = StringFromWString(path);
+        const auto pathStr = stringFromWString(path);
         CoTaskMemFree(path);
 
         if (pickFolder)
