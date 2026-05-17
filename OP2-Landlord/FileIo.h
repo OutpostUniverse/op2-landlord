@@ -18,7 +18,7 @@ public:
 
 	const std::string& savePath() const { return mSavePath; }
 	const std::string& fileName() const { return mFileName; }
-	const std::string& fullPath() const { return mSavePath + "\\" + mFileName; }
+	std::string fullPath() const { return mSavePath + "\\" + mFileName; }
 	const std::string& folderPath() const { return mFolderPath; }
 	const std::string& pathSeparator() const { return mPathSeparator; }
 
