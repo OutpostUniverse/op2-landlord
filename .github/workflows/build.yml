@@ -20,6 +20,7 @@ jobs:
     runs-on: windows-latest
     env:
       PLATFORM: ${{ matrix.platform }}
+      VcpkgManifestInstall: false
 
     steps:
     - uses: actions/checkout@v6
@@ -44,6 +45,8 @@ jobs:
 
     - name: Install vcpkg dependencies
       working-directory: ${{env.GITHUB_WORKSPACE}}
+      env:
+        VcpkgManifestInstall: true
       run: |
         msbuild /target:OP2-Landlord:VcpkgInstallManifestDependencies
 
