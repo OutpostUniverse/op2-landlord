@@ -37,8 +37,19 @@ namespace
         WideCharToMultiByte(CP_UTF8, 0, &str.at(0), (int)str.size(), &out.at(0), length, nullptr, nullptr);
         return out;
     }
-#endif
 
+
+    std::string peferredSeparatorString()
+    {
+        const std::wstring separatorWchar(1, std::filesystem::path::preferred_separator);
+        return StringFromWString(separatorWchar);
+    }
+#else
+    std::string peferredSeparatorString()
+    {
+        return std::string{1, std::filesystem::path::preferred_separator};
+    }
+#endif
 };
 
 
@@ -53,8 +64,7 @@ FileIo::FileIo(SDL_Window& window) :
     CoTaskMemFree(path);
 #endif
 
-    const std::wstring separatorWchar(1, std::filesystem::path::preferred_separator);
-    mPathSeparator = StringFromWString(separatorWchar);
+    mPathSeparator = peferredSeparatorString();
 }
 
 
