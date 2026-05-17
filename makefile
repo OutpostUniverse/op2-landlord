@@ -9,40 +9,35 @@ include makefile-generic.mk
 config := default
 
 
-PkgConfig := pkg-config
-ImguiIncludeFlags = $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I imgui)
+ImguiIncludeFlags = -I/usr/include/imgui -I/usr/include/imgui/backends
 
 CPPFLAGS := $(ImguiIncludeFlags) -I OP2Utility/include
 CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas -Wfloat-conversion
 CXXFLAGS := -std=c++20 -g $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
-LDFLAGS := -static-libgcc -static-libstdc++ -Lnas2d-core/lib/
-LDLIBS := -lstdc++fs -lnas2d -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL -lGLEW
+LDFLAGS := -static-libgcc -static-libstdc++ -LOP2Utility/
+LDLIBS := -lstdc++fs -lOP2Utility -limgui -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL -lGLEW
 
-NAS2DLIB := nas2d-core/lib/libnas2d.a
+OP2UtilityLib := OP2Utility/libOP2Utility.a
 
-.PHONY: op2landlord nas2d clean-nas2d clean-all-nas2d
+.PHONY: op2landlord op2utility clean-op2utility clean-all-op2utility
 
 all: op2landlord
 
-op2landlord.exe: | $(NAS2DLIB)
+op2landlord.exe: | $(OP2UtilityLib)
 
-$(NAS2DLIB): | nas2d
+$(OP2UtilityLib): | op2utility
 
-nas2d:
-	+make -C nas2d-core/ CXX="$(CXX)"
-clean-nas2d:
-	+make -C nas2d-core/ CXX="$(CXX)" clean
-clean-all-nas2d:
-	+make -C nas2d-core/ CXX="$(CXX)" clean-all
+op2utility:
+	+make -C OP2Utility/ CXX="$(CXX)"
+clean-op2utility:
+	+make -C OP2Utility/ CXX="$(CXX)" clean
+clean-all-op2utility:
+	+make -C OP2Utility/ CXX="$(CXX)" clean-all
 
-clean: clean-nas2d
-clean-all: clean-all-nas2d
+clean: clean-op2utility
+clean-all: clean-all-op2utility
 
 $(eval $(call DefineCppProject,op2landlord,op2landlord.exe,OP2-Landlord/))
-
-# Docker and CircleCI commands
-$(eval $(call DefineDockerImage,.circleci/,outpostuniverse/gcc-mingw-wine-googletest-circleci,1.2))
-$(eval $(call DefineCircleCi))
 
 
 ifdef Outpost2Path
