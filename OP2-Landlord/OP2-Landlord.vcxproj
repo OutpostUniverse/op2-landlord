@@ -164,6 +164,11 @@
     <ClInclude Include="StringTable.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OP2Utility\OP2Utility.vcxproj">
+      <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
