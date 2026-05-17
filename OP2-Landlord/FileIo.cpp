@@ -58,7 +58,7 @@ FileIo::FileIo(SDL_Window& window) :
 {
     SDL_GetWindowWMInfo(&mWindow, &mWmInfo);
 
-#if defined(WIN32)
+#if defined(_WIN32)
     wchar_t* path{ nullptr };
     std::ignore = SHGetKnownFolderPath(FOLDERID_ComputerFolder, KF_FLAG_CREATE, nullptr, &path);
     CoTaskMemFree(path);
