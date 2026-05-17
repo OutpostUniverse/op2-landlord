@@ -1,0 +1,23 @@
+name: Build Docker Build Env
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dockerBuild:
+    runs-on: ubuntu-latest
+    env:
+      buildPath: dockerBuildEnv/
+      imageName: ghcr.io/outpostuniverse/op2-landlord:1.0
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Docker build
+        run: docker build "${{ env.buildPath }}" --tag "${{ env.imageName }}"
+
+      - name: Docker login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --username "${{ github.repository_owner }}" --password-stdin
+
+      - name: Docker push
+        run: docker push "${{ env.imageName }}"
