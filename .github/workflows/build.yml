@@ -45,7 +45,7 @@ jobs:
     - name: Install vcpkg dependencies
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        msbuild /target:VcpkgInstallManifestDependencies
+        msbuild /target:OP2-Landlord:VcpkgInstallManifestDependencies
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
