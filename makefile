@@ -9,8 +9,7 @@ include makefile-generic.mk
 config := default
 
 
-PkgConfig := pkg-config
-ImguiIncludeFlags = $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I imgui)
+ImguiIncludeFlags = -I/usr/include/imgui -I/usr/include/imgui/backends
 
 CPPFLAGS := $(ImguiIncludeFlags) -I OP2Utility/include
 CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas -Wfloat-conversion
