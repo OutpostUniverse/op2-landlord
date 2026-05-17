@@ -39,10 +39,6 @@ clean-all: clean-all-op2utility
 
 $(eval $(call DefineCppProject,op2landlord,op2landlord.exe,OP2-Landlord/))
 
-# Docker and CircleCI commands
-$(eval $(call DefineDockerImage,.circleci/,outpostuniverse/gcc-mingw-wine-googletest-circleci,1.2))
-$(eval $(call DefineCircleCi))
-
 
 ifdef Outpost2Path
 
