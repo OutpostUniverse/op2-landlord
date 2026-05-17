@@ -12,7 +12,7 @@ config := default
 PkgConfig := pkg-config
 ImguiIncludeFlags = $(shell type $(PkgConfig) >/dev/null 2>&1 && $(PkgConfig) --cflags-only-I imgui)
 
-CPPFLAGS := $(ImguiIncludeFlags)
+CPPFLAGS := $(ImguiIncludeFlags) -I OP2Utility/include
 CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas -Wfloat-conversion
 CXXFLAGS := -std=c++20 -g $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
 LDFLAGS := -static-libgcc -static-libstdc++ -Lnas2d-core/lib/
