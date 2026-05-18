@@ -15,7 +15,7 @@ CPPFLAGS := $(ImguiIncludeFlags) -I OP2Utility/OP2Utility/include
 CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas -Wfloat-conversion
 CXXFLAGS := -std=c++20 -g $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
 LDFLAGS := -static-libgcc -static-libstdc++ -LOP2Utility/
-LDLIBS := -lstdc++fs -lOP2Utility -limgui -lstb -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lGL -lGLEW
+LDLIBS := -lstdc++fs -lOP2Utility -limgui -lstb -lSDL2 -lSDL2_image
 
 OP2UtilityLib := OP2Utility/libOP2Utility.a
 
