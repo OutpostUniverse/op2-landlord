@@ -71,19 +71,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>../OP2Utility/include/;$(IncludePath)</IncludePath>
+    <IncludePath>../OP2Utility/OP2Utility/include/;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>../OP2Utility/include/;$(IncludePath)</IncludePath>
+    <IncludePath>../OP2Utility/OP2Utility/include/;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../OP2Utility/include/;$(IncludePath)</IncludePath>
+    <IncludePath>../OP2Utility/OP2Utility/include/;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>../OP2Utility/include/;$(IncludePath)</IncludePath>
+    <IncludePath>../OP2Utility/OP2Utility/include/;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -175,7 +175,7 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OP2Utility\OP2Utility.vcxproj">
+    <ProjectReference Include="..\OP2Utility\OP2Utility\OP2Utility.vcxproj">
       <Project>{980d53d9-f9e2-4682-9307-1303c9e42313}</Project>
     </ProjectReference>
   </ItemGroup>

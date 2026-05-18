@@ -11,7 +11,7 @@ config := default
 
 ImguiIncludeFlags = -I/usr/include/imgui -I/usr/include/imgui/backends
 
-CPPFLAGS := $(ImguiIncludeFlags) -I OP2Utility/include
+CPPFLAGS := $(ImguiIncludeFlags) -I OP2Utility/OP2Utility/include
 CXXFLAGS_WARN := -Wall -Wno-unknown-pragmas -Wfloat-conversion
 CXXFLAGS := -std=c++20 -g $(CXXFLAGS_WARN) $(shell sdl2-config --cflags)
 LDFLAGS := -static-libgcc -static-libstdc++ -LOP2Utility/
