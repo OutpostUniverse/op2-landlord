@@ -7,7 +7,7 @@
 #      https://github.com/OutpostUniverse/OP2Utility/actions/workflows/buildDockerBuildEnv.yml
 # 4. Update `.github/workflows/build.yml` workflow to use new version number tag
 
-FROM ghcr.io/outpostuniverse/op2utility:1.3
+FROM ghcr.io/outpostuniverse/op2utility:1.2
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     nlohmann-json3-dev \
