@@ -15,7 +15,6 @@ jobs:
     env:
       Platform: ${{ matrix.platform }}
       Configuration: ${{ matrix.configuration }}
-      SOLUTION_FILE_PATH: .
       VcpkgManifestInstall: false
 
     steps:
@@ -56,4 +55,4 @@ jobs:
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
-        msbuild /maxCpuCount ${{env.SOLUTION_FILE_PATH}}
+        msbuild /maxCpuCount
