@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="OP2-Landlord/OP2-Landlord.vcxproj" Id="a9b9971e-7d98-4c89-9b9c-773a8bc7b2ed" />
+  <Project Path="OP2Utility/OP2Utility/OP2Utility.vcxproj" Id="980d53d9-f9e2-4682-9307-1303c9e42313" />
+</Solution>
