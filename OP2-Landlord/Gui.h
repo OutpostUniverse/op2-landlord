@@ -1,11 +1,11 @@
 #pragma once
 
-#include <string>
-
 #include "EditorConfig.h"
 #include "FileIo.h"
 #include "Graphics.h"
 #include "StringTable.h"
+
+#include <string>
 
 
 struct SDL_Window;

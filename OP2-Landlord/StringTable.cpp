@@ -1,13 +1,12 @@
 #include "StringTable.h"
 
+#include <nlohmann/json.hpp>
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <map>
 
-
-#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 

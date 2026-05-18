@@ -1,10 +1,10 @@
 #pragma once
 
+#include "imgui.h"
 
 #include <SDL2/SDL.h>
-#include <string>
 
-#include "imgui.h"
+#include <string>
 
 
 class Graphics

@@ -1,9 +1,9 @@
 #include "Events.h"
 
-#include <SDL2/SDL.h>
-
 #include "imgui.h"
 #include "imgui_impl_sdl2.h"
+
+#include <SDL2/SDL.h>
 
 
 namespace
