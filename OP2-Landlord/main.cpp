@@ -1,21 +1,4 @@
 
-#include <SDL2/SDL.h>
-
-#include <filesystem>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <memory>
-
-#if defined(_WIN32)
-#define NOMINMAX
-#include <windows.h>
-#endif
-
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer2.h"
-
 #include "EditorConfig.h"
 #include "Events.h"
 #include "FileIo.h"
@@ -24,7 +7,24 @@
 #include "StringTable.h"
 #include "Utility.h"
 
-#include "OP2Utility.h"
+#include <OP2Utility.h>
+
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
+
+#include <SDL2/SDL.h>
+
+#if defined(_WIN32)
+#define NOMINMAX
+#include <windows.h>
+#endif
+
+#include <filesystem>
+#include <functional>
+#include <iostream>
+#include <map>
+#include <memory>
 
 
 using namespace OP2Utility;

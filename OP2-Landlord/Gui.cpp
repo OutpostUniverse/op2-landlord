@@ -1,17 +1,16 @@
 #include "Gui.h"
 
-#include <filesystem>
-
-#include <SDL2/SDL.h>
-
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer2.h"
-
 #include "FileIo.h"
 #include "Utility.h"
 
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
+
+#include <SDL2/SDL.h>
+
 #include <cstring>
+#include <filesystem>
 
 
 Gui::Gui(StringTable& table, EditorConfig& config, Graphics& graphics, const std::string& settingsPath) :
