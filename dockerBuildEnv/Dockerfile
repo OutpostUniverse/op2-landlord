@@ -7,9 +7,18 @@
 #      https://github.com/OutpostUniverse/OP2Utility/actions/workflows/buildDockerBuildEnv.yml
 # 4. Update `.github/workflows/build.yml` workflow to use new version number tag
 
-FROM ghcr.io/outpostuniverse/op2utility:1.3
+FROM ubuntu:24.04
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    build-essential \
+    clang \
+    cmake \
+    git \
+    ca-certificates \
+    libgtest-dev \
+    libgmock-dev \
     nlohmann-json3-dev \
     libimgui-dev \
+    libsdl2-dev \
+    libsdl2-image-dev \
   && rm -rf /var/lib/apt/lists/*
