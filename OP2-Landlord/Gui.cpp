@@ -11,6 +11,8 @@
 #include "FileIo.h"
 #include "Utility.h"
 
+#include <cstring>
+
 
 Gui::Gui(StringTable& table, EditorConfig& config, Graphics& graphics, const std::string& settingsPath) :
     mStringTable{ table },
@@ -85,7 +87,8 @@ Gui::AppState Gui::initialSetup()
     {
         if (mFileIo.pickFolder())
         {
-            std::ignore = strcpy_s(op2Path, mFileIo.folderPath().c_str());
+            const auto& folderPath = mFileIo.folderPath();
+            std::ignore = std::memcpy(op2Path, folderPath.c_str(), std::min(sizeof(op2Path), folderPath.size() + 1));
         }
     }
 
