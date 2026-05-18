@@ -12,3 +12,6 @@ Debug/
 x64/
 .vs/
 *.user
+
+# Submodules for other branches
+OP2Utility/
