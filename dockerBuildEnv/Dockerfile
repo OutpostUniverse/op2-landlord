@@ -19,4 +19,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     libgmock-dev \
     nlohmann-json3-dev \
     libimgui-dev \
+    libsdl2-dev \
+    libsdl2-image-dev \
   && rm -rf /var/lib/apt/lists/*
