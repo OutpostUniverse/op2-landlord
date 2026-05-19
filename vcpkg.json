@@ -11,5 +11,5 @@
 		"sdl2-image",
 		"nlohmann-json"
 	],
-	"builtin-baseline": "1286cac8751e13bb289061b7e3b89eb4c3f613a2"
+	"builtin-baseline": "935b5c81c21f9a97a692a75728e4fc3443882937"
 }
