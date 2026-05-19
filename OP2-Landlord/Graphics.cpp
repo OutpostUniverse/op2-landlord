@@ -136,9 +136,9 @@ Graphics::Texture Graphics::loadTexturePacked(const void* buffer, const size_t b
 
     SDL_Rect sourceRect{ 0, 0, 32, 32 };
     SDL_Rect destRect{ 0, 0, 32, 32 };
-    for (size_t i = 0; i < src->h / 32; ++i)
+    for (int i = 0; i < src->h / 32; ++i)
     {
-        destRect = { (static_cast<int>(i) % 32) * 32, (static_cast<int>(i) / 32) * 32, 32, 32 };
+        destRect = { (i % 32) * 32, (i / 32) * 32, 32, 32 };
         SDL_BlitSurface(src.get(), &sourceRect, destinationSurface.get(), &destRect);
         sourceRect.y += 32;
     }
