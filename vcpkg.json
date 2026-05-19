@@ -3,9 +3,9 @@
 	"name": "op2-landlord",
 	"dependencies": [
 		{
-		  "name": "imgui",
-		  "default-features": false,
-		  "features": [ "freetype", "sdl2-binding", "sdl2-renderer-binding" ]
+			"name": "imgui",
+			"default-features": false,
+			"features": [ "freetype", "sdl2-binding", "sdl2-renderer-binding" ]
 		},
 		"sdl2",
 		"sdl2-image",
