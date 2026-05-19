@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "nas2d",
+  "dependencies": [
+    "glew",
+    "sdl2",
+    "sdl2-image",
+    "sdl2-ttf",
+    "sdl2-mixer",
+    "gtest"
+  ],
+  "builtin-baseline": "42452c3443af90de4b650a958e359eb1fe62f1ae"
+}
