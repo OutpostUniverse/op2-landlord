@@ -66,7 +66,7 @@ void mainLoop(EditorConfig& config, Graphics& graphics, Gui& gui)
             {
                 StateTransitionFunctionTable.at(ApplicationState)(config, graphics, gui);
             }
-            catch (std::out_of_range)
+            catch (const std::out_of_range&)
             {
                 std::cout << "[Warning] No transition handler for ApplicationState '" << static_cast<int>(ApplicationState) << "'" << std::endl;
             }
@@ -143,7 +143,7 @@ void loadOrCreateTransition(EditorConfig& config, Graphics& graphics, Gui& gui)
             auto bitmap = Tileset::ReadTileset(*artVol.OpenStream(tsetIndex));
             TileSets.push_back(bmpToTexture(graphics, config, bitmap));          
         }
-        catch(std::runtime_error e)
+        catch(const std::runtime_error& e)
         {
             std::cout << "[Warning] Unable to load tilset '" << artVol.GetName(tsetIndex) << "' : " << e.what() << std::endl;
         }
@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 
         SDL_Quit();
     }
-    catch (std::exception e)
+    catch (const std::exception& e)
     {
         std::string message(std::string(e.what()) + "\n\nOP2-Landlord will now close.");
 
