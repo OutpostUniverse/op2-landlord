@@ -43,7 +43,7 @@ jobs:
       env:
         VcpkgManifestInstall: true
       run: |
-        msbuild /target:OP2-Landlord:VcpkgInstallManifestDependencies
+        msbuild /target:VcpkgInstallManifestDependencies
 
     - name: Save vcpkg dependency cache
       uses: actions/cache/save@v5
