@@ -74,8 +74,6 @@ void mainLoop(EditorConfig& config, Graphics& graphics, Gui& gui)
 
         if (!TileSets.empty())
         {
-            const auto& tset = TileSets.back();
-         
             int offset = 250;
             for (const auto& tset : TileSets)
             {
