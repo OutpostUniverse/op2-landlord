@@ -73,8 +73,6 @@ Gui::AppState Gui::initialSetup()
 
     ImGui::SetNextWindowPos(position);
 
-    ImGuiIO& io = ImGui::GetIO();
-
     ImGui::Begin("Initial Setup", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
     ImGui::Text("Location of Outpost 2");
