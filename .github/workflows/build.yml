@@ -15,7 +15,6 @@ jobs:
     env:
       Platform: ${{ matrix.platform }}
       Configuration: ${{ matrix.configuration }}
-      SOLUTION_FILE_PATH: .
       VcpkgManifestInstall: false
 
     steps:
@@ -55,4 +54,4 @@ jobs:
 
     - name: Build
       run: |
-        msbuild /maxCpuCount /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true ${{env.SOLUTION_FILE_PATH}}
+        msbuild /maxCpuCount /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true
