@@ -54,8 +54,5 @@ jobs:
         key: ${{ steps.cacheRestoreVcpkg.outputs.cache-primary-key }}
 
     - name: Build
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
         msbuild /maxCpuCount /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true ${{env.SOLUTION_FILE_PATH}}
-        # msbuild /maxCpuCount /warnAsError ${{env.SOLUTION_FILE_PATH}}
