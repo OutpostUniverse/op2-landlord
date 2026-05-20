@@ -57,5 +57,5 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
-        msbuild /maxCpuCount /property:Configuration=${{env.Configuration}} /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true ${{env.SOLUTION_FILE_PATH}}
-        # msbuild /maxCpuCount /warnAsError /property:Configuration=${{env.Configuration}} ${{env.SOLUTION_FILE_PATH}}
+        msbuild /maxCpuCount /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true ${{env.SOLUTION_FILE_PATH}}
+        # msbuild /maxCpuCount /warnAsError ${{env.SOLUTION_FILE_PATH}}
