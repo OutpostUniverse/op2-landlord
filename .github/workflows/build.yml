@@ -35,7 +35,7 @@ jobs:
       uses: actions/cache/restore@v5
       id: cacheRestoreVcpkg
       with:
-        path: vcpkg_installed\
+        path: vcpkg_installed
         key: vcpkgCache-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
 
     - name: Install vcpkg dependencies
@@ -49,7 +49,7 @@ jobs:
       uses: actions/cache/save@v5
       if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
       with:
-        path: vcpkg_installed\
+        path: vcpkg_installed
         key: ${{ steps.cacheRestoreVcpkg.outputs.cache-primary-key }}
 
     - name: Build
