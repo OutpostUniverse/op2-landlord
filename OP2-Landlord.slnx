@@ -1,9 +1,9 @@
-﻿<Solution>
+<Solution>
   <Configurations>
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="OP2-Landlord/OP2-Landlord.vcxproj" Id="a9b9971e-7d98-4c89-9b9c-773a8bc7b2ed" />
+  <Project Path="OP2-Landlord/OP2-Landlord.vcxproj" Id="3080ec6c-0df3-4da1-bb9b-63a1a3156af7" />
   <Project Path="nas2d-core/NAS2D/NAS2D.vcxproj" Id="3350562d-6204-42fc-898a-c85fd62e04e8" />
   <Project Path="nas2d-core/test/test.vcxproj" Id="78f02848-bacb-4ad3-985e-0eb0d5b3dd53" />
 </Solution>
