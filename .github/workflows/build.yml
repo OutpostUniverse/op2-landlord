@@ -25,8 +25,8 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
-    - name: Checkout NAS2D
-      run: git submodule update --init nas2d-core/
+    - name: Checkout submodules
+      run: git submodule update --init
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v3
