@@ -40,7 +40,6 @@ jobs:
 
     - name: Install vcpkg dependencies
       if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
-      working-directory: ${{env.GITHUB_WORKSPACE}}
       env:
         VcpkgManifestInstall: true
       run: |
@@ -55,7 +54,6 @@ jobs:
         key: ${{ steps.cacheRestoreVcpkg.outputs.cache-primary-key }}
 
     - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
