@@ -39,6 +39,7 @@ jobs:
         key: vcpkgCache-${{ runner.os }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
 
     - name: Install vcpkg dependencies
+      if: steps.cacheRestoreVcpkg.outputs.cache-hit != 'true'
       working-directory: ${{env.GITHUB_WORKSPACE}}
       env:
         VcpkgManifestInstall: true
