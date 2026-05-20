@@ -13,5 +13,8 @@ x64/
 .vs/
 *.user
 
+# Vcpkg
+vcpkg_installed/
+
 # Submodules for other branches
 OP2Utility/
