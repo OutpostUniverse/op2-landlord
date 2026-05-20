@@ -31,6 +31,11 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v3
 
+    - name: Integrate vcpkg
+      run: |
+        vcpkg --version
+        vcpkg integrate install
+
     - name: Restore vcpkg dependency cache
       uses: actions/cache/restore@v5
       id: cacheRestoreVcpkg
@@ -43,7 +48,6 @@ jobs:
       env:
         VcpkgManifestInstall: true
       run: |
-        vcpkg integrate install
         msbuild /target:OP2-Landlord:VcpkgInstallManifestDependencies
 
     - name: Save vcpkg dependency cache
@@ -57,6 +61,5 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: |
-        vcpkg integrate install
         msbuild /maxCpuCount /property:Configuration=${{env.BUILD_CONFIGURATION}} /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true ${{env.SOLUTION_FILE_PATH}}
         # msbuild /maxCpuCount /warnAsError /property:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
