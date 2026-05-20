@@ -55,3 +55,22 @@ jobs:
     - name: Build
       run: |
         msbuild /maxCpuCount /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true
+
+  linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+        - ghcr.io/lairworks/build-env-nas2d-gcc:1.6
+        - ghcr.io/lairworks/build-env-nas2d-clang:1.5
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - run: make --keep-going nas2d
+      - run: make --keep-going
