@@ -1,7 +1,7 @@
 #include "Window.h"
 
 #include <NAS2D/NAS2D.h>
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumMouseButton.h>
 
 
 const int TITLE_BAR_HEIGHT = 20;
@@ -40,13 +40,13 @@ int Window::titleBarHeight() const
 /**
  * Mouse Button Down event handler.
  */
-void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position)
+void Window::onMouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position)
 {
 	if (!visible()) { return; }
 	
 	mouseDown(button, position);
 
-	if((button != NAS2D::EventHandler::MouseButton::Left)) { return; }
+	if((button != NAS2D::MouseButton::Left)) { return; }
 
 	const auto windowBounds = rect().to<int>();
 	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.position.x, windowBounds.position.y, windowBounds.size.x, titleBarHeight()};
@@ -63,7 +63,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<i
 }
 
 
-void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position)
+void Window::onMouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position)
 {
 	mIsWindowDragging = false;
 
@@ -71,7 +71,7 @@ void Window::onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int
 	
 	mouseUp(button, position);
 
-	if((button != NAS2D::EventHandler::MouseButton::Left)) { return; }
+	if((button != NAS2D::MouseButton::Left)) { return; }
 }
 
 

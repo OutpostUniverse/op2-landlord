@@ -5,9 +5,9 @@
 
 #include "Map/cell_types.h"
 
-#include <NAS2D/EventHandlerKeyCode.h>
-#include <NAS2D/EventHandlerKeyModifier.h>
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumKeyCode.h>
+#include <NAS2D/EnumKeyModifier.h>
+#include <NAS2D/EnumMouseButton.h>
 
 #include <algorithm>
 #include <stack>
@@ -181,17 +181,17 @@ void EditorState::updateSelector()
 /**
  * Handles KeyDown events.
  */
-void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
+void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 {
 	if (repeat) { return; }
 
 	switch(key)
 	{
-		case EventHandler::KeyCode::KEY_ESCAPE:
+		case KeyCode::KEY_ESCAPE:
 			mReturnState = new StartState();
 			break;
 
-		case EventHandler::KeyCode::KEY_z:
+		case KeyCode::KEY_z:
 			if(Utility<EventHandler>::get().control(mod))
 			{
 			}
@@ -207,7 +207,7 @@ void EditorState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier
 /**
  * Handles KeyUp events.
  */
-void EditorState::onKeyUp(EventHandler::KeyCode key, EventHandler::KeyModifier mod)
+void EditorState::onKeyUp(KeyCode key, KeyModifier mod)
 {}
 
 
@@ -262,17 +262,17 @@ void EditorState::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> cha
 /**
  * Handles MouseDown events.
  */
-void EditorState::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void EditorState::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
 	Utility<EventHandler>::get().grabMouse();
 
 	// Left Mouse Button
-	if(button == EventHandler::MouseButton::Left)
+	if(button == MouseButton::Left)
 	{
 		mLeftButtonDown = true;
 		handleLeftButtonDown(position.x, position.y);
 	}
-	else if(button == EventHandler::MouseButton::Right)
+	else if(button == MouseButton::Right)
 	{
 		mRightButtonDown = true;
 		mSavedMouseCoords = mMouseCoords;
@@ -284,9 +284,9 @@ void EditorState::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int
 /**
  * Handles MouseUp events
  */
-void EditorState::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void EditorState::onMouseUp(MouseButton button, NAS2D::Point<int> position)
 {
-	if(button == EventHandler::MouseButton::Left)
+	if(button == MouseButton::Left)
 	{
 		mLeftButtonDown = false;
 		//if(mEditState == STATE_BASE_TILE_INDEX || mEditState == STATE_BASE_DETAIL_TILE_INDEX || mEditState == STATE_DETAIL_TILE_INDEX || mEditState == STATE_FOREGROUND_TILE_INDEX)
@@ -298,7 +298,7 @@ void EditorState::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> 
 			}
 		//}
 	}
-	else if(button == EventHandler::MouseButton::Right)
+	else if(button == MouseButton::Right)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);

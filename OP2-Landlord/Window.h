@@ -19,14 +19,14 @@ public:
 	virtual void update();
 
 protected:
-	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
-	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position) final;
 	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 
 	virtual void draw() = 0;
 
-	virtual void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
-	virtual void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
+	virtual void mouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position) {};
+	virtual void mouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position) {};
 	virtual void mouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) {};
 
 	NAS2D::Point<int>& _mouseCoords() { return mMouseCoords; }

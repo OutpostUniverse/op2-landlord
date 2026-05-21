@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumMouseButton.h>
 
 
 using namespace NAS2D;
@@ -41,9 +41,9 @@ void TilePalette::draw()
 }
 
 
-void TilePalette::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TilePalette::mouseDown(MouseButton button, NAS2D::Point<int> position)
 {
-	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
+	if (!visible() || (button != MouseButton::Left)) { return; }
 
 	if (!(rect().contains(_mouseCoords())))
 	{
@@ -54,11 +54,11 @@ void TilePalette::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> 
 }
 
 
-void TilePalette::mouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TilePalette::mouseUp(MouseButton button, NAS2D::Point<int> position)
 {
 	mLeftButtonDown = false;
 
-	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
+	if (!visible() || (button != MouseButton::Left)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
 }
 

@@ -31,8 +31,8 @@ private:
 
 	void _init();
 
-	void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
-	void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
+	void mouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position);
+	void mouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position);
 	void mouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change);
 
 private:

@@ -5,8 +5,8 @@
 #include "Defaults.h"
 #include "Strings.h"
 
-#include <NAS2D/EventHandlerKeyCode.h>
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumKeyCode.h>
+#include <NAS2D/EnumMouseButton.h>
 
 #include <iostream>
 
@@ -449,9 +449,9 @@ void StartState::updateUi()
 /**
  * Key Down handler.
  */
-void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
+void StartState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 {
-	if (key == EventHandler::KeyCode::KEY_ESCAPE)
+	if (key == KeyCode::KEY_ESCAPE)
 	{
 		mReturnState = nullptr;
 	}
@@ -467,9 +467,9 @@ void StartState::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> chan
 }
 
 
-void StartState::onDoubleClick(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void StartState::onDoubleClick(MouseButton button, NAS2D::Point<int> position)
 {
-	if (button != EventHandler::MouseButton::Left) { return; }
+	if (button != MouseButton::Left) { return; }
 
 	if (mMapFilesMenu.rect().contains(mMouseCoords))
 	{

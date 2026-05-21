@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumMouseButton.h>
 
 #include <iostream>
 
@@ -70,12 +70,12 @@ bool Button::toggled() const
 }
 
 
-void Button::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void Button::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
-	if(button == EventHandler::MouseButton::Left)
+	if(button == MouseButton::Left)
 	{
 		if(rect().contains(position))
 		{
@@ -94,12 +94,12 @@ void Button::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> pos
 }
 
 
-void Button::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void Button::onMouseUp(MouseButton button, NAS2D::Point<int> position)
 {
 	if(!enabled() || !visible() || !hasFocus())
 		return;
 
-	if(button == EventHandler::MouseButton::Left)
+	if(button == MouseButton::Left)
 	{
 		if(mType == BUTTON_NORMAL)
 		{

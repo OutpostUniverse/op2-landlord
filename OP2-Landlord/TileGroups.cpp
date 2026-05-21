@@ -1,9 +1,9 @@
 #include "TileGroups.h"
 #include "Common.h"
 
-#include <NAS2D/EventHandlerKeyCode.h>
-#include <NAS2D/EventHandlerKeyModifier.h>
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumKeyCode.h>
+#include <NAS2D/EnumKeyModifier.h>
+#include <NAS2D/EnumMouseButton.h>
 
 
 using namespace NAS2D;
@@ -93,9 +93,9 @@ void TileGroups::draw()
 }
 
 
-void TileGroups::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TileGroups::mouseDown(MouseButton button, NAS2D::Point<int> position)
 {
-	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
+	if (!visible() || (button != MouseButton::Left)) { return; }
 
 	if (!(rect().contains(_mouseCoords())))
 	{
@@ -106,11 +106,11 @@ void TileGroups::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> p
 }
 
 
-void TileGroups::mouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TileGroups::mouseUp(MouseButton button, NAS2D::Point<int> position)
 {
 	mLeftButtonDown = false;
 
-	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
+	if (!visible() || (button != MouseButton::Left)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
 }
 
@@ -130,17 +130,17 @@ void TileGroups::mouseWheel(NAS2D::Vector<int> change)
 }
 
 
-void TileGroups::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
+void TileGroups::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 {
 	if (!visible()) { return; }
 
 	switch (key)
 	{
-	case EventHandler::KeyCode::KEY_LEFT:
+	case KeyCode::KEY_LEFT:
 		mSlider.changeThumbPosition(-1.0);
 		break;
 
-	case EventHandler::KeyCode::KEY_RIGHT:
+	case KeyCode::KEY_RIGHT:
 		mSlider.changeThumbPosition(1.0);
 		break;
 

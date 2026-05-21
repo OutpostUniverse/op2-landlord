@@ -7,7 +7,7 @@
 
 #include "TextField.h"
 
-#include <NAS2D/EventHandlerKeyCode.h>
+#include <NAS2D/EnumKeyCode.h>
 
 #include <locale>
 
@@ -226,7 +226,7 @@ void TextField::onTextInput(const std::string& _s)
 }
 
 
-void TextField::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
+void TextField::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 {
 	if (!hasFocus() || !editable() || !visible())
 		return;
@@ -234,7 +234,7 @@ void TextField::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier m
 	switch(key)
 	{	
 		// COMMAND KEYS
-	case EventHandler::KeyCode::KEY_BACKSPACE:
+	case KeyCode::KEY_BACKSPACE:
 			if(!text().empty() && mCursorPosition > 0)
 			{
 				mCursorPosition--;
@@ -243,15 +243,15 @@ void TextField::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier m
 			}
 			break;
 
-		case EventHandler::KeyCode::KEY_HOME:
+		case KeyCode::KEY_HOME:
 			mCursorPosition = 0;
 			break;
 
-		case EventHandler::KeyCode::KEY_END:
+		case KeyCode::KEY_END:
 			mCursorPosition = text().length();
 			break;
 
-		case EventHandler::KeyCode::KEY_DELETE:
+		case KeyCode::KEY_DELETE:
 			if (text().length() > 0)
 			{
 				_text() = _text().erase(mCursorPosition, 1);
@@ -260,30 +260,30 @@ void TextField::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier m
 			break;
 
 		// ARROW KEYS
-		case EventHandler::KeyCode::KEY_LEFT:
+		case KeyCode::KEY_LEFT:
 			if(mCursorPosition > 0)
 				--mCursorPosition;
 			break;
 
-		case EventHandler::KeyCode::KEY_RIGHT:
+		case KeyCode::KEY_RIGHT:
 			if(static_cast<size_t>(mCursorPosition) < text().length())
 				++mCursorPosition;
 			break;
 
 		// KEYPAD ARROWS
-		case EventHandler::KeyCode::KEY_KP4:
+		case KeyCode::KEY_KP4:
 			if((mCursorPosition > 0) && !Utility<EventHandler>::get().numlock())
 				--mCursorPosition;
 			break;
 
-		case EventHandler::KeyCode::KEY_KP6:
+		case KeyCode::KEY_KP6:
 			if((static_cast<size_t>(mCursorPosition) < text().length()) && !Utility<EventHandler>::get().numlock())
 				++mCursorPosition;
 			break;
 
 		// IGNORE ENTER/RETURN KEY
-		case EventHandler::KeyCode::KEY_ENTER:
-		case EventHandler::KeyCode::KEY_KP_ENTER:
+		case KeyCode::KEY_ENTER:
+		case KeyCode::KEY_KP_ENTER:
 			break;
 
 		// REGULAR KEYS
@@ -296,7 +296,7 @@ void TextField::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier m
 /**
  * Mouse down even handler.
  */
-void TextField::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TextField::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
 	// If font is not available, back out now to prevent issues.
 	if(!fontSet())

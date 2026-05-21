@@ -152,7 +152,7 @@ void ListBox::dropAllItems()
 }
 
 
-void ListBox::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void ListBox::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }

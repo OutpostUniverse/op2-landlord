@@ -5,7 +5,7 @@
  */
 #include "Slider.h"
 
-#include <NAS2D/EventHandlerMouseButton.h>
+#include <NAS2D/EnumMouseButton.h>
 
 #include <algorithm>
 
@@ -148,10 +148,10 @@ void Slider::button2_Pressed(bool pressed)
 /**
  *
  */
-void Slider::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void Slider::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
 	if (!enabled() || !visible() || !hasFocus()) { return; }
-	if (button != EventHandler::MouseButton::Left) { return; }
+	if (button != MouseButton::Left) { return; }
 
 	if (pointInRect_f(position.x, position.y, mSlider))
 	{
@@ -164,12 +164,12 @@ void Slider::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> pos
 /**
  *
  */
-void Slider::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void Slider::onMouseUp(MouseButton button, NAS2D::Point<int> position)
 {
 	mThumbPressed = false;
 	mMouseHoverSlide = false;
 
-	if (button != EventHandler::MouseButton::Left) { return; }
+	if (button != MouseButton::Left) { return; }
 	if (!enabled() || !visible() || !hasFocus()) { return; }
 
 	if (pointInRect_f(position.x, position.y, mSlider))
