@@ -496,15 +496,15 @@ void EditorState::toolbar_event(ToolBar::ToolBarAction _act)
 		break;
 
 	case ToolBar::TOOLBAR_TOOL_PENCIL:
-		Utility<Renderer>::get().setCursor(POINTER_NORMAL);
+		Utility<Renderer>::get().setCursor(CursorId{POINTER_NORMAL});
 		break;
 
 	case ToolBar::TOOLBAR_TOOL_FILL:
-		Utility<Renderer>::get().setCursor(POINTER_FILL);
+		Utility<Renderer>::get().setCursor(CursorId{POINTER_FILL});
 		break;
 
 	case ToolBar::TOOLBAR_TOOL_ERASER:
-		Utility<Renderer>::get().setCursor(POINTER_ERASE);
+		Utility<Renderer>::get().setCursor(CursorId{POINTER_ERASE});
 		break;
 
 	case ToolBar::TOOLBAR_QUIT:

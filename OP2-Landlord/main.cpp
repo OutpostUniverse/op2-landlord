@@ -71,9 +71,9 @@ int main(int argc, char *argv[])
 		Utility<Mixer>::init<MixerNull>();
 
 		Renderer& r = Utility<Renderer>::init<RendererOpenGL>("OP2-Landlord");
-		r.addCursor("sys/normal.png", POINTER_NORMAL, 0, 0);
-		r.addCursor("sys/fill.png", POINTER_FILL, 0, 0);
-		r.addCursor("sys/eraser.png", POINTER_ERASE, 0, 0);
+		r.addCursor(CursorId{POINTER_NORMAL}, "sys/normal.png", {0, 0});
+		r.addCursor(CursorId{POINTER_FILL}, "sys/fill.png", {0, 0});
+		r.addCursor(CursorId{POINTER_ERASE}, "sys/eraser.png", {0, 0});
 		r.showSystemPointer(true);
 		r.minimumSize({1000, 650});
 		r.resizeable(true);
