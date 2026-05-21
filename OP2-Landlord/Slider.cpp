@@ -47,7 +47,7 @@ void Slider::size(float w, float h)
 	Control::size(w, h);
 
 	// deduce the type of slider from the ratio.
-	if (rect().height > rect().width) { mSliderType = SLIDER_VERTICAL; }
+	if (rect().size.y > rect().size.x) { mSliderType = SLIDER_VERTICAL; }
 	else { mSliderType = SLIDER_HORIZONTAL; }
 
 	logic();
@@ -56,11 +56,11 @@ void Slider::size(float w, float h)
 
 void Slider::positionChanged(float dX, float dY)
 {
-	mSlideBar.x = mSlideBar.x + dX;
-	mSlideBar.y = mSlideBar.y + dY;
+	mSlideBar.position.x = mSlideBar.position.x + dX;
+	mSlideBar.position.y = mSlideBar.position.y + dY;
 
-	mSlider.x = mSlider.x + dX;
-	mSlider.y = mSlider.y + dY;
+	mSlider.position.x = mSlider.position.x + dX;
+	mSlider.position.y = mSlider.position.y + dY;
 
 	mButton1.position(mButton1.positionX() + dX, mButton1.positionY() + dY);
 	mButton2.position(mButton2.positionX() + dX, mButton2.positionY() + dY);
@@ -75,33 +75,33 @@ void Slider::logic()
 	// compute position of items
 	if (mSliderType == SLIDER_VERTICAL)
 	{
-		mButton1.position(rect().x, rect().y);
-		mButton1.size(rect().width, rect().width);
+		mButton1.position(rect().position.x, rect().position.y);
+		mButton1.size(rect().size.x, rect().size.x);
 		mButton1.image("sys/up.png");
 
-		mButton2.position(rect().x, rect().y + rect().height - rect().width);
-		mButton2.size(rect().width, rect().width);
+		mButton2.position(rect().position.x, rect().position.y + rect().size.y - rect().size.x);
+		mButton2.size(rect().size.x, rect().size.x);
 		mButton2.image("sys/down.png");
 
-		mSlideBar.x = rect().x;
-		mSlideBar.y = rect().y + rect().width;
-		mSlideBar.width = rect().width;
-		mSlideBar.height = rect().height - 2 * rect().width;
+		mSlideBar.position.x = rect().position.x;
+		mSlideBar.position.y = rect().position.y + rect().size.x;
+		mSlideBar.size.x = rect().size.x;
+		mSlideBar.size.y = rect().size.y - 2 * rect().size.x;
 	}
 	else
 	{
-		mButton1.position(rect().x, rect().y);
-		mButton1.size(rect().height, rect().height);
+		mButton1.position(rect().position.x, rect().position.y);
+		mButton1.size(rect().size.y, rect().size.y);
 		mButton1.image("sys/left.png");
 
-		mButton2.position(rect().x + rect().width - rect().height, rect().y);
-		mButton2.size(rect().height, rect().height);
+		mButton2.position(rect().position.x + rect().size.x - rect().size.y, rect().position.y);
+		mButton2.size(rect().size.y, rect().size.y);
 		mButton2.image("sys/right.png");
 
-		mSlideBar.x = rect().x + rect().height;
-		mSlideBar.y = rect().y;
-		mSlideBar.width = rect().width - 2 * rect().height;
-		mSlideBar.height = rect().height;
+		mSlideBar.position.x = rect().position.x + rect().size.y;
+		mSlideBar.position.y = rect().position.y;
+		mSlideBar.size.x = rect().size.x - 2 * rect().size.y;
+		mSlideBar.size.y = rect().size.y;
 	}
 }
 
@@ -178,12 +178,12 @@ void Slider::onMouseUp(EventHandler::MouseButton button, NAS2D::Point<int> posit
 	{
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			if (position.y < mSlider.y) { changeThumbPosition(-3.0); }
+			if (position.y < mSlider.position.y) { changeThumbPosition(-3.0); }
 			else { changeThumbPosition(+3.0); }
 		}
 		else
 		{
-			if (position.x < mSlider.x) { changeThumbPosition(-3.0); }
+			if (position.x < mSlider.position.x) { changeThumbPosition(-3.0); }
 			else { changeThumbPosition(+3.0); }
 		}
 	}
@@ -205,22 +205,22 @@ void Slider::onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change
 
 	if (mSliderType == SLIDER_VERTICAL)
 	{
-		if (position.y < mSlideBar.y || position.y >(mSlideBar.y + mSlideBar.height))
+		if (position.y < mSlideBar.position.y || position.y >(mSlideBar.position.y + mSlideBar.size.y))
 		{
 			return;
 		}
 
-		positionInternal(mLength * ((position.y - mSlideBar.y) / mSlideBar.height));
+		positionInternal(mLength * ((position.y - mSlideBar.position.y) / mSlideBar.size.y));
 		mCallback(thumbPosition());
 	}
 	else
 	{
-		if (position.x < mSlideBar.x || position.x >(mSlideBar.x + mSlideBar.width))
+		if (position.x < mSlideBar.position.x || position.x >(mSlideBar.position.x + mSlideBar.size.x))
 		{
 			return;
 		}
 
-		positionInternal(mLength * (position.x - mSlideBar.x) / mSlideBar.width);
+		positionInternal(mLength * (position.x - mSlideBar.position.x) / mSlideBar.size.x);
 		mCallback(thumbPosition());
 	}
 }
@@ -246,8 +246,8 @@ void Slider::draw()
 	std::string textHover;
 	int _x = 0, _y = 0, _w = 0, _h = 0;
 
-	r.drawBoxFilled({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{100, 100, 100});
-	r.drawBox({mSlideBar.x - 0.5f, mSlideBar.y, mSlideBar.width, mSlideBar.height}, NAS2D::Color{50, 50, 50});
+	r.drawBoxFilled({mSlideBar.position.x - 0.5f, mSlideBar.position.y, mSlideBar.size.x, mSlideBar.size.y}, NAS2D::Color{100, 100, 100});
+	r.drawBox({mSlideBar.position.x - 0.5f, mSlideBar.position.y, mSlideBar.size.x, mSlideBar.size.y}, NAS2D::Color{50, 50, 50});
 
 	mButton1.update();
 	mButton2.update();
@@ -266,37 +266,37 @@ void Slider::draw()
 	if (mSliderType == SLIDER_VERTICAL)
 	{
 		// Slider
-		mSlider.width = mSlideBar.width; // height = slide bar height
-		mSlider.height = static_cast<int>(mSlideBar.height / mLength); //relative width
-		if (mSlider.height < mSlider.width) // not too relative. Minimum = Height itself
+		mSlider.size.x = mSlideBar.size.x; // height = slide bar height
+		mSlider.size.y = static_cast<int>(mSlideBar.size.y / mLength); //relative width
+		if (mSlider.size.y < mSlider.size.x) // not too relative. Minimum = Height itself
 		{
-			mSlider.height = mSlider.width;
+			mSlider.size.y = mSlider.size.x;
 		}
 
-		const auto thumbPosition = ((mSlideBar.height - mSlider.height) * mPosition) / mLength; //relative width
+		const auto thumbPosition = ((mSlideBar.size.y - mSlider.size.y) * mPosition) / mLength; //relative width
 
-		mSlider.x = mSlideBar.x;
-		mSlider.y = mSlideBar.y + thumbPosition;
+		mSlider.position.x = mSlideBar.position.x;
+		mSlider.position.y = mSlideBar.position.y + thumbPosition;
 	}
 	else
 	{
 		// Slider
-		mSlider.height = mSlideBar.height;	// height = slide bar height
-		mSlider.width = static_cast<int>(mSlideBar.width / (mLength + 1)); //relative width
+		mSlider.size.y = mSlideBar.size.y;	// height = slide bar height
+		mSlider.size.x = static_cast<int>(mSlideBar.size.x / (mLength + 1)); //relative width
 		
-		if (mSlider.width < mSlider.height)	// not too relative. Minimum = Heigt itself
+		if (mSlider.size.x < mSlider.size.y)	// not too relative. Minimum = Heigt itself
 		{
-			mSlider.width = mSlider.height;
+			mSlider.size.x = mSlider.size.y;
 		}
 
-		const auto thumbPosition = ((mSlideBar.width - mSlider.width) * mPosition) / mLength; //relative width
+		const auto thumbPosition = ((mSlideBar.size.x - mSlider.size.x) * mPosition) / mLength; //relative width
 
-		mSlider.x = mSlideBar.x + thumbPosition;
-		mSlider.y = mSlideBar.y;
+		mSlider.position.x = mSlideBar.position.x + thumbPosition;
+		mSlider.position.y = mSlideBar.position.y;
 	}
 
 	const auto intRect = mSlider.to<int>();
-	bevelBox(intRect.x, intRect.y, intRect.width, intRect.height);
+	bevelBox(intRect.position.x, intRect.position.y, intRect.size.x, intRect.size.y);
 
 
 	if (fontSet() && mDisplayPosition && mMouseHoverSlide)
@@ -307,13 +307,13 @@ void Slider::draw()
 
 		if (mSliderType == SLIDER_VERTICAL)
 		{
-			_x = static_cast<int>(mSlideBar.x + mSlideBar.width + 2);
+			_x = static_cast<int>(mSlideBar.position.x + mSlideBar.size.x + 2);
 			_y = mMouseY - _h;
 		}
 		else
 		{
 			_x = mMouseX + 2;
-			_y = static_cast<int>(mSlideBar.y) - 2 - _h;
+			_y = static_cast<int>(mSlideBar.position.y) - 2 - _h;
 		}
 
 		r.drawBox(NAS2D::Rectangle{_x - _w / 2, _y, _w, _h}, NAS2D::Color{255, 255, 255, 180});

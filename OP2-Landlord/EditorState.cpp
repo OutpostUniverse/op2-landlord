@@ -165,7 +165,7 @@ void EditorState::updateSelector()
 	{
 		for(int col = p.width(); col > 0; col--)
 		{
-			r.drawBox(NAS2D::Rectangle{mSelectorRect.x - offsetX, mSelectorRect.y - offsetY + TILE_SIZE, mSelectorRect.width, mSelectorRect.height});
+			r.drawBox(NAS2D::Rectangle{mSelectorRect.position.x - offsetX, mSelectorRect.position.y - offsetY + TILE_SIZE, mSelectorRect.size.x, mSelectorRect.size.y});
 			offsetX += 32;
 		}
 		offsetX = 0;
