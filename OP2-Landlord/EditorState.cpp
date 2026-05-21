@@ -264,7 +264,7 @@ void EditorState::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> cha
  */
 void EditorState::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
-	Utility<EventHandler>::get().grabMouse();
+	Utility<Renderer>::get().captureMouse();
 
 	// Left Mouse Button
 	if(button == MouseButton::Left)
@@ -302,10 +302,10 @@ void EditorState::onMouseUp(MouseButton button, NAS2D::Point<int> position)
 	{
 		mRightButtonDown = false;
 		Utility<EventHandler>::get().mouseRelativeMode(false);
-		Utility<EventHandler>::get().warpMouse(mSavedMouseCoords.x, mSavedMouseCoords.y); // a bit hacky but does the job
+		Utility<Renderer>::get().warpMouse(mSavedMouseCoords); // a bit hacky but does the job
 	}
 
-	Utility<EventHandler>::get().releaseMouse();
+	Utility<Renderer>::get().releaseMouse();
 }
 
 
