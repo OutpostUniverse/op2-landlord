@@ -176,7 +176,7 @@ void ToolBar::update()
 
 	if (btnFillContiguous.visible())
 	{
-		r.drawBoxFilled(NAS2D::Rectangle{mFloodFillExtendedArea.x + 3, mFloodFillExtendedArea.y + 4, mFloodFillExtendedArea.width, mFloodFillExtendedArea.height}, NAS2D::Color{0, 0, 0, 100});
+		r.drawBoxFilled(NAS2D::Rectangle{mFloodFillExtendedArea.position.x + 3, mFloodFillExtendedArea.position.y + 4, mFloodFillExtendedArea.size.x, mFloodFillExtendedArea.size.y}, NAS2D::Color{0, 0, 0, 100});
 		r.drawBoxFilled(mFloodFillExtendedArea, NAS2D::Color{180, 180, 180});
 		r.drawBox(mFloodFillExtendedArea, NAS2D::Color::Black);
 		r.drawText(mFont, "Contiguous", {btnFillContiguous.positionX() + btnFillContiguous.width() + 4, btnFillContiguous.positionY() + 4}, NAS2D::Color::Black);
@@ -184,10 +184,10 @@ void ToolBar::update()
 		if (btnFillContiguous.toggled()) r.drawImage(mToggle, {btnFillContiguous.positionX() - 1, btnFillContiguous.positionY()});
 	}
 
-	r.drawBoxFilled({btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28});
-	r.drawBox({btnSpinnerUp.rect().x - 21, btnSpinnerUp.rect().y, 20, 28}, NAS2D::Color::Black);
+	r.drawBoxFilled({btnSpinnerUp.rect().position.x - 21, btnSpinnerUp.rect().position.y, 20, 28});
+	r.drawBox({btnSpinnerUp.rect().position.x - 21, btnSpinnerUp.rect().position.y, 20, 28}, NAS2D::Color::Black);
 	const auto text = std::to_string(static_cast<int>(mBrush.width()));
-	r.drawText(mFont, text, {btnSpinnerUp.rect().x - 18 + (mFont.width(text) / 2), 12}, NAS2D::Color::Black);
+	r.drawText(mFont, text, {btnSpinnerUp.rect().position.x - 18 + (mFont.width(text) / 2), 12}, NAS2D::Color::Black);
 
 	btnSpinnerUp.update();
 	btnSpinnerDown.update();

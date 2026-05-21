@@ -49,11 +49,11 @@ void ListBox::size(float w, float h)
 {
 	Control::size(w, h);
 	deleteControl("mSlider");
-	addControl("mSlider", &mSlider, rect().width - 14, 0);
+	addControl("mSlider", &mSlider, rect().size.x - 14, 0);
 	mSlider.font(font());
 	mSlider.displayPosition(false);
-	mSlider.size(14, rect().height);
-	mDisplayLines = static_cast<int>(rect().height / mLineHeight);
+	mSlider.size(14, rect().size.y);
+	mDisplayLines = static_cast<int>(rect().size.y / mLineHeight);
 	_checkSlider();
 }
 
@@ -61,7 +61,7 @@ void ListBox::size(float w, float h)
 void ListBox::onFontChanged()
 {
 	mLineHeight = font().height() + 2;
-	mDisplayLines = static_cast<int>(rect().height / mLineHeight);
+	mDisplayLines = static_cast<int>(rect().size.y / mLineHeight);
 }
 
 
@@ -162,7 +162,7 @@ void ListBox::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> po
 	if (mSlider.visible() && mSlider.rect().contains(position))
 		return;		// if the mouse is on the slider then the slider should handle that
 
-	int idx = ((position.y - (int)rect().y) / (font().height() + 2)) % ((int)rect().height / (font().height() + 2)) + mCurrentOffset;
+	int idx = ((position.y - (int)rect().position.y) / (font().height() + 2)) % ((int)rect().size.y / (font().height() + 2)) + mCurrentOffset;
 	currentSelection(idx);
 }
 
@@ -181,7 +181,7 @@ void ListBox::_checkSlider()
 	mItemMin = 0;
 	mItemMax = mItems.size();
 
-	if ((mLineHeight * mItems.size()) > rect().height)
+	if ((mLineHeight * mItems.size()) > rect().size.y)
 	{
 		if (mDisplayLines < static_cast<int>(mItems.size()))
 		{
@@ -190,7 +190,7 @@ void ListBox::_checkSlider()
 			mCurrentOffset = static_cast<int>(mSlider.thumbPosition());
 			mItemMin = mCurrentOffset;
 			mItemMax = mCurrentOffset + mDisplayLines;
-			mItemWidth = static_cast<int>(rect().width - mSlider.rect().width);
+			mItemWidth = static_cast<int>(rect().size.x - mSlider.rect().size.x);
 		}
 	}
 	else
@@ -211,22 +211,22 @@ void ListBox::update()
 
 	// draw boundaries of the widget
 	auto boxBounds = rect();
-	boxBounds.width = mItemWidth;
+	boxBounds.size.x = mItemWidth;
 	r.drawBox(boxBounds, Color{0, 0, 0, 100});
 	r.drawBoxFilled(boxBounds, Color{225, 225, 0, 85});
 
 	// Highlight currently selected file
-	boxBounds.height = mLineHeight;
+	boxBounds.size.y = mLineHeight;
 	if (mItemMin <= mCurrentSelection && mCurrentSelection < mItemMax)
 	{
-		boxBounds.y = rect().y + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
+		boxBounds.position.y = rect().position.y + ((mCurrentSelection - mCurrentOffset)  * mLineHeight);
 		r.drawBoxFilled(boxBounds, mHighlightBg);
 	}
 
 	// display actuals values that are ment to be
 	for (int i = mItemMin; i < mItemMax; i++)
 	{
-		const auto position = Point{rect().x,rect().y + ((i - mItemMin) * mLineHeight)};
+		const auto position = Point{rect().position.x,rect().position.y + ((i - mItemMin) * mLineHeight)};
 		r.drawTextShadow(font(), mItems[i], position, {1, 1}, mText, Color::Black);
 	}
 

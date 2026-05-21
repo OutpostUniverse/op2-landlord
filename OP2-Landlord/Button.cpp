@@ -144,24 +144,24 @@ void Button::draw()
 
 	if (mState == STATE_NORMAL)
 	{
-		bevelBox(intRect.x, intRect.y, intRect.width, intRect.height, false);
+		bevelBox(intRect.position.x, intRect.position.y, intRect.size.x, intRect.size.y, false);
 	}
 	else //(mState == STATE_PRESSED)
 	{
-		bevelBox(intRect.x, intRect.y, intRect.width, intRect.height, true);
+		bevelBox(intRect.position.x, intRect.position.y, intRect.size.x, intRect.size.y, true);
 	}
 
 
 	if (mImage)
 	{
-		auto point = intRect.startPoint() + (intRect.size() - mImage->size()) / 2 - Vector{1, 0};
+		auto point = intRect.startPoint() + (intRect.size - mImage->size()) / 2 - Vector{1, 0};
 
 		if (mState == STATE_PRESSED) { point += Vector{1, 1}; }
 		r.drawImage(*mImage, point);
 	}
 	else if (fontSet() && !text().empty())
 	{
-		auto point = intRect.startPoint() + (intRect.size() - font().size(text())) / 2;
+		auto point = intRect.startPoint() + (intRect.size - font().size(text())) / 2;
 
 		if (mState == STATE_PRESSED) { point += Vector{1, 1}; }
 		r.drawText(font(), text(), point, NAS2D::Color::Black);

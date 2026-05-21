@@ -82,7 +82,7 @@ void TextField::onFontChanged()
 
 int TextField::textAreaWidth() const
 {
-	return static_cast<int>(rect().width) - FIELD_PADDING * 2;
+	return static_cast<int>(rect().size.x) - FIELD_PADDING * 2;
 }
 
 
@@ -149,8 +149,8 @@ void TextField::drawCursor()
 		{
 			// updateCursor() should be called only on events relating to the cursor so this is temporary.
 			updateCursor();
-			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX + 1, static_cast<int>(rect().y) + FIELD_PADDING + 1}, NAS2D::Point{mCursorX + 1, static_cast<int>(rect().y + rect().height) - FIELD_PADDING}, NAS2D::Color::Black);
-			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX, static_cast<int>(rect().y) + FIELD_PADDING}, NAS2D::Point{mCursorX, static_cast<int>(rect().y + rect().height) - FIELD_PADDING - 1});
+			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX + 1, static_cast<int>(rect().position.y) + FIELD_PADDING + 1}, NAS2D::Point{mCursorX + 1, static_cast<int>(rect().position.y + rect().size.y) - FIELD_PADDING}, NAS2D::Color::Black);
+			Utility<Renderer>::get().drawLine(NAS2D::Point{mCursorX, static_cast<int>(rect().position.y) + FIELD_PADDING}, NAS2D::Point{mCursorX, static_cast<int>(rect().position.y + rect().size.y) - FIELD_PADDING - 1});
 		}
 		
 		if(mCursorTimer.elapsedTicks() > CURSOR_BLINK_DELAY)
@@ -167,7 +167,7 @@ void TextField::drawCursor()
  */
 void TextField::drawTextHighlight()
 {
-	Utility<Renderer>::get().drawBoxFilled({rect().x + FIELD_PADDING, rect().y, static_cast<float>(font().width(text())), rect().height}, NAS2D::Color{0, 0, 150, 100});
+	Utility<Renderer>::get().drawBoxFilled({rect().position.x + FIELD_PADDING, rect().position.y, static_cast<float>(font().width(text())), rect().size.y}, NAS2D::Color{0, 0, 150, 100});
 }
 
 
@@ -190,7 +190,7 @@ void TextField::updateCursor()
 		mScrollOffset = 0;
 	}
 
-	mCursorX = static_cast<int>(rect().x + FIELD_PADDING + cursorX - mScrollOffset);
+	mCursorX = static_cast<int>(rect().position.x + FIELD_PADDING + cursorX - mScrollOffset);
 }
 
 
@@ -308,7 +308,7 @@ void TextField::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> 
 	else
 		hasFocus(true);
 
-	int relativePosition = static_cast<int>(position.x - rect().x);
+	int relativePosition = static_cast<int>(position.x - rect().position.x);
 
 	// If the click occured past the width of the text, we can immediatly
 	// set the position to the end and move on.

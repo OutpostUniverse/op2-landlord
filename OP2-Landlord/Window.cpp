@@ -48,7 +48,7 @@ void Window::onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<i
 	if((button != NAS2D::EventHandler::MouseButton::Left)) { return; }
 
 	const auto windowBounds = rect().to<int>();
-	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.x, windowBounds.y, windowBounds.width, titleBarHeight()};
+	const auto titleBarBounds = NAS2D::Rectangle{windowBounds.position.x, windowBounds.position.y, windowBounds.size.x, titleBarHeight()};
 	if (titleBarBounds.contains(position))
 	{
 		mIsWindowDragging = true;
@@ -97,12 +97,12 @@ void Window::update()
 	auto& r = NAS2D::Utility<NAS2D::Renderer>::get();
 
 	r.drawBoxFilled(rect(), NAS2D::Color{180, 180, 180});
-	r.drawBoxFilled({rect().x, rect().y, rect().width, TITLE_BAR_HEIGHT}, NAS2D::Color{75, 95, 130});
+	r.drawBoxFilled({rect().position.x, rect().position.y, rect().size.x, TITLE_BAR_HEIGHT}, NAS2D::Color{75, 95, 130});
 	r.drawBox(rect(), NAS2D::Color::Black);
 
 	if (mTitleFont)
 	{
-		r.drawText(*mTitleFont, text(), {rect().x + (rect().width / 2) - (mTitleFont->width(text()) / 2), rect().y + 2});
+		r.drawText(*mTitleFont, text(), {rect().position.x + (rect().size.x / 2) - (mTitleFont->width(text()) / 2), rect().position.y + 2});
 	}
 
 	draw();
