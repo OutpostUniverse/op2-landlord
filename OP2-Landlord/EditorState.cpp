@@ -187,11 +187,11 @@ void EditorState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 
 	switch(key)
 	{
-		case KeyCode::KEY_ESCAPE:
+		case KeyCode::Escape:
 			mReturnState = new StartState();
 			break;
 
-		case KeyCode::KEY_z:
+		case KeyCode::Z:
 			if(Utility<EventHandler>::get().control(mod))
 			{
 			}

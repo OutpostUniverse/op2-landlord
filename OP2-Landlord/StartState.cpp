@@ -451,7 +451,7 @@ void StartState::updateUi()
  */
 void StartState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 {
-	if (key == KeyCode::KEY_ESCAPE)
+	if (key == KeyCode::Escape)
 	{
 		mReturnState = nullptr;
 	}

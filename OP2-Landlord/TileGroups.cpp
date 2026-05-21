@@ -136,11 +136,11 @@ void TileGroups::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 
 	switch (key)
 	{
-	case KeyCode::KEY_LEFT:
+	case KeyCode::Left:
 		mSlider.changeThumbPosition(-1.0);
 		break;
 
-	case KeyCode::KEY_RIGHT:
+	case KeyCode::Right:
 		mSlider.changeThumbPosition(1.0);
 		break;
 
