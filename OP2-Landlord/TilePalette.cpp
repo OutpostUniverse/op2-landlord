@@ -25,7 +25,7 @@ void TilePalette::_init()
 {
 	const auto size = Utility<Renderer>::get().size();
 	const auto startPoint = NAS2D::Point{-2, -2} + size - PALETTE_DIMENSIONS;
-	_rect() = NAS2D::Rectangle<int>::Create(startPoint, PALETTE_DIMENSIONS);
+	_rect() = NAS2D::Rectangle(startPoint, PALETTE_DIMENSIONS);
 
 	text("Tile Palette");
 }
