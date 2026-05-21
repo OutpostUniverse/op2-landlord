@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 			std::map<std::string, Dictionary>{
 				{
 					"graphics",
-					{{
+					Dictionary{{
 						{"screenwidth", 1000},
 						{"screenheight", 650},
 						{"fullscreen", false},
