@@ -256,7 +256,7 @@ void Slider::draw()
 
 	if (mButton1Held || mButton2Held)
 	{
-		if (mTimer.elapsedTicks() >= mPressedAccumulator)
+		if (mTimer.elapsedTicks().milliseconds >= mPressedAccumulator)
 		{
 			mPressedAccumulator = 75;
 			mTimer.reset();
