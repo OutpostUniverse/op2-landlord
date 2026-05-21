@@ -52,9 +52,13 @@ jobs:
         path: vcpkg_installed
         key: ${{ steps.cacheRestoreVcpkg.outputs.cache-primary-key }}
 
+    - name: Copy vcpkg cache to NAS2D folder
+      run: |
+        xcopy vcpkg_installed nas2d-core\vcpkg_installed\ /s /e
+
     - name: Build
       run: |
-        msbuild /maxCpuCount /property:PreBuildEventUseInBuild=false /property:VcpkgEnableManifest=true
+        msbuild /maxCpuCount
 
   linux:
     strategy:
