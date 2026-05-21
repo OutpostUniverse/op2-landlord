@@ -25,8 +25,8 @@ private:
 
 	virtual void draw();
 
-	void mouseDown(NAS2D::EventHandler::MouseButton b, NAS2D::Point<int> position);
-	void mouseUp(NAS2D::EventHandler::MouseButton b, NAS2D::Point<int> position);
+	void mouseDown(NAS2D::MouseButton b, NAS2D::Point<int> position);
+	void mouseUp(NAS2D::MouseButton b, NAS2D::Point<int> position);
 	void mouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change);
 
 	void createMiniMap();

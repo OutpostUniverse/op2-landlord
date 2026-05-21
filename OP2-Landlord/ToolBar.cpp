@@ -129,7 +129,7 @@ void ToolBar::hookEvents()
 }
 
 
-void ToolBar::onKeyDown(EventHandler::KeyCode code, EventHandler::KeyModifier mod, bool repeat)
+void ToolBar::onKeyDown(KeyCode code, KeyModifier mod, bool repeat)
 {}
 
 

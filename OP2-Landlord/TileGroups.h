@@ -30,11 +30,11 @@ private:
 
 	void _init();
 
-	void mouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
-	void mouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position);
+	void mouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position);
+	void mouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position);
 	void mouseWheel(NAS2D::Vector<int> change);
 
-	void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat);
+	void onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier mod, bool repeat);
 
 	virtual void positionChanged(float dX, float dY);
 

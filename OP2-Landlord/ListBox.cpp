@@ -106,7 +106,7 @@ void ListBox::removeItem(const std::string& item)
 	if(empty())
 		return;
 
-	StringList::iterator it = mItems.begin();
+	std::vector<std::string>::iterator it = mItems.begin();
 
 	while(it != mItems.end())
 	{
@@ -152,7 +152,7 @@ void ListBox::dropAllItems()
 }
 
 
-void ListBox::onMouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void ListBox::onMouseDown(MouseButton button, NAS2D::Point<int> position)
 {
 	// Ignore if menu is empty or invisible
 	if (empty() || !visible()) { return; }

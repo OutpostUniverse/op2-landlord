@@ -46,8 +46,8 @@ public:
 	ValueChangedCallback& change() { return mCallback; } 	/*!< Give the callback to enable another control or a window to dis/connect to this event call. */
 
 protected:
-	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button down. */
-	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button up. */
+	virtual void onMouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button down. */
+	virtual void onMouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position); 	/*!< Event raised on mouse button up. */
 	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change); 	/*!< Event raised on mouse move. */
 
 private:

@@ -2,6 +2,9 @@
 
 #include "Common.h"
 
+#include <NAS2D/EnumMouseButton.h>
+
+
 using namespace NAS2D;
 
 MiniMap::MiniMap()
@@ -29,9 +32,9 @@ void MiniMap::adjustCamera(int x, int y)
 }
 
 
-void MiniMap::mouseDown(EventHandler::MouseButton b, NAS2D::Point<int> position)
+void MiniMap::mouseDown(MouseButton b, NAS2D::Point<int> position)
 {
-	if (b != EventHandler::MouseButton::Left) { return; }
+	if (b != MouseButton::Left) { return; }
 	
 	mLeftButtonDown = true;
 
@@ -48,9 +51,9 @@ void MiniMap::mouseDown(EventHandler::MouseButton b, NAS2D::Point<int> position)
 }
 
 
-void MiniMap::mouseUp(EventHandler::MouseButton b, NAS2D::Point<int> position)
+void MiniMap::mouseUp(MouseButton b, NAS2D::Point<int> position)
 {
-	if (b != EventHandler::MouseButton::Left) { return; }
+	if (b != MouseButton::Left) { return; }
 
 	mLeftButtonDown = false;
 	mMovingCamera = false;

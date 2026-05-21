@@ -58,12 +58,12 @@ public:
 	const std::string& text() const;
 	TextChangedCallback& textChanged();
 
-	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
-	virtual void onMouseUp(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) {};
+	virtual void onMouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position) {};
+	virtual void onMouseUp(NAS2D::MouseButton button, NAS2D::Point<int> position) {};
 	virtual void onMouseMotion(NAS2D::Point<int> position, NAS2D::Vector<int> change) {};
 
-	virtual void onKeyDown(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod, bool repeat) {};
-	virtual void onKeyUp(NAS2D::EventHandler::KeyCode key, NAS2D::EventHandler::KeyModifier mod) {};
+	virtual void onKeyDown(NAS2D::KeyCode key, NAS2D::KeyModifier mod, bool repeat) {};
+	virtual void onKeyUp(NAS2D::KeyCode key, NAS2D::KeyModifier mod) {};
 
 	void size(float _s);
 	void size(float w, float h);

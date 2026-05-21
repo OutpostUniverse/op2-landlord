@@ -3,6 +3,7 @@
 #include "NAS2D/NAS2D.h"
 
 #include <map>
+#include <vector>
 #include <string>
 #include <algorithm>
 
@@ -46,7 +47,7 @@ public:
 	SelectionChangedCallback& selectionChanged() { return mSelectionChanged; }
 
 protected:
-	virtual void onMouseDown(NAS2D::EventHandler::MouseButton button, NAS2D::Point<int> position) final;
+	virtual void onMouseDown(NAS2D::MouseButton button, NAS2D::Point<int> position) final;
 	virtual void onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> change) final;
 	void onMouseWheel(NAS2D::Vector<int> change);
 	void slideChanged(float _position);
@@ -69,7 +70,7 @@ private:
 	int							mItemMax = 0;
 	int							mItemWidth = 0;
 
-	NAS2D::StringList					mItems;				/**< List of items preserved in the order in which they're added. */
+	std::vector<std::string>					mItems;				/**< List of items preserved in the order in which they're added. */
 
 	NAS2D::Color					mText;				/**< Text Color */
 	NAS2D::Color					mHighlightBg;		/**< Highlight Background color. */

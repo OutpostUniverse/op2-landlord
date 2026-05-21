@@ -2,6 +2,8 @@
 
 #include "Common.h"
 
+#include <NAS2D/EnumMouseButton.h>
+
 
 using namespace NAS2D;
 
@@ -25,7 +27,7 @@ void TilePalette::_init()
 {
 	const auto size = Utility<Renderer>::get().size();
 	const auto startPoint = NAS2D::Point{-2, -2} + size - PALETTE_DIMENSIONS;
-	_rect() = NAS2D::Rectangle<int>::Create(startPoint, PALETTE_DIMENSIONS);
+	_rect() = NAS2D::Rectangle(startPoint, PALETTE_DIMENSIONS);
 
 	text("Tile Palette");
 }
@@ -39,9 +41,9 @@ void TilePalette::draw()
 }
 
 
-void TilePalette::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TilePalette::mouseDown(MouseButton button, NAS2D::Point<int> position)
 {
-	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
+	if (!visible() || (button != MouseButton::Left)) { return; }
 
 	if (!(rect().contains(_mouseCoords())))
 	{
@@ -52,11 +54,11 @@ void TilePalette::mouseDown(EventHandler::MouseButton button, NAS2D::Point<int> 
 }
 
 
-void TilePalette::mouseUp(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void TilePalette::mouseUp(MouseButton button, NAS2D::Point<int> position)
 {
 	mLeftButtonDown = false;
 
-	if (!visible() || (button != EventHandler::MouseButton::Left)) { return; }
+	if (!visible() || (button != MouseButton::Left)) { return; }
 	if (!mLeftButtonDown && !dragging()) { return; }
 }
 

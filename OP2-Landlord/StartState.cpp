@@ -5,6 +5,8 @@
 #include "Defaults.h"
 #include "Strings.h"
 
+#include <NAS2D/EnumKeyCode.h>
+#include <NAS2D/EnumMouseButton.h>
 
 #include <iostream>
 
@@ -253,7 +255,7 @@ void StartState::resizeLayout()
 
 void StartState::fillMapMenu()
 {
-	StringList lst = getFileList(EDITOR_MAPS_PATH);
+	std::vector<std::string> lst = getFileList(EDITOR_MAPS_PATH);
 
 	for (auto item : lst)
 	{
@@ -269,19 +271,19 @@ void StartState::fillMapMenu()
  * 
  * \param	directory	Path to scan for files.
  * 
- * \return	Returns a StringList.
+ * \return	Returns a std::vector<std::string>.
  */
-StringList StartState::getFileList(const std::string& directory)
+std::vector<std::string> StartState::getFileList(const std::string& directory)
 {
-	auto fileList = Utility<Filesystem>::get().directoryList(directory);
-	StringList returnList;
+	auto fileList = Utility<Filesystem>::get().directoryList(VirtualPath{directory});
+	std::vector<std::string> returnList;
 
 	Filesystem& f = Utility<Filesystem>::get();
 
 	for (const auto& file : fileList)
 	{
 		const auto fileString = file.string();
-		if (!f.isDirectory(directory + fileString))
+		if (!f.isDirectory(VirtualPath{directory + fileString}))
 		{
 			returnList.push_back(fileString);
 		}
@@ -342,7 +344,7 @@ void StartState::button_LoadExisting_click()
 	// In the event someone does something completely idiotic like deleting map files after the
 	// editor has scanned the maps directory (or some other error occurs where the map file is
 	// no longer available), ensure that we prevent failure.
-	if(!Utility<Filesystem>::get().exists(mapPath))
+	if(!Utility<Filesystem>::get().exists(VirtualPath{mapPath}))
 	{
 		setMessage("ERROR: Selected file could not be found.");
 		return;
@@ -385,7 +387,7 @@ State* StartState::update()
 
 	updateUi();
 
-	if (mTimer.elapsedTicks() > 200)
+	if (mTimer.elapsedTicks().milliseconds > 200)
 	{
 		MSG_FLASH = !MSG_FLASH;
 		mTimer.reset();
@@ -447,9 +449,9 @@ void StartState::updateUi()
 /**
  * Key Down handler.
  */
-void StartState::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier mod, bool repeat)
+void StartState::onKeyDown(KeyCode key, KeyModifier mod, bool repeat)
 {
-	if (key == EventHandler::KeyCode::KEY_ESCAPE)
+	if (key == KeyCode::Escape)
 	{
 		mReturnState = nullptr;
 	}
@@ -465,9 +467,9 @@ void StartState::onMouseMove(NAS2D::Point<int> position, NAS2D::Vector<int> chan
 }
 
 
-void StartState::onDoubleClick(EventHandler::MouseButton button, NAS2D::Point<int> position)
+void StartState::onDoubleClick(MouseButton button, NAS2D::Point<int> position)
 {
-	if (button != EventHandler::MouseButton::Left) { return; }
+	if (button != MouseButton::Left) { return; }
 
 	if (mMapFilesMenu.rect().contains(mMouseCoords))
 	{
