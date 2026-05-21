@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include <NAS2D/NAS2D.h>
+#include <NAS2D/EventHandlerMouseButton.h>
 
 
 const int TITLE_BAR_HEIGHT = 20;

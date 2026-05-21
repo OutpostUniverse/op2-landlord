@@ -5,6 +5,8 @@
  */
 #include "Slider.h"
 
+#include <NAS2D/EventHandlerMouseButton.h>
+
 #include <algorithm>
 
 using namespace NAS2D;

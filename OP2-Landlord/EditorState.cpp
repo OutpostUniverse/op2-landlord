@@ -5,6 +5,10 @@
 
 #include "Map/cell_types.h"
 
+#include <NAS2D/EventHandlerKeyCode.h>
+#include <NAS2D/EventHandlerKeyModifier.h>
+#include <NAS2D/EventHandlerMouseButton.h>
+
 #include <algorithm>
 #include <stack>
 #include <sstream>

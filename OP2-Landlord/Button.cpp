@@ -2,6 +2,8 @@
 
 #include "Common.h"
 
+#include <NAS2D/EventHandlerMouseButton.h>
+
 #include <iostream>
 
 using namespace NAS2D;

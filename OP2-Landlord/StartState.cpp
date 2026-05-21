@@ -5,6 +5,8 @@
 #include "Defaults.h"
 #include "Strings.h"
 
+#include <NAS2D/EventHandlerKeyCode.h>
+#include <NAS2D/EventHandlerMouseButton.h>
 
 #include <iostream>
 

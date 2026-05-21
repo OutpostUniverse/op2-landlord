@@ -7,6 +7,8 @@
 
 #include "TextField.h"
 
+#include <NAS2D/EventHandlerKeyCode.h>
+
 #include <locale>
 
 
