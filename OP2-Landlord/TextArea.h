@@ -5,6 +5,7 @@
 #include "Control.h"
 
 #include <string>
+#include <vector>
 
 
 class TextArea : public Control
@@ -18,11 +19,6 @@ public:
 
 	void update();
 
-protected:
-
-private:
-	typedef std::vector<std::string> StringList;
-
 private:
 	virtual void onSizeChanged();
 	virtual void onTextChanged();
@@ -30,11 +26,11 @@ private:
 
 	virtual void draw();
 
-	StringList split(const char *str, char delim = ' ');
+	std::vector<std::string> split(const char *str, char delim = ' ');
 	void processString();
 
 private:
-	StringList	mFormattedList;
+	std::vector<std::string>	mFormattedList;
 
 	size_t		mNumLines;
 };

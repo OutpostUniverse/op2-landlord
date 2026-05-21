@@ -11,6 +11,9 @@
 #include "TextArea.h"
 #include "TextField.h"
 
+#include <string>
+#include <vector>
+
 
 /**
  * \class StartState
@@ -37,7 +40,7 @@ protected:
 	void onQuit();
 
 private:
-	NAS2D::StringList getFileList(const std::string& directory);
+	std::vector<std::string> getFileList(const std::string& directory);
 		
 	void fillMapMenu();
 	

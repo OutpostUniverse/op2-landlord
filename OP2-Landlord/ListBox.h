@@ -3,6 +3,7 @@
 #include "NAS2D/NAS2D.h"
 
 #include <map>
+#include <vector>
 #include <string>
 #include <algorithm>
 
@@ -69,7 +70,7 @@ private:
 	int							mItemMax = 0;
 	int							mItemWidth = 0;
 
-	NAS2D::StringList					mItems;				/**< List of items preserved in the order in which they're added. */
+	std::vector<std::string>					mItems;				/**< List of items preserved in the order in which they're added. */
 
 	NAS2D::Color					mText;				/**< Text Color */
 	NAS2D::Color					mHighlightBg;		/**< Highlight Background color. */

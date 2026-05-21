@@ -1,7 +1,5 @@
 #include "TextArea.h"
 
-#include <vector>
-
 
 using namespace NAS2D;
 
@@ -14,7 +12,7 @@ TextArea::~TextArea()
 {}
 
 
-StringList TextArea::split(const char *str, char delim)
+std::vector<std::string> TextArea::split(const char *str, char delim)
 {
 	std::vector<std::string> result;
 
@@ -39,7 +37,7 @@ void TextArea::processString()
 	if (width() < 1 || !fontSet() || text().empty())
 		return;
 
-	StringList tokenList = split(text().c_str());
+	std::vector<std::string> tokenList = split(text().c_str());
 	
 	size_t w = 0, i = 0;
 	while (i < tokenList.size())

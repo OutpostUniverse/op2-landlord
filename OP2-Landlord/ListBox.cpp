@@ -106,7 +106,7 @@ void ListBox::removeItem(const std::string& item)
 	if(empty())
 		return;
 
-	StringList::iterator it = mItems.begin();
+	std::vector<std::string>::iterator it = mItems.begin();
 
 	while(it != mItems.end())
 	{

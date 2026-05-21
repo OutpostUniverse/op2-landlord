@@ -253,7 +253,7 @@ void StartState::resizeLayout()
 
 void StartState::fillMapMenu()
 {
-	StringList lst = getFileList(EDITOR_MAPS_PATH);
+	std::vector<std::string> lst = getFileList(EDITOR_MAPS_PATH);
 
 	for (auto item : lst)
 	{
@@ -269,12 +269,12 @@ void StartState::fillMapMenu()
  * 
  * \param	directory	Path to scan for files.
  * 
- * \return	Returns a StringList.
+ * \return	Returns a std::vector<std::string>.
  */
-StringList StartState::getFileList(const std::string& directory)
+std::vector<std::string> StartState::getFileList(const std::string& directory)
 {
 	auto fileList = Utility<Filesystem>::get().directoryList(directory);
-	StringList returnList;
+	std::vector<std::string> returnList;
 
 	Filesystem& f = Utility<Filesystem>::get();
 
