@@ -270,12 +270,12 @@ void TextField::onKeyDown(EventHandler::KeyCode key, EventHandler::KeyModifier m
 
 		// KEYPAD ARROWS
 		case EventHandler::KeyCode::KEY_KP4:
-			if((mCursorPosition > 0) && !Utility<EventHandler>::get().query_numlock())
+			if((mCursorPosition > 0) && !Utility<EventHandler>::get().numlock())
 				--mCursorPosition;
 			break;
 
 		case EventHandler::KeyCode::KEY_KP6:
-			if((static_cast<size_t>(mCursorPosition) < text().length()) && !Utility<EventHandler>::get().query_numlock())
+			if((static_cast<size_t>(mCursorPosition) < text().length()) && !Utility<EventHandler>::get().numlock())
 				++mCursorPosition;
 			break;
 
