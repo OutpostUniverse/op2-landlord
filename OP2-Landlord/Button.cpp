@@ -33,7 +33,7 @@ Button::~Button()
 
 void Button::image(const std::string path)
 {
-	if (!Utility<Filesystem>::get().exists(path))
+	if (!Utility<Filesystem>::get().exists(VirtualPath{path}))
 	{
 		std::cout << "Button::image(): specified image file doesn't exist." << std::endl;
 		return;

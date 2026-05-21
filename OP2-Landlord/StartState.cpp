@@ -275,7 +275,7 @@ void StartState::fillMapMenu()
  */
 std::vector<std::string> StartState::getFileList(const std::string& directory)
 {
-	auto fileList = Utility<Filesystem>::get().directoryList(directory);
+	auto fileList = Utility<Filesystem>::get().directoryList(VirtualPath{directory});
 	std::vector<std::string> returnList;
 
 	Filesystem& f = Utility<Filesystem>::get();
@@ -283,7 +283,7 @@ std::vector<std::string> StartState::getFileList(const std::string& directory)
 	for (const auto& file : fileList)
 	{
 		const auto fileString = file.string();
-		if (!f.isDirectory(directory + fileString))
+		if (!f.isDirectory(VirtualPath{directory + fileString}))
 		{
 			returnList.push_back(fileString);
 		}
@@ -344,7 +344,7 @@ void StartState::button_LoadExisting_click()
 	// In the event someone does something completely idiotic like deleting map files after the
 	// editor has scanned the maps directory (or some other error occurs where the map file is
 	// no longer available), ensure that we prevent failure.
-	if(!Utility<Filesystem>::get().exists(mapPath))
+	if(!Utility<Filesystem>::get().exists(VirtualPath{mapPath}))
 	{
 		setMessage("ERROR: Selected file could not be found.");
 		return;

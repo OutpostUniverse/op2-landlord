@@ -530,7 +530,7 @@ void EditorState::saveMap()
 {
 	Filesystem& f = Utility<Filesystem>::get();
 
-	if (!f.exists("maps")) { f.makeDirectory("maps"); }
+	if (!f.exists(VirtualPath{"maps"})) { f.makeDirectory(VirtualPath{"maps"}); }
 
 	//mMap.save(mMapSavePath);
 }

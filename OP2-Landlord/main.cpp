@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 	try
 	{
 		Filesystem& f = Utility<Filesystem>::init<Filesystem>("OP2-Landlord", "Outpost Universe");
-		f.mount("data");
+		f.mount(RealPath{"data"});
 		f.mountReadWrite(f.prefPath());
 
 		Configuration& cf = Utility<Configuration>::init(
